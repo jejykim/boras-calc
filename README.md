@@ -1,0 +1,35 @@
+# CRM - calc
+WEB - Spring boot  
+
+## Version
+**0.0.1**
+
+## Version description
+**[0.0.1]** 프로젝트 생성  
+
+## Version 관리 role
+**X.Y.Z (etc.현재일자)**
+- **X**
+  - Major version number
+  - 1부터 시작하는 정수 (정식 배포 deploy)
+  - 아키텍처 변경 시 1씩 증가
+    
+- **Y**
+  - Minor version number
+  - 0부터 시작하는 정수
+  - 신규 기능 추가 시 1씩 증가 ( 직접적인 신규 class 추가 시 1씩 증가 )
+  - major number가 1증가할 때 0으로 초기화됨
+    
+- **Z**
+  - revision number
+  - 0부터 시작하는 정수
+  - 기존 기능 수정 시 1씩 증가 ( 기존 class의 수정 및 html 구조 변경 )
+  - Minor version number 1증가할 때 0으로 초기화됨
+    
+- **etc.현재일자**
+  - 특정 구분자로 활용
+  - 예) 1.1.1.20200827
+    
+- **branch**
+  - 모든 브랜치는 개발자간 협의에 진행
+  - 브랜치 최소화 (담당 파트 분리 진행)
