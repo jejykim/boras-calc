@@ -112,8 +112,8 @@ public class SettingApiController {
     		
     		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
     		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
-    		rvt.put("list", list);
     		rvt.put("listCount", list.size());
+    		rvt.put("list", list);
     	} catch (Exception e) {
     		logger.error(e.getMessage());
     		
