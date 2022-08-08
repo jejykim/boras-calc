@@ -2,9 +2,10 @@
 WEB - Spring boot  
 
 ## Version
-**0.2.1**
+**0.2.2**
 
 ## Version description
+**[0.2.2]** 원장 승인 요청 및 승인확인 api 추가
 **[0.2.1]** 원장 등록 api 추가  
 **[0.2.0]** 엑셀 양식 체크 util  
 **[0.1.0]** 로그인, 계정관리, 권한 util, file util, 원장 excel 설정 관리 추가  
