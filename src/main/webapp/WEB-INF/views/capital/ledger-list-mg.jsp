@@ -46,6 +46,21 @@
                         <div class="col-sm col-12">
                            <h1 class="h2 ls-tight">금융사 원장 목록 <span class="badge badge-sm bg-soft-success text-success rounded-pill ms-auto custom-header-badge">관리자용</span></h1>
                         </div>
+                        <div class="col-sm-auto col-12 mt-4 mt-sm-0">
+                        	<div class="hstack gap-2 justify-content-sm-end">
+                        		<a href="#excelUploadModal" class="btn btn-sm btn-excel border-base" data-bs-toggle="modal">
+                        			<span class="pe-2">
+                        				<i class="bi bi-file-earmark-excel"></i>
+                        			</span><span>원장 엑셀 업로드</span>
+                        		</a>
+                        		<a href="#ledgerAddModal" class="btn btn-sm btn-primary" data-bs-toggle="offcanvas">
+                        			<span class="pe-2">
+                        				<i class="bi bi-plus-square-dotted"></i>
+									</span>
+									<span>원장 추가</span>
+								</a>
+							</div>
+						</div>
                      </div>
                      <div class="custom-mg-bt-15"></div>
                   </div>
@@ -53,16 +68,63 @@
             </header>
             
             <main class="py-6 bg-surface-secondary">
+            	
+            	<!-- modal -->
+		        <jsp:include page="../common/modal.jsp" />
+		        <!-- //modal -->
+            
 			   <div class="container-fluid">
 			      <div class="vstack gap-6">
-			         <!-- <div class="d-flex flex-column flex-md-row gap-3 justify-content-between">
-			            <div class="d-flex gap-3">
-			               <div class="input-group input-group-sm input-group-inline">
-								<span class="input-group-text pe-2"><i class="bi bi-search"></i> </span>
-								<input type="text" class="form-control" placeholder="Search" aria-label="Search">
-			               </div>
-			            </div>
-			         </div> -->
+			         <div class="card custom-card-bottom">
+			         	<div class="px-4 py-4 d-flex flex-column flex-sm-row gap-3">
+					      <div class="scrollable-x">
+					         <div class="btn-group">
+					         	<select class="form-select" aria-label="Default select example">
+					         		<option value="2022" selected="selected">2022 년</option>
+					         		<option value="2023">2023 년</option>
+					         		<option value="2024">2024 년</option>
+					         		<option value="2025">2025 년</option>
+				         		</select>
+					         </div>
+					         <div class="btn-group custom-pd-left">
+					         	<a href="" class="btn btn-sm btn-square btn-neutral">1월</a>
+					         </div>
+					         <div class="btn-group custom-pd-left">
+					         	<a href="" class="btn btn-sm btn-square btn-neutral">2월</a>
+					         </div>
+					         <div class="btn-group custom-pd-left">
+					         	<a href="" class="btn btn-sm btn-square btn-neutral">3월</a>
+					         </div>
+					         <div class="btn-group custom-pd-left">
+					         	<a href="" class="btn btn-sm btn-square btn-neutral">4월</a>
+					         </div>
+					         <div class="btn-group custom-pd-left">
+					         	<a href="" class="btn btn-sm btn-square btn-neutral">5월</a>
+					         </div>
+					         <div class="btn-group custom-pd-left">
+					         	<a href="" class="btn btn-sm btn-square btn-neutral">6월</a>
+					         </div>
+					         <div class="btn-group custom-pd-left">
+					         	<a href="" class="btn btn-sm btn-square btn-neutral">7월</a>
+					         </div>
+					         <div class="btn-group custom-pd-left">
+					         	<a href="" class="btn btn-sm btn-square btn-primary">8월</a>
+					         </div>
+					         <div class="btn-group custom-pd-left">
+					         	<a href="" class="btn btn-sm btn-square btn-neutral">9월</a>
+					         </div>
+					         <div class="btn-group custom-pd-left">
+					         	<a href="" class="btn btn-sm btn-square btn-neutral">10월</a>
+					         </div>
+					         <div class="btn-group custom-pd-left">
+					         	<a href="" class="btn btn-sm btn-square btn-neutral">11월</a>
+					         </div>
+					         <div class="btn-group custom-pd-left">
+					         	<a href="" class="btn btn-sm btn-square btn-neutral">12월</a>
+					         </div>
+					      </div>
+					   </div>
+			         </div>
 			         
 			         <div class="card" style="margin-bottom: 60px;">
 					   <div class="card-header d-flex align-items-center text-center">
@@ -93,6 +155,12 @@
 										<td class="text-start">
 											10,000,000,000
 										</td>
+										<td class="text-end" style="color: #5c60f5; font-weight: bold;">
+											<i class="bi bi-pin me-3"></i>추가 Fee 합계
+										</td>
+										<td class="text-start">
+											10,000,000,000
+										</td>
 									</tr>
 								</tbody>
 							</table>
@@ -105,6 +173,9 @@
 					         </div>
 					      </div>
 				         <div class="ms-auto hstack gap-2">
+				         	<div>
+				         		<span class="badge badge-sm bg-soft-warning text-warning rounded-pill ms-auto">필터 초기화</span>
+				         	</div>
 				         	<div class="input-group input-group-sm input-group-inline">
 				         		<span class="input-group-text pe-2"><i class="bi bi-search"></i> </span>
 				         		<input type="email" class="form-control" placeholder="Search" aria-label="Search">
@@ -129,12 +200,98 @@
 					      <table class="table table-hover table-nowrap">
 					         <thead class="custom-table-thead">
 					            <tr style="text-align: center;">
-					               <th scope="col" class="custom-table-th"></th>
+					               <th scope="col" class="custom-table-th" width="20">
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" id="checkApi1" >
+											<label class="form-check-label" for="checkApi1"></label>
+										</div>
+					               </th>
 					               <th scope="col" class="custom-table-th">
 										기타사항
 					               	</th>
-					               <th scope="col" class="custom-table-th">금융사</th>
-					               <th scope="col" class="custom-table-th">금융상품</th>
+					               <th scope="col" class="custom-table-th">
+										<nav class="navbar custom-navber">
+										      <div class="navbar-user" style="width: 100%">
+									            <div class="dropdown">
+									               <a class="align-items-center" style="color: white;" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+									                  <span>금융사</span> <i class="bi bi-filter-square text-xs"></i>
+									               </a>
+									               <div class="dropdown-menu dropdown-menu-center">
+									                  <div class="dropdown-header" style="width: 48%; display: inline-block;">
+									                  	<span class="d-block text-sm text-muted mb-1">금융사</span>
+									                  	<div class="dropdown-divider"></div>
+									                  	<div class="form-check">
+															<input class="form-check-input" type="checkbox" id="checkApi1">
+															<label class="form-check-label" for="checkApi1">미래에셋 캐피탈</label>
+														</div>
+														<div class="form-check">
+															<input class="form-check-input" type="checkbox" id="checkApi1">
+															<label class="form-check-label" for="checkApi1">산은 캐피탈</label>
+														</div>
+														<div class="form-check">
+															<input class="form-check-input" type="checkbox" id="checkApi1">
+															<label class="form-check-label" for="checkApi1">신한카드</label>
+														</div>
+														<div class="form-check">
+															<input class="form-check-input" type="checkbox" id="checkApi1">
+															<label class="form-check-label" for="checkApi1">미래에셋</label>
+														</div>
+														<div class="form-check">
+															<input class="form-check-input" type="checkbox" id="checkApi1">
+															<label class="form-check-label" for="checkApi1">미래에셋</label>
+														</div>
+									                  </div>
+									                  <div class="dropdown-header" style="width: 48%; display: inline-block;">
+									                  	<span class="d-block text-sm text-muted mb-1">금융지점</span>
+									                  	<div class="dropdown-divider"></div>
+									                  	<div class="form-check">
+															<input class="form-check-input" type="checkbox" id="checkApi1">
+															<label class="form-check-label" for="checkApi1">미래에셋</label>
+														</div>
+														<div class="form-check">
+															<input class="form-check-input" type="checkbox" id="checkApi1">
+															<label class="form-check-label" for="checkApi1">미래에셋</label>
+														</div>
+														<div class="form-check">
+															<input class="form-check-input" type="checkbox" id="checkApi1">
+															<label class="form-check-label" for="checkApi1">미래에셋</label>
+														</div>
+														<div class="form-check">
+															<input class="form-check-input" type="checkbox" id="checkApi1">
+															<label class="form-check-label" for="checkApi1">미래에셋</label>
+														</div>
+									                  </div>
+									               </div>
+									            </div>
+										   </div>
+										</nav>
+					               </th>
+					               <th scope="col" class="custom-table-th">
+										<nav class="navbar custom-navber">
+										      <div class="navbar-user" style="width: 100%">
+									            <div class="dropdown">
+									               <a class="align-items-center" style="color: white;" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+									                  <span>금융상품</span> <i class="bi bi-filter-square text-xs"></i>
+									               </a>
+									               <div class="dropdown-menu dropdown-menu-center">
+									                  <div class="dropdown-header" style="width: 48%; display: inline-block;">
+									                  	<span class="d-block text-sm text-muted mb-1">금융상품</span>
+									                  	<div class="dropdown-divider"></div>
+									                  	<div class="form-check">
+															<input class="form-check-input" type="checkbox" id="checkApi1">
+															<label class="form-check-label" for="checkApi1">렌탈</label>
+														</div>
+														<div class="form-check">
+															<input class="form-check-input" type="checkbox" id="checkApi1">
+															<label class="form-check-label" for="checkApi1">리스</label>
+														</div>
+									                  </div>
+									               </div>
+									            </div>
+										   </div>
+										</nav>
+									</th>
+					               <th scope="col" class="custom-table-th">딜러사</th>
 					               <th scope="col" class="custom-table-th">인도일</th>
 					               <th scope="col" class="custom-table-th">고객명</th>
 					               <th scope="col" class="custom-table-th">차량정보</th>
@@ -152,7 +309,8 @@
 					               </td>
 					               <td>어쩌구 저쩌구</td>
 					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스<br>한성자동차(벤츠)</td>
+					               <td>리스</td>
+					               <td>한성자동차(벤츠)</td>
 					               <td>2022.08.03</td>
 					               <td>주식회사 보라스 엔터테이먼트</td>
 					               <td>벤츠 CLS-1111111<br>000가0000</td>
@@ -172,7 +330,8 @@
 					               </td>
 					               <td>어쩌구 저쩌구</td>
 					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스<br>한성자동차(벤츠)</td>
+					               <td>리스</td>
+					               <td>한성자동차(벤츠)</td>
 					               <td>2022.08.03</td>
 					               <td>주식회사 보라스 엔터테이먼트</td>
 					               <td>벤츠 CLS-1111111<br>000가0000</td>
@@ -192,7 +351,8 @@
 					               </td>
 					               <td>어쩌구 저쩌구</td>
 					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스<br>한성자동차(벤츠)</td>
+					               <td>리스</td>
+					               <td>한성자동차(벤츠)</td>
 					               <td>2022.08.03</td>
 					               <td>주식회사 보라스 엔터테이먼트</td>
 					               <td>벤츠 CLS-1111111<br>000가0000</td>
@@ -212,7 +372,8 @@
 					               </td>
 					               <td>어쩌구 저쩌구</td>
 					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스<br>한성자동차(벤츠)</td>
+					               <td>리스</td>
+					               <td>한성자동차(벤츠)</td>
 					               <td>2022.08.03</td>
 					               <td>주식회사 보라스 엔터테이먼트</td>
 					               <td>벤츠 CLS-1111111<br>000가0000</td>
@@ -232,7 +393,8 @@
 					               </td>
 					               <td>어쩌구 저쩌구</td>
 					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스<br>한성자동차(벤츠)</td>
+					               <td>리스</td>
+					               <td>한성자동차(벤츠)</td>
 					               <td>2022.08.03</td>
 					               <td>주식회사 보라스 엔터테이먼트</td>
 					               <td>벤츠 CLS-1111111<br>000가0000</td>
@@ -252,7 +414,8 @@
 					               </td>
 					               <td>어쩌구 저쩌구</td>
 					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스<br>한성자동차(벤츠)</td>
+					               <td>리스</td>
+					               <td>한성자동차(벤츠)</td>
 					               <td>2022.08.03</td>
 					               <td>주식회사 보라스 엔터테이먼트</td>
 					               <td>벤츠 CLS-1111111<br>000가0000</td>
@@ -272,7 +435,8 @@
 					               </td>
 					               <td>어쩌구 저쩌구</td>
 					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스<br>한성자동차(벤츠)</td>
+					               <td>리스</td>
+					               <td>한성자동차(벤츠)</td>
 					               <td>2022.08.03</td>
 					               <td>주식회사 보라스 엔터테이먼트</td>
 					               <td>벤츠 CLS-1111111<br>000가0000</td>
@@ -292,7 +456,71 @@
 					               </td>
 					               <td>어쩌구 저쩌구</td>
 					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스<br>한성자동차(벤츠)</td>
+					               <td>리스</td>
+					               <td>한성자동차(벤츠)</td>
+					               <td>2022.08.03</td>
+					               <td>주식회사 보라스 엔터테이먼트</td>
+					               <td>벤츠 CLS-1111111<br>000가0000</td>
+					               <td class="text-end">
+					               	<span class="text-warning ms-auto">차량가 </span>1,000,000,000
+					               	<br>
+					               	<span class="text-success ms-auto">취득원가 </span>1,000,000,000
+					               </td>
+					               <td><a class="btn btn-sm btn-square btn-neutral me-1"><i class="bi bi-pencil"></i></a></td>
+					            </tr>
+					            <tr class="text-center">
+					               <td>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" id="checkApi1" checked="checked">
+											<label class="form-check-label" for="checkApi1"></label>
+										</div>
+					               </td>
+					               <td>어쩌구 저쩌구</td>
+					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
+					               <td>리스</td>
+					               <td>한성자동차(벤츠)</td>
+					               <td>2022.08.03</td>
+					               <td>주식회사 보라스 엔터테이먼트</td>
+					               <td>벤츠 CLS-1111111<br>000가0000</td>
+					               <td class="text-end">
+					               	<span class="text-warning ms-auto">차량가 </span>1,000,000,000
+					               	<br>
+					               	<span class="text-success ms-auto">취득원가 </span>1,000,000,000
+					               </td>
+					               <td><a class="btn btn-sm btn-square btn-neutral me-1"><i class="bi bi-pencil"></i></a></td>
+					            </tr>
+					            <tr class="text-center">
+					               <td>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" id="checkApi1" checked="checked">
+											<label class="form-check-label" for="checkApi1"></label>
+										</div>
+					               </td>
+					               <td>어쩌구 저쩌구</td>
+					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
+					               <td>리스</td>
+					               <td>한성자동차(벤츠)</td>
+					               <td>2022.08.03</td>
+					               <td>주식회사 보라스 엔터테이먼트</td>
+					               <td>벤츠 CLS-1111111<br>000가0000</td>
+					               <td class="text-end">
+					               	<span class="text-warning ms-auto">차량가 </span>1,000,000,000
+					               	<br>
+					               	<span class="text-success ms-auto">취득원가 </span>1,000,000,000
+					               </td>
+					               <td><a class="btn btn-sm btn-square btn-neutral me-1"><i class="bi bi-pencil"></i></a></td>
+					            </tr>
+					            <tr class="text-center">
+					               <td>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" id="checkApi1" checked="checked">
+											<label class="form-check-label" for="checkApi1"></label>
+										</div>
+					               </td>
+					               <td>어쩌구 저쩌구</td>
+					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
+					               <td>리스</td>
+					               <td>한성자동차(벤츠)</td>
 					               <td>2022.08.03</td>
 					               <td>주식회사 보라스 엔터테이먼트</td>
 					               <td>벤츠 CLS-1111111<br>000가0000</td>

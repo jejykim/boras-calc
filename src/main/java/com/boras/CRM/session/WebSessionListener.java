@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Component;
 
@@ -20,11 +21,11 @@ public class WebSessionListener implements HttpSessionListener {
 	public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
 	    HttpSession session = httpSessionEvent.getSession();
 
-	    String userIp = (String) session.getAttribute("userIp");
-
+	    String userId = (String) session.getAttribute("userId");
+	    
 	    //로그아웃 유저 삭제
 	    synchronized(userList){
-	    	userList.remove(userIp);
+	    	userList.remove(userId);
 	    }
 
 	}

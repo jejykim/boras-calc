@@ -6307,7 +6307,7 @@ to {
     position: fixed;
     top: 0;
     width: 100vw;
-    z-index: 1050;
+    z-index: 1040;
 }
 .modal-backdrop.fade {
     opacity: 0;

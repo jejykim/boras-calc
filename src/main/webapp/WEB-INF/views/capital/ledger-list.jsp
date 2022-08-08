@@ -54,14 +54,6 @@
             <main class="py-6 bg-surface-secondary">
 			   <div class="container-fluid">
 			      <div class="vstack gap-6">
-			         <!-- <div class="d-flex flex-column flex-md-row gap-3 justify-content-between">
-			            <div class="d-flex gap-3">
-			               <div class="input-group input-group-sm input-group-inline">
-								<span class="input-group-text pe-2"><i class="bi bi-search"></i> </span>
-								<input type="text" class="form-control" placeholder="Search" aria-label="Search">
-			               </div>
-			            </div>
-			         </div> -->
 			         
 			         <div class="card custom-card-bottom">
 			         	<div class="px-4 py-4 d-flex flex-column flex-sm-row gap-3">
@@ -123,7 +115,9 @@
 					         </div>
 					      </div>
 				         <div class="ms-auto hstack gap-2">
-				         	<span class="badge badge-sm bg-soft-warning text-warning rounded-pill ms-auto">필터 초기화</span>
+				         	<div>
+				         		<span class="badge badge-sm bg-soft-warning text-warning rounded-pill ms-auto">필터 초기화</span>
+				         	</div>
 				         	<div class="input-group input-group-sm input-group-inline">
 				         		<input type="email" class="form-control" placeholder="Search" aria-label="Search">
 			         		</div>
@@ -141,12 +135,16 @@
 			         		</div>
 			         	</div>
 					   </div>
+					   
 					   <div class="table-responsive">
 					      <table class="table table-hover table-nowrap">
 					         <thead class="custom-table-thead">
 					            <tr style="text-align: center;">
-					               <th scope="col" class="custom-table-th">
-					               	<span class="badge badge-sm bg-soft-warning text-warning rounded-pill ms-auto">필터 초기화</span>
+					               <th scope="col" class="custom-table-th" width="20">
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" id="checkApi1" >
+											<label class="form-check-label" for="checkApi1"></label>
+										</div>
 					               </th>
 					               <th scope="col" class="custom-table-th">
 										기타사항

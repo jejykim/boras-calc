@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.boras.CRM.util.PermissionHelper;
+
 @Component
 public class LogInterceptor implements HandlerInterceptor {
 
@@ -20,7 +22,14 @@ public class LogInterceptor implements HandlerInterceptor {
         
         response.setContentType("text/html; charset=UTF-8");
         
-    	logger.info("[ URL : " + uri + " , IP : " + request.getRemoteHost() + " ]");
+    	if(!PermissionHelper.checkPermission(response, request, uri)) {
+        	//response.sendRedirect("/");	//페이지 이동 
+        	logger.warn("[ URL : " + uri + " , IP : " + request.getRemoteHost() + " ] There is No Permission");
+        }else {
+        	if(!uri.contains("checkId") && !uri.contains("common/modal") && !uri.contains("toast")) {
+        		logger.info("[ URL : " + uri + " , IP : " + request.getRemoteHost() + " ]");
+        	}
+        }
         
         return true;
     }

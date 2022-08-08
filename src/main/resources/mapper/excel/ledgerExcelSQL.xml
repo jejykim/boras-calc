@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boras.CRM.mapper.LedgerExcelMapper">
+  	
+  	<!-- 원장 엑셀 설정 등록 -->
+  	<insert id="insertLedgerExcelSetting" parameterType="ledgerExcelVO">
+		INSERT INTO ledger_excel(
+			ledger_excel_use_yn
+			<if test="ledgerExcelFileName != null and ledgerExcelFileName != ''">
+			, ledger_excel_file_name
+			</if>
+			<if test="ledgerExcelFilePath != null and ledgerExcelFilePath != ''">
+			, ledger_excel_file_path
+			</if>
+			<if test="ledgerExcelSheet != null and ledgerExcelSheet != ''">
+			, ledger_excel_sheet
+			</if>
+			, ledger_type_cd
+			, ledger_financial_company_cd
+			, ledger_financial_branch_cd
+			, ledger_financial_product_cd
+			, ledger_dealer_brand_cd
+			, ledger_dealer_company_cd
+			<if test="ledgerDeliveryDate != null and ledgerDeliveryDate != ''">
+			, ledger_delivery_date
+			</if>
+			<if test="ledgerCustomerName != null and ledgerCustomerName != ''">
+			, ledger_customer_name
+			</if>
+			<if test="ledgerCarName != null and ledgerCarName != ''">
+			, ledger_car_name
+			</if>
+			<if test="ledgerCarNumber != null and ledgerCarNumber != ''">
+			, ledger_car_number
+			</if>
+			<if test="ledgerCarPrice != null and ledgerCarPrice != ''">
+			, ledger_car_price
+			</if>
+			<if test="ledgerAcquisitionCost != null and ledgerAcquisitionCost != ''">
+			, ledger_acquisition_cost
+			</if>
+			<if test="ledgerTotalFeePercent != null and ledgerTotalFeePercent != ''">
+			, ledger_total_fee_percent
+			</if>
+			<if test="ledgerTotalFeeSum != null and ledgerTotalFeeSum != ''">
+			, ledger_total_fee_sum
+			</if>
+			<if test="ledgerTotalFeeSupplyPrice != null and ledgerTotalFeeSupplyPrice != ''">
+			, ledger_total_fee_supply_price
+			</if>
+			<if test="ledgerTotalFeeSurtax != null and ledgerTotalFeeSurtax != ''">
+			, ledger_total_fee_surtax
+			</if>
+			<if test="ledgerSlidingPercent != null and ledgerSlidingPercent != ''">
+			, ledger_sliding_percent
+			</if>
+			<if test="ledgerSlidingSum != null and ledgerSlidingSum != ''">
+			, ledger_sliding_sum
+			</if>
+			<if test="ledgerSlidingSupplyPrice != null and ledgerSlidingSupplyPrice != ''">
+			, ledger_sliding_supply_price
+			</if>
+			<if test="ledgerSlidingSurtax != null and ledgerSlidingSurtax != ''">
+			, ledger_sliding_surtax
+			</if>
+			<if test="ledgerAddPromotion != null and ledgerAddPromotion != ''">
+			, ledger_add_promotion
+			</if>
+			<if test="ledgerPromotionMemo != null and ledgerPromotionMemo != ''">
+			, ledger_promotion_memo
+			</if>
+			, ledger_excel_create_date
+			, ledger_excel_create_id
+		) VALUES (
+			#{ledgerExcelUseYn}
+			<if test="ledgerExcelFileName != null and ledgerExcelFileName != ''">
+			, #{ledgerExcelFileName}
+			</if>
+			<if test="ledgerExcelFilePath != null and ledgerExcelFilePath != ''">
+			, #{ledgerExcelFilePath}
+			</if>
+			<if test="ledgerExcelSheet != null and ledgerExcelSheet != ''">
+			, #{ledgerExcelSheet}
+			</if>
+			, #{ledgerTypeCd}
+			, #{ledgerFinancialCompanyCd}
+			, #{ledgerFinancialBranchCd}
+			, #{ledgerFinancialProductCd}
+			, #{ledgerDealerBrandCd}
+			, #{ledgerDealerCompanyCd}
+			<if test="ledgerDeliveryDate != null and ledgerDeliveryDate != ''">
+			, #{ledgerDeliveryDate}
+			</if>
+			<if test="ledgerCustomerName != null and ledgerCustomerName != ''">
+			, #{ledgerCustomerName}
+			</if>
+			<if test="ledgerCarName != null and ledgerCarName != ''">
+			, #{ledgerCarName}
+			</if>
+			<if test="ledgerCarNumber != null and ledgerCarNumber != ''">
+			, #{ledgerCarNumber}
+			</if>
+			<if test="ledgerCarPrice != null and ledgerCarPrice != ''">
+			, #{ledgerCarPrice}
+			</if>
+			<if test="ledgerAcquisitionCost != null and ledgerAcquisitionCost != ''">
+			, #{ledgerAcquisitionCost}
+			</if>
+			<if test="ledgerTotalFeePercent != null and ledgerTotalFeePercent != ''">
+			, #{ledgerTotalFeePercent}
+			</if>
+			<if test="ledgerTotalFeeSum != null and ledgerTotalFeeSum != ''">
+			, #{ledgerTotalFeeSum}
+			</if>
+			<if test="ledgerTotalFeeSupplyPrice != null and ledgerTotalFeeSupplyPrice != ''">
+			, #{ledgerTotalFeeSupplyPrice}
+			</if>
+			<if test="ledgerTotalFeeSurtax != null and ledgerTotalFeeSurtax != ''">
+			, #{ledgerTotalFeeSurtax}
+			</if>
+			<if test="ledgerSlidingPercent != null and ledgerSlidingPercent != ''">
+			, #{ledgerSlidingPercent}
+			</if>
+			<if test="ledgerSlidingSum != null and ledgerSlidingSum != ''">
+			, #{ledgerSlidingSum}
+			</if>
+			<if test="ledgerSlidingSupplyPrice != null and ledgerSlidingSupplyPrice != ''">
+			, #{ledgerSlidingSupplyPrice}
+			</if>
+			<if test="ledgerSlidingSurtax != null and ledgerSlidingSurtax != ''">
+			, #{ledgerSlidingSurtax}
+			</if>
+			<if test="ledgerAddPromotion != null and ledgerAddPromotion != ''">
+			, #{ledgerAddPromotion}
+			</if>
+			<if test="ledgerPromotionMemo != null and ledgerPromotionMemo != ''">
+			, #{ledgerPromotionMemo}
+			</if>
+			, now()
+			, #{ledgerExcelCreateId}
+		)
+  	</insert>
+  	
+  	<!-- 원장 엑셀 설정 상세 조회 -->
+	<select id="selectLedgerExcelDetail" resultType="ledgerExcelVO" parameterType="ledgerExcelVO">
+		SELECT le.*
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_product_cd) as ledgerFinancialProductCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
+		FROM ledger_excel le
+		WHERE ledger_excel_seq = #{ledgerExcelSeq}
+  	</select>
+  	
+  	<!-- 캐피탈 원장 엑셀 등록 목록 -->
+	<select id="selectLedgerExcelList" resultType="ledgerExcelVO">
+		SELECT le.*
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_product_cd) as ledgerFinancialProductCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
+		FROM ledger_excel le
+  	</select>
+  	
+  	<!-- 원장 엑셀 설정 수정 -->
+	<update id="updateLedgerExcelSetting" parameterType="ledgerExcelVO">
+		UPDATE ledger_excel
+		SET ledger_excel_use_yn = #{ledgerExcelUseYn}
+			<if test="ledgerExcelFileName != null and ledgerExcelFileName != ''">
+			, ledger_excel_file_name = #{ledgerExcelFileName}
+			</if>
+			<if test="ledgerExcelFilePath != null and ledgerExcelFilePath != ''">
+			, ledger_excel_file_path = #{ledgerExcelFilePath}
+			</if>
+			<if test="ledgerExcelSheet != null and ledgerExcelSheet != ''">
+			, ledger_excel_sheet = #{ledgerExcelSheet}
+			</if>
+			<if test="ledgerTypeCd != null and ledgerTypeCd != ''">
+			, ledger_type_cd = #{ledgerTypeCd}
+			</if>
+			<if test="ledgerFinancialCompanyCd != null and ledgerFinancialCompanyCd != ''">
+			, ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
+			</if>
+			<if test="ledgerFinancialBranchCd != null and ledgerFinancialBranchCd != ''">
+			, ledger_financial_branch_cd = #{ledgerFinancialBranchCd}
+			</if>
+			<if test="ledgerFinancialProductCd != null and ledgerFinancialProductCd != ''">
+			, ledger_financial_product_cd = #{ledgerFinancialProductCd}
+			</if>
+			<if test="ledgerDealerBrandCd != null and ledgerDealerBrandCd != ''">
+			, ledger_dealer_brand_cd = #{ledgerDealerBrandCd}
+			</if>
+			<if test="ledgerDealerCompanyCd != null and ledgerDealerCompanyCd != ''">
+			, ledger_dealer_company_cd = #{ledgerDealerCompanyCd}
+			</if>
+			<if test="ledgerDeliveryDate != null and ledgerDeliveryDate != ''">
+			, ledger_delivery_date = #{ledgerDeliveryDate}
+			</if>
+			<if test="ledgerCustomerName != null and ledgerCustomerName != ''">
+			, ledger_customer_name = #{ledgerCustomerName}
+			</if>
+			<if test="ledgerCarName != null and ledgerCarName != ''">
+			, ledger_car_name = #{ledgerCarName}
+			</if>
+			<if test="ledgerCarNumber != null and ledgerCarNumber != ''">
+			, ledger_car_number = #{ledgerCarNumber}
+			</if>
+			<if test="ledgerCarPrice != null and ledgerCarPrice != ''">
+			, ledger_car_price = #{ledgerCarPrice}
+			</if>
+			<if test="ledgerAcquisitionCost != null and ledgerAcquisitionCost != ''">
+			, ledger_acquisition_cost = #{ledgerAcquisitionCost}
+			</if>
+			<if test="ledgerTotalFeePercent != null and ledgerTotalFeePercent != ''">
+			, ledger_total_fee_percent = #{ledgerTotalFeePercent}
+			</if>
+			<if test="ledgerTotalFeeSum != null and ledgerTotalFeeSum != ''">
+			, ledger_total_fee_sum = #{ledgerTotalFeeSum}
+			</if>
+			<if test="ledgerTotalFeeSupplyPrice != null and ledgerTotalFeeSupplyPrice != ''">
+			, ledger_total_fee_supply_price = #{ledgerTotalFeeSupplyPrice}
+			</if>
+			<if test="ledgerTotalFeeSurtax != null and ledgerTotalFeeSurtax != ''">
+			, ledger_total_fee_surtax = #{ledgerTotalFeeSurtax}
+			</if>
+			<if test="ledgerSlidingPercent != null and ledgerSlidingPercent != ''">
+			, ledger_sliding_percent = #{ledgerSlidingPercent}
+			</if>
+			<if test="ledgerSlidingSum != null and ledgerSlidingSum != ''">
+			, ledger_sliding_sum = #{ledgerSlidingSum}
+			</if>
+			<if test="ledgerSlidingSupplyPrice != null and ledgerSlidingSupplyPrice != ''">
+			, ledger_sliding_supply_price = #{ledgerSlidingSupplyPrice}
+			</if>
+			<if test="ledgerSlidingSurtax != null and ledgerSlidingSurtax != ''">
+			, ledger_sliding_surtax = #{ledgerSlidingSurtax}
+			</if>
+			<if test="ledgerAddPromotion != null and ledgerAddPromotion != ''">
+			, ledger_add_promotion = #{ledgerAddPromotion}
+			</if>
+			<if test="ledgerPromotionMemo != null and ledgerPromotionMemo != ''">
+			, ledger_promotion_memo = #{ledgerPromotionMemo}
+			</if>
+			, ledger_excel_update_date = now()
+			, ledger_excel_update_id = #{ledgerExcelUpdateId}
+		WHERE ledger_excel_seq = #{ledgerExcelSeq}
+  	</update>
+  	
+</mapper>

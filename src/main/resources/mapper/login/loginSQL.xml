@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boras.CRM.mapper.LoginMapper">
+  	
+  	<!-- 로그인 -->
+	<select id="login" resultType="int" parameterType="userVO">
+		SELECT COUNT(*)
+		FROM users
+		WHERE user_id = #{userId}
+		AND user_pw = #{userPw}
+  	</select>
+  	
+  	<!-- 최근 로그인 기록 -->
+	<update id="loginDateUpdate" parameterType="userVO">
+		UPDATE users
+		SET user_last_access_date = now(),
+			user_last_access_ip = #{userLastAccessIp}
+		WHERE user_id = #{userId}
+  	</update>
+  	
+  	<!-- 사용자 고유키(Salt) 조회 -->
+  	<select id="selectUserSalt" resultType="String" parameterType="userVO">
+		SELECT user_salt
+		FROM users
+		WHERE user_id = #{userId}
+  	</select>
+  	
+</mapper>

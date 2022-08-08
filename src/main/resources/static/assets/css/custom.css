@@ -71,3 +71,31 @@
     padding: 0 !important;
     text-align: center !important;
 }
+
+.btn-excel {
+    background-color: #04a16c;
+    border-color: #0c8;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .075);
+    color: #fff;
+}
+.btn-check:focus+.btn-excel, .btn-excel:focus, .btn-excel:hover {
+    background-color: #006845;
+    border-color: #00a36d;
+    color: #fff;
+}
+.btn-check:focus+.btn-excel, .btn-excel:focus {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .075), 0 0 0 3px rgba(38, 212, 154, .5);
+}
+.btn-check:active+.btn-excel, .btn-check:checked+.btn-excel, .btn-excel.active, .btn-excel:active, .show>.btn-excel.dropdown-toggle {
+    background-color: #00a36d;
+    border-color: #096;
+    color: #fff;
+}
+.btn-check:active+.btn-excel:focus, .btn-check:checked+.btn-excel:focus, .btn-excel.active:focus, .btn-excel:active:focus, .show>.btn-excel.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0 transparent, 0 0 0 3px rgba(38, 212, 154, .5);
+}
+.btn-excel.disabled, .btn-excel:disabled {
+    background-color: #0c8;
+    border-color: #0c8;
+    color: #fff;
+}
