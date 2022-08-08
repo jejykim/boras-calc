@@ -1,4 +1,4 @@
-package com.boras.CRM.vo;
+package com.boras.CRM.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,6 +28,10 @@ public class ExcelValidationHelper {
 		
 		int oldExcelCellCount = 0;
 		int newExcelCellCount = 0;
+		
+		if(excelHeaderRow == null) {
+			excelHeaderRow = "0";
+		}
 		
 		List<String> oldExcelHeaderValueList = new ArrayList<>();
 		

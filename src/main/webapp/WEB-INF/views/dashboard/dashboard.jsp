@@ -68,11 +68,13 @@
 			            </div>
 			         </div>
 			         <div class="row g-6">
+			         
+			         <c:forEach var="list" items="${list }">
 			            <div class="col-xl-4 col-sm-6">
 			               <div class="card">
 			                  <div class="card-header border-0">
 			                     <div class="d-flex justify-content-between align-items-center">
-			                        <div><span class="h6 custom-card-font-size font-bold"><span class="text-warning me-2">●</span> 산은 캐피탈</span></div>
+			                        <div><span class="h6 custom-card-font-size font-bold"><span class="text-warning me-2">●</span> 산은 캐피탈 - ${list.name }</span></div>
 			                        <div class="text-end mx-n2 d-flex align-items-center">
 			                        	<div>
 			                        		<span class="h6 text-sm font-bold"><span class="badge text-uppercase bg-soft-primary text-primary rounded-pill">총 합계</span> ￦ 71,689,090</span>
@@ -123,174 +125,7 @@
 			                  </div>
 			               </div>
 			            </div>
-			            
-			            <div class="col-xl-4 col-sm-6">
-			               <div class="card">
-			                  <div class="card-header border-0">
-			                     <div class="d-flex justify-content-between align-items-center">
-			                        <div><span class="h6 custom-card-font-size font-bold"><span class="text-warning me-2">●</span> 산은 캐피탈</span></div>
-			                        <div class="text-end mx-n2 d-flex align-items-center">
-			                        	<div>
-			                        		<span class="h6 text-sm font-bold"><span class="badge text-uppercase bg-soft-primary text-primary rounded-pill">총 합계</span> ￦ 71,689,090</span>
-			                        	</div>
-			                        </div>
-			                     </div>
-			                  </div>
-			                  <div class="card-body row g-5">
-								   <div class="col-md-6">
-								   	 <div class="card custom-bg-gray border-0 shadow-none ml-md-4">
-								         <div class="card-body custom-card-block">
-								            <div class="text-black font-bold text-sm">계산서 발급</div>
-								            <div class="text-sm text-black">￦ 71,689,090</div>
-								         </div>
-								      </div>
-								   </div>
-								   <div class="col-md-6">
-								   	  <div class="card custom-bg-gray border-0 shadow-none ml-md-4">
-								         <div class="card-body custom-card-block">
-								            <div class="text-black font-bold text-sm">개인 지급</div>
-								            <div class="text-sm text-black">￦ 71,689,090</div>
-								         </div>
-								      </div>
-								   </div>
-								   <div class="col-md-6">
-										<div class="card-body custom-card-block">
-								            <span class="text-black text-sm">추가 금액1</span>
-								            <span class="text-sm text-black">￦ 71,689,090</span>
-								         </div>
-									</div>
-									<div class="col-md-6">
-										<div class="card-body custom-card-block">
-								            <span class="text-black text-sm">추가 금액2</span>
-								            <span class="text-sm text-black">￦ 71,689,090</span>
-								         </div>
-									</div>
-								</div>
-								<hr class="custom-mg-none">
-			                  <div class="card-body text-center">
-			                     <div class="d-flex justify-content-between px-4">
-			                     	<a href="#" class="px-2 text-muted text-primary-hover">
-			                     		<i class="bi bi-journal-text"></i> 정산 목록
-			                     	</a>
-			                     	<a href="#" class="px-2 text-muted text-primary-hover">
-			                     		<i class="bi bi-box-arrow-in-right"></i> 상세보기
-			                     	</a>
-			                     </div>
-			                  </div>
-			               </div>
-			            </div>
-			            
-			            <div class="col-xl-4 col-sm-6">
-			               <div class="card">
-			                  <div class="card-header border-0">
-			                     <div class="d-flex justify-content-between align-items-center">
-			                        <div><span class="h6 custom-card-font-size font-bold"><span class="text-warning me-2">●</span> 산은 캐피탈</span></div>
-			                        <div class="text-end mx-n2 d-flex align-items-center">
-			                        	<div>
-			                        		<span class="h6 text-sm font-bold"><span class="badge text-uppercase bg-soft-primary text-primary rounded-pill">총 합계</span> ￦ 71,689,090</span>
-			                        	</div>
-			                        </div>
-			                     </div>
-			                  </div>
-			                  <div class="card-body row g-5">
-								   <div class="col-md-6">
-								   	 <div class="card custom-bg-gray border-0 shadow-none ml-md-4">
-								         <div class="card-body custom-card-block">
-								            <div class="text-black font-bold text-sm">계산서 발급</div>
-								            <div class="text-sm text-black">￦ 71,689,090</div>
-								         </div>
-								      </div>
-								   </div>
-								   <div class="col-md-6">
-								   	  <div class="card custom-bg-gray border-0 shadow-none ml-md-4">
-								         <div class="card-body custom-card-block">
-								            <div class="text-black font-bold text-sm">개인 지급</div>
-								            <div class="text-sm text-black">￦ 71,689,090</div>
-								         </div>
-								      </div>
-								   </div>
-								   <div class="col-md-6">
-										<div class="card-body custom-card-block">
-								            <span class="text-black text-sm">추가 금액1</span>
-								            <span class="text-sm text-black">￦ 71,689,090</span>
-								         </div>
-									</div>
-									<div class="col-md-6">
-										<div class="card-body custom-card-block">
-								            <span class="text-black text-sm">추가 금액2</span>
-								            <span class="text-sm text-black">￦ 71,689,090</span>
-								         </div>
-									</div>
-								</div>
-								<hr class="custom-mg-none">
-			                  <div class="card-body text-center">
-			                     <div class="d-flex justify-content-between px-4">
-			                     	<a href="#" class="px-2 text-muted text-primary-hover">
-			                     		<i class="bi bi-journal-text"></i> 정산 목록
-			                     	</a>
-			                     	<a href="#" class="px-2 text-muted text-primary-hover">
-			                     		<i class="bi bi-box-arrow-in-right"></i> 상세보기
-			                     	</a>
-			                     </div>
-			                  </div>
-			               </div>
-			            </div>
-			            
-			            <div class="col-xl-4 col-sm-6">
-			               <div class="card">
-			                  <div class="card-header border-0">
-			                     <div class="d-flex justify-content-between align-items-center">
-			                        <div><span class="h6 custom-card-font-size font-bold"><span class="text-warning me-2">●</span> 산은 캐피탈</span></div>
-			                        <div class="text-end mx-n2 d-flex align-items-center">
-			                        	<div>
-			                        		<span class="h6 text-sm font-bold"><span class="badge text-uppercase bg-soft-primary text-primary rounded-pill">총 합계</span> ￦ 71,689,090</span>
-			                        	</div>
-			                        </div>
-			                     </div>
-			                  </div>
-			                  <div class="card-body row g-5">
-								   <div class="col-md-6">
-								   	 <div class="card custom-bg-gray border-0 shadow-none ml-md-4">
-								         <div class="card-body custom-card-block">
-								            <div class="text-black font-bold text-sm">계산서 발급</div>
-								            <div class="text-sm text-black">￦ 71,689,090</div>
-								         </div>
-								      </div>
-								   </div>
-								   <div class="col-md-6">
-								   	  <div class="card custom-bg-gray border-0 shadow-none ml-md-4">
-								         <div class="card-body custom-card-block">
-								            <div class="text-black font-bold text-sm">개인 지급</div>
-								            <div class="text-sm text-black">￦ 71,689,090</div>
-								         </div>
-								      </div>
-								   </div>
-								   <div class="col-md-6">
-										<div class="card-body custom-card-block">
-								            <span class="text-black text-sm">추가 금액1</span>
-								            <span class="text-sm text-black">￦ 71,689,090</span>
-								         </div>
-									</div>
-									<div class="col-md-6">
-										<div class="card-body custom-card-block">
-								            <span class="text-black text-sm">추가 금액2</span>
-								            <span class="text-sm text-black">￦ 71,689,090</span>
-								         </div>
-									</div>
-								</div>
-								<hr class="custom-mg-none">
-			                  <div class="card-body text-center">
-			                     <div class="d-flex justify-content-between px-4">
-			                     	<a href="#" class="px-2 text-muted text-primary-hover">
-			                     		<i class="bi bi-journal-text"></i> 정산 목록
-			                     	</a>
-			                     	<a href="#" class="px-2 text-muted text-primary-hover">
-			                     		<i class="bi bi-box-arrow-in-right"></i> 상세보기
-			                     	</a>
-			                     </div>
-			                  </div>
-			               </div>
-			            </div>
+		            </c:forEach>
 			            
 			         </div>
 			      </div>
@@ -301,4 +136,5 @@
       </div>
       
    </body>
+   
 </html>

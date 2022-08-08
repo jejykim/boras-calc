@@ -49,7 +49,7 @@ public class SettingApiController {
 	/**
 	 * 원장 엑셀 설정 등록
 	 */
-	@PostMapping(value = "/ledger/excel/insert")
+	@PostMapping(value = "/ledger/setting/excel/insert")
 	public Map<String, Object> ledgerExcelInsert(HttpServletRequest req, HttpServletResponse resp, LedgerExcelVO ledgerExcelVO) {
 	    Map<String, Object> rvt = new HashMap<>();
 	    
@@ -101,7 +101,7 @@ public class SettingApiController {
 	/**
 	 * 원장 엑셀 설정 목록
 	 */
-	@PostMapping(value = "/ledger/excel/list")
+	@PostMapping(value = "/ledger/setting/excel/list")
 	public Map<String, Object> ledgerExcelList(HttpServletRequest req, HttpServletResponse resp, LedgerExcelVO ledgerExcelVO) {
 	    Map<String, Object> rvt = new HashMap<>();
 	    
@@ -127,7 +127,7 @@ public class SettingApiController {
 	/**
 	 * 원장 엑셀 설정 상세
 	 */
-	@PostMapping(value = "/ledger/excel/detail")
+	@PostMapping(value = "/ledger/setting/excel/detail")
 	public Map<String, Object> ledgerExcelDetail(HttpServletRequest req, HttpServletResponse resp, LedgerExcelVO ledgerExcelVO) {
 	    Map<String, Object> rvt = new HashMap<>();
 	    

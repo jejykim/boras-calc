@@ -1,9 +1,14 @@
 package com.boras.CRM.vo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class LedgerVO extends PagingVO {
 	
 	// 원장 seq
 	private int ledgerSeq;
+	
+	// 원장 엑셀 file
+	private MultipartFile ledgerExcelFile;
 	
 	// 기타사항
 	private String ledgerOther;
@@ -385,6 +390,14 @@ public class LedgerVO extends PagingVO {
 
 	public void setLedgerDealerCompanyCdName(int ledgerDealerCompanyCdName) {
 		this.ledgerDealerCompanyCdName = ledgerDealerCompanyCdName;
+	}
+
+	public MultipartFile getLedgerExcelFile() {
+		return ledgerExcelFile;
+	}
+
+	public void setLedgerExcelFile(MultipartFile ledgerExcelFile) {
+		this.ledgerExcelFile = ledgerExcelFile;
 	}
 	
 }

@@ -24,6 +24,13 @@ public interface LedgerExcelMapper {
 	public LedgerExcelVO selectLedgerExcelDetail(LedgerExcelVO ledgerExcelVO);
 	
 	/**
+	 * 원장 엑셀 설정 상세 조회 (유효성 검사용)
+	 * @param ledgerExcelVO
+	 * @return
+	 */
+	public LedgerExcelVO selectLedgerExcelDetailForValidation(LedgerExcelVO ledgerExcelVO);
+	
+	/**
 	 * 캐피탈 원장 엑셀 등록 목록
 	 * @return
 	 */
@@ -35,5 +42,7 @@ public interface LedgerExcelMapper {
 	 * @return
 	 */
 	public int updateLedgerExcelSetting(LedgerExcelVO ledgerExcelVO);
+	
+	
 	
 }

@@ -23,6 +23,7 @@ public class ResultCode {
 		, e_10003
 		, e_10004
 		, e_10005
+		, e_00006
 		, e_20001
 		, e_30001
 		, e_40001
@@ -56,6 +57,9 @@ public class ResultCode {
 			break;
 		case e_00005:
 			rvt = "00005";
+			break;
+		case e_00006:
+			rvt = "00006";
 			break;
 		case e_10001:
 			rvt = "10001";
@@ -127,6 +131,9 @@ public class ResultCode {
 			break;
 		case e_00005:
 			rvt = "[file validation error]";
+			break;
+		case e_00006:
+			rvt = "[There is no file]";
 			break;
 		case e_10001:
 			rvt = "[Not exist ID or Password]";
