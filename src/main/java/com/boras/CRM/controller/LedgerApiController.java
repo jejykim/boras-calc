@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -49,11 +50,35 @@ public class LedgerApiController {
 	
 	ExcelValidationHelper excelValidationHelper = new ExcelValidationHelper();
 	
+	PermissionHelper permissionHelper = new PermissionHelper();
+	
+	/**
+	 * 원장 수기 등록
+	 */
+	@PostMapping(value = "/ledger/insert")
+	public Map<String, Object> ledgerInsert(HttpServletRequest req, HttpServletResponse resp, LedgerVO ledgerVO) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    	
+		ledgerVO.setLedgerCreateUserId(permissionHelper.getSessionUserId(req));
+		
+		boolean insertFlag = insertLedgerDB(ledgerVO);
+		
+		if(insertFlag) {
+			rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+		}else {
+			rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
+		}
+		
+		return rvt;
+	}
+	
 	/**
 	 * 원장 엑셀 등록
 	 */
 	@PostMapping(value = "/ledger/excel/insert")
-	public Map<String, Object> ledgerInsert(HttpServletRequest req, HttpServletResponse resp, LedgerVO ledgerVO) {
+	public Map<String, Object> ledgerExcelInsert(HttpServletRequest req, HttpServletResponse resp, LedgerVO ledgerVO) {
 	    Map<String, Object> rvt = new HashMap<>();
 	    
 	    // excel 양식 유무 확인
@@ -69,6 +94,8 @@ public class LedgerApiController {
 	    	Map<String, Object> validationMap = excelValidationHelper.isSameExcelSample(ledgerExcelVO.getLedgerExcelFilePath(), ledgerExcelVO.getLedgerExcelHeaderRow(), ledgerExcelVO.getLedgerExcelSheet(), ledgerVO.getLedgerExcelFile());
 	    	
 	    	if(validationMap.get("success").equals("Y")) {
+	    		ledgerVO.setLedgerCreateUserId(permissionHelper.getSessionUserId(req));
+	    		
 	    		boolean insertFlag = insertLedgerFormExcel(ledgerVO, ledgerExcelVO);
 	    		
 	    		if(insertFlag) {
@@ -117,89 +144,137 @@ public class LedgerApiController {
 			}
 			
 			XSSFSheet sheet = workBook.getSheetAt(iExcelSheet);
+			
+			// 전체 row 수
 			int rows = sheet.getPhysicalNumberOfRows();
 			
-			/*
-			for(rowIndex=0;rowIndex<rows;rowIndex++){ 
+			// 헤더 row + 1 (읽을 row)
+			int rowIndex = 0;
+			
+			for(rowIndex = iExcelHeaderRow + 1; rowIndex < rows; rowIndex++){ 
 				//행을읽는다
-				XSSFRow row=sheet.getRow(rowIndex); 
-				if(row !=null){ 
-					//셀의 수 
-					int cells=row.getPhysicalNumberOfCells(); 
-					for(columnIndex=0; columnIndex<=cells; columnIndex++){ 
-						//셀값을 읽는다 
-						XSSFCell cell=row.getCell(columnIndex); 
-						String value="";
-						//셀이 빈값일경우를 위한 널체크 
-						if(cell==null){ 
-							continue; 
-						}else{
-							switch (cell.getCellType()){
-								case XSSFCell.CELL_TYPE_FORMULA:
-									value = cell.getCellFormula();
-									break;
-								case XSSFCell.CELL_TYPE_NUMERIC:
-									value = cell.getNumericCellValue() + "";
-									break;
-								case XSSFCell.CELL_TYPE_STRING:
-									value = cell.getStringCellValue() + "";
-									break;
-								case XSSFCell.CELL_TYPE_BLANK:
-									value = cell.getBooleanCellValue() + "";
-									break;
-								case XSSFCell.CELL_TYPE_ERROR:
-									value = cell.getErrorCellValue() + "";
-									break;
-								default:
-									value = new String();
-									break;
+				XSSFRow row = sheet.getRow(rowIndex); 
+				if(row != null){
+					
+					// 설정 VO 위치값 확인
+					if(ledgerExcelVO.getLedgerCustomerName() != null) {
+						if(ledgerExcelVO.getLedgerCustomerName().contains(",")) {
+							String[] strRef = ledgerExcelVO.getLedgerCustomerName().split(",");
+							String value = "";
+							
+							for(String str : strRef) {
+								// 고객명
+								CellReference ref = new CellReference(str);
+								value = value + row.getCell(ref.getCol()).getStringCellValue();
 							}
+								
+							ledgerVO.setLedgerCustomerName(value);
 						}
 						
-						switch (columnIndex) {
-							case 0 : //result
-								//dgDTO.setResult(value);
-								jsonObj.put(RESULT,value);
-								break;
-							case 1 : //route_no
-								//dgDTO.setRouteNo(value);
-								jsonObj.put(ROUTE_NO,  value);
-								break;
-							case 2 : //route_name
-								//dgDTO.setRouteName(value);
-								jsonObj.put(ROUTE_NAME, value);
-								break;
-							case 3 : //updown_type
-								jsonObj.put(UPDOWN_TYPE,  value);
-								//dgDTO.setUpdownType(value);
-								break;
-							case 4 : //vms_id
-								jsonObj.put(VMS_ID,  value);
-								//dgDTO.setVmsId(value);
-								break;
-							case 5 : //center_code
-								jsonObj.put(CENTER_CODE, value);
-								//dgDTO.setCenterCode(value);
-								break;
-							case 6 : //center_name
-								jsonObj.put(CENTER_NAME, value);
-								//dgDTO.setCenterName(value);
-								break;
-							case 7 : //vms_message
-								jsonObj.put(VMS_MESSAGE,  value);
-								//dgDTO.setVmsMessage(value);
-								break;
-							case 8 : //vms_message2
-								jsonObj.put(VMS_MESSAGE2,  value);
-								//dgDTO.setVmsMessage2(value);
-								break;
-							default :
-								break;
+						
+						// 인도일
+						if(ledgerExcelVO.getLedgerDeliveryDate() != null) {
+							CellReference ref = new CellReference(ledgerExcelVO.getLedgerDeliveryDate());
+							
+							ledgerVO.setLedgerDeliveryDate(row.getCell(ref.getCol()).getStringCellValue());
 						}
-					} 
+						
+						// 차량명
+						if(ledgerExcelVO.getLedgerCarName() != null) {
+							CellReference ref = new CellReference(ledgerExcelVO.getLedgerCarName());
+							
+							ledgerVO.setLedgerCarName(row.getCell(ref.getCol()).getStringCellValue());
+						}
+						
+						// 차량번호
+						if(ledgerExcelVO.getLedgerCarNumber() != null) {
+							CellReference ref = new CellReference(ledgerExcelVO.getLedgerCarNumber());
+							
+							ledgerVO.setLedgerCarNumber(row.getCell(ref.getCol()).getStringCellValue());
+						}
+						
+						// 차량가
+						if(ledgerExcelVO.getLedgerCarPrice() != null) {
+							CellReference ref = new CellReference(ledgerExcelVO.getLedgerCarPrice());
+							
+							ledgerVO.setLedgerCarPrice(row.getCell(ref.getCol()).getNumericCellValue());
+						}
+						
+						// 취득원가
+						if(ledgerExcelVO.getLedgerAcquisitionCost() != null) {
+							CellReference ref = new CellReference(ledgerExcelVO.getLedgerAcquisitionCost());
+							
+							ledgerVO.setLedgerAcquisitionCost(row.getCell(ref.getCol()).getNumericCellValue());
+						}
+						
+						// 총fee-%
+						if(ledgerExcelVO.getLedgerTotalFeePercent() != null) {
+							CellReference ref = new CellReference(ledgerExcelVO.getLedgerTotalFeePercent());
+							
+							ledgerVO.setLedgerTotalFeePercent(row.getCell(ref.getCol()).getNumericCellValue());
+						}
+						
+						// 총fee-합계
+						if(ledgerExcelVO.getLedgerTotalFeeSum() != null) {
+							CellReference ref = new CellReference(ledgerExcelVO.getLedgerTotalFeeSum());
+							
+							ledgerVO.setLedgerTotalFeeSum(row.getCell(ref.getCol()).getNumericCellValue());
+						}
+						
+						// 총fee-공급가
+						if(ledgerExcelVO.getLedgerTotalFeeSupplyPrice() != null) {
+							CellReference ref = new CellReference(ledgerExcelVO.getLedgerTotalFeeSupplyPrice());
+							
+							ledgerVO.setLedgerTotalFeeSupplyPrice(row.getCell(ref.getCol()).getNumericCellValue());
+						}
+						
+						// 총fee-부가세
+						if(ledgerExcelVO.getLedgerTotalFeeSurtax() != null) {
+							CellReference ref = new CellReference(ledgerExcelVO.getLedgerTotalFeeSurtax());
+							
+							ledgerVO.setLedgerTotalFeeSurtax(row.getCell(ref.getCol()).getNumericCellValue());
+						}
+						
+						// 슬라이딩-%
+						if(ledgerExcelVO.getLedgerSlidingPercent() != null) {
+							CellReference ref = new CellReference(ledgerExcelVO.getLedgerSlidingPercent());
+							
+							ledgerVO.setLedgerSlidingPercent(row.getCell(ref.getCol()).getNumericCellValue());
+						}
+						
+						// 슬라이딩-합계
+						if(ledgerExcelVO.getLedgerSlidingSum() != null) {
+							CellReference ref = new CellReference(ledgerExcelVO.getLedgerSlidingSum());
+							
+							ledgerVO.setLedgerSlidingSum(row.getCell(ref.getCol()).getNumericCellValue());
+						}
+						
+						// 슬라이딩-공급각
+						if(ledgerExcelVO.getLedgerSlidingSupplyPrice() != null) {
+							CellReference ref = new CellReference(ledgerExcelVO.getLedgerSlidingSupplyPrice());
+							
+							ledgerVO.setLedgerSlidingSupplyPrice(row.getCell(ref.getCol()).getNumericCellValue());
+						}
+						
+						// 슬라이딩-부가세
+						if(ledgerExcelVO.getLedgerSlidingSurtax() != null) {
+							CellReference ref = new CellReference(ledgerExcelVO.getLedgerSlidingSurtax());
+							
+							ledgerVO.setLedgerSlidingSurtax(row.getCell(ref.getCol()).getNumericCellValue());
+						}
+						
+						// 추가프로모션
+						if(ledgerExcelVO.getLedgerAddPromotion() != null) {
+							CellReference ref = new CellReference(ledgerExcelVO.getLedgerAddPromotion());
+							
+							ledgerVO.setLedgerAddPromotion(row.getCell(ref.getCol()).getNumericCellValue());
+						}
+						
+						// 원장 등록
+						insertLedgerDB(ledgerVO);
+					}
 				} 
 			}
-			*/
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			flag = false;
