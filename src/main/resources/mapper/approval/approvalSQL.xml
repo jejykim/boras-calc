@@ -9,7 +9,7 @@
 			approval_user_id,
 			approval_state,
 			approval_yn,
-			approval_request_date,
+			approval_request_date
 		)
 		VALUES(
 			#{approvalLedgerSeq},
@@ -28,7 +28,7 @@
 			approval_user_id,
 			approval_state,
 			approval_yn,
-			approval_request_date,
+			approval_request_date
 		)
 		VALUES(
 			#{approvalLedgerSeq},
@@ -45,7 +45,7 @@
 		UPDATE approval
 		SET approval_state = #{userName},
 			approval_yn = #{approvalYn},
-			approval_date = now(),
+			approval_date = now()
 		WHERE approval_seq = #{approvalSeq}
   	</update>
   	

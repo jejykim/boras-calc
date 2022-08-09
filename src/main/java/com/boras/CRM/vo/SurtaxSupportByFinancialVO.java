@@ -7,7 +7,6 @@ public class SurtaxSupportByFinancialVO {
 	private String surtaxSupportByFinancialAgFeeSurtaxSupportYn;
 	private String surtaxSupportByFinancialSlidingSurtaxSupportYn;
 	private String surtaxSupportByFinancialAddFeeSurtaxSupportYn;
-	private String surtaxSupportByFinancialUseYn;
 	private String surtaxSupportByFinancialCreateDate;
 	private String surtaxSupportByFinancialCreateUserId;
 	private String surtaxSupportByFinancialUpdateDate;
@@ -48,12 +47,6 @@ public class SurtaxSupportByFinancialVO {
 	}
 	public void setSurtaxSupportByFinancialAddFeeSurtaxSupportYn(String surtaxSupportByFinancialAddFeeSurtaxSupportYn) {
 		this.surtaxSupportByFinancialAddFeeSurtaxSupportYn = surtaxSupportByFinancialAddFeeSurtaxSupportYn;
-	}
-	public String getSurtaxSupportByFinancialUseYn() {
-		return surtaxSupportByFinancialUseYn;
-	}
-	public void setSurtaxSupportByFinancialUseYn(String surtaxSupportByFinancialUseYn) {
-		this.surtaxSupportByFinancialUseYn = surtaxSupportByFinancialUseYn;
 	}
 	public String getSurtaxSupportByFinancialCreateDate() {
 		return surtaxSupportByFinancialCreateDate;

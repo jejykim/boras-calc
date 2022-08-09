@@ -17,9 +17,13 @@ public class SurtaxSupportByFinancialService implements SurtaxSupportByFinancial
 
 	
 	@Override
-	public List<SurtaxSupportByFinancialVO> selectFeeByFinancialList() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<SurtaxSupportByFinancialVO> selectSurtaxSupportByFinancialList() {
+		return surtaxSupportByFinancialMapper.selectSurtaxSupportByFinancialList();
+	}
+	
+	@Override
+	public int insertSurtaxSupportByFinancial(SurtaxSupportByFinancialVO surtaxSupportByFinancialVO) {
+		return surtaxSupportByFinancialMapper.insertSurtaxSupportByFinancial(surtaxSupportByFinancialVO);
 	}
 	
 

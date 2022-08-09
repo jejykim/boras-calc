@@ -14,6 +14,13 @@ public interface SurtaxSupportByFinancialMapper {
 	 * @param 
 	 * @return List<SurtaxSupportByFinancialVO>
 	 */
-	public List<SurtaxSupportByFinancialVO> selectFeeByFinancialList();
+	public List<SurtaxSupportByFinancialVO> selectSurtaxSupportByFinancialList();
+	
+	/**
+	 * 금융사 별 부가세지원여부 등록
+	 * @param 
+	 * @return int
+	 */
+	public int insertSurtaxSupportByFinancial(SurtaxSupportByFinancialVO surtaxSupportByFinancialVO);
 	
 }

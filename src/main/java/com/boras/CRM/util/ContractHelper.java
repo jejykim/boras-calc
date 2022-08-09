@@ -58,7 +58,7 @@ public class ContractHelper {
 			contractVO.setContractCreateMonth(0);
 			
 			
-			List<SurtaxSupportByFinancialVO> ssList = surtaxSupportByFinancialService.selectFeeByFinancialList();
+			List<SurtaxSupportByFinancialVO> ssList = surtaxSupportByFinancialService.selectSurtaxSupportByFinancialList();
 			
 			for(SurtaxSupportByFinancialVO ssVO : ssList) {
 				if(ledgerVO.getLedgerFinancialCompanyCd()==ssVO.getSurtaxSupportByFinancialCompanyCd()) {

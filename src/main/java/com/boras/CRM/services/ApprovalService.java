@@ -15,26 +15,22 @@ public class ApprovalService implements ApprovalMapper {
 
 	@Override
 	public int requestApproval(ApprovalVO approvalVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return approvalMapper.requestApproval(approvalVO);
 	}
 
 	@Override
 	public int insertApproval(ApprovalVO approvalVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return approvalMapper.insertApproval(approvalVO);
 	}
 	
 	@Override
 	public int confirmApproval(ApprovalVO approvalVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return approvalMapper.confirmApproval(approvalVO);
 	}
 	
 	@Override
 	public int deleteRequestApproval(ApprovalVO approvalVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return approvalMapper.deleteRequestApproval(approvalVO);
 	}
 
 }
