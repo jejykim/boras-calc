@@ -1,15 +1,10 @@
 package com.boras.CRM.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.boras.CRM.mapper.ApprovalMapper;
-import com.boras.CRM.mapper.ContractMapper;
 import com.boras.CRM.vo.ApprovalVO;
-import com.boras.CRM.vo.ContractVO;
-import com.boras.CRM.vo.FeeByFinancialVO;
 
 
 @Service
