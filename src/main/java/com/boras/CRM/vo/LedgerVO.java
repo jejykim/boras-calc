@@ -110,7 +110,7 @@ public class LedgerVO extends PagingVO {
 	private String ledgerUpdateUserId;
 	
 	// 수정일
-	private String ledgerUpdateUserDate;
+	private String ledgerUpdateDate;
 
 	public int getLedgerSeq() {
 		return ledgerSeq;
@@ -344,14 +344,6 @@ public class LedgerVO extends PagingVO {
 		this.ledgerUpdateUserId = ledgerUpdateUserId;
 	}
 
-	public String getLedgerUpdateUserDate() {
-		return ledgerUpdateUserDate;
-	}
-
-	public void setLedgerUpdateUserDate(String ledgerUpdateUserDate) {
-		this.ledgerUpdateUserDate = ledgerUpdateUserDate;
-	}
-
 	public int getLedgerFinancialCompanyCdName() {
 		return ledgerFinancialCompanyCdName;
 	}
@@ -398,6 +390,14 @@ public class LedgerVO extends PagingVO {
 
 	public void setLedgerExcelFile(MultipartFile ledgerExcelFile) {
 		this.ledgerExcelFile = ledgerExcelFile;
+	}
+
+	public String getLedgerUpdateDate() {
+		return ledgerUpdateDate;
+	}
+
+	public void setLedgerUpdateDate(String ledgerUpdateDate) {
+		this.ledgerUpdateDate = ledgerUpdateDate;
 	}
 	
 }

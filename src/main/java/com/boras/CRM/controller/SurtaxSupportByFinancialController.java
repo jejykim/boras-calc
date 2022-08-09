@@ -60,24 +60,20 @@ public class SurtaxSupportByFinancialController {
 	 * 금융사별 부가세 지원 여부 조회
 	 */
 	@GetMapping(value = "/surtaxsupport/list")
-	public Model listSurtaxSupport(Model model, HttpServletRequest req, HttpServletResponse resp) {
-		String result = "surtaxsupport/list";
+	public Map<String, Object> listSurtaxSupport(Model model, HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> rvt = new HashMap<>();
 		
 		List<SurtaxSupportByFinancialVO> list = new ArrayList<>();
 		
 		try {
-			Map<String, Object> map = new HashMap<>();
-			
 			list = ssService.selectSurtaxSupportByFinancialList();
 			
-		
-			
-			model.addAttribute("list", list);
+			rvt.put("list", list);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
     	
-		return model;
+		return rvt;
 	}
 	
 }

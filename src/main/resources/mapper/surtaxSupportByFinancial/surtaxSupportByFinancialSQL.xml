@@ -25,7 +25,7 @@
   	</insert>
   	
 	<!-- 금융사별 부가세 지원여부 조회 -->
-	<select id="selectSurtaxSupportByFinancial" resultType="surtaxSupportByFinancialVO" parameterType="surtaxSupportByFinancialVO">
+	<select id="selectSurtaxSupportByFinancialList" resultType="surtaxSupportByFinancialVO" parameterType="surtaxSupportByFinancialVO">
 		SELECT 
 			surtax_support_by_financial_seq
 			,surtax_support_by_financial_company_cd

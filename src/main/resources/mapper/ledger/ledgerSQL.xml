@@ -4,23 +4,22 @@
   	
   	<!-- 원장 등록 -->
   	<insert id="insertLedger" parameterType="ledgerVO">
-		INSERT INTO ledger_excel(
-			ledger_excel_use_yn
-			<if test="ledgerExcelFileName != null and ledgerExcelFileName != ''">
-			, ledger_excel_file_name
-			</if>
-			<if test="ledgerExcelFilePath != null and ledgerExcelFilePath != ''">
-			, ledger_excel_file_path
-			</if>
-			<if test="ledgerExcelSheet != null and ledgerExcelSheet != ''">
-			, ledger_excel_sheet
-			</if>
-			, ledger_type_cd
-			, ledger_financial_company_cd
+		INSERT INTO ledger(
+			ledger_financial_company_cd
 			, ledger_financial_branch_cd
 			, ledger_financial_product_cd
-			, ledger_dealer_brand_cd
-			, ledger_dealer_company_cd
+			<if test="ledgerOther != null and ledgerOther != ''">
+			, ledger_other
+			</if>
+			<if test="ledgerTypeCd != null and ledgerTypeCd != ''">
+			, ledger_type_cd
+			</if>
+			<if test="ledgerDealerBrandCd != null and ledgerDealerBrandCd != ''">
+			, ledge_dealer_brand_cd
+			</if>
+			<if test="ledgerDealerCompanyCd != null and ledgerDealerCompanyCd != ''">
+			, ledge_dealer_company_cd
+			</if>
 			<if test="ledgerDeliveryDate != null and ledgerDeliveryDate != ''">
 			, ledger_delivery_date
 			</if>
@@ -69,25 +68,26 @@
 			<if test="ledgerPromotionMemo != null and ledgerPromotionMemo != ''">
 			, ledger_promotion_memo
 			</if>
-			, ledger_excel_create_date
-			, ledger_excel_create_id
+			, ledger_create_year
+			, ledger_create_month
+			, ledger_create_date
+			, ledger_create_user_id
 		) VALUES (
-			#{ledgerExcelUseYn}
-			<if test="ledgerExcelFileName != null and ledgerExcelFileName != ''">
-			, #{ledgerExcelFileName}
-			</if>
-			<if test="ledgerExcelFilePath != null and ledgerExcelFilePath != ''">
-			, #{ledgerExcelFilePath}
-			</if>
-			<if test="ledgerExcelSheet != null and ledgerExcelSheet != ''">
-			, #{ledgerExcelSheet}
-			</if>
-			, #{ledgerTypeCd}
-			, #{ledgerFinancialCompanyCd}
+			#{ledgerFinancialCompanyCd}
 			, #{ledgerFinancialBranchCd}
 			, #{ledgerFinancialProductCd}
+			<if test="ledgerOther != null and ledgerOther != ''">
+			, #{ledgerOther}
+			</if>
+			<if test="ledgerTypeCd != null and ledgerTypeCd != ''">
+			, #{ledgerTypeCd}
+			</if>
+			<if test="ledgerDealerBrandCd != null and ledgerDealerBrandCd != ''">
 			, #{ledgerDealerBrandCd}
+			</if>
+			<if test="ledgerDealerCompanyCd != null and ledgerDealerCompanyCd != ''">
 			, #{ledgerDealerCompanyCd}
+			</if>
 			<if test="ledgerDeliveryDate != null and ledgerDeliveryDate != ''">
 			, #{ledgerDeliveryDate}
 			</if>
@@ -136,60 +136,20 @@
 			<if test="ledgerPromotionMemo != null and ledgerPromotionMemo != ''">
 			, #{ledgerPromotionMemo}
 			</if>
+			, extract('YEAR' from now()::timestamp)
+			, extract('MONTH' from now()::timestamp)
 			, now()
-			, #{ledgerExcelCreateId}
+			, #{ledgerCreateUserId}
 		)
   	</insert>
   	
-  	<!-- 원장 엑셀 설정 상세 조회 -->
-	<select id="selectLedgerExcelDetail" resultType="ledgerVO" parameterType="ledgerVO">
-		SELECT le.*
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_product_cd) as ledgerFinancialProductCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
-		FROM ledger_excel le
-		WHERE ledger_excel_seq = #{ledgerExcelSeq}
-  	</select>
-  	
-  	<!-- 원장 엑셀 설정 상세 조회 -->
-	<select id="selectLedgerExcelDetailForValidation" resultType="ledgerVO" parameterType="ledgerVO">
-		SELECT le.*
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_product_cd) as ledgerFinancialProductCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
-		FROM ledger_excel le
-		WHERE ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
-		AND ledger_financial_branch_cd = #{ledgerFinancialBranchCd}
-		AND ledger_financial_product_cd = #{ledgerFinancialProductCd}
-  	</select>
-  	
-  	<!-- 캐피탈 원장 엑셀 등록 목록 -->
-	<select id="selectLedgerExcelList" resultType="ledgerVO">
-		SELECT le.*
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_product_cd) as ledgerFinancialProductCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
-		FROM ledger_excel le
-  	</select>
-  	
-  	<!-- 원장 엑셀 설정 수정 -->
-	<update id="updateLedgerExcelSetting" parameterType="ledgerVO">
-		UPDATE ledger_excel
-		SET ledger_excel_use_yn = #{ledgerExcelUseYn}
-			<if test="ledgerExcelFileName != null and ledgerExcelFileName != ''">
-			, ledger_excel_file_name = #{ledgerExcelFileName}
-			</if>
-			<if test="ledgerExcelFilePath != null and ledgerExcelFilePath != ''">
-			, ledger_excel_file_path = #{ledgerExcelFilePath}
-			</if>
-			<if test="ledgerExcelSheet != null and ledgerExcelSheet != ''">
-			, ledger_excel_sheet = #{ledgerExcelSheet}
+  	<!-- 원장 수정 -->
+	<update id="updateLedger" parameterType="ledgerVO">
+		UPDATE ledger
+		SET ledger_update_date = now()
+			, ledger_update_user_id = #{ledgerUpdateUserId}
+			<if test="ledgerOther != null and ledgerOther != ''">
+			, ledger_other = #{ledgerOther}
 			</if>
 			<if test="ledgerTypeCd != null and ledgerTypeCd != ''">
 			, ledger_type_cd = #{ledgerTypeCd}
@@ -257,9 +217,44 @@
 			<if test="ledgerPromotionMemo != null and ledgerPromotionMemo != ''">
 			, ledger_promotion_memo = #{ledgerPromotionMemo}
 			</if>
-			, ledger_excel_update_date = now()
-			, ledger_excel_update_id = #{ledgerExcelUpdateId}
-		WHERE ledger_excel_seq = #{ledgerExcelSeq}
+		WHERE ledger_seq = #{ledgerSeq}
   	</update>
+  	
+  	<!-- 원장 엑셀 설정 상세 조회 -->
+	<select id="selectLedgerExcelDetail" resultType="ledgerVO" parameterType="ledgerVO">
+		SELECT le.*
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_product_cd) as ledgerFinancialProductCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
+		FROM ledger_excel le
+		WHERE ledger_excel_seq = #{ledgerExcelSeq}
+  	</select>
+  	
+  	<!-- 원장 엑셀 설정 상세 조회 -->
+	<select id="selectLedgerExcelDetailForValidation" resultType="ledgerVO" parameterType="ledgerVO">
+		SELECT le.*
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_product_cd) as ledgerFinancialProductCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
+		FROM ledger_excel le
+		WHERE ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
+		AND ledger_financial_branch_cd = #{ledgerFinancialBranchCd}
+		AND ledger_financial_product_cd = #{ledgerFinancialProductCd}
+  	</select>
+  	
+  	<!-- 캐피탈 원장 엑셀 등록 목록 -->
+	<select id="selectLedgerExcelList" resultType="ledgerVO">
+		SELECT le.*
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_product_cd) as ledgerFinancialProductCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
+		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
+		FROM ledger_excel le
+  	</select>
   	
 </mapper>

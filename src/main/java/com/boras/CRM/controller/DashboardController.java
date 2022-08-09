@@ -15,6 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.boras.CRM.session.WebSessionListener;
 import com.boras.CRM.util.PermissionHelper;
@@ -68,7 +71,8 @@ public class DashboardController {
 	/*
 	 * 대시보드
 	 */
-	@PostMapping(value = "/dashboard/api")
+	@ResponseBody
+	@PostMapping(value = "/dashboard/api" )
 	public Map<String, Object> dashboardapi(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> rvt = new HashMap<>();
 		
