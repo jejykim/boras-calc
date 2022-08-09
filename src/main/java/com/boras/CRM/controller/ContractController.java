@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.boras.CRM.services.ContractService;
 import com.boras.CRM.vo.ContractVO;
-import com.boras.CRM.vo.FeeByFinancialVO;
+import com.boras.CRM.vo.SurtaxSupportByFinancialVO;
 import com.boras.CRM.vo.LedgerVO;
 
 @Controller
@@ -32,18 +32,18 @@ public class ContractController {
 	 * main page
 	 */
 	@GetMapping(value = "/contract")
-	public String contractInsert(Model model, HttpServletRequest req, HttpServletResponse resp, @RequestBody LedgerVO ledgerVO) {
-		String result = "contract/insert";
-		
+	public boolean contractInsert(HttpServletRequest req, HttpServletResponse resp, @RequestBody LedgerVO ledgerVO) {
+		boolean flag = false;
+		/*
 		try {
-			FeeByFinancialVO feeByFinancialVO = new FeeByFinancialVO();
-			feeByFinancialVO.setFeeByFinancialCompanyCd(ledgerVO.getLedgerFinancialCompanyCd());
+			SurtaxSupportByFinancialVO feeByFinancialVO = new SurtaxSupportByFinancialVO();
+			feeByFinancialVO.setSurtaxSupportByFinancialCompanyCd(ledgerVO.getLedgerFinancialCompanyCd());
 			
-			List<FeeByFinancialVO> feeByFinancialList = new ArrayList<>();
+			List<SurtaxSupportByFinancialVO> feeByFinancialList = new ArrayList<>();
 			
 			feeByFinancialList=contractService.selectFeeByFinancialList(feeByFinancialVO);
 			
-			for(FeeByFinancialVO fbf : feeByFinancialList) {
+			for(SurtaxSupportByFinancialVO fbf : feeByFinancialList) {
 				ContractVO contractVO = new ContractVO();
 				contractVO.setContractLedgerSeq(ledgerVO.getLedgerSeq());
 				//contractVO.setContractUserId(ledgerVO.getuser)
@@ -53,8 +53,9 @@ public class ContractController {
 			
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			flag = false;
 		}
-    	
-		return result;
+    	*/
+		return flag;
 	}
 }
