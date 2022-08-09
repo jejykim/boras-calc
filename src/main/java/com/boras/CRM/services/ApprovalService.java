@@ -20,7 +20,19 @@ public class ApprovalService implements ApprovalMapper {
 	}
 
 	@Override
+	public int insertApproval(ApprovalVO approvalVO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
 	public int confirmApproval(ApprovalVO approvalVO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public int deleteRequestApproval(ApprovalVO approvalVO) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

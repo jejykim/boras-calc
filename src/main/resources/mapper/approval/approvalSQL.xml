@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boras.CRM.mapper.ApprovalMapper">
+  	
+  	<!-- 승인요청 - ag사용-->
+  	<insert id="requestApproval" parameterType="approvalVO">
+		INSERT INTO approval(
+			approval_ledger_seq,
+			approval_user_id,
+			approval_state,
+			approval_yn,
+			approval_request_date,
+		)
+		VALUES(
+			#{approvalLedgerSeq},
+			#{approvalUserId},
+			#{approvalState},
+			'N',
+			now()
+			
+		) 
+  	</insert>
+  	
+  	<!-- 승인요청 - 관리자용-->
+  	<insert id="insertApproval" parameterType="approvalVO">
+		INSERT INTO approval(
+			approval_ledger_seq,
+			approval_user_id,
+			approval_state,
+			approval_yn,
+			approval_request_date,
+		)
+		VALUES(
+			#{approvalLedgerSeq},
+			#{approvalUserId},
+			#{approvalState},
+			#{approvalYn},
+			now()
+			
+		) 
+  	</insert>
+  	
+  	<!-- 승인 컨펌 - 관리자용 -->
+	<update id="confirmApproval" parameterType="approvalVO">
+		UPDATE approval
+		SET approval_state = #{userName},
+			approval_yn = #{approvalYn},
+			approval_date = now(),
+		WHERE approval_seq = #{approvalSeq}
+  	</update>
+  	
+  	<!-- 승인 요청 삭제 - ag사용 -->
+	<delete id="deleteRequestApproval" parameterType="approvalVO">
+		DELETE FROM approval
+		WHERE approval_seq = #{approvalSeq}
+			AND approval_yn != 'Y'
+  	</delete>
+  	
+</mapper>
