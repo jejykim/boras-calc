@@ -17,10 +17,31 @@ public interface LedgerMapper {
 	public int insertLedger(LedgerVO ledgerVO);
 	
 	/**
+	 * 원장 수정
+	 * @param ledgerVO
+	 * @return
+	 */
+	public int updateLedger(LedgerVO ledgerVO);
+	
+	/**
 	 * 원장 상세 조회
 	 * @param ledgerVO
 	 * @return
 	 */
 	public LedgerVO selectLedgerDetail(LedgerVO ledgerVO);
+	
+	/**
+	 * 원장 목록
+	 * @param ledgerVO
+	 * @return
+	 */
+	public List<LedgerVO> selectLedgerList(LedgerVO ledgerVO);
+	
+	/**
+	 * 원장 목록 count
+	 * @param ledgerVO
+	 * @return
+	 */
+	public int selectLedgerListCount(LedgerVO ledgerVO);
 	
 }

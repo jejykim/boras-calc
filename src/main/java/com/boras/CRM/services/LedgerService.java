@@ -20,9 +20,23 @@ public class LedgerService implements LedgerMapper {
 	}
 
 	@Override
+	public int updateLedger(LedgerVO ledgerVO) {
+		return ledgerMapper.updateLedger(ledgerVO);
+	}
+
+	@Override
 	public LedgerVO selectLedgerDetail(LedgerVO ledgerVO) {
 		return ledgerMapper.selectLedgerDetail(ledgerVO);
 	}
-	
+
+	@Override
+	public List<LedgerVO> selectLedgerList(LedgerVO ledgerVO) {
+		return ledgerMapper.selectLedgerList(ledgerVO);
+	}
+
+	@Override
+	public int selectLedgerListCount(LedgerVO ledgerVO) {
+		return ledgerMapper.selectLedgerListCount(ledgerVO);
+	}
 
 }

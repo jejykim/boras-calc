@@ -78,17 +78,29 @@
   	
   	<!-- 사용자 추가 -->
   	<insert id="insertUser" parameterType="userVO">
-		INSERT INTO users
-		SET user_id = #{userId},
-			user_pw = #{userPw},
-			user_salt = #{userSalt},
-			user_name = #{userName},
-			user_email = #{userEmail},
-			user_business_type_cd = #{userBusinessTypeCd},
-			user_ag_company = #{userAgCompany},
-			user_join_date = #{userJoinDate},
-			user_permission_cd = #{userPermissionCd},
-			use_yn = 'Y'
+		INSERT INTO users(
+			user_id
+			, user_pw
+			, user_salt
+			, user_name
+			, user_email
+			, user_business_type_cd
+			, user_ag_company
+			, user_join_date
+			, user_permission_cd
+			, use_yn
+		) VALUES (
+			#{userId}
+			, #{userPw}
+			, #{userSalt}
+			, #{userName}
+			, #{userEmail},
+			, #{userBusinessTypeCd}
+			, #{userAgCompany}
+			, now()
+			, #{userPermissionCd}
+			, 'Y'
+		)
   	</insert>
   	
   	<!-- 사용자 수정 -->

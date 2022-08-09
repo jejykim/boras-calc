@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.boras.CRM.mapper.LedgerMapper">
   	
-  	<!-- 원장 엑셀 설정 등록 -->
-  	<insert id="insertLedgerExcelSetting" parameterType="ledgerVO">
+  	<!-- 원장 등록 -->
+  	<insert id="insertLedger" parameterType="ledgerVO">
 		INSERT INTO ledger_excel(
 			ledger_excel_use_yn
 			<if test="ledgerExcelFileName != null and ledgerExcelFileName != ''">
