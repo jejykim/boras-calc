@@ -8,7 +8,7 @@
 		<typeAlias type="com.boras.CRM.vo.UserVO" alias="userVO"/>
 		<typeAlias type="com.boras.CRM.vo.LedgerExcelVO" alias="ledgerExcelVO"/>
 		<typeAlias type="com.boras.CRM.vo.LedgerVO" alias="ledgerVO"/>
-		<typeAlias type="com.boras.CRM.vo.ContractVO" alias="ContractVO"/>
+		<typeAlias type="com.boras.CRM.vo.ContractVO" alias="contractVO"/>
 		<typeAlias type="com.boras.CRM.vo.ApprovalVO" alias="approvalVO"/>
 		<typeAlias type="com.boras.CRM.vo.SurtaxSupportByFinancialVO" alias="surtaxSupportByFinancialVO"/>
 	</typeAliases>
