@@ -34,10 +34,9 @@ public class ApprovalApiController {
 	 * 승인요청 - ag사
 	 */
 	@PostMapping(value = "/request")
-	public boolean requestApproval(HttpServletRequest req, HttpServletResponse resp, @RequestBody ApprovalVO approvalVO) {
+	public Map<String, Object> requestApproval(HttpServletRequest req, HttpServletResponse resp, @RequestBody ApprovalVO approvalVO) {
 		
 	    Map<String, Object> rvt = new HashMap<>();
-	    boolean flag = false;
 	    
 	    try {
 		    int cnt = approvalService.requestApproval(approvalVO);
@@ -53,20 +52,18 @@ public class ApprovalApiController {
 	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
 			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
 			logger.error(e.getMessage());
-			flag = false;
 		}
 	   
-		return flag;
+		return rvt;
 	}
 	
 	/**
 	 * 승인요청 - ag사
 	 */
 	@PostMapping(value = "/insert")
-	public boolean insertApproval(HttpServletRequest req, HttpServletResponse resp, @RequestBody ApprovalVO approvalVO) {
+	public Map<String, Object> insertApproval(HttpServletRequest req, HttpServletResponse resp, @RequestBody ApprovalVO approvalVO) {
 		
 	    Map<String, Object> rvt = new HashMap<>();
-	    boolean flag = false;
 	    
 	    try {
 		    int cnt = approvalService.insertApproval(approvalVO);
@@ -82,20 +79,18 @@ public class ApprovalApiController {
 	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
 			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
 			logger.error(e.getMessage());
-			flag = false;
 		}
 	   
-		return flag;
+		return rvt;
 	}
 	
 	/**
 	 * 승인 - 관리자
 	 */
 	@PostMapping(value = "/confrim")
-	public boolean confrimApproval(HttpServletRequest req, HttpServletResponse resp, @RequestBody ApprovalVO approvalVO) {
+	public Map<String, Object> confrimApproval(HttpServletRequest req, HttpServletResponse resp, @RequestBody ApprovalVO approvalVO) {
 		
 	    Map<String, Object> rvt = new HashMap<>();
-	    boolean flag = false;
 	    
 	    try {
 		    int cnt = approvalService.confirmApproval(approvalVO);
@@ -111,20 +106,18 @@ public class ApprovalApiController {
 	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
 			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
 			logger.error(e.getMessage());
-			flag = false;
 		}
 	   
-		return flag;
+		return rvt;
 	}
 	
 	/**
 	 * 승인 - 관리자
 	 */
 	@PostMapping(value = "/delete/request")
-	public boolean deleteRequestApproval(HttpServletRequest req, HttpServletResponse resp, @RequestBody ApprovalVO approvalVO) {
+	public Map<String, Object> deleteRequestApproval(HttpServletRequest req, HttpServletResponse resp, @RequestBody ApprovalVO approvalVO) {
 		
 	    Map<String, Object> rvt = new HashMap<>();
-	    boolean flag = false;
 	    
 	    try {
 		    int cnt = approvalService.deleteRequestApproval(approvalVO);
@@ -140,10 +133,9 @@ public class ApprovalApiController {
 	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
 			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
 			logger.error(e.getMessage());
-			flag = false;
 		}
 	   
-		return flag;
+		return rvt;
 	}
 	
 }
