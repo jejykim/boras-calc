@@ -19,6 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,7 +52,64 @@ public class LedgerApiController {
 	
 	ExcelValidationHelper excelValidationHelper = new ExcelValidationHelper();
 	
-	PermissionHelper permissionHelper = new PermissionHelper();
+	@Value("${common.excel.financial.company}")
+	int commonExcelFinancialCompany;
+	
+	@Value("${common.excel.financial.branch}")
+	int commonExcelFinancialBranch;
+	
+	@Value("${common.excel.financial.product}")
+	int commonExcelFinancialProduct;
+	
+	/**
+	 * 원장 상세 조회
+	 */
+	@GetMapping(value = "/ledger/detail/{ledgerSeq}")
+	public Map<String, Object> ledgerDetail(HttpServletRequest req, HttpServletResponse resp, @PathVariable String ledgerSeq) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    	
+	    LedgerVO ledgerVO = new LedgerVO();
+	    ledgerVO.setLedgerSeq(Integer.parseInt(ledgerSeq));
+	    
+	    try {
+	    	ledgerVO = ledgerService.selectLedgerDetail(ledgerVO);
+			
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+			rvt.put("ledgerVO", ledgerVO);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			
+			rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
+		}
+		
+		return rvt;
+	}
+	
+	/**
+	 * 원장 수정
+	 */
+	@PostMapping(value = "/ledger/update")
+	public Map<String, Object> ledgerUpdate(HttpServletRequest req, HttpServletResponse resp, LedgerVO ledgerVO) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    	
+	    ledgerVO.setLedgerUpdateUserId(PermissionHelper.getSessionUserId(req));
+	    
+	    try {
+	    	ledgerService.updateLedger(ledgerVO);
+			
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			
+			rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
+		}
+		
+		return rvt;
+	}
 	
 	/**
 	 * 원장 수기 등록
@@ -59,7 +118,7 @@ public class LedgerApiController {
 	public Map<String, Object> ledgerInsert(HttpServletRequest req, HttpServletResponse resp, LedgerVO ledgerVO) {
 	    Map<String, Object> rvt = new HashMap<>();
 	    	
-		ledgerVO.setLedgerCreateUserId(permissionHelper.getSessionUserId(req));
+		ledgerVO.setLedgerCreateUserId(PermissionHelper.getSessionUserId(req));
 		
 		boolean insertFlag = insertLedgerDB(ledgerVO);
 		
@@ -91,10 +150,22 @@ public class LedgerApiController {
 	    	
 	    	ledgerExcelVO = ledgerExcelService.selectLedgerExcelDetailForValidation(ledgerExcelVO);
 	    	
+	    	// 통합 엑셀 여부
+	    	boolean isCommonExcel = ledgerExcelVO.getLedgerExcelCommonYn().equals("Y") ? true : false;
+	    	
+	    	if(isCommonExcel) {
+	    		ledgerExcelVO = new LedgerExcelVO();
+		    	ledgerExcelVO.setLedgerFinancialCompanyCd(commonExcelFinancialCompany);
+		    	ledgerExcelVO.setLedgerFinancialBranchCd(commonExcelFinancialBranch);
+		    	ledgerExcelVO.setLedgerFinancialProductCd(commonExcelFinancialProduct);
+		    	
+		    	ledgerExcelVO = ledgerExcelService.selectLedgerExcelDetailForValidation(ledgerExcelVO);
+	    	}
+	    	
 	    	Map<String, Object> validationMap = excelValidationHelper.isSameExcelSample(ledgerExcelVO.getLedgerExcelFilePath(), ledgerExcelVO.getLedgerExcelHeaderRow(), ledgerExcelVO.getLedgerExcelSheet(), ledgerVO.getLedgerExcelFile());
 	    	
 	    	if(validationMap.get("success").equals("Y")) {
-	    		ledgerVO.setLedgerCreateUserId(permissionHelper.getSessionUserId(req));
+	    		ledgerVO.setLedgerCreateUserId(PermissionHelper.getSessionUserId(req));
 	    		
 	    		boolean insertFlag = insertLedgerFormExcel(ledgerVO, ledgerExcelVO);
 	    		

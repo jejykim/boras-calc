@@ -120,6 +120,9 @@ public class LedgerExcelVO {
 	
 	// 엑셀 header row
 	private String ledgerExcelHeaderRow;
+	
+	// 통합 엑셀 사용유무
+	private String ledgerExcelCommonYn;
 
 	public int getLedgerExcelSeq() {
 		return ledgerExcelSeq;
@@ -431,6 +434,14 @@ public class LedgerExcelVO {
 
 	public void setLedgerExcelHeaderRow(String ledgerExcelHeaderRow) {
 		this.ledgerExcelHeaderRow = ledgerExcelHeaderRow;
+	}
+
+	public String getLedgerExcelCommonYn() {
+		return ledgerExcelCommonYn;
+	}
+
+	public void setLedgerExcelCommonYn(String ledgerExcelCommonYn) {
+		this.ledgerExcelCommonYn = ledgerExcelCommonYn;
 	}
 
 }

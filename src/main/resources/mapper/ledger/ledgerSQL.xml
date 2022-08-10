@@ -220,41 +220,24 @@
 		WHERE ledger_seq = #{ledgerSeq}
   	</update>
   	
-  	<!-- 원장 엑셀 설정 상세 조회 -->
-	<select id="selectLedgerExcelDetail" resultType="ledgerVO" parameterType="ledgerVO">
-		SELECT le.*
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_product_cd) as ledgerFinancialProductCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
-		FROM ledger_excel le
-		WHERE ledger_excel_seq = #{ledgerExcelSeq}
+  	<!-- 원장 상세 조회 -->
+	<select id="selectLedgerDetail" resultType="ledgerVO" parameterType="ledgerVO">
+		SELECT l.*
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_product_cd) as ledgerFinancialProductCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
+		FROM ledger l
+		WHERE ledger_seq = #{ledgerExcelSeq}
   	</select>
   	
-  	<!-- 원장 엑셀 설정 상세 조회 -->
-	<select id="selectLedgerExcelDetailForValidation" resultType="ledgerVO" parameterType="ledgerVO">
-		SELECT le.*
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_product_cd) as ledgerFinancialProductCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
-		FROM ledger_excel le
-		WHERE ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
-		AND ledger_financial_branch_cd = #{ledgerFinancialBranchCd}
-		AND ledger_financial_product_cd = #{ledgerFinancialProductCd}
+  	<!-- 원장 목록 -->
+	<select id="selectLedgerList" resultType="ledgerVO" parameterType="ledgerVO">
   	</select>
   	
-  	<!-- 캐피탈 원장 엑셀 등록 목록 -->
-	<select id="selectLedgerExcelList" resultType="ledgerVO">
-		SELECT le.*
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_product_cd) as ledgerFinancialProductCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
-		FROM ledger_excel le
+  	<!-- 원장 목록 count -->
+	<select id="selectLedgerListCount" resultType="ledgerVO"  parameterType="ledgerVO">
   	</select>
   	
 </mapper>

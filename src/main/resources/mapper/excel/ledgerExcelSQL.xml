@@ -6,6 +6,7 @@
   	<insert id="insertLedgerExcelSetting" parameterType="ledgerExcelVO">
 		INSERT INTO ledger_excel(
 			ledger_excel_use_yn
+			, ledger_excel_common_yn
 			<if test="ledgerExcelFileName != null and ledgerExcelFileName != ''">
 			, ledger_excel_file_name
 			</if>
@@ -73,6 +74,7 @@
 			, ledger_excel_create_id
 		) VALUES (
 			#{ledgerExcelUseYn}
+			, #{ledgerExcelCommonYn}
 			<if test="ledgerExcelFileName != null and ledgerExcelFileName != ''">
 			, #{ledgerExcelFileName}
 			</if>
@@ -182,6 +184,7 @@
 	<update id="updateLedgerExcelSetting" parameterType="ledgerExcelVO">
 		UPDATE ledger_excel
 		SET ledger_excel_use_yn = #{ledgerExcelUseYn}
+			, ledger_excel_common_yn = #{ledgerExcelCommonYn}
 			<if test="ledgerExcelFileName != null and ledgerExcelFileName != ''">
 			, ledger_excel_file_name = #{ledgerExcelFileName}
 			</if>
