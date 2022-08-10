@@ -1,4 +1,4 @@
-package com.boras.CRM.controller;
+package com.boras.CRM.controller.api;
 
 import java.util.HashMap;
 import java.util.Map;

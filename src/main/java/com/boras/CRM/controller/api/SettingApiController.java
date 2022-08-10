@@ -1,4 +1,4 @@
-package com.boras.CRM.controller;
+package com.boras.CRM.controller.api;
 
 import java.io.IOException;
 import java.util.ArrayList;
