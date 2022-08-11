@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boras.CRM.mapper.CodeMapper">
+  	
+  	<!-- 대분류 코드등록 -->
+  	<insert id="insertParentCode" parameterType="codeVO">
+		INSERT INTO code(
+			code_id,
+			code_name,
+			code_parent_id,
+			code_description,
+			code_use_yn,
+			code_create_date
+		)
+		VALUES(
+			#{codeId},
+			#{codeName},
+			0,
+			#{codeDescription},
+			#{codeUserYn},
+			now()
+		) 
+  	</insert>
+  	<!-- 소분류 코드등록 -->
+  	<insert id="insertCode" parameterType="codeVO">
+		INSERT INTO code(
+			code_id,
+			code_name,
+			code_parent_id,
+			code_description,
+			code_use_yn,
+			code_create_date
+		)
+		VALUES(
+			#{codeId},
+			#{codeName},
+			#{codeParentId},
+			#{codeDescription},
+			#{codeUserYn},
+			now()
+		) 
+  	</insert>
+  	
+	<!-- 대분류 코드조회 -->
+	<select id="selectParentCodeList" resultType="codeVO">
+		SELECT 
+			code_id,
+			code_name,
+			code_parent_id,
+			code_description,
+			code_use_yn,
+			code_create_date,
+			code_update_date
+		FROM code
+		WHERE code_parent_id=0
+  	</select>
+  	
+  	<!-- 소분류 코드조회 -->
+	<select id="selectCodeList" resultType="codeVO" parameterType="codeVO">
+		SELECT 
+			code_id,
+			code_name,
+			code_parent_id,
+			code_description,
+			code_use_yn,
+			code_create_date,
+			code_update_date
+		FROM code
+		WHERE code_parent_id=#{codeParentId}
+  	</select>
+  	
+  	<!-- 코드 수정 -->
+	<update id="updateCode" parameterType="codeVO">
+		UPDATE code
+		SET code_name = #{codeName},
+			code_description = #{codeDescription},
+			code_use_yn = #{codeUserYn},
+			code_update_date = now()
+		WHERE code_id = #{codeId}
+  	</update>
+  	
+</mapper>

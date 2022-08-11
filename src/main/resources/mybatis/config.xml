@@ -5,6 +5,7 @@
 
 	<!-- 별칭 -->
 	<typeAliases>
+		<typeAlias type="com.boras.CRM.vo.CodeVO" alias="codeVO"/>
 		<typeAlias type="com.boras.CRM.vo.UserVO" alias="userVO"/>
 		<typeAlias type="com.boras.CRM.vo.LedgerExcelVO" alias="ledgerExcelVO"/>
 		<typeAlias type="com.boras.CRM.vo.LedgerVO" alias="ledgerVO"/>
