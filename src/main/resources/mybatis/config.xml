@@ -12,6 +12,8 @@
 		<typeAlias type="com.boras.CRM.vo.ContractVO" alias="contractVO"/>
 		<typeAlias type="com.boras.CRM.vo.ApprovalVO" alias="approvalVO"/>
 		<typeAlias type="com.boras.CRM.vo.SurtaxSupportByFinancialVO" alias="surtaxSupportByFinancialVO"/>
+		<typeAlias type="com.boras.CRM.vo.BlockIdVO" alias="blockIdVO"/>
+		<typeAlias type="com.boras.CRM.vo.BlockIpVO" alias="blockIpVO"/>
 	</typeAliases>
 
 </configuration>
