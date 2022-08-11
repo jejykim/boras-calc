@@ -28,8 +28,12 @@ public class PermissionHelper {
 	private static final String USER_NAME = "userName";
 	private static final String PERMISSION_LEVEL = "permissionLevel";
 	
-	private static final String[] ROOT_PERMISSON_URL_LIST = { "/user", "/code","/smtp", "/logs" };
-			
+	private static final String[] AG_LEVEL_3_PERMISSON_URL_LIST = { "/" };
+	private static final String[] AG_LEVEL_2_PERMISSON_URL_LIST = { "/" };
+	private static final String[] AG_LEVEL_1_PERMISSON_URL_LIST = { "/" };
+	
+	private static final String[] ADMIN_NORMAL_PERMISSON_URL_LIST = { "/" };
+	
 	// 로그인 세션 설정
 	public static void setLoginSession(HttpServletRequest req, UserVO userVO) {
 		req.getSession().setAttribute(USER_ID, userVO.getUserId());
@@ -49,7 +53,7 @@ public class PermissionHelper {
 	public static void setTestLoginSession(HttpServletRequest req) {
 		req.getSession().setAttribute(USER_ID, "dev");
 		req.getSession().setAttribute(USER_NAME, "임시테스트");
-		req.getSession().setAttribute(PERMISSION_LEVEL, 9999);
+		req.getSession().setAttribute(PERMISSION_LEVEL, 0);
 		req.getSession().setAttribute(LOGIN_YN, "Y");
 		
 		JSONObject detailJobj = new JSONObject();
@@ -156,8 +160,17 @@ public class PermissionHelper {
 		if(isLocalhost(req)) {
 			bRetval = true;
 		}else{
-			if(uri.equals("/") || uri.contains("login")) {
+			if(uri.equals("/") || uri.contains("login") || uri.contains("logout")) {
 				bRetval = true;
+			}else if(getSessionUserPermissionLevel(req) == 0) {
+				try {
+					printwriter = resp.getWriter();
+					printwriter.print("<script>alert('신규 가입자는 관리자 승인 후 이용 가능합니다.\\n일정 기간동안 미승인일 경우 관리자에게 문의 부탁드립니다.'); history.back();</script>");
+					printwriter.flush();
+					printwriter.close();
+				} catch (IOException e) {
+					logger.error(e.getMessage());
+				}
 			}else {
 				if(checkUserSession(req)) {
 					if(checkPermissionLevel(req, uri)) {
@@ -190,21 +203,75 @@ public class PermissionHelper {
 	// 권한 level check
 	public static boolean checkPermissionLevel(HttpServletRequest req, String uri) {
 		boolean bRetval = false;
-		if(getSessionUserPermissionLevel(req) > 0) {
-			// 권한별 페이지 표기 추가해야함
-			bRetval = true;
-			for(String str : ROOT_PERMISSON_URL_LIST) {
-				if(uri.contains(str)) {
-					if(getSessionUserPermissionLevel(req) == 1) {
+		
+		int iPermissionLevel = getSessionUserPermissionLevel(req);
+		
+		switch (iPermissionLevel) {
+			// 슈퍼관리자
+			case 1100:
+				bRetval = true;
+				break;
+			// 일반관리자
+			case 1101:
+				for(String strUri : ADMIN_NORMAL_PERMISSON_URL_LIST) {
+					if(uri.contains(strUri)) {
 						bRetval = true;
+						break;
 					}
-					break;
 				}
-			}
+				break;
+			// level1AG - 최하위
+			case 1200:
+				for(String strUri : AG_LEVEL_1_PERMISSON_URL_LIST) {
+					if(uri.contains(strUri)) {
+						bRetval = true;
+						break;
+					}
+				}
+				break;
+			// level2AG - 중간
+			case 1201:
+				for(String strUri : AG_LEVEL_2_PERMISSON_URL_LIST) {
+					if(uri.contains(strUri)) {
+						bRetval = true;
+						break;
+					}
+				}
+				break;
+			// level3AG - 최상위
+			case 1202:
+				for(String strUri : AG_LEVEL_3_PERMISSON_URL_LIST) {
+					if(uri.contains(strUri)) {
+						bRetval = true;
+						break;
+					}
+				}
+				break;
+			default:
+				bRetval = false;
+				break;
 		}
 		
 		return bRetval;
 	}
 	
-	//권한별 메뉴 다르게
+	// 일반관리자 유무
+	public static boolean isNormalAdmin(HttpServletRequest req) {
+		return getSessionUserPermissionLevel(req) == 1101 ? true : false;
+	}
+	
+	// level1AG 유무
+	public static boolean isLevel1AG(HttpServletRequest req) {
+		return getSessionUserPermissionLevel(req) == 1200 ? true : false;
+	}
+	
+	// level2AG 유무
+	public static boolean isLevel2AG(HttpServletRequest req) {
+		return getSessionUserPermissionLevel(req) == 1201 ? true : false;
+	}
+	
+	// level3AG 유무
+	public static boolean isLevel3AG(HttpServletRequest req) {
+		return getSessionUserPermissionLevel(req) == 1202 ? true : false;
+	}
 }

@@ -41,8 +41,6 @@ public class SettingApiController {
 	
 	FileHelper fileHelper = new FileHelper();
 	
-	PermissionHelper permissionHelper = new PermissionHelper();
-	
 	@Value("${file.path}")
 	String serverPath;
 	
@@ -79,7 +77,7 @@ public class SettingApiController {
 	    }
 	    
 	    if(fileFlag) {
-	    	ledgerExcelVO.setLedgerExcelCreateId(permissionHelper.getSessionUserId(req));
+	    	ledgerExcelVO.setLedgerExcelCreateId(PermissionHelper.getSessionUserId(req));
 	    	
 	    	// DB 저장
 	    	try {
@@ -143,6 +141,46 @@ public class SettingApiController {
     		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00002));
     		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00002));
     	}
+		
+		return rvt;
+	}
+	
+	/**
+	 * 원장 엑셀 중복 체크
+	 */
+	@PostMapping(value = "/ledger/setting/excel/exist")
+	public Map<String, Object> ledgerSettingExcelExist(HttpServletRequest req, HttpServletResponse resp, LedgerExcelVO ledgerExcelVO) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    boolean reqParam = false;
+	    
+	    if(!(ledgerExcelVO.getLedgerFinancialCompanyCd() > 0)) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00007));
+    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00007) + "금융사 코드");
+	    }else if(!(ledgerExcelVO.getLedgerFinancialBranchCd() > 0)) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00007));
+    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00007) + "금융 지점 코드");
+	    }else if(!(ledgerExcelVO.getLedgerFinancialProductCd() > 0)) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00007));
+    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00007) + "금융 상품 코드");
+	    }else {
+	    	reqParam = true;
+	    }
+	    
+	    if(reqParam) {
+	    	try {
+	    		int count = ledgerExcelService.isExcelExist(ledgerExcelVO);
+	    		
+	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+	    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+	    		rvt.put("isExist", count > 0 ? "Y" : "N");
+	    	} catch (Exception e) {
+	    		logger.error(e.getMessage());
+	    		
+	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00002));
+	    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00002));
+	    	}
+	    }
 		
 		return rvt;
 	}

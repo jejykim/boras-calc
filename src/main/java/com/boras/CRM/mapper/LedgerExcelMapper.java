@@ -43,6 +43,11 @@ public interface LedgerExcelMapper {
 	 */
 	public int updateLedgerExcelSetting(LedgerExcelVO ledgerExcelVO);
 	
-	
+	/**
+	 * 원장 엑셀 중복 체크
+	 * @param ledgerExcelVO
+	 * @return
+	 */
+	public int isExcelExist(LedgerExcelVO ledgerExcelVO);
 	
 }

@@ -265,4 +265,13 @@
 		WHERE ledger_excel_seq = #{ledgerExcelSeq}
   	</update>
   	
+  	<!-- 원장 엑셀 중복 체크 -->
+	<select id="isExcelExist" resultType="int" parameterType="ledgerExcelVO">
+		SELECT count(*)
+		FROM ledger_excel
+		WHERE ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
+		AND ledger_financial_branch_cd = #{ledgerFinancialBranchCd}
+		AND ledger_financial_product_cd = #{ledgerFinancialProductCd}
+  	</select>
+  	
 </mapper>

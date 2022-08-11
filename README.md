@@ -2,9 +2,10 @@
 WEB - Spring boot  
 
 ## Version
-**0.2.7**
+**0.3.0**
 
 ## Version description
+**[0.3.0]** 계정 관리 api 추가, 통합 엑셀 처리 추가, IP 차단 util 추가  
 ==================== 1 week ====================  
 **[0.2.7]** 통합 원장 엑셀 properties 추가  
 **[0.2.6]** 원장 수정, 상세, 목록 service 추가  

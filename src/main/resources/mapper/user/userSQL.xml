@@ -94,7 +94,7 @@
 			, #{userPw}
 			, #{userSalt}
 			, #{userName}
-			, #{userEmail},
+			, #{userEmail}
 			, #{userBusinessTypeCd}
 			, #{userAgCompany}
 			, now()

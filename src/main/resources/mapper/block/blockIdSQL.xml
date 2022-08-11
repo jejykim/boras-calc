@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boras.CRM.mapper.BlockIdMapper">
+  	
+  	<!-- 신규 차단 ID 등록 -->
+  	<insert id="insertBlockId" parameterType="blockIdVO">
+		INSERT INTO block_id(
+			block_id
+			, block_id_count
+			, block_id_ip
+			, block_id_use_yn
+			, block_id_last_date
+			, block_id_create_date
+		) VALUES (
+			#{blockId}
+			, #{blockIdCount}
+			, #{blockIdIp}
+			, 'Y'
+			, now()
+			, now()
+		)
+  	</insert>
+  	
+  	<!-- 차단 ID 수정 -->
+	<update id="updateBlockId" parameterType="blockIdVO">
+		UPDATE block_id
+		SET block_id_count = #{blockIdCount}
+			, block_id_ip = #{blockIdIp}
+			, block_id_last_date = now()
+			, block_id_use_yn = 'Y'
+		WHERE block_id_seq = #{blockIdSeq}
+  	</update>
+  	
+  	<!-- 차단 이력 확인 -->
+	<select id="isBlockId" resultType="int" parameterType="blockIdVO">
+		SELECT COUNT(*)
+		FROM block_id
+		WHERE block_id = #{blockId}
+  	</select>
+  	
+  	<!-- 차단 ID 상세 확인 -->
+	<select id="selectBlockId" resultType="blockIdVO" parameterType="blockIdVO">
+		SELECT *
+		FROM block_id
+		WHERE block_id = #{blockId}
+  	</select>
+  	
+  	<!-- 차당 ID 목록 -->
+	<select id="selectBlockIdList" resultType="blockIdVO" parameterType="blockIdVO">
+		SELECT *
+		FROM block_id
+  	</select>
+  	
+</mapper>

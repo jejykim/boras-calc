@@ -39,4 +39,9 @@ public class LedgerExcelService implements LedgerExcelMapper {
 		return ledgerExcelMapper.selectLedgerExcelDetailForValidation(ledgerExcelVO);
 	}
 
+	@Override
+	public int isExcelExist(LedgerExcelVO ledgerExcelVO) {
+		return ledgerExcelMapper.isExcelExist(ledgerExcelVO);
+	}
+
 }
