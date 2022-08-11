@@ -21,7 +21,7 @@
 			now()
 		) 
   	</insert>
-  	<!-- 소분류 코드등록 -->
+  	<!-- 코드등록 -->
   	<insert id="insertCode" parameterType="codeVO">
 		INSERT INTO code(
 			code_id,
@@ -67,6 +67,20 @@
 			code_update_date
 		FROM code
 		WHERE code_parent_id=#{codeParentId}
+  	</select>
+  	
+  	<!-- 코드 상세 조회 -->
+	<select id="selectCodeInfo" resultType="codeVO" parameterType="codeVO">
+		SELECT 
+			code_id,
+			code_name,
+			code_parent_id,
+			code_description,
+			code_use_yn,
+			code_create_date,
+			code_update_date
+		FROM code
+		WHERE code_id=#{codeId}
   	</select>
   	
   	<!-- 코드 수정 -->

@@ -33,6 +33,11 @@ public class CodeService implements CodeMapper {
 	public List<CodeVO> selectCodeList(CodeVO codeVO) {
 		return codeMapper.selectCodeList(codeVO);
 	}
+	
+	@Override
+	public CodeVO selectCodeInfo(CodeVO codeVO) {
+		return codeMapper.selectCodeInfo(codeVO);
+	}
 
 	@Override
 	public int updateCode(CodeVO codeVO) {

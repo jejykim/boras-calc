@@ -15,7 +15,7 @@ public class CodeVO {
 	private String codeDescription;
 	
 	// 코드 사용여부
-	private String codeUserYn;
+	private String codeUseYn;
 	
 	// 코드 생성일
 	private String codeCreateDate;
@@ -55,12 +55,12 @@ public class CodeVO {
 		this.codeDescription = codeDescription;
 	}
 
-	public String getCodeUserYn() {
-		return codeUserYn;
+	public String getCodeUseYn() {
+		return codeUseYn;
 	}
 
-	public void setCodeUserYn(String codeUserYn) {
-		this.codeUserYn = codeUserYn;
+	public void setCodeUseYn(String codeUseYn) {
+		this.codeUseYn = codeUseYn;
 	}
 
 	public String getCodeCreateDate() {

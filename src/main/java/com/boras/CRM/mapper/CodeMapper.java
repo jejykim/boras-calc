@@ -38,6 +38,13 @@ public interface CodeMapper {
 	public List<CodeVO> selectCodeList(CodeVO codeVO);
 	
 	/**
+	 * 소분류 코드조회
+	 * @param 
+	 * @return List<CodeVO>
+	 */
+	public CodeVO selectCodeInfo(CodeVO codeVO);
+	
+	/**
 	 * 코드 수정
 	 * @param 
 	 * @return int
