@@ -11,7 +11,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.boras.CRM.services.BlockIpService;
-import com.boras.CRM.util.BlockIpHelper;
+import com.boras.CRM.util.BlockHelper;
 import com.boras.CRM.util.PermissionHelper;
 
 @Component
@@ -31,7 +31,7 @@ public class LogInterceptor implements HandlerInterceptor {
         
         response.setContentType("text/html; charset=UTF-8");
         
-        if(BlockIpHelper.setBlockIp(blockIpService, request, response)) {
+        if(BlockHelper.setBlockIp(blockIpService, request, response)) {
         	if(!PermissionHelper.checkPermission(response, request, uri)) {
         		//response.sendRedirect("/");	//페이지 이동 
         		logger.warn("[ URL : " + uri + " , IP : " + ip + " ] There is No Permission");

@@ -13,13 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.boras.CRM.services.BlockIdService;
 import com.boras.CRM.services.LoginService;
 import com.boras.CRM.services.LogsService;
 import com.boras.CRM.services.UserService;
 import com.boras.CRM.session.WebSessionListener;
+import com.boras.CRM.util.BlockHelper;
 import com.boras.CRM.util.HashHelper;
 import com.boras.CRM.util.PermissionHelper;
 import com.boras.CRM.vo.UserVO;
@@ -37,6 +38,9 @@ public class LoginController {
 	
 	@Autowired
 	private LogsService logsService;
+	
+	@Autowired
+	BlockIdService blockIdService;
 	
 	/**
 	 * 로그인 페이지
@@ -86,27 +90,35 @@ public class LoginController {
 				}
 				
 				if(iCheck == 1) {
-					String salt = null;
+					boolean blockFlag = BlockHelper.isBlockId(blockIdService, req, resp, userVO.getUserId());
 					
-					try {
-						salt = loginService.selectUserSalt(userVO);
-					} catch (Exception e) {
-						logger.error("[ URL : " + req.getRequestURI() + " ] ERROR : DB_selectUserSalt");
-						logger.error(e.getMessage());
-					}
-					
-					if(salt != null) {
+					if(blockFlag) {
+						iResult = 4;
+					}else {
+						BlockHelper.setBlockId(blockIdService, req, resp, userVO.getUserId());
+						
+						String salt = null;
+						
 						try {
-							userVO.setUserPw(new HashHelper().sha256(userVO.getUserPw(), salt));
-						} catch (NoSuchAlgorithmException e) {
-							logger.error("[ URL : " + req.getRequestURI() + " ] ERROR : Hashing PW");
+							salt = loginService.selectUserSalt(userVO);
+						} catch (Exception e) {
+							logger.error("[ URL : " + req.getRequestURI() + " ] ERROR : DB_selectUserSalt");
 							logger.error(e.getMessage());
-							
-							iResult = 3;
 						}
 						
-						if(iResult != 3) {
-							iResult = loginService.login(userVO);
+						if(salt != null) {
+							try {
+								userVO.setUserPw(new HashHelper().sha256(userVO.getUserPw(), salt));
+							} catch (NoSuchAlgorithmException e) {
+								logger.error("[ URL : " + req.getRequestURI() + " ] ERROR : Hashing PW");
+								logger.error(e.getMessage());
+								
+								iResult = 3;
+							}
+							
+							if(iResult != 3) {
+								iResult = loginService.login(userVO);
+							}
 						}
 					}
 				}else {
@@ -129,6 +141,7 @@ public class LoginController {
 				break;
 			case 1:
 				logger.info("[ ID : " + userVO.getUserId() + ", Login Result : " + iResult + " ] Login Success!");
+				BlockHelper.resetBlockId(userVO.getUserId());
 				
 				// 마지막 로그인 정보
 				userVO.setUserLastAccessIp(req.getRemoteAddr());
@@ -161,6 +174,11 @@ public class LoginController {
 				logger.error("[ Login Result : " + iResult + " ] ERROR : Hashing PW");
 				//LogHelper.insertLog(req, logsService, "LOG001", "LA004", "LS002", "[ Tried Login : " + userDTO.getUserId() + " ] ERROR : Hashing PW", PermissionHelper.getIP(req));
 				redirectAttributes.addFlashAttribute("errorMsg", "[ 서버 오류 ] 관리자에게 문의해주세요.");
+				break;
+			case 4:
+				logger.error("[ Login Result : " + iResult + " ] Blocked ID");
+				//LogHelper.insertLog(req, logsService, "LOG001", "LA004", "LS002", "[ Tried Login : " + userDTO.getUserId() + " ] ERROR : Hashing PW", PermissionHelper.getIP(req));
+				redirectAttributes.addFlashAttribute("errorMsg", "차단된 계정입니다.\\n관리자에게 문의해주세요.");
 				break;
 			default:
 				logger.error("[ Login Result : " + iResult + " ] Login DB Connet Error!");

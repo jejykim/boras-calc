@@ -1,6 +1,6 @@
 package com.boras.CRM.vo;
 
-public class UserVO {
+public class UserVO extends PagingVO {
 
 	// 아이디
 	private String userId;
@@ -46,6 +46,12 @@ public class UserVO {
 	
 	// salt
 	private String userSalt;
+	
+	// session live
+	private String sessionLive;
+	
+	// AG 관리자 선택
+	private String agOrAdmin = "";
 
 	public String getUserId() {
 		return userId;
@@ -167,4 +173,20 @@ public class UserVO {
 		this.userEmail = userEmail;
 	}
 
+	public String getSessionLive() {
+		return sessionLive;
+	}
+
+	public void setSessionLive(String sessionLive) {
+		this.sessionLive = sessionLive;
+	}
+
+	public String getAgOrAdmin() {
+		return agOrAdmin;
+	}
+
+	public void setAgOrAdmin(String agOrAdmin) {
+		this.agOrAdmin = agOrAdmin;
+	}
+	
 }

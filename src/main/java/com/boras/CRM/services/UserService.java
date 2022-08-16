@@ -16,55 +16,46 @@ public class UserService implements UserMapper {
 
 	@Override
 	public int changeUserPw(UserVO userVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return userMapper.changeUserPw(userVO);
 	}
 
 	@Override
 	public int checkUserId(UserVO userVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return userMapper.checkUserId(userVO);
 	}
 
 	@Override
 	public UserVO selectUserInfo(UserVO userVO) {
-		// TODO Auto-generated method stub
-		return null;
+		return userMapper.selectUserInfo(userVO);
 	}
 
 	@Override
 	public List<UserVO> selectUserList(UserVO userVO) {
-		// TODO Auto-generated method stub
-		return null;
+		return userMapper.selectUserList(userVO);
 	}
 
 	@Override
 	public int selectUserListCount(UserVO userVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return userMapper.selectUserListCount(userVO);
 	}
 
 	@Override
 	public int insertUser(UserVO userVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return userMapper.insertUser(userVO);
 	}
 
 	@Override
 	public int updateUser(UserVO userVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return userMapper.updateUser(userVO);
 	}
 
 	@Override
 	public int updateUserUseN(UserVO userVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return userMapper.updateUserUseN(userVO);
 	}
 
 	@Override
-	public List<UserVO> selectEmailList(UserVO userVO) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<UserVO> selectUserListNew() {
+		return userMapper.selectUserListNew();
 	}
 }

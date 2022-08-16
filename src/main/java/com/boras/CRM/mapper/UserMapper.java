@@ -66,10 +66,10 @@ public interface UserMapper {
 	public int updateUserUseN(UserVO userVO);
 	
 	/**
-	 * 사용자 이메일 조회
+	 * 신규 사용자 목록 조회
 	 * @param 
 	 * @return List<UserVO>
 	 */
-	public List<UserVO> selectEmailList(UserVO userVO);
+	public List<UserVO> selectUserListNew();
 
 }

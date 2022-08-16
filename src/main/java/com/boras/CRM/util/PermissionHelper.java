@@ -59,7 +59,7 @@ public class PermissionHelper {
 		JSONObject detailJobj = new JSONObject();
 		
 		detailJobj.put(USER_NAME, "임시테스트");
-		detailJobj.put(PERMISSION_LEVEL, "0000");
+		detailJobj.put(PERMISSION_LEVEL, 0);
 		
 		WebSessionListener.userList.put("dev", detailJobj);
 	}

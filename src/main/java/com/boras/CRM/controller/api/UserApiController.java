@@ -1,6 +1,7 @@
 package com.boras.CRM.controller.api;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -128,6 +130,29 @@ public class UserApiController {
 			
 	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
     		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+	    		
+    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00002));
+    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00002));
+		}
+		
+		return rvt;
+	}
+	
+	/**
+	 * 신규 사용자 목록
+	 */
+	@GetMapping(value = "/list/new")
+	public Map<String, Object> userListNew(HttpServletRequest req, HttpServletResponse resp) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    try {
+	    	List<UserVO> list = userService.selectUserListNew();
+			
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+    		rvt.put("list", list);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 	    		

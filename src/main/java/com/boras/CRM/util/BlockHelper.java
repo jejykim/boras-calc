@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,13 +15,16 @@ import org.slf4j.LoggerFactory;
 
 import com.boras.CRM.services.BlockIdService;
 import com.boras.CRM.services.BlockIpService;
+import com.boras.CRM.vo.BlockIdVO;
 import com.boras.CRM.vo.BlockIpVO;
 
-public class BlockIpHelper {
+public class BlockHelper {
 	
-	private static final Logger logger = LoggerFactory.getLogger(BlockIpHelper.class);
+	private static final Logger logger = LoggerFactory.getLogger(BlockHelper.class);
 
 	private static JSONObject blockIpList = new JSONObject();
+	
+	private static JSONObject blockIdList = new JSONObject();
 	
 	/**
 	 * 프로젝트 init 차단 IP 조회 및 선언
@@ -159,7 +159,7 @@ public class BlockIpHelper {
 		if(!flag) {
 			try {
 				PrintWriter printwriter = resp.getWriter();
-				printwriter.print("<script>alert('접근이 차단되었습니다.\\n관리자에게 문의해주세요.'); history.back();</script>");
+				printwriter.print("<script>alert('접근이 차단되었습니다.\\n관리자에게 문의해주세요.'); location.href='/';</script>");
 				printwriter.flush();
 				printwriter.close();
 			} catch (IOException e) {
@@ -170,11 +170,83 @@ public class BlockIpHelper {
 		return flag;
 	}
 	
-	public static boolean isBlockId(BlockIdService blockIdService, HttpServletRequest req, HttpServletResponse resp) {
-		boolean flag = false;
+	/**
+	 * 계정 차단 유무
+	 * @param blockIdService
+	 * @param req
+	 * @param resp
+	 * @param id
+	 * @return
+	 */
+	public static boolean isBlockId(BlockIdService blockIdService, HttpServletRequest req, HttpServletResponse resp, String id) {
+		boolean flag = true;
 		
+		BlockIdVO vo = new BlockIdVO();
+		vo.setBlockId(id);
 		
+		try {
+			int i = blockIdService.isBlockId(vo);
+			
+			if(i > 0) {
+				vo = blockIdService.selectBlockId(vo);
+				
+				if(vo.getBlockIdUseYn().equals("N")) {
+					flag = false;
+				}
+			}else {
+				flag = false;
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
 		
 		return flag;
+	}
+	
+	/**
+	 * 계정 차단
+	 */
+	public static void setBlockId(BlockIdService blockIdService, HttpServletRequest req, HttpServletResponse resp, String id) {
+		
+		if(blockIdList.containsKey(id)) {
+			int count = (int) blockIdList.get(id);
+			
+			if(!(count > 5)) {
+				count = count + 1;
+				
+				if(count > 4) {
+					BlockIdVO vo = new BlockIdVO();
+					vo.setBlockId(id);
+					
+					try {
+						int i = blockIdService.isBlockId(vo);
+						
+						if(i > 0) {
+							vo = blockIdService.selectBlockId(vo);
+							vo.setBlockIdIp(req.getRemoteHost());
+							vo.setBlockIdCount(vo.getBlockIdCount() + 1);
+							
+							blockIdService.updateBlockId(vo);
+						}else {
+							vo.setBlockIdIp(req.getRemoteHost());
+							
+							blockIdService.insertBlockId(vo);
+						}
+					} catch (Exception e) {
+						logger.error(e.getMessage());
+					}
+				}
+			}
+		}
+		
+	}
+	
+	/**
+	 * 계정 차단 static 초기화
+	 */
+	public static void resetBlockId(String id) {
+		if(blockIdList.containsKey(id)) {
+			blockIdList.remove(id);
+		}
 	}
 }
