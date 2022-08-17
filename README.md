@@ -2,9 +2,10 @@
 WEB - Spring boot  
 
 ## Version
-**0.5.0**
+**0.6.0**
 
 ## Version description
+**[0.6.0]** code view 추가, 원장 view 추가, ag용 원장 목록 추가(페이징x)  
 **[0.5.0]** ID 차단 util 추가, 계정 목록 화면 back-end 추가, 권한 수정  
 ==================== 2 week ====================  
 **[0.4.0]** 코드 관리 api 추가, 문의VO 추가  

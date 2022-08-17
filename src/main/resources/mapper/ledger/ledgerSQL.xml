@@ -240,4 +240,15 @@
 	<select id="selectLedgerListCount" resultType="ledgerVO"  parameterType="ledgerVO">
   	</select>
   	
+  	<!-- 원장 목록 (AG용) -->
+	<select id="selectLedgerListForAg" resultType="ledgerVO" parameterType="ledgerVO">
+		SELECT l.*
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_product_cd) as ledgerFinancialProductCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
+		FROM ledger l
+  	</select>
+  	
 </mapper>

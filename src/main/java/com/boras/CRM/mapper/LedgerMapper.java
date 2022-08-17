@@ -44,4 +44,11 @@ public interface LedgerMapper {
 	 */
 	public int selectLedgerListCount(LedgerVO ledgerVO);
 	
+	/**
+	 * 원장 목록 (AG용)
+	 * @param ledgerVO
+	 * @return
+	 */
+	public List<LedgerVO> selectLedgerListForAg(LedgerVO ledgerVO);
+	
 }

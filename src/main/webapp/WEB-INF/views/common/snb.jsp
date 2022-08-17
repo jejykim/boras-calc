@@ -21,8 +21,8 @@
          <hr class="navbar-divider custom-hr-mg opacity-70">
          <ul class="navbar-nav">
              <li><span class="nav-link text-xs font-semibold text-uppercase text-muted ls-wide">원장</span></li>
-            <li class="nav-item"><a class="nav-link py-2" href="/capital/ledger/list"><i class="bi bi-list-check"></i> 금융사 원장 목록</a></li>
-            <li class="nav-item"><a class="nav-link py-2 d-flex align-items-center" href="/capital/ledger/mg/list"><i class="bi bi-list-check"></i> <span>금융사 원장 목록</span> <span class="badge badge-sm bg-soft-success text-success rounded-pill ms-auto">관리자용</span></a></li>
+            <li class="nav-item"><a class="nav-link py-2" href="/ag/ledger/list"><i class="bi bi-list-check"></i> 금융사 원장 목록</a></li>
+            <li class="nav-item"><a class="nav-link py-2 d-flex align-items-center" href="/admin/ledger/list"><i class="bi bi-list-check"></i> <span>금융사 원장 목록</span> <span class="badge badge-sm bg-soft-success text-success rounded-pill ms-auto">관리자용</span></a></li>
          </ul>
          <hr class="navbar-divider custom-hr-mg opacity-70">
          <ul class="navbar-nav">

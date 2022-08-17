@@ -39,4 +39,9 @@ public class LedgerService implements LedgerMapper {
 		return ledgerMapper.selectLedgerListCount(ledgerVO);
 	}
 
+	@Override
+	public List<LedgerVO> selectLedgerListForAg(LedgerVO ledgerVO) {
+		return ledgerMapper.selectLedgerListForAg(ledgerVO);
+	}
+
 }
