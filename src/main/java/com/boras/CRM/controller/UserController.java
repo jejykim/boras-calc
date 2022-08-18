@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.stereotype.Controller;
@@ -34,9 +35,9 @@ public class UserController {
 	/*
 	 * 사용자 목록 페이지
 	 */
-	@PostMapping(value = "/user/list")
+	@GetMapping(value = "/user/list")
 	public String userList(Model model, HttpServletRequest req, HttpServletResponse resp, UserVO userVO) {
-		String result = "user/list";
+		String result = "user/user-list";
 		
 		if(userVO.getNowPage() != 1) {
 			userVO.setPage((userVO.getNowPage()-1)*userVO.getPagePerRows());
@@ -73,6 +74,7 @@ public class UserController {
 		model.addAttribute("list", list);
 		model.addAttribute("listCount", listCount);
 		model.addAttribute("pagingVO", pagingVO);
+		model.addAttribute("userVO", userVO);
     	
 		return result;
 	}

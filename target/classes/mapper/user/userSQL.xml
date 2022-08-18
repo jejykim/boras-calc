@@ -30,7 +30,7 @@
 		FROM
 			(SELECT *
 			FROM users
-			WHERE use_yn = 'Y'
+			WHERE 1=1
 			<if test="userName != null and userName != ''">
 				AND user_name like CONCAT('%',#{userName},'%')
 			</if>
@@ -70,7 +70,7 @@
 	<select id="selectUserListCount" resultType="int" parameterType="userVO">
 			SELECT COUNT(*)
 			FROM users
-			WHERE use_yn = 'Y'
+			WHERE 1=1
 			<if test="userName != null and userName != ''">
 				AND user_name like CONCAT('%',#{userName},'%')
 			</if>
@@ -97,6 +97,9 @@
 						</if>
 					</otherwise>
 				</choose>
+			</if>
+			<if test="userUseYn != null and userUseYn != ''">
+				AND user_use_yn = #{userUseYn}
 			</if>
   	</select>
   	
@@ -130,12 +133,12 @@
   	<!-- 사용자 수정 -->
 	<update id="updateUser" parameterType="userVO">
 		UPDATE users
-		SET user_name = #{userName},
-			user_email = #{userEmail},
-			user_ag_company = #{userAgCompany},
-			user_permission_cd = #{userPermissionCd},
-			<if test="useYn != null and useYn != ''">
-				use_yn = #{useYn},
+		SET user_name = #{userName}
+			, user_email = #{userEmail}
+			, user_ag_company = #{userAgCompany}
+			, user_permission_cd = #{userPermissionCd}
+			<if test="userUseYn != null and userUseYn != ''">
+				, user_use_yn = #{userUseYn}
 			</if>
 		WHERE user_id = #{userId}
   	</update>
@@ -143,7 +146,7 @@
   	<!-- 사용자 비활성화 -->
 	<update id="updateUserUseN" parameterType="userVO">
 		UPDATE users
-		SET use_yn = 'N'
+		SET user_use_yn = 'N'
 		WHERE user_id = #{userId}
   	</update>
   	

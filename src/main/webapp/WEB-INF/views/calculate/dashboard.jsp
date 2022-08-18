@@ -6,25 +6,20 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!doctype html>
 <html lang="ko" data-theme="dark">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-      <meta name="color-scheme" content="dark light">
-      <title>Boras 정산</title>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-      <link rel="stylesheet" type="text/css" href="/static/assets/css/main.css">
-      <link rel="stylesheet" type="text/css" href="/static/assets/css/utilities.css">
-      <link rel="stylesheet" type="text/css" href="/static/assets/css/custom.css">
-
-      <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-      <script src='/static/assets/js/common/Chart.min.js'></script>
-      <script src='/static/assets/js/common/Chart.bundle.min.js'></script>
-      <script src='/static/assets/js/common/tether.min.js'></script>
-      <script src='/static/assets/js/common/popper.min.js'></script>
-      <script src='/static/assets/js/common/bootstrap.min.js'></script>
-      <script src='/static/assets/js/common/lazysizes.min.js'></script>
-      
-   </head>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>CRM</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+	<script src="https://use.fontawesome.com/6ab134b18c.js"></script>
+	<link rel="stylesheet" href="/static/assets/css/common.css">
+	<link rel="stylesheet" href="/static/assets/css/style.css">
+	
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	<script src='/static/assets/js/common/common.js'></script>
+</head>   </head>
    <body>
       <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
          

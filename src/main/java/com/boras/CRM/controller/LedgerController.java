@@ -54,7 +54,7 @@ public class LedgerController {
 	 */
 	@GetMapping(value = "/admin/ledger/list")
 	public String adminLedgerList(Model model, HttpServletRequest req, HttpServletResponse resp, LedgerVO ledgerVO) {
-		String result = "ledger/ledger-list-admin";
+		String result = "ledger-admin/ledger-list";
     	
 		if(ledgerVO.getNowPage() != 1) {
 			ledgerVO.setPage((ledgerVO.getNowPage()-1)*ledgerVO.getPagePerRows());

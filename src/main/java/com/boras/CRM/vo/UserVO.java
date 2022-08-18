@@ -52,6 +52,9 @@ public class UserVO extends PagingVO {
 	
 	// AG 관리자 선택
 	private String agOrAdmin = "";
+	
+	// 검색 input
+	private String searchText = "";
 
 	public String getUserId() {
 		return userId;
@@ -187,6 +190,14 @@ public class UserVO extends PagingVO {
 
 	public void setAgOrAdmin(String agOrAdmin) {
 		this.agOrAdmin = agOrAdmin;
+	}
+
+	public String getSearchText() {
+		return searchText;
+	}
+
+	public void setSearchText(String searchText) {
+		this.searchText = searchText;
 	}
 	
 }

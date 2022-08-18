@@ -1,0 +1,475 @@
+@charset "utf-8";
+
+* {
+    margin: 0;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    font-family: 'Noto Sans KR', sans-serif;
+    box-sizing: border-box;
+}
+
+*,
+:after,
+:before {
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+:root {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    cursor: default;
+    line-height: 1.5;
+    overflow-wrap: break-word;
+    -moz-tab-size: 4;
+    tab-size: 4
+}
+
+html,
+body {
+    height: 100%;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+button {
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none
+}
+
+i {
+    font-style: normal
+}
+
+dl,
+li,
+menu,
+ol,
+ul {
+    list-style: none
+}
+
+table {
+    border-spacing: 0px;
+    border-collapse: separate;
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+}
+
+/*--------------------------------------------------------------------------------------
+common
+----------------------------------------------------------------------------------------*/
+.wrap {
+    width: 100%;
+    height: 100%;
+    background-color: #EFF0F4;
+    position: relative;
+    display: flex;
+    font-weight: 300;
+}
+
+h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+i {
+    display: inline-block;
+}
+
+/*--------------------------------------------------------------------------------------
+header
+----------------------------------------------------------------------------------------*/
+header {
+    width: calc(100% - 200px);
+    background-color: #fff;
+    height: 60px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+}
+
+header .user {
+    width: 100%;
+    text-align: right;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/*--------------------------------------------------------------------------------------
+contents
+----------------------------------------------------------------------------------------*/
+.contents {
+    width: 100%;
+    position: relative;
+    display: flex;
+}
+
+/*aside*/
+aside {
+    width: 200px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 101;
+    background-color: #2B3466;
+    display: flex;
+    flex-direction: column;
+    color: #9AA1C3;
+    font-size: .9rem;
+    font-weight: 300;
+}
+
+.menu .logo {
+    width: 100%;
+    height: 60px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.menu .logo .i-menu {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-image: url(../images/icon/menu.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: absolute;
+    right: 18px;
+    cursor: pointer;
+}
+
+.menu .logo a {
+    display: inline-block;
+    cursor: pointer;
+    margin-left: -20px;
+}
+
+.mainmenu:first-of-type a {
+    display: inline-block;
+    width: 100%;
+    padding: 12px;
+}
+
+.mainmenu {
+    border-bottom: 1px solid #313B71;
+}
+
+aside li h4 {
+    font-size: 12px;
+    padding: 12px;
+    color: #5D6590;
+}
+
+aside li .submenu ul li {
+    cursor: pointer;
+}
+
+aside li .submenu ul li a {
+    display: inline-block;
+    width: 100%;
+    padding: 10px 12px;
+}
+
+aside li a i {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    color: #9AA1C3;
+    font-size: 12px;
+    text-align: center;
+    padding-top: 1px;
+    margin-right: 4px;
+}
+
+
+aside li .on {
+    background-color: #1B2245;
+    color: #fff;
+    font-weight: 400;
+}
+
+aside li .on i {
+    color: #fff;
+}
+
+
+/*main*/
+main {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex: 1 0 auto;
+    flex-direction: column !important;
+    position: relative;
+    padding-left: 200px;
+    padding-top: 60px;
+
+}
+
+main .wrapper {
+    width: 100%;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-header {
+    width: 100%;
+    padding: 12px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title h3 {
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.main-header .header-sub {
+    text-align: right;
+    padding: 0;
+}
+
+.header-sub button {
+    border-radius: 3px;
+    font-size: 14px;
+    color: #fff;
+}
+
+.row {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    border-radius: 3px;
+    margin-bottom: 12px;
+}
+
+.f-box > div {
+    background-color: #fff;
+    margin: 0.5%;
+    width: 19.2%;
+    padding: 15px 10px;
+    border-radius: 3px;
+}
+
+.f-box > div:first-of-type {
+    margin-left: 0;
+}
+
+.f-box > div:last-of-type {
+    margin-right: 0;
+}
+
+.f-box .portlet h5 {
+    display: inline-block;
+    width: 50%;
+    font-size: 14px;
+    border-right: 1px solid #E3E3E3;
+    float: left;
+    color: #818080;
+    font-weight: 400;
+}
+
+.f-box .portlet h5 i {
+    display: inline-block;
+    width: 23px;
+    height: 23px;
+    border-radius: 100px;
+    vertical-align: middle;
+    margin-right: 4px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center
+}
+
+.f-box .portlet .price {
+    display: inline-block;
+    width: 50%;
+    text-align: right;
+    color: #212529;
+    font-weight: 500;
+}
+
+.ico-f1 {
+    background-image: url(../images/icon/ico-f1.png);
+}
+
+.ico-f2 {
+    background-image: url(../images/icon/ico-f2.png);
+}
+
+.ico-f3 {
+    background-image: url(../images/icon/ico-f3.png);
+}
+
+.ico-f4 {
+    background-image: url(../images/icon/ico-f4.png);
+}
+
+.ico-f5 {
+    background-image: url(../images/icon/ico-f5.png);
+}
+
+
+.main-content {
+    flex-direction: column;
+
+}
+
+/*tab*/
+.portlet-header {
+    width: 100%;
+    border-bottom: 1px solid #ECEEF2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 24px;
+}
+
+.portlet-header ul li {
+    float: left;
+    padding: 20px 24px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.portlet-header ul li.on {
+    color: #5C61F4;
+    font-weight: 500;
+    border-bottom: 2px solid #5C61F4;
+}
+
+/*table*/
+.table-filter {
+    padding: 8px 24px;
+    padding-bottom: 0;
+    text-align: right;
+}
+
+.table-filter > span {
+    display: inline-block;
+    background-color: #F1F4FF;
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 3px;
+}
+
+.table-filter > span i {
+    color: #8D919C;
+    cursor: pointer;
+}
+
+.table-filter > span strong .filter {
+    font-weight: 500;
+    color: #3E4045;
+}
+
+.table-filter > span strong {
+    color: #8D919C;
+}
+
+.table {
+    margin: 24px;
+    margin-top: 8px;
+}
+
+table tr th {
+    background-color: #1B2245;
+    color: #fff;
+    padding: 10px;
+    font-size: 13px;
+    text-align: center;
+}
+
+table tr th.cur {
+    cursor: pointer;
+}
+
+table td {
+    border-bottom: 1px solid #EAF0F7;
+    padding: 8px 5px;
+}
+
+table th i {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-left: 6px;
+    background-image: url(../images/icon/ico-filter.png);
+    background-repeat: no-repeat;
+    background-size: 12px;
+    background-position: center;
+}
+
+.table button {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.page_wrap {
+    text-align: center;
+    font-size: 0;
+    margin-top: 24px;
+}
+
+.page_nation {
+    display: inline-block;
+}
+
+.page_nation .none {
+    display: none;
+}
+
+.page_nation a {
+    display: block;
+    float: left;
+    border: 1px solid #E2E4E9;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    background-color: #fff;
+    font-size: 13px;
+    color: #999999;
+    text-decoration: none;
+}
+
+.page_nation .arrow {
+    border: 1px solid #ccc;
+}
+
+
+.page_nation a.active {
+    background-color: #5C61F4;
+    color: #fff;
+    border: 1px solid #5C61F4;
+}
