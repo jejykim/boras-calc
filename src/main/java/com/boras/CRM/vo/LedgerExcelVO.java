@@ -94,7 +94,7 @@ public class LedgerExcelVO {
 	// 슬라이딩-합계
 	private String ledgerSlidingSum;
 	
-	// 슬라이딩-공급각
+	// 슬라이딩-공급가
 	private String ledgerSlidingSupplyPrice;
 	
 	// 슬라이딩-부가세

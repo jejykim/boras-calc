@@ -2,9 +2,10 @@
 WEB - Spring boot  
 
 ## Version
-**0.6.1**
+**0.6.2**
 
 ## Version description
+**[0.6.2]** 문의 api 추가  
 **[0.6.1]** 사용자 목록 jsp 추가(ing)  
 **[0.6.0]** code view 추가, 원장 view 추가, ag용 원장 목록 추가(페이징x)  
 **[0.5.0]** ID 차단 util 추가, 계정 목록 화면 back-end 추가, 권한 수정  
