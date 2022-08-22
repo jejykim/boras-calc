@@ -59,7 +59,7 @@
                 <h4>시스템</h4>
                 <div class="submenu">
                     <ul>
-                        <li <%=uri.contains("/") ? "class='on'" : "" %>><a href="/"><i class="fa fa-file-excel-o" aria-hidden="true"></i><span>원장 Excel 설정</span></a></li>
+                        <li <%=uri.contains("/system/ledger-excel-list") ? "class='on'" : "" %>><a href="/system/ledger/excel/list"><i class="fa fa-file-excel-o" aria-hidden="true"></i><span>원장 Excel 설정</span></a></li>
                         <li <%=uri.contains("/") ? "class='on'" : "" %>><a href="/"><i class="fa fa-file-code-o" aria-hidden="true"></i><span>공통코드</span></a></li>
                     </ul>
                 </div>

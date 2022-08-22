@@ -32,19 +32,19 @@ public class LedgerExcelVO {
 	private int ledgerFinancialCompanyCd;
 	
 	// 금융사 코드명
-	private int ledgerFinancialCompanyCdName;
+	private String ledgerFinancialCompanyCdName;
 	
 	// 금융지점 코드
 	private int ledgerFinancialBranchCd;
 	
 	// 금융지점 코드명
-	private int ledgerFinancialBranchCdName;
+	private String ledgerFinancialBranchCdName;
 	
 	// 금융상품 코드
 	private int ledgerFinancialProductCd;
 	
 	// 금융상품 코드명
-	private int ledgerFinancialProductCdName;
+	private String ledgerFinancialProductCdName;
 	
 	// 인도일
 	private String ledgerDeliveryDate;
@@ -123,7 +123,10 @@ public class LedgerExcelVO {
 	
 	// 통합 엑셀 사용유무
 	private String ledgerExcelCommonYn;
-
+	
+	// 검색 input
+	private String searchText = "";
+	
 	public int getLedgerExcelSeq() {
 		return ledgerExcelSeq;
 	}
@@ -348,27 +351,27 @@ public class LedgerExcelVO {
 		this.ledgerTypeCdName = ledgerTypeCdName;
 	}
 
-	public int getLedgerFinancialCompanyCdName() {
+	public String getLedgerFinancialCompanyCdName() {
 		return ledgerFinancialCompanyCdName;
 	}
 
-	public void setLedgerFinancialCompanyCdName(int ledgerFinancialCompanyCdName) {
+	public void setLedgerFinancialCompanyCdName(String ledgerFinancialCompanyCdName) {
 		this.ledgerFinancialCompanyCdName = ledgerFinancialCompanyCdName;
 	}
 
-	public int getLedgerFinancialBranchCdName() {
+	public String getLedgerFinancialBranchCdName() {
 		return ledgerFinancialBranchCdName;
 	}
 
-	public void setLedgerFinancialBranchCdName(int ledgerFinancialBranchCdName) {
+	public void setLedgerFinancialBranchCdName(String ledgerFinancialBranchCdName) {
 		this.ledgerFinancialBranchCdName = ledgerFinancialBranchCdName;
 	}
 
-	public int getLedgerFinancialProductCdName() {
+	public String getLedgerFinancialProductCdName() {
 		return ledgerFinancialProductCdName;
 	}
 
-	public void setLedgerFinancialProductCdName(int ledgerFinancialProductCdName) {
+	public void setLedgerFinancialProductCdName(String ledgerFinancialProductCdName) {
 		this.ledgerFinancialProductCdName = ledgerFinancialProductCdName;
 	}
 
@@ -442,6 +445,14 @@ public class LedgerExcelVO {
 
 	public void setLedgerExcelCommonYn(String ledgerExcelCommonYn) {
 		this.ledgerExcelCommonYn = ledgerExcelCommonYn;
+	}
+
+	public String getSearchText() {
+		return searchText;
+	}
+
+	public void setSearchText(String searchText) {
+		this.searchText = searchText;
 	}
 
 }

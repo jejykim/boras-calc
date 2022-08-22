@@ -106,7 +106,7 @@ public class SettingApiController {
 	    List<LedgerExcelVO> list = new ArrayList<>();
 	    
     	try {
-    		list = ledgerExcelService.selectLedgerExcelList();
+    		list = ledgerExcelService.selectLedgerExcelList(ledgerExcelVO);
     		
     		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
     		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));

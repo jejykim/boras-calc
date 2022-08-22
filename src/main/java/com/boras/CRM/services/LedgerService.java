@@ -1,6 +1,7 @@
 package com.boras.CRM.services;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,11 @@ public class LedgerService implements LedgerMapper {
 	@Override
 	public List<LedgerVO> selectLedgerListForAg(LedgerVO ledgerVO) {
 		return ledgerMapper.selectLedgerListForAg(ledgerVO);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectLedgerYear() {
+		return ledgerMapper.selectLedgerYear();
 	}
 
 }

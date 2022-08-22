@@ -3,7 +3,7 @@ Content  : FormLoad
 ========================================================================*/
 $(document).ready(function(){
 	try{
-		UserList.PageLoad();
+		LedgerExcelList.PageLoad();
 	}
 	catch(e){ console.log(e.message); }
 	
@@ -20,24 +20,24 @@ function FormBeforeUnLoad() {
 }
 
 /*=======================================================================
-UserList Class 명세 시작 (상수(변수)>>속성>>메서드)
+LedgerExcelList Class 명세 시작 (상수(변수)>>속성>>메서드)
 ========================================================================*/
-//UserList Class
-var UserList = {};
+//LedgerExcelList Class
+var LedgerExcelList = {};
 
-//UserList Const
+//LedgerExcelList Const
 
-//UserList Variable
+//LedgerExcelList Variable
 
-//UserList
+//LedgerExcelList
 var Properties = {};
-UserList.Properties = Properties;
+LedgerExcelList.Properties = Properties;
 
-//UserList Method
-UserList.PageLoad = function () { };  //메인 페이지 로드 공통 함수
-UserList.SetEvent = function () { };  //메인 페이지 이벤트 바인딩
+//LedgerExcelList Method
+LedgerExcelList.PageLoad = function () { };  //메인 페이지 로드 공통 함수
+LedgerExcelList.SetEvent = function () { };  //메인 페이지 이벤트 바인딩
 /*=======================================================================
-UserList Class 명세 끝
+LedgerExcelList Class 명세 끝
 ========================================================================*/
 
 /*=======================================================================
@@ -45,10 +45,10 @@ UserList Class 명세 끝
 작  성  자  : 김진열
 2022.08.18 - 최초생성
 ========================================================================*/
-UserList.PageLoad = function () {
+LedgerExcelList.PageLoad = function () {
     try {
-        UserList.Init();
-        UserList.SetEvent();
+        LedgerExcelList.Init();
+        LedgerExcelList.SetEvent();
     }
     catch (e) { console.log(e.message); }
 }
@@ -58,7 +58,7 @@ UserList.PageLoad = function () {
 작  성  자  : 김진열
 2022.08.18 - 최초생성
 ========================================================================*/
-UserList.Init = function () {
+LedgerExcelList.Init = function () {
     try {
 		if($("#inputSearchText").val() != "") {
 			$("#inputSearchText").focus();
@@ -73,22 +73,22 @@ UserList.Init = function () {
 작  성  자  : 김진열
 2022.08.18 - 최초생성
 ========================================================================*/
-UserList.SetEvent = function () {
+LedgerExcelList.SetEvent = function () {
     try {
 		// 사용자 탭 li
-		$("#liAg").click(function() {
+		$("#liAll").click(function() {
 			$("#searchText").val("");
-			$("#agOrAdmin").val("ag");
+			$("#ledgerExcelCommonYn").val("");
 			document.searchForm.submit();
 		});
-		$("#liNewAg").click(function() {
+		$("#liCommonN").click(function() {
 			$("#searchText").val("");
-			$("#agOrAdmin").val("new");
+			$("#ledgerExcelCommonYn").val("N");
 			document.searchForm.submit();
 		});
-		$("#liAdmin").click(function() {
+		$("#liCommonY").click(function() {
 			$("#searchText").val("");
-			$("#agOrAdmin").val("admin");
+			$("#ledgerExcelCommonYn").val("Y");
 			document.searchForm.submit();
 		});
 	
@@ -112,7 +112,7 @@ UserList.SetEvent = function () {
 작  성  자  : 김진열
 2022.08.18 - 최초생성
 ========================================================================*/
-UserList.Paging = function (page) {
+LedgerExcelList.Paging = function (page) {
     try {
 		if (page > 0) {
 			$("#now_page").val(page);
@@ -120,18 +120,6 @@ UserList.Paging = function (page) {
 		} else {
 			alert("잘못된 경로 입니다");
 		}	
-    }
-    catch (e) { console.log(e.message); }
-}
-
-/*=======================================================================
-내      용  : 사용자 상세 모달
-작  성  자  : 김진열
-2022.08.18 - 최초생성
-========================================================================*/
-UserList.userDetail = function (userId) {
-    try {
-		console.log(userId);
     }
     catch (e) { console.log(e.message); }
 }

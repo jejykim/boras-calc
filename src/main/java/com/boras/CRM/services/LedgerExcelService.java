@@ -25,8 +25,8 @@ public class LedgerExcelService implements LedgerExcelMapper {
 	}
 
 	@Override
-	public List<LedgerExcelVO> selectLedgerExcelList() {
-		return ledgerExcelMapper.selectLedgerExcelList();
+	public List<LedgerExcelVO> selectLedgerExcelList(LedgerExcelVO ledgerExcelVO) {
+		return ledgerExcelMapper.selectLedgerExcelList(ledgerExcelVO);
 	}
 
 	@Override

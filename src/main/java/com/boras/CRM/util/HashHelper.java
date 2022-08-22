@@ -15,6 +15,7 @@ public class HashHelper {
      * @return
      * @throws NoSuchAlgorithmException 
      */
+	/*
     public String sha256(String msg, String salt) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(salt.getBytes());
@@ -22,6 +23,7 @@ public class HashHelper {
         
         return bytesToHex(md.digest());
     }
+    */
     
     /**
      * SHA-512으로 해싱하는 메소드
@@ -62,4 +64,28 @@ public class HashHelper {
         byte[] bytes = new RandomSaltGenerator().generateSalt(16);
         return new String(Base64.getEncoder().encode(bytes));
     }
+    
+    public static void main(String[] args) {
+		byte[] bytes = new RandomSaltGenerator().generateSalt(16);
+        
+		String salt = new String(Base64.getEncoder().encode(bytes));
+		System.out.println(salt);
+        MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-512");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+        md.update(salt.getBytes());
+        md.update("1234".getBytes());
+        
+        StringBuilder builder = new StringBuilder();
+        for (byte b: md.digest()) {
+          builder.append(String.format("%02x", b));
+        }
+        
+        String rvt = builder.toString();
+        
+        System.out.println(rvt);
+	}
 }

@@ -114,14 +114,14 @@ public class PermissionHelper {
 	
 	// 세션 사용자 권한 레벨 추출
 	public static int getSessionUserPermissionLevel(HttpServletRequest req) {
-		int permissionLevel = 0;
+		int permissionLevel = -1;
 		
 		try {
 			if(checkUserSession(req)) {
 				permissionLevel = (int) req.getSession().getAttribute(PERMISSION_LEVEL);
 			}
 		} catch (Exception e) {
-			permissionLevel = 0;
+			permissionLevel = -1;
 		}
 		
 		return permissionLevel;
@@ -163,9 +163,10 @@ public class PermissionHelper {
 			if(uri.equals("/") || uri.contains("login") || uri.contains("logout")) {
 				bRetval = true;
 			}else if(getSessionUserPermissionLevel(req) == 0) {
+				req.getSession().invalidate();
 				try {
 					printwriter = resp.getWriter();
-					printwriter.print("<script>alert('신규 가입자는 관리자 승인 후 이용 가능합니다.\\n일정 기간동안 미승인일 경우 관리자에게 문의 부탁드립니다.'); history.back();</script>");
+					printwriter.print("<script>alert('신규 가입자는 관리자 승인 후 이용 가능합니다.\\n일정 기간동안 미승인일 경우 관리자에게 문의 부탁드립니다.'); location.href='/';</script>");
 					printwriter.flush();
 					printwriter.close();
 				} catch (IOException e) {
@@ -186,6 +187,7 @@ public class PermissionHelper {
 						}
 					}
 				}else {
+					req.getSession().invalidate();
 					try {
 						printwriter = resp.getWriter();
 						printwriter.print("<script>alert('로그인이 필요한 서비스 입니다.'); location.href='/';</script>");

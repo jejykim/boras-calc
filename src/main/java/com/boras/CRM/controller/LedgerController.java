@@ -1,7 +1,10 @@
 package com.boras.CRM.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,6 +63,7 @@ public class LedgerController {
 			ledgerVO.setPage((ledgerVO.getNowPage()-1)*ledgerVO.getPagePerRows());
 		}
 		
+		// 원장 목록
 		List<LedgerVO> list = new ArrayList<>();
 		int listCount = 0;
 		
@@ -77,6 +81,21 @@ public class LedgerController {
 			logger.error(e.getMessage());
 		}
 		
+		// 등록 년
+		List<Map<String, Object>> yearList = new ArrayList<>();
+		
+		try {
+			yearList = ledgerService.selectLedgerYear();
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectLedgerYear ]");
+			logger.error(e.getMessage());
+		}
+		
+		// 현재 년, 월
+		Calendar cal = Calendar.getInstance();
+		int thisYear = cal.get(Calendar.YEAR);
+		int thisMonth = cal.get(Calendar.MONTH) + 1;
+		
 		PagingControl pc = new PagingControl();
 		PagingVO pagingVO = pc.paging(listCount, ledgerVO.getNowPage(), ledgerVO.getPagePerRows());
 		
@@ -84,6 +103,9 @@ public class LedgerController {
 		model.addAttribute("listCount", listCount);
 		model.addAttribute("pagingVO", pagingVO);
 		model.addAttribute("ledgerVO", ledgerVO);
+		model.addAttribute("yearList", yearList);
+		model.addAttribute("thisYear", thisYear);
+		model.addAttribute("thisMonth", thisMonth);
     	
 		return result;
 	}

@@ -34,7 +34,7 @@ public interface LedgerExcelMapper {
 	 * 캐피탈 원장 엑셀 등록 목록
 	 * @return
 	 */
-	public List<LedgerExcelVO> selectLedgerExcelList();
+	public List<LedgerExcelVO> selectLedgerExcelList(LedgerExcelVO ledgerExcelVO);
 	
 	/**
 	 * 원장 엑셀 설정 수정

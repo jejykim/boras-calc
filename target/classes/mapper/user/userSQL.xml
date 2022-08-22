@@ -29,7 +29,10 @@
 		SELECT *
 		FROM
 			(SELECT *
-			FROM users
+				,(SELECT code_name FROM code WHERE code_id = user_business_type_cd) as user_business_type_cd_name
+				,(SELECT code_name FROM code WHERE code_id = user_code_company_cd) as user_code_company_cd_name
+				,(SELECT code_name FROM code WHERE code_id = user_permission_cd) as user_permission_cd_name
+			FROM users 
 			WHERE 1=1
 			<if test="userName != null and userName != ''">
 				AND user_name like CONCAT('%',#{userName},'%')
@@ -46,10 +49,13 @@
 			<if test="agOrAdmin != null and agOrAdmin != ''">
 				<choose>
 					<when test="agOrAdmin == 'ag'">
-						AND user_permission_cd like '12__'
+						AND user_permission_cd BETWEEN 1200 AND 1299
 					</when>
 					<when test="agOrAdmin == 'admin'">
-						AND user_permission_cd like '11__'
+						AND user_permission_cd BETWEEN 1100 AND 1199
+					</when>
+					<when test="agOrAdmin == 'new'">
+						AND user_permission_cd = 0
 					</when>
 					<otherwise>
 						<if test="userPermissionCd != null and userPermissionCd != ''">
@@ -60,6 +66,12 @@
 			</if>
 			<if test="userUseYn != null and userUseYn != ''">
 				AND user_use_yn = #{userUseYn}
+			</if>
+			<if test="searchText != null and searchText != ''">
+				AND (user_id like CONCAT('%',#{searchText},'%')
+					OR user_name like CONCAT('%',#{searchText},'%')
+					OR user_ag_company like CONCAT('%',#{searchText},'%')
+					OR user_email like CONCAT('%',#{searchText},'%'))
 			</if>
 			) data
 		ORDER BY data.user_join_date desc
@@ -86,10 +98,13 @@
 			<if test="agOrAdmin != null and agOrAdmin != ''">
 				<choose>
 					<when test="agOrAdmin == 'ag'">
-						AND user_permission_cd like '12__'
+						AND user_permission_cd BETWEEN 1200 AND 1299
 					</when>
 					<when test="agOrAdmin == 'admin'">
-						AND user_permission_cd like '11__'
+						AND user_permission_cd BETWEEN 1100 AND 1199
+					</when>
+					<when test="agOrAdmin == 'new'">
+						AND user_permission_cd = 0
 					</when>
 					<otherwise>
 						<if test="userPermissionCd != null and userPermissionCd != ''">
@@ -100,6 +115,12 @@
 			</if>
 			<if test="userUseYn != null and userUseYn != ''">
 				AND user_use_yn = #{userUseYn}
+			</if>
+			<if test="searchText != null and searchText != ''">
+				AND (user_id like CONCAT('%',#{searchText},'%')
+					OR user_name like CONCAT('%',#{searchText},'%')
+					OR user_ag_company like CONCAT('%',#{searchText},'%')
+					OR user_email like CONCAT('%',#{searchText},'%'))
 			</if>
   	</select>
   	
@@ -112,6 +133,7 @@
 			, user_name
 			, user_email
 			, user_business_type_cd
+			, user_code_company_cd
 			, user_ag_company
 			, user_join_date
 			, user_permission_cd
@@ -123,6 +145,7 @@
 			, #{userName}
 			, #{userEmail}
 			, #{userBusinessTypeCd}
+			, #{userCodeCompanyCd}
 			, #{userAgCompany}
 			, now()
 			, #{userPermissionCd}
@@ -137,6 +160,8 @@
 			, user_email = #{userEmail}
 			, user_ag_company = #{userAgCompany}
 			, user_permission_cd = #{userPermissionCd}
+			, user_code_company_cd = #{userCodeCompanyCd}
+			, user_business_type_cd = #{userBusinessTypeCd}
 			<if test="userUseYn != null and userUseYn != ''">
 				, user_use_yn = #{userUseYn}
 			</if>
@@ -157,6 +182,24 @@
 		WHERE user_permission_cd is null
 		OR user_permission_cd = 0
 		ORDER BY user_join_date desc
+  	</select>
+  	
+  	<!-- 사용자별 계정 수 -->
+	<select id="selectUserAgNewAdminCount" resultType="map">
+		select
+			'admin' as name
+			, count(*) as count
+		from users where user_permission_cd between 1100 and 1199
+		union
+		select
+			'ag' as name
+			, count(*) as count
+		from users where user_permission_cd between 1200 and 1299
+		union
+		select
+			'new' as name
+			, count(*) as count
+		from users where user_permission_cd = 0
   	</select>
   	
 </mapper>

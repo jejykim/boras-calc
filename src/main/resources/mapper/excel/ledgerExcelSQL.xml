@@ -171,14 +171,27 @@
   	
   	<!-- 캐피탈 원장 엑셀 등록 목록 -->
 	<select id="selectLedgerExcelList" resultType="ledgerExcelVO">
-		SELECT le.*
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_product_cd) as ledgerFinancialProductCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
-		,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
-		FROM ledger_excel le
-  	</select>
+		SELECT *
+		FROM (
+			SELECT le.*
+			,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
+			,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
+			,(SELECT code_name FROM code WHERE code_id = le.ledger_financial_product_cd) as ledgerFinancialProductCdName
+			,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
+			,(SELECT code_name FROM code WHERE code_id = le.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
+			FROM ledger_excel le
+			WHERE 1=1
+			<if test="ledgerExcelCommonYn != null and ledgerExcelCommonYn != ''">
+				AND ledger_excel_common_yn = #{ledgerExcelCommonYn}
+			</if>
+		) as data
+		WHERE 1=1
+		<if test="searchText != null and searchText != ''">
+			AND (data.ledgerFinancialCompanyCdName like CONCAT('%',#{searchText},'%')
+				OR data.ledgerFinancialBranchCdName like CONCAT('%',#{searchText},'%')
+				OR data.ledgerFinancialProductCdName like CONCAT('%',#{searchText},'%'))
+		</if>
+ 	</select>
   	
   	<!-- 원장 엑셀 설정 수정 -->
 	<update id="updateLedgerExcelSetting" parameterType="ledgerExcelVO">

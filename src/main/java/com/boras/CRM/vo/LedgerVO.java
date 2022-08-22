@@ -111,6 +111,9 @@ public class LedgerVO extends PagingVO {
 	
 	// 수정일
 	private String ledgerUpdateDate;
+	
+	// 검색 input
+	private String searchText = "";
 
 	public int getLedgerSeq() {
 		return ledgerSeq;
@@ -398,6 +401,14 @@ public class LedgerVO extends PagingVO {
 
 	public void setLedgerUpdateDate(String ledgerUpdateDate) {
 		this.ledgerUpdateDate = ledgerUpdateDate;
+	}
+
+	public String getSearchText() {
+		return searchText;
+	}
+
+	public void setSearchText(String searchText) {
+		this.searchText = searchText;
 	}
 	
 }

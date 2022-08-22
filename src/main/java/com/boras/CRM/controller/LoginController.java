@@ -108,7 +108,7 @@ public class LoginController {
 						
 						if(salt != null) {
 							try {
-								userVO.setUserPw(new HashHelper().sha256(userVO.getUserPw(), salt));
+								userVO.setUserPw(new HashHelper().sha512(userVO.getUserPw(), salt));
 							} catch (NoSuchAlgorithmException e) {
 								logger.error("[ URL : " + req.getRequestURI() + " ] ERROR : Hashing PW");
 								logger.error(e.getMessage());

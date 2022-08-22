@@ -234,10 +234,70 @@
   	
   	<!-- 원장 목록 -->
 	<select id="selectLedgerList" resultType="ledgerVO" parameterType="ledgerVO">
+		SELECT *
+		FROM
+			(SELECT *
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_product_cd) as ledgerFinancialProductCdName
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
+			FROM ledger l
+			WHERE 1=1
+			<if test="ledgerTypeCd != null and ledgerTypeCd != ''">
+				AND ledger_type_cd = #{ledgerTypeCd}
+			</if>
+			<if test="ledgerFinancialCompanyCd != null and ledgerFinancialCompanyCd != ''">
+				AND ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
+			</if>
+			<if test="ledgerFinancialBranchCd != null and ledgerFinancialBranchCd != ''">
+				AND ledger_financial_branch_cd = #{ledgerFinancialBranchCd}
+			</if>
+			<if test="ledgerFinancialProductCd != null and ledgerFinancialProductCd != ''">
+				AND ledger_financial_product_cd = #{ledgerFinancialProductCd}
+			</if>
+			<if test="searchText != null and searchText != ''">
+				AND (ledger_car_name like CONCAT('%',#{searchText},'%')
+					OR ledger_car_number like CONCAT('%',#{searchText},'%')
+					OR ledger_car_price like CONCAT('%',#{searchText},'%')
+					OR ledger_acquisition_cost like CONCAT('%',#{searchText},'%')
+					OR ledger_delivery_date like CONCAT('%',#{searchText},'%')
+					OR ledger_other like CONCAT('%',#{searchText},'%')
+					OR ledger_customer_name like CONCAT('%',#{searchText},'%')
+					)
+			</if>
+			) data
+		ORDER BY data.ledger_create_date desc
+		LIMIT #{pagePerRows} offset #{page}
   	</select>
   	
   	<!-- 원장 목록 count -->
-	<select id="selectLedgerListCount" resultType="ledgerVO"  parameterType="ledgerVO">
+	<select id="selectLedgerListCount" resultType="int"  parameterType="ledgerVO">
+		SELECT count(*)
+		FROM ledger l
+		WHERE 1=1
+		<if test="ledgerTypeCd != null and ledgerTypeCd != ''">
+			AND ledger_type_cd = #{ledgerTypeCd}
+		</if>
+		<if test="ledgerFinancialCompanyCd != null and ledgerFinancialCompanyCd != ''">
+			AND ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
+		</if>
+		<if test="ledgerFinancialBranchCd != null and ledgerFinancialBranchCd != ''">
+			AND ledger_financial_branch_cd = #{ledgerFinancialBranchCd}
+		</if>
+		<if test="ledgerFinancialProductCd != null and ledgerFinancialProductCd != ''">
+			AND ledger_financial_product_cd = #{ledgerFinancialProductCd}
+		</if>
+		<if test="searchText != null and searchText != ''">
+			AND (ledger_car_name like CONCAT('%',#{searchText},'%')
+				OR ledger_car_number like CONCAT('%',#{searchText},'%')
+				OR ledger_car_price like CONCAT('%',#{searchText},'%')
+				OR ledger_acquisition_cost like CONCAT('%',#{searchText},'%')
+				OR ledger_delivery_date like CONCAT('%',#{searchText},'%')
+				OR ledger_other like CONCAT('%',#{searchText},'%')
+				OR ledger_customer_name like CONCAT('%',#{searchText},'%')
+				)
+		</if>
   	</select>
   	
   	<!-- 원장 목록 (AG용) -->
@@ -249,6 +309,13 @@
 		,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
 		,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
 		FROM ledger l
+  	</select>
+  	
+  	<!-- 등록 년 조회 -->
+	<select id="selectLedgerYear" resultType="map">
+		select ledger_create_year
+		from ledger
+		group by ledger_create_year
   	</select>
   	
 </mapper>

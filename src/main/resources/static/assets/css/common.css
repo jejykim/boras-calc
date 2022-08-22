@@ -49,7 +49,7 @@ button {
 }
 
 a {
-    text-decoration: none
+    text-decoration: none text-decoration: none
 }
 
 i {
@@ -91,6 +91,153 @@ h3 {
 
 i {
     display: inline-block;
+}
+
+/*checkbox*/
+.styled-checkbox {
+    position: absolute;
+    opacity: 0;
+}
+
+.filter-body label {
+    position: relative;
+    cursor: pointer;
+    padding: 0;
+    font-size: 14px;
+    color: #1E1F21;
+    font-weight: 500;
+}
+
+.filter-body label:before {
+    content: '';
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: text-top;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 1px solid #D9D9D9;
+    border-radius: 3px;
+}
+
+.styled-checkbox:checked + label:before {
+    background: #2B3466;
+    border: 1px solid #2B3466;
+}
+
+.styled-checkbox:checked + label:after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 9px;
+    background: white;
+    width: 2px;
+    height: 2px;
+    box-shadow:
+        2px 0 0 white,
+        4px 0 0 white,
+        4px -2px 0 white,
+        4px -4px 0 white,
+        4px -6px 0 white,
+        4px -8px 0 white;
+    transform: rotate(45deg);
+}
+
+/*modal*/
+.modal.hide {
+    display: none;
+}
+
+.modal {
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.61);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-contents.sm {
+    width: 480px;
+}
+
+.modal-contents {
+    background-color: #fff;
+    position: absolute;
+    border-radius: 10px;
+}
+
+.modal-head {
+    border-bottom: 1px solid #DEE0E5;
+    padding: 20px;
+}
+
+.modal-head h4 {
+    color: #000;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.modal-body {
+    border-bottom: 1px solid #DEE0E5;
+    padding: 20px;
+}
+
+.modal-form select {
+    background-color: #fff;
+    border: 1px solid #DEE0E5;
+    border-radius: 3px;
+    width: 100%;
+    box-shadow: 4px 4px 10px rgba(158, 158, 158, 0.1);
+}
+
+.modal-form input {
+    width: 100%;
+}
+
+.from-title {
+    font-size: 14px;
+    color: #818080;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+
+.modal-form {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.modal-form:last-of-type {
+    margin-bottom: 0;
+}
+
+.modal-footer {
+    padding: 20px;
+    text-align: right;
+}
+
+.modal-btn button {
+    padding: 10px 22px;
+}
+
+/*textarea*/
+textarea {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #DEE0E5;
+    border-radius: 3px;
+    resize: none;
+    padding: 10px;
+    max-height: 200px;
+    font-size: 14px;
+}
+
+textarea:focus {
+    outline: none;
 }
 
 /*--------------------------------------------------------------------------------------
@@ -398,6 +545,7 @@ main .wrapper {
 .table {
     margin: 24px;
     margin-top: 8px;
+    position: relative;
 }
 
 table tr th {
@@ -472,4 +620,101 @@ table th i {
     background-color: #5C61F4;
     color: #fff;
     border: 1px solid #5C61F4;
+}
+
+/*--------------------------------------------------------------------------------------
+modal
+----------------------------------------------------------------------------------------*/
+.filter-modal {
+    position: absolute;
+    top: 40.47px;
+    background-color: #fff;
+    border: 1px solid #ECEEF2;
+    border-radius: 3px;
+    box-shadow: 10px 10px 10px rgba(152, 160, 178, 0.08);
+    left: 5%;
+}
+
+.filter-modal.hide {
+    display: none;
+}
+
+.filter-body ul li {
+    padding: 3px;
+    box-sizing: border-box;
+}
+
+.filter-body {
+    padding: 20px;
+    border-bottom: 1px solid #ECEEF2;
+}
+
+.filter-footer {
+    padding: 10px;
+}
+
+.filter-footer button {
+    padding: 6px 22px
+}
+
+.filter-modal.radio {
+    left: 13%;
+}
+
+input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.filter-modal.radio .radio-label:before {
+    content: '';
+    background: #fff;
+    border-radius: 100%;
+    border: 1px solid #D9D9D9;
+    display: inline-block;
+    width: 20px;
+    top: 4px;
+    height: 20px;
+    position: relative;
+    margin-right: 10px;
+    vertical-align: top;
+    cursor: pointer;
+    text-align: center;
+    transition: all 250ms ease;
+}
+
+.filter-modal.radio input:checked + .radio-label:before {
+    background-color: #fff;
+    box-shadow: inset 0 0 0 5.3px #2B3466;
+    border: 1px solid #2B3466;
+}
+
+.filter-modal.radio.governor {
+    left: 23%;
+}
+
+.filter-modal.radio.goods {
+    left: 33%;
+}
+
+.form-guide {
+    width: 100%;
+    font-size: 13px;
+}
+
+.form-guide i {
+    margin-right: 6px;
+}
+
+.input-sh {
+    display: flex;
+}
+
+.input-sh > div:first-of-type {
+    margin-left: 0;
+}
+
+.input-sh > div {
+    margin-left: 1%;
+    width: 49.5%
 }

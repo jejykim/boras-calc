@@ -4,8 +4,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!doctype html>
-<html lang="ko" data-theme="dark">
+<html lang="ko">
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,522 +20,227 @@
 	
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	<script src='/static/assets/js/common/common.js'></script>
+	<script src='/static/assets/js/ledger-admin/ledgerList.js'></script>
+	
 </head>
-   <body>
-      <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
-         
-		<!-- snb -->
+<body>
+    <div class="wrap">
+        <!-- gnb -->
+		<jsp:include page="../common/gnb.jsp" />
+		<!-- //gnb -->
+		
+        <!-- snb -->
         <jsp:include page="../common/snb.jsp" />
         <!-- //snb -->
-
-         <div class="flex-lg-1 h-screen overflow-y-lg-auto">
-
-			<!-- gnb -->
-			<jsp:include page="../common/gnb.jsp" />
-			<!-- //gnb -->
-
-            <header>
-               <div class="container-fluid">
-                  <div class="border-bottom pt-6">
-                     <div class="row align-items-center">
-                        <div class="col-sm col-12">
-                           <h1 class="h2 ls-tight">금융사 원장 목록 <span class="badge badge-sm bg-soft-success text-success rounded-pill ms-auto custom-header-badge">관리자용</span></h1>
+        
+        <div class="contents">
+            <main>
+                <div class="wrapper">
+                    <div class="main-header">
+                        <div class="header-title">
+                            <h3>금융사 원장목록</h3>
+                            <span>
+                                <select id="selYear">
+                                	<c:forEach var="yearList" items="${yearlist }" varStatus="status">
+                                    	<option value="${yearList }">${yearList } 년</option>
+                                	</c:forEach>
+                                	<c:if test="${empty yearlist }">
+                                		<option value="${thisYear }">${thisYear } 년</option>
+                                	</c:if>
+                                </select>
+                                <select id="selMonth">
+                                	<c:forEach var="monthList" begin="1" end="12" step="1" varStatus="status">
+                                    	<option value="${monthList }" <c:if test="${monthList eq thisMonth}">selected="selected"</c:if>>${monthList } 월</option>
+                                	</c:forEach>
+                                </select>
+                            </span>
                         </div>
-                        <div class="col-sm-auto col-12 mt-4 mt-sm-0">
-                        	<div class="hstack gap-2 justify-content-sm-end">
-                        		<a href="#excelUploadModal" class="btn btn-sm btn-excel border-base" data-bs-toggle="modal">
-                        			<span class="pe-2">
-                        				<i class="bi bi-file-earmark-excel"></i>
-                        			</span><span>원장 엑셀 업로드</span>
-                        		</a>
-                        		<a href="#ledgerAddModal" class="btn btn-sm btn-primary" data-bs-toggle="offcanvas">
-                        			<span class="pe-2">
-                        				<i class="bi bi-plus-square-dotted"></i>
-									</span>
-									<span>원장 추가</span>
-								</a>
-							</div>
-						</div>
-                     </div>
-                     <div class="custom-mg-bt-15"></div>
-                  </div>
-               </div>
-            </header>
-            
-            <main class="py-6 bg-surface-secondary">
-            	
-            	<!-- modal -->
-		        <jsp:include page="../common/modal.jsp" />
-		        <!-- //modal -->
-            
-			   <div class="container-fluid">
-			      <div class="vstack gap-6">
-			         <div class="card custom-card-bottom">
-			         	<div class="px-4 py-4 d-flex flex-column flex-sm-row gap-3">
-					      <div class="scrollable-x">
-					         <div class="btn-group">
-					         	<select class="form-select" aria-label="Default select example">
-					         		<option value="2022" selected="selected">2022 년</option>
-					         		<option value="2023">2023 년</option>
-					         		<option value="2024">2024 년</option>
-					         		<option value="2025">2025 년</option>
-				         		</select>
-					         </div>
-					         <div class="btn-group custom-pd-left">
-					         	<a href="" class="btn btn-sm btn-square btn-neutral">1월</a>
-					         </div>
-					         <div class="btn-group custom-pd-left">
-					         	<a href="" class="btn btn-sm btn-square btn-neutral">2월</a>
-					         </div>
-					         <div class="btn-group custom-pd-left">
-					         	<a href="" class="btn btn-sm btn-square btn-neutral">3월</a>
-					         </div>
-					         <div class="btn-group custom-pd-left">
-					         	<a href="" class="btn btn-sm btn-square btn-neutral">4월</a>
-					         </div>
-					         <div class="btn-group custom-pd-left">
-					         	<a href="" class="btn btn-sm btn-square btn-neutral">5월</a>
-					         </div>
-					         <div class="btn-group custom-pd-left">
-					         	<a href="" class="btn btn-sm btn-square btn-neutral">6월</a>
-					         </div>
-					         <div class="btn-group custom-pd-left">
-					         	<a href="" class="btn btn-sm btn-square btn-neutral">7월</a>
-					         </div>
-					         <div class="btn-group custom-pd-left">
-					         	<a href="" class="btn btn-sm btn-square btn-primary">8월</a>
-					         </div>
-					         <div class="btn-group custom-pd-left">
-					         	<a href="" class="btn btn-sm btn-square btn-neutral">9월</a>
-					         </div>
-					         <div class="btn-group custom-pd-left">
-					         	<a href="" class="btn btn-sm btn-square btn-neutral">10월</a>
-					         </div>
-					         <div class="btn-group custom-pd-left">
-					         	<a href="" class="btn btn-sm btn-square btn-neutral">11월</a>
-					         </div>
-					         <div class="btn-group custom-pd-left">
-					         	<a href="" class="btn btn-sm btn-square btn-neutral">12월</a>
-					         </div>
-					      </div>
-					   </div>
-			         </div>
-			         
-			         <div class="card" style="margin-bottom: 60px;">
-					   <div class="card-header d-flex align-items-center text-center">
-							<table class="table table-hover table-nowrap custom-table-bottom-border">
-								<tbody>
-									<tr class="text-bold">
-										<td class="text-end" style="color: #5c60f5; font-weight: bold;">
-											<i class="bi bi-pin me-3"></i>차량가
-										</td>
-										<td class="text-start">
-											10,000,000,000
-										</td>
-										<td class="text-end" style="color: #5c60f5; font-weight: bold;">
-											<i class="bi bi-pin-fill me-3"></i>취득원가
-										</td>
-										<td class="text-start">
-											10,000,000,000
-										</td>
-										<td class="text-end" style="color: #5c60f5; font-weight: bold;">
-											<i class="bi bi-pin me-3"></i>Fee 합계
-										</td>
-										<td class="text-start">
-											10,000,000,000
-										</td>
-										<td class="text-end" style="color: #5c60f5; font-weight: bold;">
-											<i class="bi bi-pin-fill me-3"></i>슬라이딩 합계
-										</td>
-										<td class="text-start">
-											10,000,000,000
-										</td>
-										<td class="text-end" style="color: #5c60f5; font-weight: bold;">
-											<i class="bi bi-pin me-3"></i>추가 Fee 합계
-										</td>
-										<td class="text-start">
-											10,000,000,000
-										</td>
-									</tr>
-								</tbody>
-							</table>
-					   </div>
-					   <div class="px-4 py-4 border-top border-bottom d-flex flex-column flex-sm-row gap-3">
-					      <div class="scrollable-x">
-					         <div class="btn-group" style="min-width:300px">
-					         	<a href="" class="btn btn-sm btn-neutral text-primary" aria-current="page">전체</a>
-					         	<a href="" class="btn btn-sm btn-neutral">제출목록 <span class="text-muted text-xs">(5)</span></a>
-					         </div>
-					      </div>
-				         <div class="ms-auto hstack gap-2">
-				         	<div>
-				         		<span class="badge badge-sm bg-soft-warning text-warning rounded-pill ms-auto">필터 초기화</span>
-				         	</div>
-				         	<div class="input-group input-group-sm input-group-inline">
-				         		<span class="input-group-text pe-2"><i class="bi bi-search"></i> </span>
-				         		<input type="email" class="form-control" placeholder="Search" aria-label="Search">
-			         		</div>
-			         		<div>
-			         			<button type="button" class="btn btn-sm px-3 btn-neutral d-flex align-items-center">
-				         			<i class="bi bi-funnel me-2"></i>
-				         			<span>Filters</span>
-				         			<span class="vr opacity-20 mx-3"></span>
-				         			<span class="text-xs text-primary">2</span>
-			         			</button>
-			         		</div>
-			         		<div>
-			         			<button type="button" class="btn btn-sm px-3 btn-primary d-flex align-items-center text-center" style="width: 110px;">
-				         			<i class="bi bi-check2-circle me-2"></i>
-				         			<span>승인요청</span>
-			         			</button>
-			         		</div>
-			         	</div>
-					   </div>
-					   <div class="table-responsive">
-					      <table class="table table-hover table-nowrap">
-					         <thead class="custom-table-thead">
-					            <tr style="text-align: center;">
-					               <th scope="col" class="custom-table-th" width="20">
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox" id="checkApi1" >
-											<label class="form-check-label" for="checkApi1"></label>
-										</div>
-					               </th>
-					               <th scope="col" class="custom-table-th">
-										기타사항
-					               	</th>
-					               <th scope="col" class="custom-table-th">
-										<nav class="navbar custom-navber">
-										      <div class="navbar-user" style="width: 100%">
-									            <div class="dropdown">
-									               <a class="align-items-center" style="color: white;" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
-									                  <span>금융사</span> <i class="bi bi-filter-square text-xs"></i>
-									               </a>
-									               <div class="dropdown-menu dropdown-menu-center">
-									                  <div class="dropdown-header" style="width: 48%; display: inline-block;">
-									                  	<span class="d-block text-sm text-muted mb-1">금융사</span>
-									                  	<div class="dropdown-divider"></div>
-									                  	<div class="form-check">
-															<input class="form-check-input" type="checkbox" id="checkApi1">
-															<label class="form-check-label" for="checkApi1">미래에셋 캐피탈</label>
-														</div>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" id="checkApi1">
-															<label class="form-check-label" for="checkApi1">산은 캐피탈</label>
-														</div>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" id="checkApi1">
-															<label class="form-check-label" for="checkApi1">신한카드</label>
-														</div>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" id="checkApi1">
-															<label class="form-check-label" for="checkApi1">미래에셋</label>
-														</div>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" id="checkApi1">
-															<label class="form-check-label" for="checkApi1">미래에셋</label>
-														</div>
-									                  </div>
-									                  <div class="dropdown-header" style="width: 48%; display: inline-block;">
-									                  	<span class="d-block text-sm text-muted mb-1">금융지점</span>
-									                  	<div class="dropdown-divider"></div>
-									                  	<div class="form-check">
-															<input class="form-check-input" type="checkbox" id="checkApi1">
-															<label class="form-check-label" for="checkApi1">미래에셋</label>
-														</div>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" id="checkApi1">
-															<label class="form-check-label" for="checkApi1">미래에셋</label>
-														</div>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" id="checkApi1">
-															<label class="form-check-label" for="checkApi1">미래에셋</label>
-														</div>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" id="checkApi1">
-															<label class="form-check-label" for="checkApi1">미래에셋</label>
-														</div>
-									                  </div>
-									               </div>
-									            </div>
-										   </div>
-										</nav>
-					               </th>
-					               <th scope="col" class="custom-table-th">
-										<nav class="navbar custom-navber">
-										      <div class="navbar-user" style="width: 100%">
-									            <div class="dropdown">
-									               <a class="align-items-center" style="color: white;" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
-									                  <span>금융상품</span> <i class="bi bi-filter-square text-xs"></i>
-									               </a>
-									               <div class="dropdown-menu dropdown-menu-center">
-									                  <div class="dropdown-header" style="width: 48%; display: inline-block;">
-									                  	<span class="d-block text-sm text-muted mb-1">금융상품</span>
-									                  	<div class="dropdown-divider"></div>
-									                  	<div class="form-check">
-															<input class="form-check-input" type="checkbox" id="checkApi1">
-															<label class="form-check-label" for="checkApi1">렌탈</label>
-														</div>
-														<div class="form-check">
-															<input class="form-check-input" type="checkbox" id="checkApi1">
-															<label class="form-check-label" for="checkApi1">리스</label>
-														</div>
-									                  </div>
-									               </div>
-									            </div>
-										   </div>
-										</nav>
-									</th>
-					               <th scope="col" class="custom-table-th">딜러사</th>
-					               <th scope="col" class="custom-table-th">인도일</th>
-					               <th scope="col" class="custom-table-th">고객명</th>
-					               <th scope="col" class="custom-table-th">차량정보</th>
-					               <th scope="col" class="custom-table-th" width="40">금액</th>
-					               <th scope="col" class="custom-table-th">문의</th>
-					            </tr>
-					         </thead>
-					         <tbody>
-					            <tr class="text-center">
-					               <td>
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox" id="checkApi1" checked="checked">
-											<label class="form-check-label" for="checkApi1"></label>
-										</div>
-					               </td>
-					               <td>어쩌구 저쩌구</td>
-					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스</td>
-					               <td>한성자동차(벤츠)</td>
-					               <td>2022.08.03</td>
-					               <td>주식회사 보라스 엔터테이먼트</td>
-					               <td>벤츠 CLS-1111111<br>000가0000</td>
-					               <td class="text-end">
-					               	<span class="text-warning ms-auto">차량가 </span>1,000,000,000
-					               	<br>
-					               	<span class="text-success ms-auto">취득원가 </span>1,000,000,000
-					               </td>
-					               <td><a class="btn btn-sm btn-square btn-neutral me-1"><i class="bi bi-pencil"></i></a></td>
-					            </tr>
-					            <tr class="text-center">
-					               <td>
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox" id="checkApi1" checked="checked">
-											<label class="form-check-label" for="checkApi1"></label>
-										</div>
-					               </td>
-					               <td>어쩌구 저쩌구</td>
-					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스</td>
-					               <td>한성자동차(벤츠)</td>
-					               <td>2022.08.03</td>
-					               <td>주식회사 보라스 엔터테이먼트</td>
-					               <td>벤츠 CLS-1111111<br>000가0000</td>
-					               <td class="text-end">
-					               	<span class="text-warning ms-auto">차량가 </span>1,000,000,000
-					               	<br>
-					               	<span class="text-success ms-auto">취득원가 </span>1,000,000,000
-					               </td>
-					               <td><a class="btn btn-sm btn-square btn-neutral me-1"><i class="bi bi-pencil"></i></a></td>
-					            </tr>
-					            <tr class="text-center">
-					               <td>
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox" id="checkApi1" checked="checked">
-											<label class="form-check-label" for="checkApi1"></label>
-										</div>
-					               </td>
-					               <td>어쩌구 저쩌구</td>
-					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스</td>
-					               <td>한성자동차(벤츠)</td>
-					               <td>2022.08.03</td>
-					               <td>주식회사 보라스 엔터테이먼트</td>
-					               <td>벤츠 CLS-1111111<br>000가0000</td>
-					               <td class="text-end">
-					               	<span class="text-warning ms-auto">차량가 </span>1,000,000,000
-					               	<br>
-					               	<span class="text-success ms-auto">취득원가 </span>1,000,000,000
-					               </td>
-					               <td><a class="btn btn-sm btn-square btn-neutral me-1"><i class="bi bi-pencil"></i></a></td>
-					            </tr>
-					            <tr class="text-center">
-					               <td>
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox" id="checkApi1" checked="checked">
-											<label class="form-check-label" for="checkApi1"></label>
-										</div>
-					               </td>
-					               <td>어쩌구 저쩌구</td>
-					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스</td>
-					               <td>한성자동차(벤츠)</td>
-					               <td>2022.08.03</td>
-					               <td>주식회사 보라스 엔터테이먼트</td>
-					               <td>벤츠 CLS-1111111<br>000가0000</td>
-					               <td class="text-end">
-					               	<span class="text-warning ms-auto">차량가 </span>1,000,000,000
-					               	<br>
-					               	<span class="text-success ms-auto">취득원가 </span>1,000,000,000
-					               </td>
-					               <td><a class="btn btn-sm btn-square btn-neutral me-1"><i class="bi bi-pencil"></i></a></td>
-					            </tr>
-					            <tr class="text-center">
-					               <td>
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox" id="checkApi1" checked="checked">
-											<label class="form-check-label" for="checkApi1"></label>
-										</div>
-					               </td>
-					               <td>어쩌구 저쩌구</td>
-					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스</td>
-					               <td>한성자동차(벤츠)</td>
-					               <td>2022.08.03</td>
-					               <td>주식회사 보라스 엔터테이먼트</td>
-					               <td>벤츠 CLS-1111111<br>000가0000</td>
-					               <td class="text-end">
-					               	<span class="text-warning ms-auto">차량가 </span>1,000,000,000
-					               	<br>
-					               	<span class="text-success ms-auto">취득원가 </span>1,000,000,000
-					               </td>
-					               <td><a class="btn btn-sm btn-square btn-neutral me-1"><i class="bi bi-pencil"></i></a></td>
-					            </tr>
-					            <tr class="text-center">
-					               <td>
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox" id="checkApi1" checked="checked">
-											<label class="form-check-label" for="checkApi1"></label>
-										</div>
-					               </td>
-					               <td>어쩌구 저쩌구</td>
-					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스</td>
-					               <td>한성자동차(벤츠)</td>
-					               <td>2022.08.03</td>
-					               <td>주식회사 보라스 엔터테이먼트</td>
-					               <td>벤츠 CLS-1111111<br>000가0000</td>
-					               <td class="text-end">
-					               	<span class="text-warning ms-auto">차량가 </span>1,000,000,000
-					               	<br>
-					               	<span class="text-success ms-auto">취득원가 </span>1,000,000,000
-					               </td>
-					               <td><a class="btn btn-sm btn-square btn-neutral me-1"><i class="bi bi-pencil"></i></a></td>
-					            </tr>
-					            <tr class="text-center">
-					               <td>
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox" id="checkApi1" checked="checked">
-											<label class="form-check-label" for="checkApi1"></label>
-										</div>
-					               </td>
-					               <td>어쩌구 저쩌구</td>
-					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스</td>
-					               <td>한성자동차(벤츠)</td>
-					               <td>2022.08.03</td>
-					               <td>주식회사 보라스 엔터테이먼트</td>
-					               <td>벤츠 CLS-1111111<br>000가0000</td>
-					               <td class="text-end">
-					               	<span class="text-warning ms-auto">차량가 </span>1,000,000,000
-					               	<br>
-					               	<span class="text-success ms-auto">취득원가 </span>1,000,000,000
-					               </td>
-					               <td><a class="btn btn-sm btn-square btn-neutral me-1"><i class="bi bi-pencil"></i></a></td>
-					            </tr>
-					            <tr class="text-center">
-					               <td>
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox" id="checkApi1" checked="checked">
-											<label class="form-check-label" for="checkApi1"></label>
-										</div>
-					               </td>
-					               <td>어쩌구 저쩌구</td>
-					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스</td>
-					               <td>한성자동차(벤츠)</td>
-					               <td>2022.08.03</td>
-					               <td>주식회사 보라스 엔터테이먼트</td>
-					               <td>벤츠 CLS-1111111<br>000가0000</td>
-					               <td class="text-end">
-					               	<span class="text-warning ms-auto">차량가 </span>1,000,000,000
-					               	<br>
-					               	<span class="text-success ms-auto">취득원가 </span>1,000,000,000
-					               </td>
-					               <td><a class="btn btn-sm btn-square btn-neutral me-1"><i class="bi bi-pencil"></i></a></td>
-					            </tr>
-					            <tr class="text-center">
-					               <td>
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox" id="checkApi1" checked="checked">
-											<label class="form-check-label" for="checkApi1"></label>
-										</div>
-					               </td>
-					               <td>어쩌구 저쩌구</td>
-					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스</td>
-					               <td>한성자동차(벤츠)</td>
-					               <td>2022.08.03</td>
-					               <td>주식회사 보라스 엔터테이먼트</td>
-					               <td>벤츠 CLS-1111111<br>000가0000</td>
-					               <td class="text-end">
-					               	<span class="text-warning ms-auto">차량가 </span>1,000,000,000
-					               	<br>
-					               	<span class="text-success ms-auto">취득원가 </span>1,000,000,000
-					               </td>
-					               <td><a class="btn btn-sm btn-square btn-neutral me-1"><i class="bi bi-pencil"></i></a></td>
-					            </tr>
-					            <tr class="text-center">
-					               <td>
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox" id="checkApi1" checked="checked">
-											<label class="form-check-label" for="checkApi1"></label>
-										</div>
-					               </td>
-					               <td>어쩌구 저쩌구</td>
-					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스</td>
-					               <td>한성자동차(벤츠)</td>
-					               <td>2022.08.03</td>
-					               <td>주식회사 보라스 엔터테이먼트</td>
-					               <td>벤츠 CLS-1111111<br>000가0000</td>
-					               <td class="text-end">
-					               	<span class="text-warning ms-auto">차량가 </span>1,000,000,000
-					               	<br>
-					               	<span class="text-success ms-auto">취득원가 </span>1,000,000,000
-					               </td>
-					               <td><a class="btn btn-sm btn-square btn-neutral me-1"><i class="bi bi-pencil"></i></a></td>
-					            </tr>
-					            <tr class="text-center">
-					               <td>
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox" id="checkApi1" checked="checked">
-											<label class="form-check-label" for="checkApi1"></label>
-										</div>
-					               </td>
-					               <td>어쩌구 저쩌구</td>
-					               <td>미래에셋 캐피탈<br>강남 지구 어떤 지구</td>
-					               <td>리스</td>
-					               <td>한성자동차(벤츠)</td>
-					               <td>2022.08.03</td>
-					               <td>주식회사 보라스 엔터테이먼트</td>
-					               <td>벤츠 CLS-1111111<br>000가0000</td>
-					               <td class="text-end">
-					               	<span class="text-warning ms-auto">차량가 </span>1,000,000,000
-					               	<br>
-					               	<span class="text-success ms-auto">취득원가 </span>1,000,000,000
-					               </td>
-					               <td><a class="btn btn-sm btn-square btn-neutral me-1"><i class="bi bi-pencil"></i></a></td>
-					            </tr>
-					         </tbody>
-					      </table>
-					   </div>
-					</div>
-			         
-			      </div>
-			   </div>
-			</main>
-			
-         </div>
-      </div>
-   </body>
+                        <div class="header-sub">
+                            <div class="btn">
+                                <button class="btn-su">원장엑셀업로드</button>
+                                <button class="btn-main">원장추가</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-body">
+                        <div class="row f-box">
+                            <div class="portlet">
+                                <h5><i class="ico-f1"></i><span>차량가</span></h5>
+                                <span class="price">100,000,000</span>
+                            </div>
+                            <div class="portlet">
+                                <h5><i class="ico-f2"></i><span>취득원가</span></h5>
+                                <span class="price">100,000,000</span>
+                            </div>
+                            <div class="portlet">
+                                <h5><i class="ico-f3"></i><span>fee합계</span></h5>
+                                <span class="price">100,000,000</span>
+                            </div>
+                            <div class="portlet">
+                                <h5><i class="ico-f4"></i><span>슬라이딩 합계</span></h5>
+                                <span class="price">100,000,000</span>
+                            </div>
+                            <div class="portlet">
+                                <h5><i class="ico-f5"></i><span>추가fee 합계</span></h5>
+                                <span class="price">100,000,000</span>
+                            </div>
+                        </div>
+                        <div class="row w-bg main-content">
+                            <div class="portlet-header">
+                                <div class="tab">
+                                    <ul>
+                                        <li id="liAll" class="on">전체</li>
+                                        <li id="liRequest">승인요청</li>
+                                        <li id="liComplete">승인완료</li>
+                                        <li id="liLeft">잉여원장</li>
+                                    </ul>
+                                </div>
+                                <div class="header-sub">
+                                    <div class="search">
+                                        <input id="inputSearchText" type="text" placeholder="검색" value="${userVO.searchText }">
+                                        <button id="btnSearch"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                        
+                                        <form class="search-form" id="searchForm" name="searchForm" action="/user/list" method="get">
+											<input type="hidden" name="searchText" id="searchText" value="${userVO.searchText }">
+											<input type="hidden" name="agOrAdmin" id="agOrAdmin" value="${userVO.agOrAdmin }">
+											<input type='hidden' id="now_page" name="nowPage" value="${userVO.nowPage }">
+										</form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="table-filter">
+                                    <span>
+                                        <strong>인도일</strong>
+                                        <span class="filter">2022.08.03</span>
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </span>
+                                    <span>
+                                        <strong>금융상품</strong>
+                                        <span class="filter">리스</span>
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </span>
+                                    <span>
+                                        <strong>금융지점</strong>
+                                        <span class="filter">강남지구 어떤지구</span>
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </span>
+                                    <span>
+                                        <strong>구분</strong>
+                                        <span class="filter">성문/올카</span>
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </span>
+                                    <span>
+                                        <strong>금융상품</strong>
+                                        <span class="filter">리스</span>
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </span>
+                                    <button class="btn-gr">초기화</button>
+                                </div>
+                                <div class="table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>기타사항</th>
+                                                <th>상태</th>
+                                                <th class="cur">구분<i class="ico-filter"></i></th>
+                                                <th class="cur">금융사<i class="ico-filter"></i></th>
+                                                <th class="cur">금융지점<i class="ico-filter"></i></th>
+                                                <th class="cur">금융상품<i class="ico-filter"></i></th>
+                                                <th>인도일</th>
+                                                <th>고객명</th>
+                                                <th>딜러사</th>
+                                                <th>차량정보</th>
+                                                <th>금액</th>
+                                                <th>AG사</th>
+                                                <th>문의</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        	<c:forEach var="list" items="${list }" varStatus="status">
+	                                            <tr>
+	                                                <td>
+	                                                	<c:choose>
+	                                                		<c:when test="${empty list.ledgerOther }">
+	                                                			<button class="btn-line-main">추가</button>
+	                                                		</c:when>
+	                                                		<c:otherwise>
+	                                                			<button class="btn-main">보기</button>
+	                                                		</c:otherwise>
+	                                                	</c:choose>
+	                                                </td>
+	                                                <td>${list.ledgerTypeCd }</td>
+	                                                <td>잉여원장</td>
+	                                                <td>${list.ledgerFinancialCompanyCdName }</td>
+	                                                <td>${list.ledgerFinancialBranchCdName }</td>
+	                                                <td>${list.ledgerFinancialProductCdName }</td>
+	                                                <td>${fn:substring(list.ledgerDeliveryDate, 0, 19) }</td>
+	                                                <td>${list.ledgerCustomerName }</td>
+	                                                <td>
+	                                                	<c:choose>
+	                                                		<c:when test="${empty list.ledgerDealerBrandCdName }">
+	                                                			<button class="btn-main">선택</button>
+	                                                		</c:when>
+	                                                		<c:otherwise>
+	                                                			<a class="text-line">${list.ledgerDealerBrandCdName }</a>
+	                                                		</c:otherwise>
+	                                                	</c:choose>
+	                                                </td>
+	                                                <td>
+	                                                    <p>${list.ledgerCarName }</p>
+	                                                    <p>${list.ledgerCarNumber }</p>
+	                                                </td>
+	                                                <td class="align-right">
+	                                                    <p><span>차량가</span><span><fmt:formatNumber value="${list.ledgerCarPrice }" pattern="#,###"/></span></p>
+	                                                    <p><span>취득원가</span><span><fmt:formatNumber value="${list.ledgerAcquisitionCost }" pattern="#,###"/></span></p>
+	                                                </td>
+	                                                <td>
+	                                                	<c:choose>
+	                                                		<c:when test="${empty list.ledgerDealerBrandCdName }">
+	                                                			<button class="btn-main">선택</button>
+	                                                		</c:when>
+	                                                		<c:otherwise>
+	                                                			<a class="text-line">ag사명</a>
+	                                                		</c:otherwise>
+	                                                	</c:choose>
+	                                                </td>
+	                                                <td><button class="btn-pencil"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+	                                            </tr>
+                                            </c:forEach>
+                                            <c:if test="${listCount eq 0 }">
+	                                            <tr>
+	                                                <td colspan="13">조회된 데이터가 없습니다</td>
+	                                            </tr>
+	                                        </c:if>
+                                        </tbody>
+                                    </table>
+                                    
+									<c:if test="${listCount ne 0}">
+	                                    <div class="page_wrap">
+	                                        <div class="page_nation">
+	                                            <a class="arrow prev" style="cursor: pointer;" onclick="LedgerList.Paging(${pagingVO.startPage })"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+	                                            <c:forEach var="list" varStatus="status" begin="${pagingVO.firstPage }" end="${pagingVO.lastPage }">
+	                                            	<c:choose>
+                                                        <c:when test="${pagingVO.nowPage eq list }">
+                                                            <a class="active">${list }</a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <a onclick="LedgerList.Paging(${list })" style="cursor: pointer;">${list }</a>
+                                                        </c:otherwise>
+                                                    </c:choose>
+	                                            </c:forEach>
+	                                            <a class="arrow next" style="cursor: pointer;" onclick="LedgerList.Paging(${pagingVO.endPage })"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+	                                        </div>
+	                                    </div>
+                                    </c:if>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
 </html>

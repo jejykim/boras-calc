@@ -67,6 +67,7 @@
 			code_update_date
 		FROM code
 		WHERE code_parent_id=#{codeParentId}
+		order by sort
   	</select>
   	
   	<!-- 코드 상세 조회 -->

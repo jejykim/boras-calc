@@ -3,7 +3,7 @@ Content  : FormLoad
 ========================================================================*/
 $(document).ready(function(){
 	try{
-		UserList.PageLoad();
+		LedgerList.PageLoad();
 	}
 	catch(e){ console.log(e.message); }
 	
@@ -20,24 +20,24 @@ function FormBeforeUnLoad() {
 }
 
 /*=======================================================================
-UserList Class 명세 시작 (상수(변수)>>속성>>메서드)
+LedgerList Class 명세 시작 (상수(변수)>>속성>>메서드)
 ========================================================================*/
-//UserList Class
-var UserList = {};
+//LedgerList Class
+var LedgerList = {};
 
-//UserList Const
+//LedgerList Const
 
-//UserList Variable
+//LedgerList Variable
 
-//UserList
+//LedgerList
 var Properties = {};
-UserList.Properties = Properties;
+LedgerList.Properties = Properties;
 
-//UserList Method
-UserList.PageLoad = function () { };  //메인 페이지 로드 공통 함수
-UserList.SetEvent = function () { };  //메인 페이지 이벤트 바인딩
+//LedgerList Method
+LedgerList.PageLoad = function () { };  //메인 페이지 로드 공통 함수
+LedgerList.SetEvent = function () { };  //메인 페이지 이벤트 바인딩
 /*=======================================================================
-UserList Class 명세 끝
+LedgerList Class 명세 끝
 ========================================================================*/
 
 /*=======================================================================
@@ -45,10 +45,10 @@ UserList Class 명세 끝
 작  성  자  : 김진열
 2022.08.18 - 최초생성
 ========================================================================*/
-UserList.PageLoad = function () {
+LedgerList.PageLoad = function () {
     try {
-        UserList.Init();
-        UserList.SetEvent();
+        LedgerList.Init();
+        LedgerList.SetEvent();
     }
     catch (e) { console.log(e.message); }
 }
@@ -58,7 +58,7 @@ UserList.PageLoad = function () {
 작  성  자  : 김진열
 2022.08.18 - 최초생성
 ========================================================================*/
-UserList.Init = function () {
+LedgerList.Init = function () {
     try {
 		if($("#inputSearchText").val() != "") {
 			$("#inputSearchText").focus();
@@ -73,7 +73,7 @@ UserList.Init = function () {
 작  성  자  : 김진열
 2022.08.18 - 최초생성
 ========================================================================*/
-UserList.SetEvent = function () {
+LedgerList.SetEvent = function () {
     try {
 		// 사용자 탭 li
 		$("#liAg").click(function() {
@@ -112,7 +112,7 @@ UserList.SetEvent = function () {
 작  성  자  : 김진열
 2022.08.18 - 최초생성
 ========================================================================*/
-UserList.Paging = function (page) {
+LedgerList.Paging = function (page) {
     try {
 		if (page > 0) {
 			$("#now_page").val(page);
@@ -120,18 +120,6 @@ UserList.Paging = function (page) {
 		} else {
 			alert("잘못된 경로 입니다");
 		}	
-    }
-    catch (e) { console.log(e.message); }
-}
-
-/*=======================================================================
-내      용  : 사용자 상세 모달
-작  성  자  : 김진열
-2022.08.18 - 최초생성
-========================================================================*/
-UserList.userDetail = function (userId) {
-    try {
-		console.log(userId);
     }
     catch (e) { console.log(e.message); }
 }

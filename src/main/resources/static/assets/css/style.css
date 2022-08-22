@@ -27,9 +27,28 @@ button {
     border: 1px solid #4782F6;
 }
 
+.btn-bu {
+    background-color: #5C61F4;
+    border: 1px solid #5C61F4;
+    color: #fff;
+}
+
 .btn-pencil {
     border: 1px solid #BABABB;
     padding: 8px 10px !important;
+}
+
+.btn-line-cancel {
+    border: 1px solid #EBEDF2;
+    background-color: #F4F5F8;
+    color: #212529;
+    font-weight: 500;
+}
+
+/*font*/
+.font-red {
+    color: #F56242;
+    font-weight: 400;
 }
 
 /*color*/

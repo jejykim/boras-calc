@@ -1,6 +1,7 @@
 package com.boras.CRM.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -50,5 +51,12 @@ public interface LedgerMapper {
 	 * @return
 	 */
 	public List<LedgerVO> selectLedgerListForAg(LedgerVO ledgerVO);
+	
+	/**
+	 * 등록 년 조회
+	 * @param 
+	 * @return List<Map<String, Object>>
+	 */
+	public List<Map<String, Object>> selectLedgerYear();
 	
 }

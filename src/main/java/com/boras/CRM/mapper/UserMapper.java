@@ -1,6 +1,7 @@
 package com.boras.CRM.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -71,5 +72,12 @@ public interface UserMapper {
 	 * @return List<UserVO>
 	 */
 	public List<UserVO> selectUserListNew();
+	
+	/**
+	 * 사용자별 계정 수
+	 * @param 
+	 * @return List<Map<String, Object>>
+	 */
+	public List<Map<String, Object>> selectUserAgNewAdminCount();
 
 }

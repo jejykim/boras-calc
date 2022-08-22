@@ -20,6 +20,12 @@ public class UserVO extends PagingVO {
 	// 사업자 구분 코드명
 	private String userBusinessTypeCdName;
 	
+	// 코드사 구분 코드
+	private int userCodeCompanyCd;
+	
+	// 코드사 구분 코드명
+	private String userCodeCompanyCdName;
+	
 	// AG 사명
 	private String userAgCompany;
 	
@@ -51,7 +57,7 @@ public class UserVO extends PagingVO {
 	private String sessionLive;
 	
 	// AG 관리자 선택
-	private String agOrAdmin = "";
+	private String agOrAdmin = "ag";
 	
 	// 검색 input
 	private String searchText = "";
@@ -198,6 +204,22 @@ public class UserVO extends PagingVO {
 
 	public void setSearchText(String searchText) {
 		this.searchText = searchText;
+	}
+
+	public int getUserCodeCompanyCd() {
+		return userCodeCompanyCd;
+	}
+
+	public void setUserCodeCompanyCd(int userCodeCompanyCd) {
+		this.userCodeCompanyCd = userCodeCompanyCd;
+	}
+
+	public String getUserCodeCompanyCdName() {
+		return userCodeCompanyCdName;
+	}
+
+	public void setUserCodeCompanyCdName(String userCodeCompanyCdName) {
+		this.userCodeCompanyCdName = userCodeCompanyCdName;
 	}
 	
 }
