@@ -43,7 +43,7 @@
   	<!-- 승인 컨펌 - 관리자용 -->
 	<update id="confirmApproval" parameterType="approvalVO">
 		UPDATE approval
-		SET approval_state = #{userName},
+		SET approval_state = #{approvalState},
 			approval_yn = #{approvalYn},
 			approval_date = now()
 		WHERE approval_seq = #{approvalSeq}
@@ -56,4 +56,29 @@
 			AND approval_yn != 'Y'
   	</delete>
   	
+  	<!-- 중복승인요청된 건인지 확인 -->
+  	<select id="cntApprovalLedgerSeq" parameterType="approvalVO" resultType="int">
+  		SELECT COUNT(*) FROM approval
+  		WHERE approval_ledger_seq=#{approvalLedgerSeq}
+  	</select>
+  	
+  	<!-- 중복승인처리 - 승인외건 거부 처리 -->
+	<update id="refusalApproval" parameterType="approvalVO">
+		UPDATE approval
+		SET approval_state = '거부',
+			approval_yn = 'N',
+			approval_date = now()
+		WHERE approval_ledger_seq = #{approvalLedgerSeq} 
+			AND approval_user_id != #{approvalUserId}
+  	</update>
+  	
+  	<!-- 중복승인처리 - 승인 컨펌 -->
+	<update id="confirmApprovalForDuplication" parameterType="approvalVO">
+		UPDATE approval
+		SET approval_state = '승인',
+			approval_yn = 'Y',
+			approval_date = now()
+		WHERE approval_ledger_seq = #{approvalLedgerSeq} 
+			AND approval_user_id = #{approvalUserId}
+  	</update>
 </mapper>

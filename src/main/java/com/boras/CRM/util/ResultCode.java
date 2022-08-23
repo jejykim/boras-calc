@@ -20,6 +20,7 @@ public class ResultCode {
 		, e_00005
 		, e_00006
 		, e_00007
+		, e_00008
 		, e_10001
 		, e_10002
 		, e_10003
@@ -64,6 +65,9 @@ public class ResultCode {
 			break;
 		case e_00007:
 			rvt = "00007";
+			break;
+		case e_00008:
+			rvt = "00008";
 			break;
 		case e_10001:
 			rvt = "10001";
@@ -141,6 +145,9 @@ public class ResultCode {
 			break;
 		case e_00007:
 			rvt = "[There is no required parameter]";
+			break;
+		case e_00008:
+			rvt = "[data is null]";
 			break;
 		case e_10001:
 			rvt = "[Not exist ID or Password]";

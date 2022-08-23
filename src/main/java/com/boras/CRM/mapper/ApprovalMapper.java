@@ -40,6 +40,29 @@ public interface ApprovalMapper {
 	 */
 	public int deleteRequestApproval(ApprovalVO approvalVO);
 	
+	/**
+	 * 중복승인요청된 건인지 확인
+	 * @param 
+	 * @return int
+	 * 
+	 */
+	public int cntApprovalLedgerSeq(ApprovalVO approvalVO);
+	
+	/**
+	 * 중복승인처리 - 승인외건 거부 처리
+	 * @param 
+	 * @return int
+	 * 
+	 */
+	public int refusalApproval(ApprovalVO approvalVO);
+	
+	/**
+	 * 중복승인처리 - 승인 컨펌
+	 * @param 
+	 * @return int
+	 * 
+	 */
+	public int confirmApprovalForDuplication(ApprovalVO approvalVO);
 	
 
 }

@@ -2,9 +2,10 @@
 WEB - Spring boot  
 
 ## Version
-**0.6.3**
+**0.6.4**
 
 ## Version description
+**[0.6.4]** 다중 승인 처리, 중복 승인건 처리  
 **[0.6.3]** 사용자 목록 jsp, 원장 excel jsp(ing), 원장 목록 jsp(ing)  
 **[0.6.2]** 문의 api 추가  
 **[0.6.1]** 사용자 목록 jsp 추가(ing)  

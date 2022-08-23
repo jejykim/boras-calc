@@ -32,5 +32,20 @@ public class ApprovalService implements ApprovalMapper {
 	public int deleteRequestApproval(ApprovalVO approvalVO) {
 		return approvalMapper.deleteRequestApproval(approvalVO);
 	}
+	
+	@Override
+	public int cntApprovalLedgerSeq(ApprovalVO approvalVO) {
+		return approvalMapper.cntApprovalLedgerSeq(approvalVO);
+	}
+	
+	@Override
+	public int refusalApproval(ApprovalVO approvalVO) {
+		return approvalMapper.refusalApproval(approvalVO);
+	}
+	
+	@Override
+	public int confirmApprovalForDuplication(ApprovalVO approvalVO) {
+		return approvalMapper.confirmApprovalForDuplication(approvalVO);
+	}
 
 }
