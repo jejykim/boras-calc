@@ -179,7 +179,7 @@
         </div>
         
         <!--modal / 사용자추가-->
-        <div class="modal">
+        <div class="modal" style="display: none;" id="modalAddUser">
             <div class="modal-contents sm">
                 <div class="modal-head">
                     <h4>사용자추가</h4>
@@ -191,16 +191,16 @@
                                 <div class="radio-tile-group">
                                 	
 								    <div class="input-container">
-								      <input id="rAg" class="radio-button" type="radio" name="radio" checked="checked"/>
+								      <input id="rAg" class="radio-button" type="radio" name="radio" checked="checked" value="ag"/>
 								      <div class="radio-tile">
-								        <label for="walk" class="radio-tile-label">AG</label>
+								        <label for="rAg" class="radio-tile-label">AG</label>
 								      </div>
 								    </div>
 								
 								    <div class="input-container">
-								      <input id="rAdmin" class="radio-button" type="radio" name="radio" />
+								      <input id="rAdmin" class="radio-button" type="radio" name="radio" value="admin"/>
 								      <div class="radio-tile">
-								        <label for="bike" class="radio-tile-label">관리자</label>
+								        <label for="rAdmin" class="radio-tile-label">관리자</label>
 								      </div>
 								    </div>
 								
@@ -211,15 +211,15 @@
                     <div class="modal-form input-sh">
                         <div>
                             <div class="from-title">
-                                <h6>ID</h6>
+                                <h6><span style="color: red;">* </span>ID <span id="spanIdCheck"></span></h6>
                             </div>
-                            <input type="text" placeholder="아이디를 입력해주세요">
+                            <input type="text" placeholder="아이디를 입력해주세요" id="textUserId">
                         </div>
                         <div>
                             <div class="from-title">
-                                <h6>사용자명</h6>
+                                <h6><span style="color: red;">* </span>사용자명</h6>
                             </div>
-                            <input type="text" placeholder="사용자명을 입력해주세요">
+                            <input type="text" placeholder="사용자명을 입력해주세요" id="textUserName">
                         </div>
                     </div>
                     <div class="form-guide">
@@ -229,18 +229,26 @@
                     <div class="modal-form">
                         <div>
                             <div class="from-title">
-                                <h6>Email</h6>
+                                <h6><span style="color: red;">* </span>Email</h6>
                             </div>
-                            <input type="text" placeholder="이메일 주소를 입력해주세요">
+                            <input type="text" placeholder="이메일 주소를 입력해주세요" id="textUserEmail">
                         </div>
                     </div>
                     <div class="modal-form">
                         <div>
                             <div class="from-title">
-                                <h6>권한</h6>
+                                <h6><span style="color: red;">* </span>권한</h6>
                             </div>
                             <select id="selPermissionCode">
 		                    </select>
+                        </div>
+                    </div>
+                    <div class="modal-form ag-box">
+                        <div>
+                            <div class="from-title">
+                                <h6>AG사 명 (옵션)</h6>
+                            </div>
+                            <input type="text" placeholder="AG사 명를 입력해주세요" id="textAgCompanyName">
                         </div>
                     </div>
                     <div class="modal-form input-sh ag-box">
@@ -265,10 +273,11 @@
 		                    </select>
                         </div>
                     </div>
+                    
                 </div>
                 <div class="modal-footer">
                     <div class="modal-btn">
-                        <button class="btn-bu" id="btnAddUser">완료</button>
+                        <button class="btn-bu" id="btnAddUserOk">완료</button>
 		                <button class="btn-line-cancel" id="btnCancelModal">취소</button>
                     </div>
                 </div>

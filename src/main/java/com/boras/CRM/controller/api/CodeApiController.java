@@ -128,6 +128,8 @@ public class CodeApiController {
 	    try {
 	    	List<CodeVO> list = codeService.selectCodeList(codeVO);
 		    if(list.size()>0) {
+		    	rvt.put("list", list);
+		    	
 		    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
     			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
 		    }else {

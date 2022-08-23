@@ -137,7 +137,7 @@
 			, user_ag_company
 			, user_join_date
 			, user_permission_cd
-			, use_yn
+			, user_use_yn
 		) VALUES (
 			#{userId}
 			, #{userPw}

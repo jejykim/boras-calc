@@ -28,6 +28,7 @@ var UserList = {};
 //UserList Const
 
 //UserList Variable
+var checkIdFlag = false;
 
 //UserList
 var Properties = {};
@@ -103,6 +104,41 @@ UserList.SetEvent = function () {
 				document.searchForm.submit();
 			}
 		});
+		
+		// 사용자 추가 모달
+		$("#btnAddUser").click(function() {
+			UserList.getPermissionList($('input[name=radio]:checked').val());
+			$("#modalAddUser").show();
+		});
+		
+		// 모달 닫기
+		$("#btnCancelModal").click(function() {
+			$("#modalAddUser").hide();
+		});
+		
+		// 계정 형태 (모달)
+		$(".radio-button").click(function() {
+			var value = $('input[name=radio]:checked').val();
+			UserList.getPermissionList(value);
+			
+			if(value == "ag") {
+				$(".ag-box").slideDown();
+			}else {
+				$(".ag-box").slideUp();
+			}
+		});
+		
+		// 계정 추가
+		$("#btnAddUserOk").click(function() {
+			if(UserList.ValidationCheck()) {
+				UserList.addUser();
+			}
+		});
+		
+		// 아이디 중복 체크
+		$("#textUserId").keyup(function() {
+			UserList.checkUserId();
+		});
     }
     catch (e) { console.log(e.message); }
 }
@@ -132,6 +168,167 @@ UserList.Paging = function (page) {
 UserList.userDetail = function (userId) {
     try {
 		console.log(userId);
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 계정 권한 조회
+작  성  자  : 김진열
+2022.08.18 - 최초생성
+========================================================================*/
+UserList.getPermissionList = function (value) {
+    try {
+		$.ajax({
+			type : "get",
+			url : "/v1/api/user/permission/list/" + value,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					var option = "";
+					$("#selPermissionCode").children().remove();
+					
+					for(var data of json.list) {
+						option = "<option value='" + data.codeId + "'> " + data.codeName + "</option>";
+						
+						$("#selPermissionCode").append(option);
+					}
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 계정 추가
+작  성  자  : 김진열
+2022.08.18 - 최초생성
+========================================================================*/
+UserList.addUser = function () {
+    try {
+		var data = {
+			"userId" : $("#textUserId").val()
+			, "userName" : $("#textUserName").val()
+			, "userEmail" : $("#textUserEmail").val()
+			, "userBusinessTypeCd" : $("#selBusinessCode").val()
+			, "userAgCompany" : $("#textAgCompanyName").val()
+			, "userPermissionCd" : $("#selPermissionCode").val()
+			, "userCodeCompanyCd" : $("#selCodeCompany").val()
+			};
+	
+		$.ajax({
+			type : "post",
+			url : "/v1/api/user/insert",
+			data : data,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					alert("계정이 생성되었습니다.");
+					location.reload();
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 아이디 중복 체크
+작  성  자  : 김진열
+2022.08.18 - 최초생성
+========================================================================*/
+UserList.checkUserId = function () {
+    try {
+		var id = $("#textUserId").val();
+		
+		if(id != "") {
+			$.ajax({
+				type : "get",
+				url : "/v1/api/user/check/id/" + id,
+				success : function(json){
+					if(json.resultCode == "00000") {
+						if(json.isExist == "Y") {
+							$("#spanIdCheck").html("사용 불가");
+							$("#spanIdCheck").css("color", "red");
+							$("#textUserId").css("border", "1px solid red");
+							checkIdFlag = false;
+						}else if(json.isExist == "N") {
+							$("#spanIdCheck").html("사용 가능");
+							$("#spanIdCheck").css("color", "green");
+							$("#textUserId").css("border", "1px solid green");
+							checkIdFlag = true;
+						}
+					}else {
+						alert(json.resultMsg);
+					}
+				},
+				error: function(request,status,error,data){
+					alert("잘못된 접근 경로입니다.");
+					return false;
+				}
+			});
+		}else {
+			$("#spanIdCheck").html("");
+			$("#spanIdCheck").css("color", "");
+			$("#textUserId").css("border", "");
+		}
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 유효성 체크
+작  성  자  : 김진열
+2022.08.18 - 최초생성
+========================================================================*/
+UserList.ValidationCheck = function () {
+    try {
+		var flag = true;
+		
+		$("#textUserId").css("border", "");
+		$("#textUserName").css("border", "");
+		$("#textUserEmail").css("border", "");
+		
+		if($("#textUserId").val() == "") {
+			flag = false;
+			alert("아이디를 입력해주세요");
+			$("#textUserId").focus();
+			$("#textUserId").css("border", "1px solid red");
+		}
+		
+		else if(!checkIdFlag) {
+			flag = false;
+			alert("사용불가한 아이디 입니다");
+			$("#textUserId").focus();
+			$("#textUserId").css("border", "1px solid red");
+		}
+		
+		else if($("#textUserName").val() == "") {
+			flag = false;
+			alert("사용자명를 입력해주세요");
+			$("#textUserName").focus();
+			$("#textUserName").css("border", "1px solid red");
+		}
+		
+		else if($("#textUserEmail").val() == "") {
+			flag = false;
+			alert("사용자명를 입력해주세요");
+			$("#textUserEmail").focus();
+			$("#textUserEmail").css("border", "1px solid red");
+		}
+		
+		return flag;
     }
     catch (e) { console.log(e.message); }
 }
