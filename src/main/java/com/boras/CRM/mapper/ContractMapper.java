@@ -1,5 +1,7 @@
 package com.boras.CRM.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.boras.CRM.vo.ContractVO;
@@ -15,6 +17,12 @@ public interface ContractMapper {
 	 */
 	public int insertContract(ContractVO contractVO);
 	
+	/**
+	 * 계출 목록 조회
+	 * @param ContractVO
+	 * @return
+	 */
+	public List<ContractVO> selectContractList(ContractVO contractVO);
 	
 
 }

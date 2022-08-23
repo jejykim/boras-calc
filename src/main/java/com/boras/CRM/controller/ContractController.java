@@ -31,31 +31,22 @@ public class ContractController {
 	/*
 	 * main page
 	 */
-	@GetMapping(value = "/contract")
-	public boolean contractInsert(HttpServletRequest req, HttpServletResponse resp, @RequestBody LedgerVO ledgerVO) {
-		boolean flag = false;
-		/*
+	@GetMapping(value = "/contract/list")
+	public String contractList(Model model, HttpServletRequest req, HttpServletResponse resp, ContractVO contractVO) {
+		String result = "contract/list";
+		
+		List<ContractVO> list = new ArrayList<>();
+		
 		try {
-			SurtaxSupportByFinancialVO feeByFinancialVO = new SurtaxSupportByFinancialVO();
-			feeByFinancialVO.setSurtaxSupportByFinancialCompanyCd(ledgerVO.getLedgerFinancialCompanyCd());
-			
-			List<SurtaxSupportByFinancialVO> feeByFinancialList = new ArrayList<>();
-			
-			feeByFinancialList=contractService.selectFeeByFinancialList(feeByFinancialVO);
-			
-			for(SurtaxSupportByFinancialVO fbf : feeByFinancialList) {
-				ContractVO contractVO = new ContractVO();
-				contractVO.setContractLedgerSeq(ledgerVO.getLedgerSeq());
-				//contractVO.setContractUserId(ledgerVO.getuser)
-				
-				contractService.insertFeeByFinancial(contractVO);
-			}
-			
-		} catch (Exception e) {
+			list = contractService.selectContractList(contractVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectContractList ]");
 			logger.error(e.getMessage());
-			flag = false;
 		}
-    	*/
-		return flag;
+		
+		model.addAttribute("list",list);
+		model.addAttribute("contractVO",contractVO);
+		
+		return result;
 	}
 }

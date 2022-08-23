@@ -1,5 +1,7 @@
 package com.boras.CRM.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +17,12 @@ public class ContractService implements ContractMapper {
 
 	@Override
 	public int insertContract(ContractVO contractVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return contractMapper.insertContract(contractVO);
+	}
+	
+	@Override
+	public List<ContractVO> selectContractList(ContractVO contractVO) {
+		return contractMapper.selectContractList(contractVO);
 	}
 
 }
