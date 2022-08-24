@@ -1,6 +1,6 @@
 package com.boras.CRM.vo;
 
-public class ContractVO {
+public class ContractVO extends PagingVO {
 	private int contractLedgerSeq;
 	private String contractUserId;
 	private int contractSeq;
@@ -29,6 +29,9 @@ public class ContractVO {
 	private String contractCreateDate;
 	private String contractUpdateUserId;
 	private String contractUpdateDate;
+	private String searchFilter;
+	private String searchText;
+	
 	
 	public int getContractLedgerSeq() {
 		return contractLedgerSeq;
@@ -197,6 +200,18 @@ public class ContractVO {
 	}
 	public void setContractUpdateDate(String contractUpdateDate) {
 		this.contractUpdateDate = contractUpdateDate;
+	}
+	public String getSearchFilter() {
+		return searchFilter;
+	}
+	public void setSearchFilter(String searchFilter) {
+		this.searchFilter = searchFilter;
+	}
+	public String getSearchText() {
+		return searchText;
+	}
+	public void setSearchText(String searchText) {
+		this.searchText = searchText;
 	}
 	
 	

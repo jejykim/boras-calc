@@ -24,5 +24,15 @@ public class ContractService implements ContractMapper {
 	public List<ContractVO> selectContractList(ContractVO contractVO) {
 		return contractMapper.selectContractList(contractVO);
 	}
+	
+	@Override
+	public int updateContract(ContractVO contractVO) {
+		return contractMapper.updateContract(contractVO);
+	}
+	
+	@Override
+	public ContractVO selectContractInfo(ContractVO contractVO) {
+		return contractMapper.selectContractInfo(contractVO);
+	}
 
 }
