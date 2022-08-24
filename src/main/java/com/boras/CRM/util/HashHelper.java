@@ -65,10 +65,34 @@ public class HashHelper {
         return new String(Base64.getEncoder().encode(bytes));
     }
     
+    /*
     public static void main(String[] args) {
 		byte[] bytes = new RandomSaltGenerator().generateSalt(16);
         
 		String salt = new String(Base64.getEncoder().encode(bytes));
+		System.out.println(salt);
+        MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-512");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+        md.update(salt.getBytes());
+        md.update("1234".getBytes());
+        
+        StringBuilder builder = new StringBuilder();
+        for (byte b: md.digest()) {
+          builder.append(String.format("%02x", b));
+        }
+        
+        String rvt = builder.toString();
+        
+        System.out.println(rvt);
+	}
+	*/
+    
+    public static void main(String[] args) {
+		String salt = new String("Co1cBp2ow5vJNI59U7eQSg==");
 		System.out.println(salt);
         MessageDigest md = null;
 		try {

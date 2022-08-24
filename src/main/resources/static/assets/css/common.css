@@ -33,6 +33,21 @@ body {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #EFF0F4;
+}
+
+.draggable {
+    -webkit-user-select: all;
+    -moz-user-select: all;
+    -ms-user-select: all;
+    user-select: all
+}
+
 img,
 picture,
 video,
@@ -70,6 +85,11 @@ table {
     width: 100%;
     text-align: center;
     font-size: 13px;
+}
+
+table tr:hover {
+    background-color: #EBECF1;
+    cursor: pointer;
 }
 
 /*--------------------------------------------------------------------------------------
@@ -142,6 +162,50 @@ i {
         4px -8px 0 white;
     transform: rotate(45deg);
 }
+
+table label {
+    position: relative;
+    cursor: pointer;
+    padding: 0;
+    font-size: 14px;
+    color: #1E1F21;
+    font-weight: 500;
+}
+
+table label:before {
+    content: '';
+    display: inline-block;
+    vertical-align: text-top;
+    width: 16px;
+    height: 16px;
+    background: white;
+    border: 1px solid #D9D9D9;
+    border-radius: 3px;
+}
+
+.table .styled-checkbox:checked + label:before {
+    background: #2B3466;
+    border: 1px solid #2B3466;
+}
+
+.table .styled-checkbox:checked + label:after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 7px;
+    background: white;
+    width: 2px;
+    height: 2px;
+    box-shadow:
+        2px 0 0 white,
+        4px 0 0 white,
+        4px -2px 0 white,
+        4px -4px 0 white,
+        4px -6px 0 white,
+        4px -8px 0 white;
+    transform: rotate(45deg);
+}
+
 
 /*modal*/
 .modal.hide {
@@ -399,6 +463,11 @@ main .wrapper {
     margin-right: 6px;
 }
 
+.header-title .text-date {
+    font-size: 15px;
+    font-weight: 500;
+}
+
 .main-header .header-sub {
     text-align: right;
     padding: 0;
@@ -513,14 +582,29 @@ main .wrapper {
     border-bottom: 2px solid #5C61F4;
 }
 
+.portlet-body {
+    max-height: 100%;
+}
+
 /*table*/
 .table-filter {
     padding: 8px 24px;
     padding-bottom: 0;
-    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
 }
 
-.table-filter > span {
+.fl-end {
+    justify-content: flex-end !important
+}
+
+.table-filter > .filter {
+    justify-content: flex-end
+}
+
+.table-filter .filter > span {
     display: inline-block;
     background-color: #F1F4FF;
     padding: 10px;
@@ -528,18 +612,53 @@ main .wrapper {
     border-radius: 3px;
 }
 
-.table-filter > span i {
+.table-filter .filter > span i {
     color: #8D919C;
     cursor: pointer;
 }
 
-.table-filter > span strong .filter {
+.table-filter .filter > span strong .filter {
     font-weight: 500;
     color: #3E4045;
 }
 
-.table-filter > span strong {
+.table-filter .filter > span strong {
     color: #8D919C;
+}
+
+.table-radio li {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.table-radio li:last-of-type {
+    margin-right: 0;
+}
+
+.table-radio .radio-label:before {
+    content: '';
+    background: #fff;
+    border-radius: 100%;
+    border: 1px solid #D9D9D9;
+    display: inline-block;
+    width: 20px;
+    top: 0px;
+    height: 20px;
+    position: relative;
+    margin-right: 6px;
+    vertical-align: top;
+    cursor: pointer;
+    text-align: center;
+    transition: all 250ms ease;
+}
+
+.table-radio input:checked + .radio-label:before {
+    background-color: #fff;
+    box-shadow: inset 0 0 0 5.3px #2B3466;
+    border: 1px solid #2B3466;
 }
 
 .table {
@@ -578,9 +697,33 @@ table th i {
     background-position: center;
 }
 
+table .cur.on i {
+    border: 1px solid #FFC700;
+    background-image: url(../images/icon/ico-filter-on.png);
+}
+
 .table button {
     padding: 6px 12px;
     font-size: 12px;
+}
+
+.fix-table {
+    max-height: 580px;
+    background-color: #fff;
+    overflow: auto;
+    overflow-y: scroll;
+}
+
+.fix-table table {
+    table-layout: fixed;
+    overflow-wrap: break-word;
+}
+
+.fix-table table th {
+    position: sticky;
+    top: 0;
+    word-break: normal;
+    z-index: 10;
 }
 
 .page_wrap {
@@ -622,6 +765,8 @@ table th i {
     border: 1px solid #5C61F4;
 }
 
+
+
 /*--------------------------------------------------------------------------------------
 modal
 ----------------------------------------------------------------------------------------*/
@@ -647,6 +792,16 @@ modal
 .filter-body {
     padding: 20px;
     border-bottom: 1px solid #ECEEF2;
+    max-height: 345px;
+    display: flex;
+}
+
+.filter-body ul {
+    margin-right: 10px;
+}
+
+.filter-body ul:last-of-type {
+    margin-right: 0;
 }
 
 .filter-footer {

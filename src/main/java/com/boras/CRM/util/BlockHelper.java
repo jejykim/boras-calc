@@ -28,7 +28,10 @@ public class BlockHelper {
 	private static JSONObject blockIdList = new JSONObject();
 	
 	// 예외 uri 목록
-	private static String[] exceptUri = {"/v1/api/user/check/id"};
+	private static String[] exceptUri = {
+			"/v1/api/user/check/id"
+			, "/v1/api/user/permission/list"
+			};
 	
 	/**
 	 * 프로젝트 init 차단 IP 조회 및 선언

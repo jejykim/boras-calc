@@ -1,5 +1,7 @@
 package com.boras.CRM.vo;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class LedgerVO extends PagingVO {
@@ -16,23 +18,26 @@ public class LedgerVO extends PagingVO {
 	// 구분(성문/올카) 코드
 	private int ledgerTypeCd;
 	
+	// 구분(성문/올카) 코드 명
+	private String ledgerTypeCdName;
+	
 	// 금융사 코드
 	private int ledgerFinancialCompanyCd;
 	
 	// 금융사 코드명
-	private int ledgerFinancialCompanyCdName;
+	private String ledgerFinancialCompanyCdName;
 
 	// 금융지점 코드
 	private int ledgerFinancialBranchCd;
 	
 	// 금융지점 코드명
-	private int ledgerFinancialBranchCdName;
+	private String ledgerFinancialBranchCdName;
 	
 	// 금융상품 코드
 	private int ledgerFinancialProductCd;
 	
 	// 금융상품 코드명
-	private int ledgerFinancialProductCdName;
+	private String ledgerFinancialProductCdName;
 	
 	// 인도일
 	private String ledgerDeliveryDate;
@@ -44,13 +49,13 @@ public class LedgerVO extends PagingVO {
 	private int ledgerDealerBrandCd;
 	
 	// 딜러브랜드 코드명
-	private int ledgerDealerBrandCdName;
+	private String ledgerDealerBrandCdName;
 	
 	// 딜러사 코드
 	private int ledgerDealerCompanyCd;
 	
 	// 딜러사 코드명
-	private int ledgerDealerCompanyCdName;
+	private String ledgerDealerCompanyCdName;
 	
 	// 차량명
 	private String ledgerCarName;
@@ -114,7 +119,22 @@ public class LedgerVO extends PagingVO {
 	
 	// 검색 input
 	private String searchText = "";
-
+	
+	// 검색 탭 상태
+	private String stateType = "all";
+	
+	// 검색 구분 리스트
+	private List<Integer> sLedgerTypeCd;
+	
+	// 검색 금융사 리스트
+	private List<Integer> sLedgerFinancialCompanyCd;
+	
+	// 검색 금융지점 리스트
+	private List<Integer> sLedgerFinancialBranchCd;
+	
+	// 검색 금융상품 리스트
+	private List<Integer> sLedgerFinancialProductCd;
+	
 	public int getLedgerSeq() {
 		return ledgerSeq;
 	}
@@ -347,43 +367,43 @@ public class LedgerVO extends PagingVO {
 		this.ledgerUpdateUserId = ledgerUpdateUserId;
 	}
 
-	public int getLedgerFinancialCompanyCdName() {
+	public String getLedgerFinancialCompanyCdName() {
 		return ledgerFinancialCompanyCdName;
 	}
 
-	public void setLedgerFinancialCompanyCdName(int ledgerFinancialCompanyCdName) {
+	public void setLedgerFinancialCompanyCdName(String ledgerFinancialCompanyCdName) {
 		this.ledgerFinancialCompanyCdName = ledgerFinancialCompanyCdName;
 	}
 
-	public int getLedgerFinancialBranchCdName() {
+	public String getLedgerFinancialBranchCdName() {
 		return ledgerFinancialBranchCdName;
 	}
 
-	public void setLedgerFinancialBranchCdName(int ledgerFinancialBranchCdName) {
+	public void setLedgerFinancialBranchCdName(String ledgerFinancialBranchCdName) {
 		this.ledgerFinancialBranchCdName = ledgerFinancialBranchCdName;
 	}
 
-	public int getLedgerFinancialProductCdName() {
+	public String getLedgerFinancialProductCdName() {
 		return ledgerFinancialProductCdName;
 	}
 
-	public void setLedgerFinancialProductCdName(int ledgerFinancialProductCdName) {
+	public void setLedgerFinancialProductCdName(String ledgerFinancialProductCdName) {
 		this.ledgerFinancialProductCdName = ledgerFinancialProductCdName;
 	}
 
-	public int getLedgerDealerBrandCdName() {
+	public String getLedgerDealerBrandCdName() {
 		return ledgerDealerBrandCdName;
 	}
 
-	public void setLedgerDealerBrandCdName(int ledgerDealerBrandCdName) {
+	public void setLedgerDealerBrandCdName(String ledgerDealerBrandCdName) {
 		this.ledgerDealerBrandCdName = ledgerDealerBrandCdName;
 	}
 
-	public int getLedgerDealerCompanyCdName() {
+	public String getLedgerDealerCompanyCdName() {
 		return ledgerDealerCompanyCdName;
 	}
 
-	public void setLedgerDealerCompanyCdName(int ledgerDealerCompanyCdName) {
+	public void setLedgerDealerCompanyCdName(String ledgerDealerCompanyCdName) {
 		this.ledgerDealerCompanyCdName = ledgerDealerCompanyCdName;
 	}
 
@@ -409,6 +429,54 @@ public class LedgerVO extends PagingVO {
 
 	public void setSearchText(String searchText) {
 		this.searchText = searchText;
+	}
+
+	public String getStateType() {
+		return stateType;
+	}
+
+	public void setStateType(String stateType) {
+		this.stateType = stateType;
+	}
+
+	public String getLedgerTypeCdName() {
+		return ledgerTypeCdName;
+	}
+
+	public void setLedgerTypeCdName(String ledgerTypeCdName) {
+		this.ledgerTypeCdName = ledgerTypeCdName;
+	}
+
+	public List<Integer> getsLedgerTypeCd() {
+		return sLedgerTypeCd;
+	}
+
+	public void setsLedgerTypeCd(List<Integer> sLedgerTypeCd) {
+		this.sLedgerTypeCd = sLedgerTypeCd;
+	}
+
+	public List<Integer> getsLedgerFinancialCompanyCd() {
+		return sLedgerFinancialCompanyCd;
+	}
+
+	public void setsLedgerFinancialCompanyCd(List<Integer> sLedgerFinancialCompanyCd) {
+		this.sLedgerFinancialCompanyCd = sLedgerFinancialCompanyCd;
+	}
+
+	public List<Integer> getsLedgerFinancialBranchCd() {
+		return sLedgerFinancialBranchCd;
+	}
+
+	public void setsLedgerFinancialBranchCd(List<Integer> sLedgerFinancialBranchCd) {
+		this.sLedgerFinancialBranchCd = sLedgerFinancialBranchCd;
+	}
+
+	public List<Integer> getsLedgerFinancialProductCd() {
+		return sLedgerFinancialProductCd;
+	}
+
+	public void setsLedgerFinancialProductCd(List<Integer> sLedgerFinancialProductCd) {
+		this.sLedgerFinancialProductCd = sLedgerFinancialProductCd;
 	}
 	
 }

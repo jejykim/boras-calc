@@ -242,19 +242,32 @@
 				,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_product_cd) as ledgerFinancialProductCdName
 				,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
 				,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_type_cd) as ledgerTypeCdName
 			FROM ledger l
 			WHERE 1=1
 			<if test="ledgerTypeCd != null and ledgerTypeCd != ''">
-				AND ledger_type_cd = #{ledgerTypeCd}
+				AND ledger_type_cd in
+				<foreach item="item" index="index" collection="sLedgerTypeCd" open="(" separator="," close=")">
+					#{item}
+				</foreach>
 			</if>
 			<if test="ledgerFinancialCompanyCd != null and ledgerFinancialCompanyCd != ''">
-				AND ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
+				AND ledger_financial_company_cd in
+				<foreach item="item" index="index" collection="ledgerFinancialCompanyCd" open="(" separator="," close=")">
+					#{item}
+				</foreach>
 			</if>
 			<if test="ledgerFinancialBranchCd != null and ledgerFinancialBranchCd != ''">
-				AND ledger_financial_branch_cd = #{ledgerFinancialBranchCd}
+				AND ledger_financial_branch_cd in
+				<foreach item="item" index="index" collection="ledgerFinancialBranchCd" open="(" separator="," close=")">
+					#{item}
+				</foreach>
 			</if>
 			<if test="ledgerFinancialProductCd != null and ledgerFinancialProductCd != ''">
-				AND ledger_financial_product_cd = #{ledgerFinancialProductCd}
+				AND ledger_financial_product_cd in
+				<foreach item="item" index="index" collection="ledgerFinancialProductCd" open="(" separator="," close=")">
+					#{item}
+				</foreach>
 			</if>
 			<if test="searchText != null and searchText != ''">
 				AND (ledger_car_name like CONCAT('%',#{searchText},'%')
@@ -277,16 +290,28 @@
 		FROM ledger l
 		WHERE 1=1
 		<if test="ledgerTypeCd != null and ledgerTypeCd != ''">
-			AND ledger_type_cd = #{ledgerTypeCd}
+			AND ledger_type_cd in
+			<foreach item="item" index="index" collection="sLedgerTypeCd" open="(" separator="," close=")">
+				#{item}
+			</foreach>
 		</if>
 		<if test="ledgerFinancialCompanyCd != null and ledgerFinancialCompanyCd != ''">
-			AND ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
+			AND ledger_financial_company_cd in
+			<foreach item="item" index="index" collection="ledgerFinancialCompanyCd" open="(" separator="," close=")">
+				#{item}
+			</foreach>
 		</if>
 		<if test="ledgerFinancialBranchCd != null and ledgerFinancialBranchCd != ''">
-			AND ledger_financial_branch_cd = #{ledgerFinancialBranchCd}
+			AND ledger_financial_branch_cd in
+			<foreach item="item" index="index" collection="ledgerFinancialBranchCd" open="(" separator="," close=")">
+				#{item}
+			</foreach>l
 		</if>
 		<if test="ledgerFinancialProductCd != null and ledgerFinancialProductCd != ''">
-			AND ledger_financial_product_cd = #{ledgerFinancialProductCd}
+			AND ledger_financial_product_cd in
+			<foreach item="item" index="index" collection="ledgerFinancialProductCd" open="(" separator="," close=")">
+				#{item}
+			</foreach>
 		</if>
 		<if test="searchText != null and searchText != ''">
 			AND (ledger_car_name like CONCAT('%',#{searchText},'%')

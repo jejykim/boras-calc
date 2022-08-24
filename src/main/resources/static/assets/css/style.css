@@ -25,6 +25,7 @@ button {
 .btn-line-main {
     color: #4782F6;
     border: 1px solid #4782F6;
+    background-color: #fff;
 }
 
 .btn-bu {
@@ -36,6 +37,7 @@ button {
 .btn-pencil {
     border: 1px solid #BABABB;
     padding: 8px 10px !important;
+    background-color: #fff;
 }
 
 .btn-line-cancel {
@@ -46,9 +48,42 @@ button {
 }
 
 /*font*/
+.font-blue {
+    color: #4870FF;
+    font-weight: 400;
+}
+
 .font-red {
     color: #F56242;
     font-weight: 400;
+}
+
+/*badge*/
+.badge {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 100px;
+    vertical-align: middle;
+    margin-top: -2px;
+    margin-right: 3px;
+}
+
+.b-wait {
+    background-color: #FFCEBB;
+}
+
+.b-done {
+    background-color: #BCF3B7;
+}
+
+/*table*/
+.tr-wait {
+    background-color: #FFF2ED;
+}
+
+.tr-done {
+    background-color: #F2FCF1;
 }
 
 /*color*/
@@ -59,6 +94,11 @@ button {
 /*margin*/
 .m-mg-12 {
     margin: 12px;
+}
+
+/*padding*/
+.m-tpa-10 {
+    padding: 10px 0;
 }
 
 /*input*/
@@ -81,8 +121,9 @@ input:focus {
 }
 
 .header-sub {
-    width: 25%;
     padding: 0 24px;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .header-sub input {
@@ -97,6 +138,7 @@ input:focus {
     overflow: hidden;
     border-radius: 3px;
     width: 100%;
+    height: 40px;
 }
 
 .header-sub .search button {
@@ -108,6 +150,36 @@ input:focus {
     top: 0;
     color: #fff;
     font-size: 13px;
+    height: 40px;
+}
+
+.modal-form .search {
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.modal-form .search input {
+    padding-right: 45px;
+}
+
+.modal-form .search button {
+    width: 39.5px;
+    height: 39.5px;
+    background-color: #4782F6;
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: #fff;
+    font-size: 13px;
+    height: 40px;
+}
+
+.search-result select option {
+    padding: 5px;
+}
+
+.header-sub .btn-bu {
+    height: 40px;
 }
 
 /*select*/

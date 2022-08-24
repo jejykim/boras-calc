@@ -18,10 +18,19 @@
 	<link rel="stylesheet" href="/static/assets/css/common.css">
 	<link rel="stylesheet" href="/static/assets/css/style.css">
 	
+	<link rel="stylesheet" href="/static/assets/css/dropzone.css" />
+	<script src="/static/assets/js/common/dropzone.js"></script>
+
+	<script type="text/javascript">
+		var sCodeType = <c:choose><c:when test="${not empty ledgerVO.sLedgerTypeCd }">${ledgerVO.sLedgerTypeCd }</c:when><c:otherwise>""</c:otherwise></c:choose>;
+		var sFinancialCompany = <c:choose><c:when test="${not empty ledgerVO.sLedgerFinancialCompanyCd }">${ledgerVO.sLedgerTypeCd }</c:when><c:otherwise>""</c:otherwise></c:choose>;
+		var sFinancialBranch = <c:choose><c:when test="${not empty ledgerVO.sLedgerFinancialBranchCd }">${ledgerVO.sLedgerTypeCd }</c:when><c:otherwise>""</c:otherwise></c:choose>;
+		var sFinancialProduct = <c:choose><c:when test="${not empty ledgerVO.sLedgerFinancialProductCd }">${ledgerVO.sLedgerTypeCd }</c:when><c:otherwise>""</c:otherwise></c:choose>;
+	</script>
+										
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	<script src='/static/assets/js/common/common.js'></script>
 	<script src='/static/assets/js/ledger-admin/ledgerList.js'></script>
-	
 </head>
 <body>
     <div class="wrap">
@@ -57,8 +66,8 @@
                         </div>
                         <div class="header-sub">
                             <div class="btn">
-                                <button class="btn-su">원장엑셀업로드</button>
-                                <button class="btn-main">원장추가</button>
+                                <button class="btn-su" id="btnAddExcel">원장엑셀업로드</button>
+                                <button class="btn-main" id="btnAddLedger">원장추가</button>
                             </div>
                         </div>
                     </div>
@@ -89,64 +98,59 @@
                             <div class="portlet-header">
                                 <div class="tab">
                                     <ul>
-                                        <li id="liAll" class="on">전체</li>
-                                        <li id="liRequest">승인요청</li>
-                                        <li id="liComplete">승인완료</li>
-                                        <li id="liLeft">잉여원장</li>
+                                        <li id="liAll" <c:if test="${empty ledgerVO.stateType or ledgerVO.stateType eq 'all' }">class="on"</c:if>>전체</li>
+                                        <li id="liRequest" <c:if test="${ledgerVO.stateType eq 'request' }">class="on"</c:if>>승인요청</li>
+                                        <li id="liComplete" <c:if test="${ledgerVO.stateType eq 'complete' }">class="on"</c:if>>승인완료</li>
+                                        <li id="liLeft" <c:if test="${ledgerVO.stateType eq 'left' }">class="on"</c:if>>잉여원장</li>
                                     </ul>
                                 </div>
                                 <div class="header-sub">
                                     <div class="search">
-                                        <input id="inputSearchText" type="text" placeholder="검색" value="${userVO.searchText }">
+                                        <input id="inputSearchText" type="text" placeholder="검색" value="${ledgerVO.searchText }">
                                         <button id="btnSearch"><i class="fa fa-search" aria-hidden="true"></i></button>
                                         
-                                        <form class="search-form" id="searchForm" name="searchForm" action="/user/list" method="get">
-											<input type="hidden" name="searchText" id="searchText" value="${userVO.searchText }">
-											<input type="hidden" name="agOrAdmin" id="agOrAdmin" value="${userVO.agOrAdmin }">
-											<input type='hidden' id="now_page" name="nowPage" value="${userVO.nowPage }">
+                                        <form class="search-form" id="searchForm" name="searchForm" action="" method="get">
+											<input type="hidden" name="searchText" id="searchText" value="${ledgerVO.searchText }">
+											<input type="hidden" name="stateType" id="stateType" value="${ledgerVO.stateType }">
+											<input type='hidden' id="now_page" name="nowPage" value="${ledgerVO.nowPage }">
 										</form>
                                     </div>
                                 </div>
                             </div>
                             <div class="portlet-body">
-                                <div class="table-filter">
-                                    <span>
-                                        <strong>인도일</strong>
-                                        <span class="filter">2022.08.03</span>
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                    </span>
-                                    <span>
-                                        <strong>금융상품</strong>
-                                        <span class="filter">리스</span>
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                    </span>
-                                    <span>
-                                        <strong>금융지점</strong>
-                                        <span class="filter">강남지구 어떤지구</span>
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                    </span>
-                                    <span>
-                                        <strong>구분</strong>
-                                        <span class="filter">성문/올카</span>
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                    </span>
-                                    <span>
-                                        <strong>금융상품</strong>
-                                        <span class="filter">리스</span>
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                    </span>
-                                    <button class="btn-gr">초기화</button>
+                                <div class="table-filter fl-end">
+                                    <div class="filter" id="divFilter">
+                                        <span>
+                                            <strong>구분</strong>
+                                            <span class="filter">성문/올카</span>
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </span>
+                                        <button class="btn-gr">초기화</button>
+                                    </div>
                                 </div>
                                 <div class="table">
                                     <table>
+                                    	<colgroup>
+                                            <col width="5%">
+                                            <col width="8%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                            <col width="8%">
+                                            <col width="10%">
+                                            <col width="8%">
+                                            <col width="10%">
+                                            <col width="5%">
+                                            <col width="5%">
+                                        </colgroup>
                                         <thead>
                                             <tr>
                                                 <th>기타사항</th>
-                                                <th>상태</th>
-                                                <th class="cur">구분<i class="ico-filter"></i></th>
-                                                <th class="cur">금융사<i class="ico-filter"></i></th>
-                                                <th class="cur">금융지점<i class="ico-filter"></i></th>
-                                                <th class="cur">금융상품<i class="ico-filter"></i></th>
+                                                <th class="cur" id="thCodeType">구분<i class="ico-filter"></i></th>
+                                                <th class="cur" id="thFinancialCompany">금융사<i class="ico-filter"></i></th>
+                                                <th class="cur" id="thFinancialBranch">금융지점<i class="ico-filter"></i></th>
+                                                <th class="cur" id="thFinancialProduct">금융상품<i class="ico-filter"></i></th>
                                                 <th>인도일</th>
                                                 <th>고객명</th>
                                                 <th>딜러사</th>
@@ -209,7 +213,7 @@
                                             </c:forEach>
                                             <c:if test="${listCount eq 0 }">
 	                                            <tr>
-	                                                <td colspan="13">조회된 데이터가 없습니다</td>
+	                                                <td colspan="12">조회된 데이터가 없습니다</td>
 	                                            </tr>
 	                                        </c:if>
                                         </tbody>
@@ -234,6 +238,119 @@
 	                                    </div>
                                     </c:if>
                                     
+                                    <!--table-filter / 구분-->
+                                    <div class="filter-modal" id="divCodeTypeFilter" style="display: none;">
+                                        <div class="filter-body">
+                                            <ul>
+                                            	<c:forEach var="list" items="${codeCompanyCodelist }" varStatus="status">
+                                            		<c:if test="${list.codeName ne '전체'}">
+		                                                <li>
+		                                                    <input class="styled-checkbox" id="code-company-${status.count }" name="chkCodeCompany" type="checkbox" value="${list.codeId }" <c:if test="${fn:contains(ledgerVO.sLedgerTypeCd, list.codeId) }">checked="checked"</c:if>>
+		                                                    <label for="code-company-${status.count }">${list.codeName }</label>
+		                                                </li>
+	                                                </c:if>
+                                                </c:forEach>
+                                            </ul>
+                                        </div>
+                                        <div class="filter-footer">
+                                            <div class="filter-btn">
+                                                <button class="btn-bu">적용</button>
+                                                <button class="btn-line-cancel">취소</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::table-filter-->
+                                    <!--table-filter / 금융사-->
+                                    <div class="filter-modal radio" id="divFinancialCompanyFilter" style="display: none;">
+                                        <div class="filter-body">
+                                        	<c:choose>
+                                        		<c:when test="${fn:length(financialCompanyCodelist) % 10 eq 0}">
+                                        			<c:set var="divideFinancialCompanyCodelist" value="${fn:length(financialCompanyCodelist) / 10}" />
+                                        		</c:when>
+                                        		<c:otherwise>
+                                        			<c:set var="divideFinancialCompanyCodelist" value="${fn:length(financialCompanyCodelist) / 10 + 1}" />
+                                        		</c:otherwise>
+                                        	</c:choose>
+                                        	<c:forEach var="ulCount" begin="1" end="${divideFinancialCompanyCodelist }" step="1">
+                                        		<ul>
+	                                                <c:forEach var="list" items="${financialCompanyCodelist }" varStatus="status">
+	                                                	<c:if test="${status.count gt ulCount * 10 - 10 and status.count le ulCount * 10}">
+		                                            		<c:if test="${list.codeName ne '전체'}">
+				                                                <li>
+				                                                    <input id="radio-go-${status.count }" name="chkFinancialCompany" type="radio" value="${list.codeId }" <c:if test="${fn:contains(ledgerVO.sLedgerFinancialCompanyCd, list.codeId) }">checked="checked"</c:if>>
+				                                                    <label for="radio-go-${status.count }" class="radio-label">${list.codeName }</label>
+				                                                </li>
+			                                                </c:if>
+		                                                </c:if>
+	                                                </c:forEach>
+	                                            </ul>
+                                        	</c:forEach>
+                                        </div>
+                                        <div class="filter-footer">
+                                            <div class="filter-btn">
+                                                <button class="btn-bu">적용</button>
+                                                <button class="btn-line-cancel">취소</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::table-filter-->
+                                    <!--table-filter / 금융지점-->
+                                    <div class="filter-modal radio governor" id="divFinancialBranchFilter" style="display: none;">
+                                        <div class="filter-body">
+                                        	<c:choose>
+                                        		<c:when test="${fn:length(financialBranchCodelist) % 10 eq 0}">
+                                        			<c:set var="divideFinancialBranchCodelist" value="${fn:length(financialBranchCodelist) / 10}" />
+                                        		</c:when>
+                                        		<c:otherwise>
+                                        			<c:set var="divideFinancialBranchCodelist" value="${fn:length(financialBranchCodelist) / 10 + 1}" />
+                                        		</c:otherwise>
+                                        	</c:choose>
+                                        	<c:forEach var="ulCount" begin="1" end="${divideFinancialBranchCodelist }" step="1">
+	                                            <ul>
+	                                                <c:forEach var="list" items="${financialBranchCodelist }" varStatus="status">
+	                                                	<c:if test="${status.count gt ulCount * 10 - 10 and status.count le ulCount * 10}">
+		                                            		<c:if test="${list.codeName ne '전체'}">
+				                                                <li>
+				                                                    <input class="styled-checkbox" id="financial-branch-${status.count }" name="chkFinancialBranch" type="checkbox" value="${list.codeId }" <c:if test="${fn:contains(ledgerVO.sLedgerFinancialBranchCd, list.codeId) }">checked="checked"</c:if>>
+				                                                    <label for="financial-branch-${status.count }">${list.codeName }</label>
+				                                                </li>
+			                                                </c:if>
+		                                                </c:if>
+	                                                </c:forEach>
+	                                            </ul>
+                                            </c:forEach>
+                                        </div>
+                                        <div class="filter-footer">
+                                            <div class="filter-btn">
+                                                <button class="btn-bu">적용</button>
+                                                <button class="btn-line-cancel">취소</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::table-filter-->
+                                    <!--table-filter / 금융상품ㄴ-->
+                                    <div class="filter-modal radio goods" id="divFinancialProductFilter" style="display: none;">
+                                        <div class="filter-body">
+                                            <ul>
+                                                <c:forEach var="list" items="${financialProductCodelist }" varStatus="status">
+                                            		<c:if test="${list.codeName ne '전체'}">
+		                                                <li>
+		                                                    <input class="styled-checkbox" id="financial-product-${status.count }" name="chkFinancialProduct" type="checkbox" value="${list.codeId }" <c:if test="${fn:contains(ledgerVO.sLedgerFinancialProductCd, list.codeId) }">checked="checked"</c:if>>
+		                                                    <label for="financial-product-${status.count }">${list.codeName }</label>
+		                                                </li>
+	                                                </c:if>
+                                                </c:forEach>
+                                            </ul>
+                                        </div>
+                                        <div class="filter-footer">
+                                            <div class="filter-btn">
+                                                <button class="btn-bu">적용</button>
+                                                <button class="btn-line-cancel">취소</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::table-filter-->
+                                    
                                 </div>
                             </div>
                         </div>
@@ -241,6 +358,114 @@
                 </div>
             </main>
         </div>
+        
+        <!--modal / 원장 엑셀 추가-->
+		<div class="modal hide" id="addExcelModal">
+		    <div class="modal-contents sm">
+		        <div class="modal-head">
+		            <h4>원장 Excel 업로드</h4>
+		        </div>
+		        <div class="modal-body">
+		            <div class="modal-form input-sh">
+		                <div>
+		                    <div class="from-title">
+		                        <h6>금융사</h6>
+		                    </div>
+		                    <select id="selCodeCompany">
+                            	<c:forEach var="list" items="${financialCompanyCodelist }" varStatus="status">
+		                        	<option value="${list.codeId }">${list.codeName }</option>
+		                        </c:forEach>
+		                    </select>
+		                </div>
+		                <div>
+		                    <div class="from-title">
+		                        <h6>금융지점</h6>
+		                    </div>
+		                    <select id="selCodeCompany">
+                            	<c:forEach var="list" items="${financialBranchCodelist }" varStatus="status">
+		                        	<option value="${list.codeId }">${list.codeName }</option>
+		                        </c:forEach>
+		                    </select>
+		                </div>
+		            </div>
+		            <div class="modal-form input-sh">
+                        <div>
+                            <div class="from-title">
+                                <h6>금융상품</h6>
+                            </div>
+                            <select id="selCodeCompany">
+                            	<c:forEach var="list" items="${financialProductCodelist }" varStatus="status">
+		                        	<option value="${list.codeId }">${list.codeName }</option>
+		                        </c:forEach>
+		                    </select>
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>코드사</h6>
+                            </div>
+                            <select id="selBusinessCode">
+		                        <c:forEach var="list" items="${codeCompanyCodelist }" varStatus="status">
+		                        	<c:if test="${list.codeName ne '전체'}">
+		                        		<option value="${list.codeId }">${list.codeName }</option>
+		                        	</c:if>
+		                        </c:forEach>
+		                    </select>
+                        </div>
+                    </div>
+                    <div class="modal-form">
+                    	<div>
+                    		<div class="from-title">
+                                <h6>Excel 파일</h6>
+                            </div>
+	                    	<div class="dropzone" id="my-dropzone">
+							</div>
+                    	</div>
+                   	</div>
+		        </div>
+		        <div class="modal-footer">
+		            <div class="modal-btn">
+		                <button class="btn-bu">완료</button>
+		                <button class="btn-line-cancel">취소</button>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+		<!--end::modal-->
+        
     </div>
+    
+    <script type="text/javascript">
+		// dropzone 파일 1개 설정
+		Dropzone.options.myDropzone = {
+			url: 'http://localhost:508090', //업로드할 url (ex)컨트롤러)
+            autoProcessQueue: false, // 자동업로드 여부 (true일 경우, 바로 업로드 되어지며, false일 경우, 서버에는 올라가지 않은 상태임 processQueue() 호출시 올라간다.)
+            autoQueue: false, // 드래그 드랍 후 바로 서버로 전송
+            clickable: true, // 클릭가능여부
+            createImageThumbnails: true, //파일 업로드 썸네일 생성
+            thumbnailHeight: 90, // Upload icon size
+            thumbnailWidth: 90, // Upload icon size
+            maxFiles: 1, // 업로드 파일수
+            maxFilesize: 10, // 최대업로드용량 : 10MB
+            parallelUploads: 1, // 동시파일업로드 수(이걸 지정한 수 만큼 여러파일을 한번에 컨트롤러에 넘긴다.)
+            addRemoveLinks: true, // 삭제버튼 표시 여부
+            dictRemoveFile: '삭제', // 삭제버튼 표시 텍스트
+            uploadMultiple: false, // 다중업로드 기능
+            acceptedFiles: '.xlsx', // 파일 포맷만 허용
+            dictDefaultMessage: "<p>Drop file here or click to upload</p><p>XLSX file only</p>",
+			init: function() {
+				this.on("addedfile", function(file) {
+					if (this.files[1] != null) {
+						this.removeFile(this.files[0]);
+					}
+					LedgerList.files = [];
+					LedgerList.files.push(file);
+				});
+				this.on("removedfile", function(file) {
+					var index = LedgerList.files.indexOf(file);
+					LedgerList.files.splice(index, 1);
+				});
+			},
+		};
+    </script>
 </body>
 </html>

@@ -17,8 +17,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.boras.CRM.services.CodeService;
 import com.boras.CRM.services.LedgerService;
 import com.boras.CRM.util.PagingControl;
+import com.boras.CRM.vo.CodeVO;
 import com.boras.CRM.vo.LedgerVO;
 import com.boras.CRM.vo.PagingVO;
 
@@ -29,6 +31,9 @@ public class LedgerController {
 	
 	@Autowired
 	private LedgerService ledgerService;
+	
+	@Autowired
+	private CodeService codeService;
 	
 	/*
 	 * 원장 목록 페이지 (AG용)
@@ -96,8 +101,57 @@ public class LedgerController {
 		int thisYear = cal.get(Calendar.YEAR);
 		int thisMonth = cal.get(Calendar.MONTH) + 1;
 		
+		List<CodeVO> codeCompanyCodelist = new ArrayList<>();
+		List<CodeVO> financialCompanyCodelist = new ArrayList<>();
+		List<CodeVO> financialBranchCodelist = new ArrayList<>();
+		List<CodeVO> financialProductCodelist = new ArrayList<>();
+		CodeVO codeVO = new CodeVO();
+		
+		// 코드사
+		codeVO.setCodeParentId(2000);
+		try {
+			codeCompanyCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		// 금융사
+		codeVO.setCodeParentId(3000);
+		try {
+			financialCompanyCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		// 금융지점
+		codeVO.setCodeParentId(3200);
+		try {
+			financialBranchCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		// 금융상품
+		codeVO.setCodeParentId(3100);
+		try {
+			financialProductCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
 		PagingControl pc = new PagingControl();
 		PagingVO pagingVO = pc.paging(listCount, ledgerVO.getNowPage(), ledgerVO.getPagePerRows());
+		
+		List<Integer> typeList = new ArrayList<>();
+		
+		typeList.add(2100);
+		typeList.add(2200);
+		
+		ledgerVO.setsLedgerTypeCd(typeList);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("listCount", listCount);
@@ -106,6 +160,11 @@ public class LedgerController {
 		model.addAttribute("yearList", yearList);
 		model.addAttribute("thisYear", thisYear);
 		model.addAttribute("thisMonth", thisMonth);
+		
+		model.addAttribute("codeCompanyCodelist", codeCompanyCodelist);
+		model.addAttribute("financialCompanyCodelist", financialCompanyCodelist);
+		model.addAttribute("financialBranchCodelist", financialBranchCodelist);
+		model.addAttribute("financialProductCodelist", financialProductCodelist);
     	
 		return result;
 	}
