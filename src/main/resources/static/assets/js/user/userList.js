@@ -107,7 +107,7 @@ UserList.SetEvent = function () {
 		
 		// 사용자 추가 모달
 		$("#btnAddUser").click(function() {
-			UserList.getPermissionList($('input[name=radio]:checked').val());
+			UserList.getPermissionList($('input[name=custom-radio]:checked').val());
 			$("#modalAddUser").show();
 		});
 		
@@ -116,9 +116,14 @@ UserList.SetEvent = function () {
 			$("#modalAddUser").hide();
 		});
 		
+		// 모달 닫기
+		$("#btnUpdateCancelModal").click(function() {
+			$("#modalInfoUser").hide();
+		});
+		
 		// 계정 형태 (모달)
-		$(".radio-button").click(function() {
-			var value = $('input[name=radio]:checked').val();
+		$("input[name=custom-radio]").click(function() {
+			var value = $('input[name=custom-radio]:checked').val();
 			UserList.getPermissionList(value);
 			
 			if(value == "ag") {
@@ -138,6 +143,11 @@ UserList.SetEvent = function () {
 		// 아이디 중복 체크
 		$("#textUserId").keyup(function() {
 			UserList.checkUserId();
+		});
+		
+		// 계정 수정
+		$("#btnUpdateUserOk").click(function() {
+			UserList.updateUser();
 		});
     }
     catch (e) { console.log(e.message); }
@@ -164,10 +174,62 @@ UserList.Paging = function (page) {
 내      용  : 사용자 상세 모달
 작  성  자  : 김진열
 2022.08.18 - 최초생성
+2022.08.24 - 김은빈 수정
 ========================================================================*/
 UserList.userDetail = function (userId) {
-    try {
-		console.log(userId);
+	 try {
+		$.ajax({
+			type : "get",
+			url : "/v1/api/user/info/" + userId,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					console.log(json.info);
+					$('#modalInfoUser').show();
+					
+					//관리자 1100~1199
+					//ag   1200~1299
+					var type="";
+					if(json.info.userPermissionCd>=1100 && json.info.userPermissionCd<1200){
+						$('#textInfoUserType').val("관리자");
+						type="admin";
+						
+						$('#textInfoAgCompanyName').parent().parent().css("display","none");
+						$('#selInfoCodeCompany').parent().parent().css("display","none");
+						$('#selInfoBusinessCode').parent().parent().css("display","none");
+					}else if(json.info.userPermissionCd>=1200 && json.info.userPermissionCd<1300){
+						$('#textInfoUserType').val("AG");
+						type="ag";
+						
+						$('#textInfoAgCompanyName').parent().parent().css("display","");
+						$('#selInfoCodeCompany').parent().parent().css("display","");
+						$('#selInfoBusinessCode').parent().parent().css("display","");
+					}
+					UserList.getPermissionListForInfo(type, json.info.userPermissionCd);
+					
+					$('#textInfoUserId').val(json.info.userId);
+					$('#textInfoUserName').val(json.info.userName);
+					$('#textInfoUserEmail').val(json.info.userEmail);
+					$('#textInfoAgCompanyName').val(json.info.userAgCompany);
+					if(json.info.userJoinDate != null){
+						$('#textInfoUserJoinDate').val(json.info.userJoinDate.substring(0,19));
+					}
+					if(json.info.userLastAccessDate != null){
+					$('#textInfoUserLastAccessDate').val(json.info.userLastAccessDate.substring(0,19));
+					}
+					$('#textInfoUserLastAccessIp').val(json.info.userLastAccessIp);
+					
+					$('#selInfoCodeCompany').val(json.info.userCodeCompanyCd).prop("selected",true);
+					$('#selInfoBusinessCode').val(json.info.userBusinessTypeCd).prop("selected",true);
+					
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
     }
     catch (e) { console.log(e.message); }
 }
@@ -186,11 +248,13 @@ UserList.getPermissionList = function (value) {
 				if(json.resultCode == "00000") {
 					var option = "";
 					$("#selPermissionCode").children().remove();
+					$("#selInfoPermissionCode").children().remove();
 					
 					for(var data of json.list) {
 						option = "<option value='" + data.codeId + "'> " + data.codeName + "</option>";
 						
 						$("#selPermissionCode").append(option);
+						$("#selInfoPermissionCode").append(option);
 					}
 				}else {
 					alert(json.resultMsg);
@@ -332,3 +396,82 @@ UserList.ValidationCheck = function () {
     }
     catch (e) { console.log(e.message); }
 }
+
+
+/*=======================================================================
+내      용  : 계정 권한 조회 - 사용자 상세 조회용
+작  성  자  : 김은빈
+2022.08.24 - 최초생성
+========================================================================*/
+UserList.getPermissionListForInfo = function (type, userPermissionCd) {
+    try {
+		$.ajax({
+			type : "get",
+			url : "/v1/api/user/permission/list/" + type,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					var option = "";
+					$("#selPermissionCode").children().remove();
+					$("#selInfoPermissionCode").children().remove();
+					
+					for(var data of json.list) {
+						option = "<option value='" + data.codeId + "'> " + data.codeName + "</option>";
+						
+						$("#selPermissionCode").append(option);
+						$("#selInfoPermissionCode").append(option);
+					}
+					
+					$('#selInfoPermissionCode').val(userPermissionCd).prop("selected",true);
+					
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+	    }
+    catch (e) { console.log(e.message); }
+}
+
+
+/*=======================================================================
+내      용  : 계정 수정
+작  성  자  : 김은빈
+2022.08.25 - 최초생성
+========================================================================*/
+UserList.updateUser = function () {
+    try {
+		var data = {
+			"userId" : $("#textInfoUserId").val()
+			, "userName" : $("#textInfoUserName").val()
+			, "userEmail" : $("#textInfoUserEmail").val()
+			, "userBusinessTypeCd" : $("#selInfoBusinessCode").val()
+			, "userAgCompany" : $("#textInfoAgCompanyName").val()
+			, "userPermissionCd" : $("#selInfoPermissionCode").val()
+			, "userCodeCompanyCd" : $("#selInfoCodeCompany").val()
+			};
+	console.log(data);
+		$.ajax({
+			type : "post",
+			url : "/v1/api/user/update",
+			data : data,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					alert("계정이 수정되었습니다.");
+					location.reload();
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+    }
+    catch (e) { console.log(e.message); }
+}
+

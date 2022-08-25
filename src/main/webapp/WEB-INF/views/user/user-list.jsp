@@ -83,7 +83,7 @@
                                                 <th>AG사명</th>
                                                 <th>권한</th>
                                                 <th>가입일</th>
-                                                <th>활성화</th>
+                                                <th>사용여부</th>
                                                 <th>마지막 접속일</th>
                                                 <th>접속 IP</th>
                                                 <th>로그인 여부</th>
@@ -126,10 +126,10 @@
 	                                                <td>
 	                                                	<c:choose>
 	                                                		<c:when test="${list.userUseYn eq 'Y' }">
-	                                                			<span style="color: green;">활성화</span>
+	                                                			<span style="color: green;">사용</span>
 	                                                		</c:when>
 	                                                		<c:when test="${list.userUseYn eq 'N' }">
-	                                                			<span style="color: red;">비활성화</span>
+	                                                			<span style="color: red;">미사용</span>
 	                                                		</c:when>
 	                                                		<c:otherwise>
 	                                                			<span style="color: gray;">계정 오류</span>
@@ -182,7 +182,7 @@
         <div class="modal" style="display: none;" id="modalAddUser">
             <div class="modal-contents sm">
                 <div class="modal-head">
-                    <h4>사용자추가</h4>
+                    <h4>사용자 추가</h4>
                 </div>
                 <div class="modal-body">
                 	<div class="modal-form">
@@ -191,14 +191,14 @@
                                 <div class="radio-tile-group">
                                 	
 								    <div class="input-container">
-								      <input id="rAg" class="radio-button" type="radio" name="radio" checked="checked" value="ag"/>
+								      <input id="rAg" class="radio-button" type="radio" name="custom-radio" checked="checked" value="ag"/>
 								      <div class="radio-tile">
 								        <label for="rAg" class="radio-tile-label">AG</label>
 								      </div>
 								    </div>
 								
 								    <div class="input-container">
-								      <input id="rAdmin" class="radio-button" type="radio" name="radio" value="admin"/>
+								      <input id="rAdmin" class="radio-button" type="radio" name="custom-radio" value="admin"/>
 								      <div class="radio-tile">
 								        <label for="rAdmin" class="radio-tile-label">관리자</label>
 								      </div>
@@ -279,6 +279,149 @@
                     <div class="modal-btn">
                         <button class="btn-bu" id="btnAddUserOk">완료</button>
 		                <button class="btn-line-cancel" id="btnCancelModal">취소</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::modal-->
+        
+        <!--modal / 사용자상세(수정용)-->
+        <div class="modal" style="display: none;" id="modalInfoUser">
+            <div class="modal-contents" style="width: 580px">
+                <div class="modal-head">
+                    <h4>사용자 상세</h4>
+                </div>
+                <div class="modal-body">
+                	<div class="modal-form">
+                        <div>
+                            <div class="from-title">
+                                 <div class="modal-form input-sh">
+			                        <div>
+			                            <div class="from-title">
+			                                <h6>구분</h6>
+			                            </div>
+			                            <input type="text" id="textInfoUserType" readonly="readonly">
+			                        </div>
+			                        <div>
+			                            <div class="from-title">
+			                                <h6>사용여부</h6>
+			                            </div>
+			                            <div>
+				                            <div class="from-title">
+				                                <div class="radio-tile-group">
+				                                	
+												    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;">
+												      <input id="rY" class="radio-button" type="radio" name="radio" checked="checked" value="ag"/>
+												      <div class="radio-tile">
+												        <label for="rY" class="radio-tile-label">사용</label>
+												      </div>
+												    </div>
+												
+												    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;">
+												      <input id="rN" class="radio-button" type="radio" name="radio" value="admin"/>
+												      <div class="radio-tile">
+												        <label for="rN" class="radio-tile-label">미사용</label>
+												      </div>
+												    </div>
+												
+												  </div>
+				                            </div>
+				                        </div>
+			                        </div>
+			                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-form input-sh">
+                        <div>
+                            <div class="from-title">
+                                <h6>ID <span id="spanIdCheck"></span></h6>
+                            </div>
+                            <input type="text" id="textInfoUserId" readonly="readonly">
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>사용자명</h6>
+                            </div>
+                            <input type="text" placeholder="사용자명을 입력해주세요" id="textInfoUserName">
+                        </div>
+                    </div>
+                    <div class="modal-form">
+                        <div>
+                            <div class="from-title">
+                                <h6>Email</h6>
+                            </div>
+                            <input type="text" id="textInfoUserEmail">
+                        </div>
+                    </div>
+                    <div class="modal-form">
+                        <div>
+                            <div class="from-title">
+                                <h6>권한</h6>
+                            </div>
+                            <select id="selInfoPermissionCode">
+		                    </select>
+                        </div>
+                    </div>
+                    <div class="modal-form">
+                        <div>
+                            <div class="from-title">
+                                <h6>AG사 명 (옵션)</h6>
+                            </div>
+                            <input type="text" id="textInfoAgCompanyName">
+                        </div>
+                    </div>
+                    <div class="modal-form input-sh">
+                        <div>
+                            <div class="from-title">
+                                <h6>코드사 구분</h6>
+                            </div>
+                            <select id="selInfoCodeCompany">
+                            	<c:forEach var="list" items="${codeCompanyCodelist }" varStatus="status">
+		                        	<option value="${list.codeId }">${list.codeName }</option>
+		                        </c:forEach>
+		                    </select>
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>사업자 구분</h6>
+                            </div>
+                            <select id="selInfoBusinessCode">
+		                        <c:forEach var="list" items="${businessCodelist }" varStatus="status">
+		                        	<option value="${list.codeId }">${list.codeName }</option>
+		                        </c:forEach>
+		                    </select>
+                        </div>
+                    </div>
+                    <div class="modal-form input-sh">
+                        <div>
+                            <div class="from-title">
+                                <h6>가입일</h6>
+                            </div>
+                            <input type="text" id="textInfoUserJoinDate">
+                        </div>
+                   
+	                    <div>
+	                        <div class="from-title">
+	                            <h6>마지막 접속일</h6>
+	                        </div>
+	                        <input type="text" id="textInfoUserLastAccessDate">
+	                    </div>
+                     </div>
+                    <div class="modal-form">
+                        <div>
+                            <div class="from-title">
+                                <h6>접속 IP</h6>
+                            </div>
+                            <input type="text" id="textInfoUserLastAccessIp">
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-btn">
+                        <button class="btn-bu" id="btnUpdateUserOk">수정</button>
+		                <button class="btn-line-cancel" id="btnUpdateCancelModal">취소</button>
                     </div>
                 </div>
             </div>

@@ -238,4 +238,35 @@ public class UserApiController {
 	   
 		return rvt;
 	}
+	
+	/**
+	 * 사용자 상세 조회
+	 */
+	@GetMapping(value = "/info/{userId}")
+	public Map<String, Object> getUserInfo(HttpServletRequest req, HttpServletResponse resp, @PathVariable("userId") String userId) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    
+	    try {
+	    	UserVO userVO = new UserVO();
+	    	userVO.setUserId(userId);
+	    	userVO = userService.selectUserInfo(userVO);
+		   
+		    if(userVO.getUserName() != "" || userVO.getUserName() != null) {	
+		    	rvt.put("info", userVO);
+		    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+		    }else {
+		    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
+    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
+		    }
+		    	
+	    }catch (Exception e) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
+			logger.error(e.getMessage());
+		}
+	   
+		return rvt;
+	}
 }

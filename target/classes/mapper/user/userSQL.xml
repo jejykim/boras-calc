@@ -20,6 +20,7 @@
   	<!-- 사용자 정보 조회 -->
 	<select id="selectUserInfo" resultType="userVO" parameterType="userVO">
 		SELECT *
+		,(SELECT code_name FROM code WHERE code_id = user_permission_cd) as user_permission_cd_name
 		FROM users
 		WHERE user_id = #{userId}
   	</select>
