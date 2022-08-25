@@ -78,9 +78,13 @@
                                                 <th>ID</th>
                                                 <th>사용자명</th>
                                                 <th>이메일</th>
-                                                <th>코드사 구분</th>
-                                                <th>사업자 구분</th>
-                                                <th>AG사명</th>
+                                                <c:choose>
+                                                	<c:when test="${userVO.agOrAdmin eq 'ag' }">
+                                                		<th>코드사 구분</th>
+		                                                <th>사업자 구분</th>
+		                                                <th>AG사명</th>
+                                                	</c:when>
+                                                </c:choose>
                                                 <th>권한</th>
                                                 <th>가입일</th>
                                                 <th>사용여부</th>
@@ -95,18 +99,22 @@
 	                                                <td>${list.userId }</td>
 	                                                <td>${list.userName }</td>
 	                                                <td>${list.userEmail }</td>
-	                                                <td>${list.userCodeCompanyCdName }</td>
-	                                                <td>${list.userBusinessTypeCdName }</td>
-	                                                <td>
-	                                                	<c:choose>
-	                                                		<c:when test="${empty list.userAgCompany }">
-	                                                			-
-	                                                		</c:when>
-	                                                		<c:otherwise>
-	                                                			${list.userAgCompany }
-	                                                		</c:otherwise>
-	                                                	</c:choose>
-	                                                </td>
+	                                                <c:choose>
+	                                                	<c:when test="${userVO.agOrAdmin eq 'ag' }">
+	                                                		<td>${list.userCodeCompanyCdName }</td>
+			                                                <td>${list.userBusinessTypeCdName }</td>
+			                                                <td>
+			                                                	<c:choose>
+			                                                		<c:when test="${empty list.userAgCompany }">
+			                                                			-
+			                                                		</c:when>
+			                                                		<c:otherwise>
+			                                                			${list.userAgCompany }
+			                                                		</c:otherwise>
+			                                                	</c:choose>
+			                                                </td>
+	                                                	</c:when>
+	                                                </c:choose>
 	                                                <td>
 	                                                	<c:choose>
 	                                                		<c:when test="${list.userPermissionCd ne 0 }">

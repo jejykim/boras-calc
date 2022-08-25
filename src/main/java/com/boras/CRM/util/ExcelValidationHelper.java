@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -38,7 +39,10 @@ public class ExcelValidationHelper {
 		try {
 			FileInputStream oldFileIs = new FileInputStream(oldFilePath);
 			
+			excelHeaderRow = excelHeaderRow.replaceAll("[^0-9]", "");
+			
 			int iExcelHeaderRow = Integer.parseInt(excelHeaderRow);
+			iExcelHeaderRow = iExcelHeaderRow - 1;
 			
 			XSSFWorkbook workBook = new XSSFWorkbook(oldFileIs);
 			
@@ -63,19 +67,18 @@ public class ExcelValidationHelper {
 				
 				oldExcelCellCount = row.getPhysicalNumberOfCells();
 				
-				for(int columnIndex = 0; columnIndex <= oldExcelCellCount; columnIndex++){ 
+				for(int columnIndex = 0; columnIndex < oldExcelCellCount; columnIndex++){ 
 					//셀값을 읽는다 
 					XSSFCell cell = row.getCell(columnIndex); 
 					String value = "";
 					//셀이 빈값일경우를 위한 널체크 
-					if(cell == null){ 
-						continue; 
-					}else {
+					if(cell != null){ 
 						value = cell.getStringCellValue() + "";
 					}
 					
 					oldExcelHeaderValueList.add(value);
 				}
+				
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -86,7 +89,7 @@ public class ExcelValidationHelper {
 		if(oldExcelHeaderValueList.size() > 0) {
 			File fNewExcelFile = null;
 			try {
-				fNewExcelFile = new File(newExcelFile.getOriginalFilename());
+				fNewExcelFile = new File(oldFilePath.substring(0, oldFilePath.lastIndexOf("/")) + newExcelFile.getOriginalFilename());
 				if(fNewExcelFile.exists()) {
 					if(fNewExcelFile.delete()) {
 						newExcelFile.transferTo(fNewExcelFile);
@@ -102,11 +105,12 @@ public class ExcelValidationHelper {
 			boolean compareFlag = true;
 			
 			try {
-				FileInputStream newFileIs = new FileInputStream(fNewExcelFile);
-				
+				excelHeaderRow = excelHeaderRow.replaceAll("[^0-9]", "");
+			
 				int iExcelHeaderRow = Integer.parseInt(excelHeaderRow);
+				iExcelHeaderRow = iExcelHeaderRow - 1;
 				
-				XSSFWorkbook workBook = new XSSFWorkbook(newFileIs);
+				XSSFWorkbook workBook = new XSSFWorkbook(fNewExcelFile);
 				
 				int totalSheetCount = workBook.getNumberOfSheets();
 				
@@ -123,20 +127,18 @@ public class ExcelValidationHelper {
 					rvt.put(SUCCESS, "N");
 					rvt.put(MSG, "(NEW) 일치하는 시트명이 없습니다.");
 				}else {
-					XSSFSheet sheet = workBook.getSheetAt(iExcelSheet);
+					XSSFSheet sheet = (XSSFSheet) workBook.getSheetAt(iExcelSheet);
 					
 					XSSFRow row = sheet.getRow(iExcelHeaderRow);
 					
 					newExcelCellCount = row.getPhysicalNumberOfCells();
 					
-					for(int columnIndex = 0; columnIndex <= newExcelCellCount; columnIndex++){ 
+					for(int columnIndex = 0; columnIndex < newExcelCellCount; columnIndex++){ 
 						//셀값을 읽는다 
 						XSSFCell cell = row.getCell(columnIndex); 
 						String value = "";
 						//셀이 빈값일경우를 위한 널체크 
-						if(cell == null){ 
-							continue; 
-						}else {
+						if(cell != null){
 							value = cell.getStringCellValue() + "";
 						}
 						

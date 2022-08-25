@@ -1,5 +1,6 @@
 package com.boras.CRM.vo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -123,17 +124,20 @@ public class LedgerVO extends PagingVO {
 	// 검색 탭 상태
 	private String stateType = "all";
 	
+	// 요청 중복 여부
+	private String multiRequestYn = "";
+	
 	// 검색 구분 리스트
-	private List<Integer> sLedgerTypeCd;
+	private List<Integer> sLedgerTypeCd = new ArrayList<>();
 	
 	// 검색 금융사 리스트
-	private List<Integer> sLedgerFinancialCompanyCd;
+	private List<Integer> sLedgerFinancialCompanyCd = new ArrayList<>();
 	
 	// 검색 금융지점 리스트
-	private List<Integer> sLedgerFinancialBranchCd;
+	private List<Integer> sLedgerFinancialBranchCd = new ArrayList<>();
 	
 	// 검색 금융상품 리스트
-	private List<Integer> sLedgerFinancialProductCd;
+	private List<Integer> sLedgerFinancialProductCd = new ArrayList<>();
 	
 	public int getLedgerSeq() {
 		return ledgerSeq;
@@ -477,6 +481,14 @@ public class LedgerVO extends PagingVO {
 
 	public void setsLedgerFinancialProductCd(List<Integer> sLedgerFinancialProductCd) {
 		this.sLedgerFinancialProductCd = sLedgerFinancialProductCd;
+	}
+
+	public String getMultiRequestYn() {
+		return multiRequestYn;
+	}
+
+	public void setMultiRequestYn(String multiRequestYn) {
+		this.multiRequestYn = multiRequestYn;
 	}
 	
 }

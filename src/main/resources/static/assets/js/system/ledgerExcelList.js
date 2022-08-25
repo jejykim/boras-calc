@@ -28,6 +28,8 @@ var LedgerExcelList = {};
 //LedgerExcelList Const
 
 //LedgerExcelList Variable
+LedgerExcelList.files = [];
+var checkIdFlag = false;
 
 //LedgerExcelList
 var Properties = {};
@@ -75,7 +77,7 @@ LedgerExcelList.Init = function () {
 ========================================================================*/
 LedgerExcelList.SetEvent = function () {
     try {
-		// 사용자 탭 li
+		// 상태 탭 li
 		$("#liAll").click(function() {
 			$("#searchText").val("");
 			$("#ledgerExcelCommonYn").val("");
@@ -103,6 +105,24 @@ LedgerExcelList.SetEvent = function () {
 				document.searchForm.submit();
 			}
 		});
+		
+		// 원장 모달 호출
+		$("#btnAddExcel").click(function() {
+			$("#modalAddExcel").removeClass("hide");
+		});
+		
+		// 모달 닫기
+		$(".btn-line-cancel").click(function() {
+			if($(this).parent().parent().parent().parent().hasClass("modal")) {
+				var filter = $(this).parent().parent().parent().parent();
+				filter.addClass("hide");
+			}
+		});
+		
+		// 원장 excel 등록 btnAddExcelSettingOk
+		$("#btnAddExcelSettingOk").click(function() {
+			LedgerExcelList.excelSettingExist();
+		});
     }
     catch (e) { console.log(e.message); }
 }
@@ -120,6 +140,150 @@ LedgerExcelList.Paging = function (page) {
 		} else {
 			alert("잘못된 경로 입니다");
 		}	
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 원장 excel setting 등록
+작  성  자  : 김진열
+2022.08.25 - 최초생성
+========================================================================*/
+LedgerExcelList.addExcelSetting = function () {
+    try {
+		var formData = new FormData($("#addForm")[0]);
+		
+		formData.append("ledgerExcelFile", LedgerExcelList.files[0]);
+		
+    	var data = {
+			"ledgerFinancialCompanyCd" : $("#selFinancialCompanyCode").val()
+			, "ledgerFinancialBranchCd" : $("#selFinancialBranchCode").val()
+			, "ledgerFinancialProductCd" : $("#selFinancialProduct").val()
+			, "ledgerExcelUseYn" : $("input[name='auto-radio']:checked").val()
+			, "ledgerExcelCommonYn" : $("input[name='common-radio']:checked").val()
+			, "ledgerExcelHeaderRow" : $("#textExcelHeader").val()
+			, "ledgerExcelSheet" : $("#textExcelSheet").val()
+			, "ledgerCarPrice" : $("#textCarPrice").val()
+			, "ledgerAcquisitionCost" : $("#textAcquisitionCost").val()
+			, "ledgerDeliveryDate" : $("#textDeliveryDate").val()
+			, "ledgerCustomerName" : $("#textCustomerName").val()
+			, "ledgerCarName" : $("#textCarName").val()
+			, "ledgerCarNumber" : $("#textCarNumber").val()
+			, "ledgerTotalFeePercent" : $("#textTotalFeePercent").val()
+			, "ledgerTotalFeeSum" : $("#textTotalFeeSum").val()
+			, "ledgerTotalFeeSupplyPrice" : $("#textTotalFeeSupplyPrice").val()
+			, "ledgerTotalFeeSurtax" : $("#textTotalFeeSurtax").val()
+			, "ledgerSlidingPercent" : $("#textSlidingPercent").val()
+			, "ledgerSlidingSum" : $("#textSlidingSum").val()
+			, "ledgerSlidingSupplyPrice" : $("#textSlidingSupplyPrice").val()
+			, "ledgerSlidingSurtax" : $("#textSlidingSurtax").val()
+		};
+		
+		formData.append("ledgerExcelVO", new Blob([JSON.stringify(data)], {type: "application/json"}));
+		
+		$.ajax({
+			type : "post",
+			url : "/v1/api/ledger/setting/excel/insert",
+			data : formData,
+			contentType: false,
+			processData: false,
+			enctype: 'multipart/form-data',
+			success : function(json){
+				if(json.resultCode == "00000") {
+					alert("등록되었습니다");
+					location.reload();
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 원장 excel setting is exist
+작  성  자  : 김진열
+2022.08.25 - 최초생성
+========================================================================*/
+LedgerExcelList.excelSettingExist = function () {
+    try {
+		var data = {
+			"ledgerFinancialCompanyCd" : $("#selFinancialCompanyCode").val()
+			, "ledgerFinancialBranchCd" : $("#selFinancialBranchCode").val()
+			, "ledgerFinancialProductCd" : $("#selFinancialProduct").val()
+		};
+	
+		$.ajax({
+			type : "post",
+			url : "/v1/api/ledger/setting/excel/exist",
+			data : data,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					if(json.isExist == "Y") {
+						checkIdFlag = false;
+					}else if(json.isExist == "N") {
+						checkIdFlag = true;
+					}
+					
+					if(checkIdFlag) {
+						if(LedgerExcelList.validationCheck()) {
+							LedgerExcelList.addExcelSetting();
+						}
+					}else {
+						alert("이미 등록된 설정이 있습니다.");
+					}
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 유효성 검사
+작  성  자  : 김진열
+2022.08.25 - 최초생성
+========================================================================*/
+LedgerExcelList.validationCheck = function () {
+    try {
+		var flag = true;
+		
+		if($("input[name='common-radio']:checked").val() == "N") {
+			$("#textExcelHeader").css("border", "");
+			$("#textExcelSheet").css("border", "");
+			
+			if($("#textExcelHeader").val() == "") {
+				flag = false;
+				alert("엑셀 헤더 열 위치를 입력해주세요");
+				$("#textExcelHeader").focus();
+				$("#textExcelHeader").css("border", "1px solid red");
+			}
+			
+			else if($("#textExcelSheet").val() == "") {
+				flag = false;
+				alert("엑셀 시트 명를 입력해주세요");
+				$("#textExcelSheet").focus();
+				$("#textExcelSheet").css("border", "1px solid red");
+			}
+			
+			else if(LedgerExcelList.files.length < 1) {
+				flag = false;
+				alert("Excel 파일을 업로드해주세요");
+			}
+		}
+		
+		return flag;
     }
     catch (e) { console.log(e.message); }
 }

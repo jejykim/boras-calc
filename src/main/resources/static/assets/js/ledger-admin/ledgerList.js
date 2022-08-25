@@ -29,6 +29,8 @@ var LedgerList = {};
 
 //LedgerList Variable
 LedgerList.files = [];
+var multiRequest = "";
+var checkExcelFlag = false;
 
 //LedgerList
 var Properties = {};
@@ -67,20 +69,22 @@ LedgerList.Init = function () {
 		}
 		
 		// 필터 박스
-		$("#divFilter").children().remove();
-		if(sCodeType != "") {
+		$("#divFilter").children('span').remove();
+		if(sCodeType.length > 0) {
 			LedgerList.addFilterBox("sCodeType");
 		}
-		if(sFinancialCompany != "") {
+		if(sFinancialCompany.length > 0) {
 			LedgerList.addFilterBox("sFinancialCompany");
 		}
-		if(sFinancialBranch != "") {
+		if(sFinancialBranch.length > 0) {
 			LedgerList.addFilterBox("sFinancialBranch");
 		}
-		if(sFinancialProduct != "") {
+		if(sFinancialProduct.length > 0) {
 			LedgerList.addFilterBox("sFinancialProduct");
 		}
-		
+		if(sCodeType.length == 0 && sFinancialCompany.length == 0 && sFinancialBranch.length == 0 && sFinancialProduct.length == 0) {
+			$("#divFilter").hide();
+		}
     }
     catch (e) { console.log(e.message); }
 }
@@ -113,16 +117,22 @@ LedgerList.SetEvent = function () {
 			$("#stateType").val("left");
 			document.searchForm.submit();
 		});
+		
+		// 승인요청 - 상태처리 (정상, 중복)
+		$("input[name='multiRequest']").click(function() {
+			multiRequest = $("input[name='multiRequest']:checked").val();
+			LedgerList.Paging(1);
+		});
 	
 		// 검색
 		$("#btnSearch").click(function() {
 			$("#searchText").val($("#inputSearchText").val());
-			document.searchForm.submit();
+			LedgerList.Paging(1);
 		});
 		$("#inputSearchText").keyup(function(e) {
 			if(e.keyCode == 13) {
 				$("#searchText").val($("#inputSearchText").val());
-				document.searchForm.submit();
+				LedgerList.Paging(1);
 			}
 		});
 		
@@ -206,6 +216,20 @@ LedgerList.SetEvent = function () {
 				$("#addExcelModal").removeClass("hide");
 			}
 		});
+		
+		// 필터 초기화
+		$("#btnClearFilter").click(function() {
+			sCodeType = [];
+			sFinancialCompany = [];
+			sFinancialBranch = [];
+			sFinancialProduct = [];
+			LedgerList.Paging(1);
+		});
+		
+		// 원장 excel 업로드
+		$("#btnAddLedgerForExcel").click(function() {
+			LedgerList.excelSettingExist();
+		});
     }
     catch (e) { console.log(e.message); }
 }
@@ -219,6 +243,52 @@ LedgerList.Paging = function (page) {
     try {
 		if (page > 0) {
 			$("#now_page").val(page);
+			
+			if(sCodeType.length > 0) {
+				for(var value of sCodeType) {
+					$('<input>').attr({
+					    type: 'hidden',
+					    name: 'sLedgerTypeCd',
+					    value: value
+					}).appendTo('#searchForm');
+				}
+			}
+			if(sFinancialCompany.length > 0) {
+				for(var value of sFinancialCompany) {
+					$('<input>').attr({
+					    type: 'hidden',
+					    name: 'sLedgerFinancialCompanyCd',
+					    value: value
+					}).appendTo('#searchForm');
+				}
+			}
+			if(sFinancialBranch.length > 0) {
+				for(var value of sFinancialBranch) {
+					$('<input>').attr({
+					    type: 'hidden',
+					    name: 'sLedgerFinancialBranchCd',
+					    value: value
+					}).appendTo('#searchForm');
+				}
+			}
+			if(sFinancialProduct.length > 0) {
+				for(var value of sFinancialProduct) {
+					$('<input>').attr({
+					    type: 'hidden',
+					    name: 'sLedgerFinancialProductCd',
+					    value: value
+					}).appendTo('#searchForm');
+				}
+			}
+			
+			if($("#stateType").val() == "request") {
+				$('<input>').attr({
+				    type: 'hidden',
+				    name: 'multiRequestYn',
+				    value: multiRequest
+				}).appendTo('#searchForm');
+			}
+			
 			document.searchForm.submit();
 		} else {
 			alert("잘못된 경로 입니다");
@@ -239,27 +309,265 @@ LedgerList.addFilterBox = function (type) {
 				var filter = $("#divCodeTypeFilter").find("li");
 				var str = "";
 				for(var li of filter) {
-					if($(li).find(input).is(":checked")) {
-						if(str.lenght > 0) {
-							str = str + $(li).find(label).html();
+					if($(li).find("input").is(":checked")) {
+						if(str.length > 0) {
+							str = str + "/" + $(li).find("label").html();
 						}else {
-							str = str + $(li).find(label).html();
+							str = $(li).find("label").html();
 						}
 					}
 				}
-				var span = '<span><strong>구분</strong><span class="filter">' + str + '</span><i class="fa fa-times" aria-hidden="true"></i></span>';
-				$("#divFilter").append(span);
+				
+				var span = "<span id='spanCodeType'><strong>구분 </strong><span class='filter'>" + str + " </span><i class='fa fa-times' aria-hidden='true' onclick='LedgerList.removeFilter(\"" + type + "\")'></i></span>";
+				span = $(span).css("margin-left", "5px");
+				$("#divFilter").prepend(span);
 				break;
 			case "sFinancialCompany" :
+				var filter = $("#divFinancialCompanyFilter").find("li");
+				var str = "";
+				for(var li of filter) {
+					if($(li).find("input").is(":checked")) {
+						if(str.length > 0) {
+							str = str + "/" + $(li).find("label").html();
+						}else {
+							str = $(li).find("label").html();
+						}
+					}
+				}
+				
+				var span = "<span id='spanFinancialCompany'><strong>금융사 </strong><span class='filter'>" + str + " </span><i class='fa fa-times' aria-hidden='true' onclick='LedgerList.removeFilter(\"" + type + "\")'></i></span>";
+				span = $(span).css("margin-left", "5px");
+				$("#divFilter").prepend(span);
 				break;
 			case "sFinancialBranch" :
+				var filter = $("#divFinancialBranchFilter").find("li");
+				var str = "";
+				for(var li of filter) {
+					if($(li).find("input").is(":checked")) {
+						if(str.length > 0) {
+							str = str + "/" + $(li).find("label").html();
+						}else {
+							str = $(li).find("label").html();
+						}
+					}
+				}
+				
+				var span = "<span id='spanFinancialBranch'><strong>금융지점 </strong><span class='filter'>" + str + " </span><i class='fa fa-times' aria-hidden='true' onclick='LedgerList.removeFilter(\"" + type + "\")'></i></span>";
+				span = $(span).css("margin-left", "5px");
+				$("#divFilter").prepend(span);
 				break;
 			case "sFinancialProduct" :
+				var filter = $("#divFinancialProductFilter").find("li");
+				var str = "";
+				for(var li of filter) {
+					if($(li).find("input").is(":checked")) {
+						if(str.length > 0) {
+							str = str + "/" + $(li).find("label").html();
+						}else {
+							str = $(li).find("label").html();
+						}
+					}
+				}
+				
+				var span = "<span id='spanFinancialProduct'><strong>금융상품 </strong><span class='filter'>" + str + " </span><i class='fa fa-times' aria-hidden='true' onclick='LedgerList.removeFilter(\"" + type + "\")'></i></span>";
+				span = $(span).css("margin-left", "5px");
+				$("#divFilter").prepend(span);
 				break;
 			default :
 				break;
 		}
-		var span = '<span><strong>구분</strong><span class="filter">성문/올카</span><i class="fa fa-times" aria-hidden="true"></i></span>';
+		
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 필터제거
+작  성  자  : 김진열
+2022.08.24 - 최초생성
+========================================================================*/
+LedgerList.removeFilter = function (type) {
+    try {
+		switch(type) {
+			case "sCodeType" :
+				sCodeType = [];
+				$("#spanCodeType").remove();
+				break;
+			case "sFinancialCompany" :
+				sFinancialCompany = [];
+				$("#spanFinancialCompany").remove();
+				break;
+			case "sFinancialBranch" :
+				sFinancialBranch = [];
+				$("#spanFinancialBranch").remove();
+				break;
+			case "sFinancialProduct" :
+				sFinancialProduct = [];
+				$("#spanFinancialProduct").remove();
+				break;
+			default :
+				break;
+		}
+		
+		// 페이지 이동
+		LedgerList.Paging(1);
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 필터 추가
+작  성  자  : 김진열
+2022.08.24 - 최초생성
+========================================================================*/
+LedgerList.addFilter = function (type, btn) {
+    try {
+		console.log($(btn).parent().parent().parent());
+		if($(btn).parent().parent().parent().hasClass("filter-modal")) {
+			var filter = $(btn).parent().parent().parent();
+			var chkList = filter.find("input:checked");
+			
+			switch(type) {
+				case "sCodeType" :
+					sCodeType = [];
+					for(var i of chkList) {
+						sCodeType.push($(i).val());
+					}
+					break;
+				case "sFinancialCompany" :
+					sFinancialCompany = [];
+					sFinancialBranch = [];
+					for(var i of chkList) {
+						sFinancialCompany.push($(i).val());
+					}
+					break;
+				case "sFinancialBranch" :
+					sFinancialBranch = [];
+					for(var i of chkList) {
+						sFinancialBranch.push($(i).val());
+					}
+					break;
+				case "sFinancialProduct" :
+					sFinancialProduct = [];
+					for(var i of chkList) {
+						sFinancialProduct.push($(i).val());
+					}
+					break;
+				default :
+					break;
+			}
+		}
+		
+		// 페이지 이동
+		LedgerList.Paging(1);
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 필터 추가
+작  성  자  : 김진열
+2022.08.24 - 최초생성
+========================================================================*/
+LedgerList.addLedgerForExcel = function () {
+    try {
+		var formData = new FormData($("#addForm")[0]);
+		
+		formData.append("ledgerExcelFile", LedgerList.files[0]);
+		
+    	var data = {
+			"ledgerFinancialCompanyCd" : $("#selFinancialCompanyCode").val()
+			, "ledgerFinancialBranchCd" : $("#selFinancialBranchCode").val()
+			, "ledgerFinancialProductCd" : $("#selFinancialProduct").val()
+			, "ledgerTypeCd" : $("#selCodeCompany").val()
+		};
+		
+		formData.append("ledgerVO", new Blob([JSON.stringify(data)], {type: "application/json"}));
+		
+		$.ajax({
+			type : "post",
+			url : "/v1/api/ledger/excel/insert",
+			data : formData,
+			contentType: false,
+			processData: false,
+			enctype: 'multipart/form-data',
+			success : function(json){
+				if(json.resultCode == "00000") {
+					alert("등록되었습니다");
+					location.reload();
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 원장 excel setting is exist
+작  성  자  : 김진열
+2022.08.25 - 최초생성
+========================================================================*/
+LedgerList.excelSettingExist = function () {
+    try {
+		var data = {
+			"ledgerFinancialCompanyCd" : $("#selFinancialCompanyCode").val()
+			, "ledgerFinancialBranchCd" : $("#selFinancialBranchCode").val()
+			, "ledgerFinancialProductCd" : $("#selFinancialProduct").val()
+		};
+	
+		$.ajax({
+			type : "post",
+			url : "/v1/api/ledger/setting/excel/exist",
+			data : data,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					if(json.isExist == "Y") {
+						checkExcelFlag = false;
+					}else if(json.isExist == "N") {
+						checkExcelFlag = true;
+					}
+					
+					if(checkExcelFlag) {
+						alert("등록된 설정이 없습니다\n설정을 먼저 등록해주세요");
+					}else {
+						if(LedgerList.validationCheck()) {
+							LedgerList.addLedgerForExcel();
+						}
+					}
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 유효성 검사
+작  성  자  : 김진열
+2022.08.25 - 최초생성
+========================================================================*/
+LedgerList.validationCheck = function () {
+    try {
+		var flag = true;
+		
+		if(LedgerList.files.length < 1) {
+				flag = false;
+				alert("Excel 파일을 업로드해주세요");
+		}
+		
+		return flag;
     }
     catch (e) { console.log(e.message); }
 }

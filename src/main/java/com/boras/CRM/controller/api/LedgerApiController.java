@@ -1,8 +1,13 @@
 package com.boras.CRM.controller.api;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +30,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.boras.CRM.services.LedgerExcelService;
 import com.boras.CRM.services.LedgerService;
@@ -137,8 +144,10 @@ public class LedgerApiController {
 	 * 원장 엑셀 등록
 	 */
 	@PostMapping(value = "/ledger/excel/insert")
-	public Map<String, Object> ledgerExcelInsert(HttpServletRequest req, HttpServletResponse resp, LedgerVO ledgerVO) {
+	public Map<String, Object> ledgerExcelInsert(HttpServletRequest req, HttpServletResponse resp, @RequestPart("ledgerExcelFile") MultipartFile ledgerExcelFile, @RequestPart("ledgerVO") LedgerVO ledgerVO) {
 	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    ledgerVO.setLedgerExcelFile(ledgerExcelFile);
 	    
 	    // excel 양식 유무 확인
 	    if(ledgerVO.getLedgerExcelFile() != null) {
@@ -194,27 +203,34 @@ public class LedgerApiController {
 	 * @return
 	 */
 	public boolean insertLedgerFormExcel(LedgerVO ledgerVO, LedgerExcelVO ledgerExcelVO) {
-		boolean flag = false;
+		boolean flag = true;
+		File fNewExcelFile = null;
+		try {
+			fNewExcelFile = new File(ledgerExcelVO.getLedgerExcelFilePath().substring(0, ledgerExcelVO.getLedgerExcelFilePath().lastIndexOf("/")) + ledgerVO.getLedgerExcelFile().getOriginalFilename());
+			if(fNewExcelFile.exists()) {
+				if(fNewExcelFile.delete()) {
+					ledgerVO.getLedgerExcelFile().transferTo(fNewExcelFile);
+				}
+			}else {
+				ledgerVO.getLedgerExcelFile().transferTo(fNewExcelFile);
+			}
+		} catch (Exception e) {
+			logger.error("[ ERROR : Transfer To File Fail ]");
+			logger.error(e.getMessage());
+			flag = false;
+		}
 		
 		try {
-			FileInputStream oldFileIs = new FileInputStream(ledgerExcelVO.getLedgerExcelFilePath());
+			XSSFWorkbook workBook = new XSSFWorkbook(fNewExcelFile);
 			
-			int iExcelHeaderRow = Integer.parseInt(ledgerExcelVO.getLedgerExcelHeaderRow());
+			String excelHeaderRow = ledgerExcelVO.getLedgerExcelHeaderRow().replaceAll("[^0-9]", "");
 			
-			XSSFWorkbook workBook = new XSSFWorkbook(oldFileIs);
+			int iExcelHeaderRow = Integer.parseInt(excelHeaderRow);
+			iExcelHeaderRow = iExcelHeaderRow - 1;
 			
 			int totalSheetCount = workBook.getNumberOfSheets();
 			
-			int iExcelSheet = -1;
-			
-			for(int i = 0; i < totalSheetCount; i++) {
-				if(ledgerExcelVO.getLedgerExcelSheet().equals(workBook.getSheetName(i))) {
-					iExcelSheet = i;
-					break;
-				}
-			}
-			
-			XSSFSheet sheet = workBook.getSheetAt(iExcelSheet);
+			XSSFSheet sheet = workBook.getSheetAt(totalSheetCount - 1);
 			
 			// 전체 row 수
 			int rows = sheet.getPhysicalNumberOfRows();
@@ -224,125 +240,142 @@ public class LedgerApiController {
 			
 			for(rowIndex = iExcelHeaderRow + 1; rowIndex < rows; rowIndex++){ 
 				//행을읽는다
-				XSSFRow row = sheet.getRow(rowIndex); 
+				XSSFRow row = sheet.getRow(rowIndex);
 				if(row != null){
 					
 					// 설정 VO 위치값 확인
 					if(ledgerExcelVO.getLedgerCustomerName() != null) {
-						if(ledgerExcelVO.getLedgerCustomerName().contains(",")) {
-							String[] strRef = ledgerExcelVO.getLedgerCustomerName().split(",");
-							String value = "";
-							
-							for(String str : strRef) {
-								// 고객명
-								CellReference ref = new CellReference(str);
-								value = value + row.getCell(ref.getCol()).getStringCellValue();
-							}
-								
-							ledgerVO.setLedgerCustomerName(value);
-						}
+						CellReference ref = new CellReference(ledgerExcelVO.getLedgerCustomerName());
 						
+						Double itemp1 = 0d;
+						Double itemp2 = 0d;
+						String strTemp = "";
 						
-						// 인도일
-						if(ledgerExcelVO.getLedgerDeliveryDate() != null) {
-							CellReference ref = new CellReference(ledgerExcelVO.getLedgerDeliveryDate());
-							
-							ledgerVO.setLedgerDeliveryDate(row.getCell(ref.getCol()).getStringCellValue());
-						}
-						
-						// 차량명
-						if(ledgerExcelVO.getLedgerCarName() != null) {
-							CellReference ref = new CellReference(ledgerExcelVO.getLedgerCarName());
-							
-							ledgerVO.setLedgerCarName(row.getCell(ref.getCol()).getStringCellValue());
-						}
-						
-						// 차량번호
-						if(ledgerExcelVO.getLedgerCarNumber() != null) {
-							CellReference ref = new CellReference(ledgerExcelVO.getLedgerCarNumber());
-							
-							ledgerVO.setLedgerCarNumber(row.getCell(ref.getCol()).getStringCellValue());
-						}
-						
-						// 차량가
 						if(ledgerExcelVO.getLedgerCarPrice() != null) {
-							CellReference ref = new CellReference(ledgerExcelVO.getLedgerCarPrice());
-							
-							ledgerVO.setLedgerCarPrice(row.getCell(ref.getCol()).getNumericCellValue());
+							CellReference tempRef1 = new CellReference(ledgerExcelVO.getLedgerCarPrice());
+							XSSFCell cell = row.getCell(tempRef1.getCol());
+							itemp1 = cell != null ? cell.getNumericCellValue() : 0d;
 						}
 						
-						// 취득원가
 						if(ledgerExcelVO.getLedgerAcquisitionCost() != null) {
-							CellReference ref = new CellReference(ledgerExcelVO.getLedgerAcquisitionCost());
-							
-							ledgerVO.setLedgerAcquisitionCost(row.getCell(ref.getCol()).getNumericCellValue());
+							CellReference tempRef2 = new CellReference(ledgerExcelVO.getLedgerAcquisitionCost());
+							XSSFCell cell = row.getCell(tempRef2.getCol());
+							itemp2 = cell != null ? cell.getNumericCellValue() : 0d;
 						}
 						
-						// 총fee-%
-						if(ledgerExcelVO.getLedgerTotalFeePercent() != null) {
-							CellReference ref = new CellReference(ledgerExcelVO.getLedgerTotalFeePercent());
-							
-							ledgerVO.setLedgerTotalFeePercent(row.getCell(ref.getCol()).getNumericCellValue());
+						if(ledgerExcelVO.getLedgerCustomerName() != null) {
+							CellReference tempRef3 = new CellReference(ledgerExcelVO.getLedgerCustomerName());
+							XSSFCell cell = row.getCell(tempRef3.getCol());
+							strTemp = cell != null ? cell.getStringCellValue() : "";
 						}
 						
-						// 총fee-합계
-						if(ledgerExcelVO.getLedgerTotalFeeSum() != null) {
-							CellReference ref = new CellReference(ledgerExcelVO.getLedgerTotalFeeSum());
+						if((itemp1 > 0 || itemp2 > 0) && !strTemp.isEmpty()) {
+							logger.info("[Try to insert ledger from excel] CustomerName : " + row.getCell(ref.getCol()).getStringCellValue());
 							
-							ledgerVO.setLedgerTotalFeeSum(row.getCell(ref.getCol()).getNumericCellValue());
-						}
-						
-						// 총fee-공급가
-						if(ledgerExcelVO.getLedgerTotalFeeSupplyPrice() != null) {
-							CellReference ref = new CellReference(ledgerExcelVO.getLedgerTotalFeeSupplyPrice());
+							ledgerVO.setLedgerCustomerName(row.getCell(ref.getCol()).getStringCellValue());
 							
-							ledgerVO.setLedgerTotalFeeSupplyPrice(row.getCell(ref.getCol()).getNumericCellValue());
-						}
-						
-						// 총fee-부가세
-						if(ledgerExcelVO.getLedgerTotalFeeSurtax() != null) {
-							CellReference ref = new CellReference(ledgerExcelVO.getLedgerTotalFeeSurtax());
+							// 인도일
+							if(ledgerExcelVO.getLedgerDeliveryDate() != null) {
+								ref = new CellReference(ledgerExcelVO.getLedgerDeliveryDate());
+								XSSFCell cell = row.getCell(ref.getCol());
+								ledgerVO.setLedgerDeliveryDate(changeDateFormat(cell != null ? cell.getStringCellValue() : ""));
+							}
 							
-							ledgerVO.setLedgerTotalFeeSurtax(row.getCell(ref.getCol()).getNumericCellValue());
-						}
-						
-						// 슬라이딩-%
-						if(ledgerExcelVO.getLedgerSlidingPercent() != null) {
-							CellReference ref = new CellReference(ledgerExcelVO.getLedgerSlidingPercent());
+							// 차량명
+							if(ledgerExcelVO.getLedgerCarName() != null) {
+								ref = new CellReference(ledgerExcelVO.getLedgerCarName());
+								XSSFCell cell = row.getCell(ref.getCol());
+								ledgerVO.setLedgerCarName(cell != null ? cell.getStringCellValue() : "");
+							}
 							
-							ledgerVO.setLedgerSlidingPercent(row.getCell(ref.getCol()).getNumericCellValue());
-						}
-						
-						// 슬라이딩-합계
-						if(ledgerExcelVO.getLedgerSlidingSum() != null) {
-							CellReference ref = new CellReference(ledgerExcelVO.getLedgerSlidingSum());
+							// 차량번호
+							if(ledgerExcelVO.getLedgerCarNumber() != null) {
+								ref = new CellReference(ledgerExcelVO.getLedgerCarNumber());
+								XSSFCell cell = row.getCell(ref.getCol());
+								ledgerVO.setLedgerCarNumber(cell != null ? cell.getStringCellValue() : "");
+							}
 							
-							ledgerVO.setLedgerSlidingSum(row.getCell(ref.getCol()).getNumericCellValue());
-						}
-						
-						// 슬라이딩-공급각
-						if(ledgerExcelVO.getLedgerSlidingSupplyPrice() != null) {
-							CellReference ref = new CellReference(ledgerExcelVO.getLedgerSlidingSupplyPrice());
+							// 차량가
+							if(ledgerExcelVO.getLedgerCarPrice() != null) {
+								ref = new CellReference(ledgerExcelVO.getLedgerCarPrice());
+								XSSFCell cell = row.getCell(ref.getCol());
+								ledgerVO.setLedgerCarPrice(cell != null ? cell.getNumericCellValue() : null);
+							}
 							
-							ledgerVO.setLedgerSlidingSupplyPrice(row.getCell(ref.getCol()).getNumericCellValue());
-						}
-						
-						// 슬라이딩-부가세
-						if(ledgerExcelVO.getLedgerSlidingSurtax() != null) {
-							CellReference ref = new CellReference(ledgerExcelVO.getLedgerSlidingSurtax());
+							// 취득원가
+							if(ledgerExcelVO.getLedgerAcquisitionCost() != null) {
+								ref = new CellReference(ledgerExcelVO.getLedgerAcquisitionCost());
+								XSSFCell cell = row.getCell(ref.getCol());
+								ledgerVO.setLedgerAcquisitionCost(cell != null ? cell.getNumericCellValue() : null);
+							}
 							
-							ledgerVO.setLedgerSlidingSurtax(row.getCell(ref.getCol()).getNumericCellValue());
-						}
-						
-						// 추가프로모션
-						if(ledgerExcelVO.getLedgerAddPromotion() != null) {
-							CellReference ref = new CellReference(ledgerExcelVO.getLedgerAddPromotion());
+							// 총fee-%
+							if(ledgerExcelVO.getLedgerTotalFeePercent() != null) {
+								ref = new CellReference(ledgerExcelVO.getLedgerTotalFeePercent());
+								XSSFCell cell = row.getCell(ref.getCol());
+								ledgerVO.setLedgerTotalFeePercent(cell != null ? cell.getNumericCellValue() : null);
+							}
 							
-							ledgerVO.setLedgerAddPromotion(row.getCell(ref.getCol()).getNumericCellValue());
+							// 총fee-합계
+							if(ledgerExcelVO.getLedgerTotalFeeSum() != null) {
+								ref = new CellReference(ledgerExcelVO.getLedgerTotalFeeSum());
+								XSSFCell cell = row.getCell(ref.getCol());
+								ledgerVO.setLedgerTotalFeeSum(cell != null ? cell.getNumericCellValue() : null);
+							}
+							
+							// 총fee-공급가
+							if(ledgerExcelVO.getLedgerTotalFeeSupplyPrice() != null) {
+								ref = new CellReference(ledgerExcelVO.getLedgerTotalFeeSupplyPrice());
+								XSSFCell cell = row.getCell(ref.getCol());
+								ledgerVO.setLedgerTotalFeeSupplyPrice(cell != null ? cell.getNumericCellValue() : null);
+							}
+							
+							// 총fee-부가세
+							if(ledgerExcelVO.getLedgerTotalFeeSurtax() != null) {
+								ref = new CellReference(ledgerExcelVO.getLedgerTotalFeeSurtax());
+								XSSFCell cell = row.getCell(ref.getCol());
+								ledgerVO.setLedgerTotalFeeSurtax(cell != null ? cell.getNumericCellValue() : null);
+							}
+							
+							// 슬라이딩-%
+							if(ledgerExcelVO.getLedgerSlidingPercent() != null) {
+								ref = new CellReference(ledgerExcelVO.getLedgerSlidingPercent());
+								XSSFCell cell = row.getCell(ref.getCol());
+								ledgerVO.setLedgerSlidingPercent(cell != null ? cell.getNumericCellValue() : null);
+							}
+							
+							// 슬라이딩-합계
+							if(ledgerExcelVO.getLedgerSlidingSum() != null) {
+								ref = new CellReference(ledgerExcelVO.getLedgerSlidingSum());
+								XSSFCell cell = row.getCell(ref.getCol());
+								ledgerVO.setLedgerSlidingSum(cell != null ? cell.getNumericCellValue() : null);
+							}
+							
+							// 슬라이딩-공급각
+							if(ledgerExcelVO.getLedgerSlidingSupplyPrice() != null) {
+								ref = new CellReference(ledgerExcelVO.getLedgerSlidingSupplyPrice());
+								XSSFCell cell = row.getCell(ref.getCol());
+								ledgerVO.setLedgerSlidingSupplyPrice(cell != null ? cell.getNumericCellValue() : null);
+							}
+							
+							// 슬라이딩-부가세
+							if(ledgerExcelVO.getLedgerSlidingSurtax() != null) {
+								ref = new CellReference(ledgerExcelVO.getLedgerSlidingSurtax());
+								XSSFCell cell = row.getCell(ref.getCol());
+								ledgerVO.setLedgerSlidingSurtax(cell != null ? cell.getNumericCellValue() : null);
+							}
+							
+							// 추가프로모션
+							if(ledgerExcelVO.getLedgerAddPromotion() != null) {
+								ref = new CellReference(ledgerExcelVO.getLedgerAddPromotion());
+								XSSFCell cell = row.getCell(ref.getCol());
+								ledgerVO.setLedgerAddPromotion(cell != null ? cell.getNumericCellValue() : null);
+							}
+							
+							// 원장 등록
+							insertLedgerDB(ledgerVO);
+							
 						}
-						
-						// 원장 등록
-						insertLedgerDB(ledgerVO);
 					}
 				} 
 			}
@@ -372,5 +405,15 @@ public class LedgerApiController {
 		}
 		
 		return flag;
+	}
+	
+	public String changeDateFormat(String beforeDate) {
+		String rvt = "";
+		
+		beforeDate = beforeDate.replaceAll("[^0-9]", "");
+		
+		rvt = beforeDate;
+		
+		return rvt;
 	}
 }

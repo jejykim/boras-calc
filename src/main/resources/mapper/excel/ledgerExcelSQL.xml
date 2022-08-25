@@ -16,6 +16,9 @@
 			<if test="ledgerExcelSheet != null and ledgerExcelSheet != ''">
 			, ledger_excel_sheet
 			</if>
+			<if test="ledgerExcelHeaderRow != null and ledgerExcelHeaderRow != ''">
+			, ledger_excel_header_row
+			</if>
 			, ledger_type_cd
 			, ledger_financial_company_cd
 			, ledger_financial_branch_cd
@@ -83,6 +86,9 @@
 			</if>
 			<if test="ledgerExcelSheet != null and ledgerExcelSheet != ''">
 			, #{ledgerExcelSheet}
+			</if>
+			<if test="ledgerExcelHeaderRow != null and ledgerExcelHeaderRow != ''">
+			, #{ledgerExcelHeaderRow}
 			</if>
 			, #{ledgerTypeCd}
 			, #{ledgerFinancialCompanyCd}
@@ -272,6 +278,9 @@
 			</if>
 			<if test="ledgerPromotionMemo != null and ledgerPromotionMemo != ''">
 			, ledger_promotion_memo = #{ledgerPromotionMemo}
+			</if>
+			<if test="ledgerExcelHeaderRow != null and ledgerExcelHeaderRow != ''">
+			, ledger_excel_header_row = #{ledgerExcelHeaderRow}
 			</if>
 			, ledger_excel_update_date = now()
 			, ledger_excel_update_id = #{ledgerExcelUpdateId}

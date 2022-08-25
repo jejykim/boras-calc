@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.boras.CRM.services.LedgerExcelService;
 import com.boras.CRM.services.UserService;
@@ -48,10 +50,12 @@ public class SettingApiController {
 	 * 원장 엑셀 설정 등록
 	 */
 	@PostMapping(value = "/ledger/setting/excel/insert")
-	public Map<String, Object> ledgerSettingExcelInsert(HttpServletRequest req, HttpServletResponse resp, LedgerExcelVO ledgerExcelVO) {
+	public Map<String, Object> ledgerSettingExcelInsert(HttpServletRequest req, HttpServletResponse resp, @RequestPart("ledgerExcelFile") MultipartFile ledgerExcelFile, @RequestPart("ledgerExcelVO") LedgerExcelVO ledgerExcelVO) {
 	    Map<String, Object> rvt = new HashMap<>();
 	    
 	    boolean fileFlag = true;
+	    
+	    ledgerExcelVO.setLedgerExcelFile(ledgerExcelFile);
 	    
 	    // excel 양식 유무 확인
 	    if(ledgerExcelVO.getLedgerExcelFile() != null) {

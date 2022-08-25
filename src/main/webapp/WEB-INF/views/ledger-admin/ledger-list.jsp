@@ -22,10 +22,10 @@
 	<script src="/static/assets/js/common/dropzone.js"></script>
 
 	<script type="text/javascript">
-		var sCodeType = <c:choose><c:when test="${not empty ledgerVO.sLedgerTypeCd }">${ledgerVO.sLedgerTypeCd }</c:when><c:otherwise>""</c:otherwise></c:choose>;
-		var sFinancialCompany = <c:choose><c:when test="${not empty ledgerVO.sLedgerFinancialCompanyCd }">${ledgerVO.sLedgerTypeCd }</c:when><c:otherwise>""</c:otherwise></c:choose>;
-		var sFinancialBranch = <c:choose><c:when test="${not empty ledgerVO.sLedgerFinancialBranchCd }">${ledgerVO.sLedgerTypeCd }</c:when><c:otherwise>""</c:otherwise></c:choose>;
-		var sFinancialProduct = <c:choose><c:when test="${not empty ledgerVO.sLedgerFinancialProductCd }">${ledgerVO.sLedgerTypeCd }</c:when><c:otherwise>""</c:otherwise></c:choose>;
+		var sCodeType = <c:choose><c:when test="${not empty ledgerVO.sLedgerTypeCd }">${ledgerVO.sLedgerTypeCd }</c:when><c:otherwise>[]</c:otherwise></c:choose>;
+		var sFinancialCompany = <c:choose><c:when test="${not empty ledgerVO.sLedgerFinancialCompanyCd }">${ledgerVO.sLedgerFinancialCompanyCd }</c:when><c:otherwise>[]</c:otherwise></c:choose>;
+		var sFinancialBranch = <c:choose><c:when test="${not empty ledgerVO.sLedgerFinancialBranchCd }">${ledgerVO.sLedgerFinancialBranchCd }</c:when><c:otherwise>[]</c:otherwise></c:choose>;
+		var sFinancialProduct = <c:choose><c:when test="${not empty ledgerVO.sLedgerFinancialProductCd }">${ledgerVO.sLedgerFinancialProductCd }</c:when><c:otherwise>[]</c:otherwise></c:choose>;
 	</script>
 										
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
@@ -118,38 +118,103 @@
                                 </div>
                             </div>
                             <div class="portlet-body">
-                                <div class="table-filter fl-end">
+                                <div class="table-filter <c:if test="${ledgerVO.stateType ne 'request' }">fl-end</c:if>">
+                                	<c:if test="${ledgerVO.stateType eq 'request' }">
+	                                	<div class="table-radio">
+	                                        <ul>
+	                                            <li>
+	                                                <input id="radio-mr-1" name="multiRequest" type="radio" value="" <c:if test="${empty ledgerVO.multiRequestYn }">checked='checked'</c:if>/>
+	                                                <label for="radio-mr-1" class="radio-label">전체</label>
+	                                            </li>
+	                                            <li>
+	                                                <input id="multiRequestY" name="multiRequest" type="radio" value="Y" <c:if test="${ledgerVO.multiRequestYn eq 'Y'}">checked='checked'</c:if>/>
+	                                                <label for="multiRequestY" class="radio-label">정상 승인요청</label>
+	                                            </li>
+	                                            <li>
+	                                                <input id="multiRequestN" name="multiRequest" type="radio" value="N" <c:if test="${ledgerVO.multiRequestYn eq 'N'}">checked='checked'</c:if>/>
+	                                                <label for="multiRequestN" class="radio-label">중복 승인요청</label>
+	                                            </li>
+	                                        </ul>
+	                                    </div>
+                                    </c:if>
                                     <div class="filter" id="divFilter">
-                                        <span>
-                                            <strong>구분</strong>
-                                            <span class="filter">성문/올카</span>
-                                            <i class="fa fa-times" aria-hidden="true"></i>
-                                        </span>
-                                        <button class="btn-gr">초기화</button>
+                                        <button class="btn-gr" id="btnClearFilter">초기화</button>
                                     </div>
                                 </div>
                                 <div class="table">
                                     <table>
                                     	<colgroup>
-                                            <col width="5%">
-                                            <col width="8%">
-                                            <col width="10%">
-                                            <col width="10%">
-                                            <col width="10%">
-                                            <col width="10%">
-                                            <col width="8%">
-                                            <col width="10%">
-                                            <col width="8%">
-                                            <col width="10%">
-                                            <col width="5%">
-                                            <col width="5%">
+                                    		<c:choose>
+                                    			<c:when test="${ledgerVO.stateType eq 'request' or ledgerVO.stateType eq 'left' }">
+                                    				<col width="5%">
+		                                            <!--체크박스-->
+		                                            <col width="6%">
+		                                            <!--기타사항-->
+		                                            <col width="10%">
+		                                            <!--구분-->
+		                                            <col width="8%">
+		                                            <!--금융사-->
+		                                            <col width="10%">
+		                                            <!--금융지점-->
+		                                            <col width="10%">
+		                                            <!--금융상품-->
+		                                            <col width="4%">
+		                                            <!--인도일-->
+		                                            <col width="12%">
+		                                            <!--고객명-->
+		                                            <col width="5%">
+		                                            <!--딜러사-->
+		                                            <col width="10%">
+		                                            <!--차량정보-->
+		                                            <col width="8%">
+		                                            <!--금액-->
+		                                            <col width="9%">
+		                                            <!--ag사-->
+		                                            <col width="4%">
+		                                            <!--문의-->
+                                    			</c:when>
+                                    			<c:otherwise>
+                                    				<col width="5%">
+		                                            <col width="8%">
+		                                            <col width="10%">
+		                                            <col width="10%">
+		                                            <col width="10%">
+		                                            <col width="10%">
+		                                            <col width="8%">
+		                                            <col width="10%">
+		                                            <col width="8%">
+		                                            <col width="10%">
+		                                            <col width="5%">
+		                                            <col width="5%">
+                                    			</c:otherwise>
+                                    		</c:choose>
                                         </colgroup>
                                         <thead>
                                             <tr>
+                                            	<c:choose>
+	                                    			<c:when test="${ledgerVO.stateType eq 'request' or ledgerVO.stateType eq 'left' }">
+	                                    				<th>
+		                                                    <span>
+		                                                        <input class="styled-checkbox" id="checkbox-1" type="checkbox">
+		                                                        <label for="checkbox-1"></label>
+		                                                    </span>
+		                                                </th>
+	                                    			</c:when>
+	                                    		</c:choose>
                                                 <th>기타사항</th>
                                                 <th class="cur" id="thCodeType">구분<i class="ico-filter"></i></th>
                                                 <th class="cur" id="thFinancialCompany">금융사<i class="ico-filter"></i></th>
-                                                <th class="cur" id="thFinancialBranch">금융지점<i class="ico-filter"></i></th>
+                                                <c:choose>
+                                                	<c:when test="${empty ledgerVO.sLedgerFinancialCompanyCd }">
+                                                		<th>금융지점</th>
+                                                	</c:when>
+                                                	<c:when test="${empty financialBranchCodelist }">
+                                                		<th>금융지점</th>
+                                                	</c:when>
+                                                	<c:otherwise>
+                                                		<th class="cur" id="thFinancialBranch">금융지점<i class="ico-filter"></i></th>
+                                                	</c:otherwise>
+                                                </c:choose>
                                                 <th class="cur" id="thFinancialProduct">금융상품<i class="ico-filter"></i></th>
                                                 <th>인도일</th>
                                                 <th>고객명</th>
@@ -163,6 +228,16 @@
                                         <tbody>
                                         	<c:forEach var="list" items="${list }" varStatus="status">
 	                                            <tr>
+	                                            	<c:choose>
+		                                    			<c:when test="${ledgerVO.stateType eq 'request' or ledgerVO.stateType eq 'left' }">
+		                                    				<td>
+			                                                    <span>
+			                                                        <input class="styled-checkbox" id="checkbox-${status.count + 1 }" type="checkbox">
+			                                                        <label for="checkbox-${status.count + 1 }"></label>
+			                                                    </span>
+			                                                </td>
+		                                    			</c:when>
+		                                    		</c:choose>
 	                                                <td>
 	                                                	<c:choose>
 	                                                		<c:when test="${empty list.ledgerOther }">
@@ -173,12 +248,11 @@
 	                                                		</c:otherwise>
 	                                                	</c:choose>
 	                                                </td>
-	                                                <td>${list.ledgerTypeCd }</td>
-	                                                <td>잉여원장</td>
+	                                                <td>${list.ledgerTypeCdName }</td>
 	                                                <td>${list.ledgerFinancialCompanyCdName }</td>
 	                                                <td>${list.ledgerFinancialBranchCdName }</td>
 	                                                <td>${list.ledgerFinancialProductCdName }</td>
-	                                                <td>${fn:substring(list.ledgerDeliveryDate, 0, 19) }</td>
+	                                                <td>${fn:substring(list.ledgerDeliveryDate, 0, 10) }</td>
 	                                                <td>${list.ledgerCustomerName }</td>
 	                                                <td>
 	                                                	<c:choose>
@@ -195,8 +269,8 @@
 	                                                    <p>${list.ledgerCarNumber }</p>
 	                                                </td>
 	                                                <td class="align-right">
-	                                                    <p><span>차량가</span><span><fmt:formatNumber value="${list.ledgerCarPrice }" pattern="#,###"/></span></p>
-	                                                    <p><span>취득원가</span><span><fmt:formatNumber value="${list.ledgerAcquisitionCost }" pattern="#,###"/></span></p>
+	                                                    <p><span class="font-blue">차량가 </span><span><fmt:formatNumber value="${list.ledgerCarPrice }" pattern="#,###"/></span></p>
+	                                                    <p><span class="font-red">취득원가 </span><span><fmt:formatNumber value="${list.ledgerAcquisitionCost }" pattern="#,###"/></span></p>
 	                                                </td>
 	                                                <td>
 	                                                	<c:choose>
@@ -254,7 +328,7 @@
                                         </div>
                                         <div class="filter-footer">
                                             <div class="filter-btn">
-                                                <button class="btn-bu">적용</button>
+                                                <button class="btn-bu" onclick="LedgerList.addFilter('sCodeType', this)">적용</button>
                                                 <button class="btn-line-cancel">취소</button>
                                             </div>
                                         </div>
@@ -288,7 +362,7 @@
                                         </div>
                                         <div class="filter-footer">
                                             <div class="filter-btn">
-                                                <button class="btn-bu">적용</button>
+                                                <button class="btn-bu" onclick="LedgerList.addFilter('sFinancialCompany', this)">적용</button>
                                                 <button class="btn-line-cancel">취소</button>
                                             </div>
                                         </div>
@@ -322,13 +396,13 @@
                                         </div>
                                         <div class="filter-footer">
                                             <div class="filter-btn">
-                                                <button class="btn-bu">적용</button>
+                                                <button class="btn-bu" onclick="LedgerList.addFilter('sFinancialBranch', this)">적용</button>
                                                 <button class="btn-line-cancel">취소</button>
                                             </div>
                                         </div>
                                     </div>
                                     <!--end::table-filter-->
-                                    <!--table-filter / 금융상품ㄴ-->
+                                    <!--table-filter / 금융상품-->
                                     <div class="filter-modal radio goods" id="divFinancialProductFilter" style="display: none;">
                                         <div class="filter-body">
                                             <ul>
@@ -344,7 +418,7 @@
                                         </div>
                                         <div class="filter-footer">
                                             <div class="filter-btn">
-                                                <button class="btn-bu">적용</button>
+                                                <button class="btn-bu" onclick="LedgerList.addFilter('sFinancialProduct', this)">적용</button>
                                                 <button class="btn-line-cancel">취소</button>
                                             </div>
                                         </div>
@@ -371,7 +445,7 @@
 		                    <div class="from-title">
 		                        <h6>금융사</h6>
 		                    </div>
-		                    <select id="selCodeCompany">
+		                    <select id="selFinancialCompanyCode">
                             	<c:forEach var="list" items="${financialCompanyCodelist }" varStatus="status">
 		                        	<option value="${list.codeId }">${list.codeName }</option>
 		                        </c:forEach>
@@ -381,8 +455,8 @@
 		                    <div class="from-title">
 		                        <h6>금융지점</h6>
 		                    </div>
-		                    <select id="selCodeCompany">
-                            	<c:forEach var="list" items="${financialBranchCodelist }" varStatus="status">
+		                    <select id="selFinancialBranchCode">
+                            	<c:forEach var="list" items="${financialBranchCodelist2 }" varStatus="status">
 		                        	<option value="${list.codeId }">${list.codeName }</option>
 		                        </c:forEach>
 		                    </select>
@@ -393,7 +467,7 @@
                             <div class="from-title">
                                 <h6>금융상품</h6>
                             </div>
-                            <select id="selCodeCompany">
+                            <select id="selFinancialProduct">
                             	<c:forEach var="list" items="${financialProductCodelist }" varStatus="status">
 		                        	<option value="${list.codeId }">${list.codeName }</option>
 		                        </c:forEach>
@@ -403,7 +477,7 @@
                             <div class="from-title">
                                 <h6>코드사</h6>
                             </div>
-                            <select id="selBusinessCode">
+                            <select id="selCodeCompany">
 		                        <c:forEach var="list" items="${codeCompanyCodelist }" varStatus="status">
 		                        	<c:if test="${list.codeName ne '전체'}">
 		                        		<option value="${list.codeId }">${list.codeName }</option>
@@ -424,7 +498,7 @@
 		        </div>
 		        <div class="modal-footer">
 		            <div class="modal-btn">
-		                <button class="btn-bu">완료</button>
+		                <button class="btn-bu" id="btnAddLedgerForExcel">완료</button>
 		                <button class="btn-line-cancel">취소</button>
 		            </div>
 		        </div>

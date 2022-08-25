@@ -104,6 +104,7 @@ public class LedgerController {
 		List<CodeVO> codeCompanyCodelist = new ArrayList<>();
 		List<CodeVO> financialCompanyCodelist = new ArrayList<>();
 		List<CodeVO> financialBranchCodelist = new ArrayList<>();
+		List<CodeVO> financialBranchCodelist2 = new ArrayList<>();
 		List<CodeVO> financialProductCodelist = new ArrayList<>();
 		CodeVO codeVO = new CodeVO();
 		
@@ -125,10 +126,21 @@ public class LedgerController {
 			logger.error(e.getMessage());
 		}
 		
+		for(int fcCode : ledgerVO.getsLedgerFinancialCompanyCd()) {
+			// 금융지점
+			codeVO.setCodeParentId(fcCode);
+			try {
+				financialBranchCodelist = codeService.selectCodeList(codeVO);
+			}catch (Exception e) {
+				logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+				logger.error(e.getMessage());
+			}
+		}
+		
 		// 금융지점
 		codeVO.setCodeParentId(3200);
 		try {
-			financialBranchCodelist = codeService.selectCodeList(codeVO);
+			financialBranchCodelist2 = codeService.selectCodeList(codeVO);
 		}catch (Exception e) {
 			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
 			logger.error(e.getMessage());
@@ -146,13 +158,6 @@ public class LedgerController {
 		PagingControl pc = new PagingControl();
 		PagingVO pagingVO = pc.paging(listCount, ledgerVO.getNowPage(), ledgerVO.getPagePerRows());
 		
-		List<Integer> typeList = new ArrayList<>();
-		
-		typeList.add(2100);
-		typeList.add(2200);
-		
-		ledgerVO.setsLedgerTypeCd(typeList);
-		
 		model.addAttribute("list", list);
 		model.addAttribute("listCount", listCount);
 		model.addAttribute("pagingVO", pagingVO);
@@ -164,6 +169,7 @@ public class LedgerController {
 		model.addAttribute("codeCompanyCodelist", codeCompanyCodelist);
 		model.addAttribute("financialCompanyCodelist", financialCompanyCodelist);
 		model.addAttribute("financialBranchCodelist", financialBranchCodelist);
+		model.addAttribute("financialBranchCodelist2", financialBranchCodelist2);
 		model.addAttribute("financialProductCodelist", financialProductCodelist);
     	
 		return result;
