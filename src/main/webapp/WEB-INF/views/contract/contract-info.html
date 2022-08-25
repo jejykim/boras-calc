@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://use.fontawesome.com/6ab134b18c.js"></script>
+    <link rel="stylesheet" href="../Assets/front/css/common.css">
+    <link rel="stylesheet" href="../Assets/front/css/style.css">
+
+</head>
+
+<body>
+    <div class="wrap">
+        <header>
+            <div class="user">
+                <span>홍길동</span>
+            </div>
+        </header>
+        <aside>
+            <div class="menu">
+                <div class="logo">
+                    <a>
+                        <img src="../Assets/front/images/common/logo.png" alt="logo">
+                    </a>
+                    <i class="i-menu"></i>
+                </div>
+                <ul>
+                    <li class="mainmenu"><a><i class="fa fa-home" aria-hidden="true"></i>Dashboard</a></li>
+                    <li class="mainmenu">
+                        <h4>사용자</h4>
+                        <div class="submenu">
+                            <ul>
+                                <li><a><i class="fa fa-user-o" aria-hidden="true"></i><span>사용자 목록</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mainmenu">
+                        <h4>원장</h4>
+                        <div class="submenu">
+                            <ul>
+                                <li><a><i class="fa fa-file-text-o" aria-hidden="true"></i><span>금융사 원장 목록</span></a></li>
+                                <li><a><i class="fa fa-file-text-o" aria-hidden="true"></i><span>금융사 원장 목록</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mainmenu">
+                        <h4>계출</h4>
+                        <div class="submenu">
+                            <ul>
+                                <li class="on"><a><i class="fa fa-list-ul" aria-hidden="true"></i><span>계출 목록</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mainmenu">
+                        <h4>정산</h4>
+                        <div class="submenu">
+                            <ul>
+                                <li><a><i class="fa fa-television" aria-hidden="true"></i><span>정산 대시보드</span></a></li>
+                                <li><a><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록</span></a></li>
+                                <li><a><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mainmenu">
+                        <h4>통계</h4>
+                        <div class="submenu">
+                            <ul>
+                                <li><a><i class="fa fa-bar-chart" aria-hidden="true"></i><span>통계</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mainmenu">
+                        <h4>시스템</h4>
+                        <div class="submenu">
+                            <ul>
+                                <li><a><i class="fa fa-file-excel-o" aria-hidden="true"></i><span>원장 Excel 설정</span></a></li>
+                                <li><a><i class="fa fa-file-code-o" aria-hidden="true"></i><span>공통코드</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <div class="contents">
+            <main>
+                <div class="wrapper">
+                    <div class="main-header">
+                        <div class="header-title">
+                            <h3>계출</h3>
+                        </div>
+                        <div class="header-sub">
+                            <div class="btn">
+                                <button class="btn-main btn-sm">저장</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-body pd-row">
+                        <div class="row w-bg m-bmg-24 box-sh info-search-bar">
+                            <div class="search-bar">
+                                <div class="bar">
+                                    <label>금융사</label>
+                                    <div class="bar-info">
+                                        <span>미래에셋 캐피탈미래에셋 캐피탈미래에셋 캐피탈미래에셋 캐피탈미래에셋</span>
+                                    </div>
+                                </div>
+                                <div class="bar">
+                                    <label>금융지점</label>
+                                    <div class="bar-info">
+                                        <span>미래에셋 캐피탈</span>
+                                    </div>
+                                </div>
+                                <div class="bar">
+                                    <label>금융상품</label>
+                                    <div class="bar-info">
+                                        <span>리스</span>
+                                    </div>
+                                </div>
+                                <div class="bar">
+                                    <label>인도일</label>
+                                    <div class="bar-info">
+                                        <span>2022.08.03</span>
+                                    </div>
+                                </div>
+                                <div class="bar">
+                                    <label>고객명</label>
+                                    <div class="bar-info">
+                                        <span>주식회사 보라스 엔터테이먼트</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="search-bar">
+                                <div class="bar">
+                                    <label>달러사</label>
+                                    <div class="bar-info">
+                                        <span>미래에셋 캐피탈</span>
+                                    </div>
+                                </div>
+                                <div class="bar">
+                                    <label>차량명</label>
+                                    <div class="bar-info">
+                                        <span>미래에셋 캐피탈</span>
+                                    </div>
+                                </div>
+                                <div class="bar">
+                                    <label>차량번호</label>
+                                    <div class="bar-info">
+                                        <span>리스</span>
+                                    </div>
+                                </div>
+                                <div class="bar">
+                                    <label>차량가</label>
+                                    <div class="bar-info">
+                                        <span>2022.08.03</span>
+                                    </div>
+                                </div>
+                                <div class="bar">
+                                    <label>취득원가</label>
+                                    <div class="bar-info">
+                                        <span>주식회사 보라스 엔터테이먼트</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="search-bar bar-2">
+                                <div class="bar">
+                                    <label>AG 사</label>
+                                    <div class="bar-info">
+                                        <span>미래에셋 캐피탈</span>
+                                    </div>
+                                </div>
+                                <div class="bar">
+                                    <label>기타사항</label>
+                                    <div class="bar-info">
+                                        <span>미래에셋 캐피탈</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--일반fee-->
+                        <div class="row">
+                            <div class="row w-bg main-content report report-info">
+                                <div class="portlet-header">
+                                    <h5>일반 fee</h5>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="talble-info">
+                                        <div class="info-body">
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>총fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>AG fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>AG fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>AG fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--end::일반fee-->
+                        <!--추가fee-->
+                        <div class="row">
+                            <div class="row w-bg main-content report report-info">
+                                <div class="portlet-header">
+                                    <h5>추가 fee</h5>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="talble-info">
+                                        <div class="info-body">
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>총fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>AG fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>AG fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>AG fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::추가fee-->
+                        <!--슬라이딩-->
+                        <div class="row">
+                            <div class="row w-bg main-content report report-info">
+                                <div class="portlet-header">
+                                    <h5>슬라이딩</h5>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="talble-info">
+                                        <div class="info-body">
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>총fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>AG fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>AG fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>AG fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::슬라이딩-->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <!--script-->
+    <scrtip src=" ../Assets/front/js/jquery-3.3.1.min.js"></scrtip>
+</body>
+
+</html>

@@ -92,6 +92,11 @@ table tr:hover {
     cursor: pointer;
 }
 
+table.n-hover tr:hover {
+    cursor: Default;
+    background-color: transparent;
+}
+
 /*--------------------------------------------------------------------------------------
 common
 ----------------------------------------------------------------------------------------*/
@@ -317,6 +322,7 @@ header {
     padding: 0 24px;
     display: flex;
     align-items: center;
+    z-index: 999;
 }
 
 header .user {
@@ -556,7 +562,6 @@ main .wrapper {
 
 .main-content {
     flex-direction: column;
-
 }
 
 /*tab*/
@@ -567,6 +572,12 @@ main .wrapper {
     justify-content: space-between;
     align-items: center;
     padding-left: 24px;
+}
+
+.portlet-header h5 {
+    padding: 10px 0;
+    font-weight: 500;
+    font-size: 16px;
 }
 
 .portlet-header ul li {
@@ -610,6 +621,11 @@ main .wrapper {
     padding: 10px;
     font-size: 13px;
     border-radius: 3px;
+    margin: 2px;
+}
+
+.table-filter .filter .btn-gr {
+    margin: 2px;
 }
 
 .table-filter .filter > span i {
@@ -872,4 +888,261 @@ input[type="radio"] {
 .input-sh > div {
     margin-left: 1%;
     width: 49.5%
+}
+
+/*원장추가*/
+.form-group {
+    padding: 6px 24px
+}
+
+.form-group.row {
+    display: flex;
+    align-items: center;
+}
+
+.form-group label {
+    color: #3f4047;
+    font-size: 13px;
+    text-align: right;
+    width: 20%;
+    padding: 6px;
+}
+
+.form-group .form-control {
+    display: flex;
+    width: 50%;
+    justify-content: flex-start;
+    flex-direction: row;
+    padding: 0 10px;
+}
+
+.form-control .col-3 {
+    border: 1px solid #DEE0E5;
+    width: calc(97% / 3);
+    margin: 0 0.5%;
+}
+
+.form-control .col-2 {
+    border: 1px solid #DEE0E5;
+    width: calc(98% / 2);
+    margin: 0 0.5%;
+}
+
+.form-control .col-1 {
+    border: 1px solid #DEE0E5;
+    flex: 1;
+    margin: 0 0.5%;
+}
+
+.form-control.col-wrap {
+    flex-wrap: wrap;
+}
+
+.form-control.col-wrap input {
+    margin-bottom: 4px;
+}
+
+.form-control.span-box {
+    flex-wrap: wrap;
+}
+
+.form-control span {
+    background-color: #F1F4FF;
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 3px;
+    margin: 4px;
+    font-weight: 500;
+
+}
+
+.form-control span i {
+    color: #8D919C
+}
+
+.form-control button {
+    margin: 4px;
+}
+
+.form-control input[type="date"] {
+    padding: 10px;
+}
+
+/*계출*/
+.box-sh {
+    box-shadow: 0px 0px 20px 0px rgba(76, 87, 125, 0.09)
+}
+
+.search-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-bar .bar {
+    display: flex;
+    width: 23%;
+}
+
+.search-bar .bar.btn {
+    width: 8%;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-bar .bar.btn button {
+    height: 41.5px;
+    width: 60px;
+}
+
+.search-bar .bar label {
+    background-color: #F5F7FB;
+    color: #191919;
+    padding: 12px 10px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    width: 30%;
+    justify-content: center;
+}
+
+.search-bar .bar select {
+    border: 1px solid #E2E4E9;
+    background-color: #fff;
+    width: 100%;
+}
+
+.search-bar .bar input {
+    width: 100%;
+}
+
+.bar-info {
+    width: 70%;
+    padding: 12px 10px;
+}
+
+.row.con-2 {
+    justify-content: space-between
+}
+
+.row.con-2 > .row {
+    width: 49.5%;
+}
+
+.row.con-2 > .row:first-of-type {
+    padding: 24px;
+}
+
+.report .fix-table {
+    margin: 0;
+    max-height: 650px;
+}
+
+.talble-info .info-head h6 {
+    padding: 8px 24px;
+    background-color: #F5F7FB;
+    font-weight: 500;
+    font-synthesis: 14px;
+}
+
+.talble-info .info-body {
+    padding: 8px 24px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.talble-info .info-body .info-row {
+    width: 49.5%;
+
+}
+
+.talble-info .info-body .info-row .info-result {
+    display: flex;
+    border: 1px solid #DEE0E5;
+    border-radius: 3px;
+}
+
+.talble-info .info-body .info-row h7 {
+    font-size: 13px;
+    color: #3F4047;
+    width: 100%;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.talble-info .info-body .info-row .info-result span:first-of-type {
+    border-right: 1px solid #DEE0E5;
+}
+
+.talble-info .info-body .info-row .info-result span {
+    display: inline-block;
+    width: 50%;
+    padding-right: 10px;
+}
+
+.talble-info .info-result span input {
+    width: calc(100% - 20px);
+    border: 0;
+    text-align: right;
+}
+
+.talble-info .info-result span strong {
+    font-size: 13px;
+    width: 20px;
+}
+
+table tr.on {
+    background-color: #F2F8FF;
+}
+
+.table-info.footer {
+    padding: 12px 24px;
+    text-align: right;
+    border-top: 1px solid #E2E4E9;
+    margin-top: 10px;
+}
+
+.table-info.footer button {
+    height: 40px;
+    width: 96px;
+}
+
+.info-search-bar {
+    flex-direction: column;
+}
+
+.info-search-bar .bar-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.info-search-bar .search-bar {
+    border-bottom: 1px solid #E2E4E9;
+}
+
+.info-search-bar .search-bar:last-of-type {
+    border-bottom: 0;
+}
+
+.info-search-bar .search-bar .bar {
+    width: 20%;
+    font-size: 14px;
+}
+
+.info-search-bar .search-bar.bar-2 .bar:last-of-type {
+    width: 80%;
+}
+
+.info-search-bar .search-bar.bar-2 .bar:last-of-type label {
+    width: 100.31px;
+}
+
+.report-info .talble-info .info-body .info-row {
+    width: 24.5%
+}
+
+.main-body.pd-row .talble-info .info-body {
+    padding: 24px;
 }

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://use.fontawesome.com/6ab134b18c.js"></script>
+    <link rel="stylesheet" href="../Assets/front/css/common.css">
+    <link rel="stylesheet" href="../Assets/front/css/style.css">
+
+</head>
+
+<body>
+    <div class="wrap">
+        <header>
+            <div class="user">
+                <span>홍길동</span>
+            </div>
+        </header>
+        <aside>
+            <div class="menu">
+                <div class="logo">
+                    <a>
+                        <img src="../Assets/front/images/common/logo.png" alt="logo">
+                    </a>
+                    <i class="i-menu"></i>
+                </div>
+                <ul>
+                    <li class="mainmenu"><a><i class="fa fa-home" aria-hidden="true"></i>Dashboard</a></li>
+                    <li class="mainmenu">
+                        <h4>사용자</h4>
+                        <div class="submenu">
+                            <ul>
+                                <li><a><i class="fa fa-user-o" aria-hidden="true"></i><span>사용자 목록</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mainmenu">
+                        <h4>원장</h4>
+                        <div class="submenu">
+                            <ul>
+                                <li><a><i class="fa fa-file-text-o" aria-hidden="true"></i><span>금융사 원장 목록</span></a></li>
+                                <li><a><i class="fa fa-file-text-o" aria-hidden="true"></i><span>금융사 원장 목록</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mainmenu">
+                        <h4>계출</h4>
+                        <div class="submenu">
+                            <ul>
+                                <li class="on"><a><i class="fa fa-list-ul" aria-hidden="true"></i><span>계출 목록</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mainmenu">
+                        <h4>정산</h4>
+                        <div class="submenu">
+                            <ul>
+                                <li><a><i class="fa fa-television" aria-hidden="true"></i><span>정산 대시보드</span></a></li>
+                                <li><a><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록</span></a></li>
+                                <li><a><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mainmenu">
+                        <h4>통계</h4>
+                        <div class="submenu">
+                            <ul>
+                                <li><a><i class="fa fa-bar-chart" aria-hidden="true"></i><span>통계</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mainmenu">
+                        <h4>시스템</h4>
+                        <div class="submenu">
+                            <ul>
+                                <li><a><i class="fa fa-file-excel-o" aria-hidden="true"></i><span>원장 Excel 설정</span></a></li>
+                                <li><a><i class="fa fa-file-code-o" aria-hidden="true"></i><span>공통코드</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <div class="contents">
+            <main>
+                <div class="wrapper">
+                    <div class="main-header">
+                        <div class="header-title">
+                            <h3>계출</h3>
+                        </div>
+                    </div>
+                    <div class="main-body">
+                        <div class="row w-bg m-bmg-12 box-sh">
+                            <div class="search-bar">
+                                <div class="bar">
+                                    <label>금융사</label>
+                                    <div class="bar-info">
+                                        <select>
+                                            <option>금융사</option>
+                                            <option>금융사</option>
+                                            <option>금융사</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="bar">
+                                    <label>금융상품</label>
+                                    <div class="bar-info">
+                                        <select>
+                                            <option>금융상품</option>
+                                            <option>금융상품</option>
+                                            <option>금융상품</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="bar">
+                                    <label>AG</label>
+                                    <div class="bar-info">
+                                        <select>
+                                            <option>A AG사</option>
+                                            <option>A AG사</option>
+                                            <option>A AG사</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="bar">
+                                    <label>검색</label>
+                                    <div class="bar-info">
+                                        <input type="text" placeholder="검색">
+                                    </div>
+                                </div>
+                                <div class="bar btn">
+                                    <button class="btn-main">검색</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row con-2">
+                            <div class="row w-bg main-content report">
+                                <div class="portlet-body">
+                                    <div class="table fix-table">
+                                        <table>
+                                            <colgroup>
+                                                <col width="15%">
+                                                <col width="10%">
+                                                <col width="15%">
+                                                <col width="20%">
+                                                <col width="25%">
+                                                <col width="15%">
+                                            </colgroup>
+                                            <thead>
+                                                <th>금융사</th>
+                                                <th>금융상품</th>
+                                                <th>AG</th>
+                                                <th>차량명</th>
+                                                <th>고객명</th>
+                                                <th>상세</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="on">
+                                                    <td>미래에셋캐피탈</td>
+                                                    <td>리스</td>
+                                                    <td>A AG사</td>
+                                                    <td>벤츠 CLS-11111</td>
+                                                    <td>(주)주식회사 어쩌고저쩌고</td>
+                                                    <td><button class="btn-bu">상세</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>미래에셋캐피탈</td>
+                                                    <td>리스</td>
+                                                    <td>A AG사</td>
+                                                    <td>벤츠 CLS-11111</td>
+                                                    <td>(주)주식회사 어쩌고저쩌고</td>
+                                                    <td><button class="btn-bu">상세</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>미래에셋캐피탈</td>
+                                                    <td>리스</td>
+                                                    <td>A AG사</td>
+                                                    <td>벤츠 CLS-11111</td>
+                                                    <td>(주)주식회사 어쩌고저쩌고</td>
+                                                    <td><button class="btn-bu">상세</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>미래에셋캐피탈</td>
+                                                    <td>리스</td>
+                                                    <td>A AG사</td>
+                                                    <td>벤츠 CLS-11111</td>
+                                                    <td>(주)주식회사 어쩌고저쩌고</td>
+                                                    <td><button class="btn-bu">상세</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>미래에셋캐피탈</td>
+                                                    <td>리스</td>
+                                                    <td>A AG사</td>
+                                                    <td>벤츠 CLS-11111</td>
+                                                    <td>(주)주식회사 어쩌고저쩌고</td>
+                                                    <td><button class="btn-bu">상세</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>미래에셋캐피탈</td>
+                                                    <td>리스</td>
+                                                    <td>A AG사</td>
+                                                    <td>벤츠 CLS-11111</td>
+                                                    <td>(주)주식회사 어쩌고저쩌고</td>
+                                                    <td><button class="btn-bu">상세</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>미래에셋캐피탈</td>
+                                                    <td>리스</td>
+                                                    <td>A AG사</td>
+                                                    <td>벤츠 CLS-11111</td>
+                                                    <td>(주)주식회사 어쩌고저쩌고</td>
+                                                    <td><button class="btn-bu">상세</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>미래에셋캐피탈</td>
+                                                    <td>리스</td>
+                                                    <td>A AG사</td>
+                                                    <td>벤츠 CLS-11111</td>
+                                                    <td>(주)주식회사 어쩌고저쩌고</td>
+                                                    <td><button class="btn-bu">상세</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>미래에셋캐피탈</td>
+                                                    <td>리스</td>
+                                                    <td>A AG사</td>
+                                                    <td>벤츠 CLS-11111</td>
+                                                    <td>(주)주식회사 어쩌고저쩌고</td>
+                                                    <td><button class="btn-bu">상세</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>미래에셋캐피탈</td>
+                                                    <td>리스</td>
+                                                    <td>A AG사</td>
+                                                    <td>벤츠 CLS-11111</td>
+                                                    <td>(주)주식회사 어쩌고저쩌고</td>
+                                                    <td><button class="btn-bu">상세</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>미래에셋캐피탈</td>
+                                                    <td>리스</td>
+                                                    <td>A AG사</td>
+                                                    <td>벤츠 CLS-11111</td>
+                                                    <td>(주)주식회사 어쩌고저쩌고</td>
+                                                    <td><button class="btn-bu">상세</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>미래에셋캐피탈</td>
+                                                    <td>리스</td>
+                                                    <td>A AG사</td>
+                                                    <td>벤츠 CLS-11111</td>
+                                                    <td>(주)주식회사 어쩌고저쩌고</td>
+                                                    <td><button class="btn-bu">상세</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>미래에셋캐피탈</td>
+                                                    <td>리스</td>
+                                                    <td>A AG사</td>
+                                                    <td>벤츠 CLS-11111</td>
+                                                    <td>(주)주식회사 어쩌고저쩌고</td>
+                                                    <td><button class="btn-bu">상세</button></td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row w-bg main-content">
+                                <div class="portlet-body">
+                                    <!--일반fee-->
+                                    <div class="talble-info">
+                                        <div class="info-head">
+                                            <h6>일반fee</h6>
+                                        </div>
+                                        <div class="info-body">
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>총fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>AG fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="info-body">
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>DP fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>fee VAT여부</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::일반fee-->
+                                    <!--추가fee-->
+                                    <div class="talble-info">
+                                        <div class="info-head">
+                                            <h6>추가 fee</h6>
+                                        </div>
+                                        <div class="info-body">
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>총fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>AG fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="info-body">
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>DP fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>fee VAT여부</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::추가fee-->
+                                    <!--슬라이딩-->
+                                    <div class="talble-info">
+                                        <div class="info-head">
+                                            <h6>슬라이딩</h6>
+                                        </div>
+                                        <div class="info-body">
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>총fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>AG fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="info-body">
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>DP fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>fee VAT여부</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::슬라이딩-->
+                                    <div class="table-info footer">
+                                        <button class="btn-bu">저장</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <!--script-->
+    <scrtip src=" ../Assets/front/js/jquery-3.3.1.min.js"></scrtip>
+</body>
+
+</html>
