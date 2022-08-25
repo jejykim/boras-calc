@@ -263,25 +263,25 @@
 			left JOIN approval a
 			ON l.ledger_seq = a.approval_ledger_seq
 			WHERE 1=1
-			<if test="ledgerTypeCd != null and ledgerTypeCd != ''">
+			<if test="sLedgerTypeCd != null and sLedgerTypeCd.size != 0">
 				AND ledger_type_cd in
 				<foreach item="item" index="index" collection="sLedgerTypeCd" open="(" separator="," close=")">
 					#{item}
 				</foreach>
 			</if>
-			<if test="ledgerFinancialCompanyCd != null and ledgerFinancialCompanyCd != ''">
+			<if test="sLedgerFinancialCompanyCd != null and sLedgerFinancialCompanyCd.size != 0">
 				AND ledger_financial_company_cd in
 				<foreach item="item" index="index" collection="sLedgerFinancialCompanyCd" open="(" separator="," close=")">
 					#{item}
 				</foreach>
 			</if>
-			<if test="ledgerFinancialBranchCd != null and ledgerFinancialBranchCd != ''">
+			<if test="sLedgerFinancialBranchCd != null and sLedgerFinancialBranchCd.size != 0">
 				AND ledger_financial_branch_cd in
 				<foreach item="item" index="index" collection="sLedgerFinancialBranchCd" open="(" separator="," close=")">
 					#{item}
 				</foreach>
 			</if>
-			<if test="ledgerFinancialProductCd != null and ledgerFinancialProductCd != ''">
+			<if test="sLedgerFinancialProductCd != null and sLedgerFinancialProductCd.size != 0">
 				AND ledger_financial_product_cd in
 				<foreach item="item" index="index" collection="sLedgerFinancialProductCd" open="(" separator="," close=")">
 					#{item}
@@ -349,25 +349,25 @@
 			left JOIN approval a
 			ON l.ledger_seq = a.approval_ledger_seq
 			WHERE 1=1
-			<if test="ledgerTypeCd != null and ledgerTypeCd != ''">
+			<if test="sLedgerTypeCd != null and sLedgerTypeCd.size != 0">
 				AND ledger_type_cd in
 				<foreach item="item" index="index" collection="sLedgerTypeCd" open="(" separator="," close=")">
 					#{item}
 				</foreach>
 			</if>
-			<if test="ledgerFinancialCompanyCd != null and ledgerFinancialCompanyCd != ''">
+			<if test="sLedgerFinancialCompanyCd != null and sLedgerFinancialCompanyCd.size != 0">
 				AND ledger_financial_company_cd in
 				<foreach item="item" index="index" collection="sLedgerFinancialCompanyCd" open="(" separator="," close=")">
 					#{item}
 				</foreach>
 			</if>
-			<if test="ledgerFinancialBranchCd != null and ledgerFinancialBranchCd != ''">
+			<if test="sLedgerFinancialBranchCd != null and sLedgerFinancialBranchCd.size != 0">
 				AND ledger_financial_branch_cd in
 				<foreach item="item" index="index" collection="sLedgerFinancialBranchCd" open="(" separator="," close=")">
 					#{item}
 				</foreach>
 			</if>
-			<if test="ledgerFinancialProductCd != null and ledgerFinancialProductCd != ''">
+			<if test="sLedgerFinancialProductCd != null and sLedgerFinancialProductCd.size != 0">
 				AND ledger_financial_product_cd in
 				<foreach item="item" index="index" collection="sLedgerFinancialProductCd" open="(" separator="," close=")">
 					#{item}
