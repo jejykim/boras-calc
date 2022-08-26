@@ -28,7 +28,7 @@
 			contract_create_year,
 			contract_create_month,
 			contract_create_user_id,
-			contract_create_date,
+			contract_create_date
 		)
 		VALUES(
 			#{contractLedgerSeq},

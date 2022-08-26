@@ -52,9 +52,10 @@
                                     <label>금융사</label>
                                     <div class="bar-info">
                                         <select id="selFinancialCompanyCode">
-                            	<c:forEach var="list" items="${financialCompanyCodelist }" varStatus="status">
-		                        	<option value="${list.codeId }">${list.codeName }</option>
-		                        </c:forEach>
+                                        	<option value="all">전체</option>
+			                            	<c:forEach var="list" items="${financialCompanyCodelist }" varStatus="status">
+					                        	<option value="${list.codeId }">${list.codeName }</option>
+					                        </c:forEach>
 		                    </select>
                                     </div>
                                 </div>
@@ -62,6 +63,7 @@
                                     <label>금융상품</label>
                                     <div class="bar-info">
                                         <select id="selFinancialProduct">
+                                        <option value="all">전체</option>
 				                        	<c:forEach var="list" items="${financialProductCodelist }" varStatus="status">
 						                      	<option value="${list.codeId }">${list.codeName }</option>
 					                      	</c:forEach>
@@ -71,11 +73,12 @@
                                 <div class="bar">
                                     <label>AG</label>
                                     <div class="bar-info">
-                                        <select>
-                                            <option>A AG사</option>
-                                            <option>A AG사</option>
-                                            <option>A AG사</option>
-                                        </select>
+                                        <select id="selUserAg">
+                                        	<option value="all">전체</option>
+					                        <c:forEach var="list" items="${userAglist }" varStatus="status">
+				                        		<option value="${list.userId }">${list.userName }</option>
+					                        </c:forEach>
+					                    </select>
                                     </div>
                                 </div>
                                 <div class="bar">
