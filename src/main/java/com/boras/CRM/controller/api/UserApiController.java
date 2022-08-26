@@ -274,11 +274,11 @@ public class UserApiController {
 	 * AG사 목록
 	 */
 	@GetMapping(value = "/list/ag")
-	public Map<String, Object> userListAg(HttpServletRequest req, HttpServletResponse resp) {
+	public Map<String, Object> userListAg(HttpServletRequest req, HttpServletResponse resp, UserVO userVO) {
 	    Map<String, Object> rvt = new HashMap<>();
 	    
 	    try {
-	    	List<UserVO> list = userService.selectUserListAg();
+	    	List<UserVO> list = userService.selectUserListAg(userVO);
 			
 	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
     		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));

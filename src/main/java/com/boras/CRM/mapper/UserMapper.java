@@ -85,6 +85,6 @@ public interface UserMapper {
 	 * @param 
 	 * @return List<UserVO>
 	 */
-	public List<UserVO> selectUserListAg();
+	public List<UserVO> selectUserListAg(UserVO userVO);
 
 }

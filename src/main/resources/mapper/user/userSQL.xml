@@ -204,10 +204,13 @@
   	</select>
   	
   	<!-- AG사 목록 조회 -->
-	<select id="selectUserListAg" resultType="userVO">
+	<select id="selectUserListAg" resultType="userVO" parameterType="userVO">
 		SELECT *
 		FROM users
 		WHERE user_permission_cd >= 1200
+		<if test="searchText != null and searchText != ''">
+			AND user_id like CONCAT('%',#{searchText},'%')
+		</if>
 		ORDER BY user_join_date desc
   	</select>
   	

@@ -66,7 +66,7 @@ public class UserService implements UserMapper {
 	}
 	
 	@Override
-	public List<UserVO> selectUserListAg() {
-		return userMapper.selectUserListAg();
+	public List<UserVO> selectUserListAg(UserVO userVO) {
+		return userMapper.selectUserListAg(userVO);
 	}
 }
