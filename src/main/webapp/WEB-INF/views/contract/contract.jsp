@@ -20,7 +20,7 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	<script src='/static/assets/js/common/common.js'></script>
 	<script src='/static/assets/js/contract/contract.js'></script>
-
+	
 </head>
 <body>
     <div class="wrap">
@@ -84,12 +84,21 @@
                                 <div class="bar">
                                     <label>검색</label>
                                     <div class="bar-info">
-                                        <input type="text" placeholder="검색">
+                                        <input type="text" id="searchText" placeholder="검색">
                                     </div>
                                 </div>
                                 <div class="bar btn">
-                                    <button class="btn-main">검색</button>
-                                    <button class="btn-gr" style="margin-left: 10">초기화</button>
+                                    <button class="btn-main" id="btnSearch">검색</button>
+                                    <button class="btn-gr">초기화</button>
+                                    
+                                    <form class="search-form" id="searchForm" name="searchForm" action="" method="get">
+											<input type="hidden" name="ledgerFinancialCompanyCd" id="ledgerFinancialCompanyCd">
+											<input type="hidden" name="ledgerFinancialProductCd" id="ledgerFinancialProductCd">
+											<input type="hidden" name="userName" id="userName" value="">
+											<input type="hidden" name="searchText" id="inputSearchText" value="">
+											<!-- <input type="hidden" name="ledgerCreateYear" id="ledgerCreateYear" value="">
+											<input type="hidden" name="ledgerCreateMonth" id="ledgerCreateMonth" value=""> -->
+									</form>
                                 </div>
                             </div>
                         </div>
@@ -115,111 +124,21 @@
                                                 <th>상세</th>
                                             </thead>
                                             <tbody>
-                                                <tr class="on">
-                                                    <td>미래에셋캐피탈</td>
-                                                    <td>리스</td>
-                                                    <td>A AG사</td>
-                                                    <td>벤츠 CLS-11111</td>
-                                                    <td>(주)주식회사 어쩌고저쩌고</td>
-                                                    <td><button class="btn-bu">상세</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>미래에셋캐피탈</td>
-                                                    <td>리스</td>
-                                                    <td>A AG사</td>
-                                                    <td>벤츠 CLS-11111</td>
-                                                    <td>(주)주식회사 어쩌고저쩌고</td>
-                                                    <td><button class="btn-bu">상세</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>미래에셋캐피탈</td>
-                                                    <td>리스</td>
-                                                    <td>A AG사</td>
-                                                    <td>벤츠 CLS-11111</td>
-                                                    <td>(주)주식회사 어쩌고저쩌고</td>
-                                                    <td><button class="btn-bu">상세</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>미래에셋캐피탈</td>
-                                                    <td>리스</td>
-                                                    <td>A AG사</td>
-                                                    <td>벤츠 CLS-11111</td>
-                                                    <td>(주)주식회사 어쩌고저쩌고</td>
-                                                    <td><button class="btn-bu">상세</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>미래에셋캐피탈</td>
-                                                    <td>리스</td>
-                                                    <td>A AG사</td>
-                                                    <td>벤츠 CLS-11111</td>
-                                                    <td>(주)주식회사 어쩌고저쩌고</td>
-                                                    <td><button class="btn-bu">상세</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>미래에셋캐피탈</td>
-                                                    <td>리스</td>
-                                                    <td>A AG사</td>
-                                                    <td>벤츠 CLS-11111</td>
-                                                    <td>(주)주식회사 어쩌고저쩌고</td>
-                                                    <td><button class="btn-bu">상세</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>미래에셋캐피탈</td>
-                                                    <td>리스</td>
-                                                    <td>A AG사</td>
-                                                    <td>벤츠 CLS-11111</td>
-                                                    <td>(주)주식회사 어쩌고저쩌고</td>
-                                                    <td><button class="btn-bu">상세</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>미래에셋캐피탈</td>
-                                                    <td>리스</td>
-                                                    <td>A AG사</td>
-                                                    <td>벤츠 CLS-11111</td>
-                                                    <td>(주)주식회사 어쩌고저쩌고</td>
-                                                    <td><button class="btn-bu">상세</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>미래에셋캐피탈</td>
-                                                    <td>리스</td>
-                                                    <td>A AG사</td>
-                                                    <td>벤츠 CLS-11111</td>
-                                                    <td>(주)주식회사 어쩌고저쩌고</td>
-                                                    <td><button class="btn-bu">상세</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>미래에셋캐피탈</td>
-                                                    <td>리스</td>
-                                                    <td>A AG사</td>
-                                                    <td>벤츠 CLS-11111</td>
-                                                    <td>(주)주식회사 어쩌고저쩌고</td>
-                                                    <td><button class="btn-bu">상세</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>미래에셋캐피탈</td>
-                                                    <td>리스</td>
-                                                    <td>A AG사</td>
-                                                    <td>벤츠 CLS-11111</td>
-                                                    <td>(주)주식회사 어쩌고저쩌고</td>
-                                                    <td><button class="btn-bu">상세</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>미래에셋캐피탈</td>
-                                                    <td>리스</td>
-                                                    <td>A AG사</td>
-                                                    <td>벤츠 CLS-11111</td>
-                                                    <td>(주)주식회사 어쩌고저쩌고</td>
-                                                    <td><button class="btn-bu">상세</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>미래에셋캐피탈</td>
-                                                    <td>리스</td>
-                                                    <td>A AG사</td>
-                                                    <td>벤츠 CLS-11111</td>
-                                                    <td>(주)주식회사 어쩌고저쩌고</td>
-                                                    <td><button class="btn-bu">상세</button></td>
-                                                </tr>
-
+                                            	<c:forEach var="list" items="${list }" varStatus="status">
+	                                                <tr>
+	                                                    <td>${list.ledgerFinancialCompanyCdName }</td>
+	                                                    <td>${list.ledgerFinancialProductCdName }</td>
+	                                                    <td>${list.userName }</td>
+	                                                    <td>${list.ledgerCarName }</td>
+	                                                    <td>${list.ledgerCustomerName }</td>
+	                                                    <td><button class="btn-bu">상세</button></td>
+	                                                </tr>
+                                               </c:forEach>
+                                               <c:if test="${listCount eq 0 }">
+	                                            <tr>
+	                                                <td colspan="12">조회된 데이터가 없습니다</td>
+	                                            </tr>
+	                                        </c:if>
                                             </tbody>
                                         </table>
                                     </div>

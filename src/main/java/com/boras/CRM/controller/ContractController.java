@@ -86,6 +86,8 @@ public class ContractController {
 			logger.error(e.getMessage());
 		}
 		model.addAttribute("list",list);
+		model.addAttribute("listCount",1);
+		
 		model.addAttribute("financialCompanyCodelist", financialCompanyCodelist);
 		model.addAttribute("financialProductCodelist", financialProductCodelist);
 		model.addAttribute("userAglist", userAglist);

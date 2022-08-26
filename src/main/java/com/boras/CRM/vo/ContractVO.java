@@ -35,10 +35,16 @@ public class ContractVO extends PagingVO {
 	/* 원장 */
 	// 금융사 코드
 	private int ledgerFinancialCompanyCd;
+	// 금융사 코드명
+	private String ledgerFinancialCompanyCdName;
 	// 금융상품 코드
 	private int ledgerFinancialProductCd;
+	// 금융상품 코드명
+		private String ledgerFinancialProductCdName;
 	// 차량명
 	private String ledgerCarName;
+	// 고객명
+	private String ledgerCustomerName;
 	
 	/* 사용자 */
 	//이름
@@ -242,11 +248,31 @@ public class ContractVO extends PagingVO {
 	public void setLedgerCarName(String ledgerCarName) {
 		this.ledgerCarName = ledgerCarName;
 	}
+	
+	public String getLedgerCustomerName() {
+		return ledgerCustomerName;
+	}
+	public void setLedgerCustomerName(String ledgerCustomerName) {
+		this.ledgerCustomerName = ledgerCustomerName;
+	}
 	public String getUserName() {
 		return userName;
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	
+	public String getLedgerFinancialCompanyCdName() {
+		return ledgerFinancialCompanyCdName;
+	}
+	public void setLedgerFinancialCompanyCdName(String ledgerFinancialCompanyCdName) {
+		this.ledgerFinancialCompanyCdName = ledgerFinancialCompanyCdName;
+	}
+	public String getLedgerFinancialProductCdName() {
+		return ledgerFinancialProductCdName;
+	}
+	public void setLedgerFinancialProductCdName(String ledgerFinancialProductCdName) {
+		this.ledgerFinancialProductCdName = ledgerFinancialProductCdName;
 	}
 	@Override
 	public String toString() {
@@ -269,7 +295,36 @@ public class ContractVO extends PagingVO {
 				+ contractUpdateUserId + ", contractUpdateDate=" + contractUpdateDate + ", searchFilter=" + searchFilter
 				+ ", searchText=" + searchText + ", ledgerFinancialCompanyCd=" + ledgerFinancialCompanyCd
 				+ ", ledgerFinancialProductCd=" + ledgerFinancialProductCd + ", ledgerCarName=" + ledgerCarName
-				+ ", userName=" + userName + "]";
+				+ ", ledgerCustomerName=" + ledgerCustomerName + ", userName=" + userName + ", getContractLedgerSeq()="
+				+ getContractLedgerSeq() + ", getContractUserId()=" + getContractUserId() + ", getContractSeq()="
+				+ getContractSeq() + ", getContractCalculateSeq()=" + getContractCalculateSeq()
+				+ ", getContractNomalTotalFeePercent()=" + getContractNomalTotalFeePercent()
+				+ ", getContractNomalTotalFeeSum()=" + getContractNomalTotalFeeSum()
+				+ ", getContractNomalAgFeePercent()=" + getContractNomalAgFeePercent() + ", getContractNomalAgFeeSum()="
+				+ getContractNomalAgFeeSum() + ", getContractNomalDpFeePercent()=" + getContractNomalDpFeePercent()
+				+ ", getContractNomalDpFeeSum()=" + getContractNomalDpFeeSum() + ", getContractAddTotalFeeSum()="
+				+ getContractAddTotalFeeSum() + ", getContractAddAgFeeSum()=" + getContractAddAgFeeSum()
+				+ ", getContractAddDpFeeSum()=" + getContractAddDpFeeSum() + ", getContractTotalSlidingPercent()="
+				+ getContractTotalSlidingPercent() + ", getContractTotalSlidingSum()=" + getContractTotalSlidingSum()
+				+ ", getContractAgSlidingPercent()=" + getContractAgSlidingPercent() + ", getContractAgSlidingSum()="
+				+ getContractAgSlidingSum() + ", getContractDpSlidingPercent()=" + getContractDpSlidingPercent()
+				+ ", getContractDpSlidingSum()=" + getContractDpSlidingSum() + ", getContractAgFeeSurtaxSupportYn()="
+				+ getContractAgFeeSurtaxSupportYn() + ", getContractSlidingSurtaxSupportYn()="
+				+ getContractSlidingSurtaxSupportYn() + ", getContractAddFeeSurtaxSupportYn()="
+				+ getContractAddFeeSurtaxSupportYn() + ", getContractCreateYear()=" + getContractCreateYear()
+				+ ", getContractCreateMonth()=" + getContractCreateMonth() + ", getContractCreateUserId()="
+				+ getContractCreateUserId() + ", getContractCreateDate()=" + getContractCreateDate()
+				+ ", getContractUpdateUserId()=" + getContractUpdateUserId() + ", getContractUpdateDate()="
+				+ getContractUpdateDate() + ", getSearchFilter()=" + getSearchFilter() + ", getSearchText()="
+				+ getSearchText() + ", getLedgerFinancialCompanyCd()=" + getLedgerFinancialCompanyCd()
+				+ ", getLedgerFinancialProductCd()=" + getLedgerFinancialProductCd() + ", getLedgerCarName()="
+				+ getLedgerCarName() + ", getLedgerCustomerName()=" + getLedgerCustomerName() + ", getUserName()="
+				+ getUserName() + ", getPage()=" + getPage() + ", getNowPage()=" + getNowPage() + ", getPrePage()="
+				+ getPrePage() + ", getNextPage()=" + getNextPage() + ", getTotalCount()=" + getTotalCount()
+				+ ", getPagePerRows()=" + getPagePerRows() + ", getStartPage()=" + getStartPage() + ", getEndPage()="
+				+ getEndPage() + ", getFirstPage()=" + getFirstPage() + ", getLastPage()=" + getLastPage()
+				+ ", getNum()=" + getNum() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ ", toString()=" + super.toString() + "]";
 	}
 	
 	

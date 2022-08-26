@@ -17,16 +17,12 @@ public class ContractHelper {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ContractHelper.class);
 	
-	public boolean insertContract(ApprovalVO approvalVO, LedgerService ledgerService ,SurtaxSupportByFinancialService surtaxSupportByFinancialService,
+	public boolean insertContract(LedgerVO ledgerVO, LedgerService ledgerService ,SurtaxSupportByFinancialService surtaxSupportByFinancialService,
 			ContractService contractService) {
 		boolean result = false;
 		
 		ContractVO contractVO = new ContractVO();
-		contractVO.setContractLedgerSeq(approvalVO.getApprovalLedgerSeq());
-		//contractVO.setContractUserId(approvalVO.getApprovalUserId());
-		
-		LedgerVO ledgerVO = new LedgerVO();
-		ledgerVO.setLedgerSeq(approvalVO.getApprovalLedgerSeq());
+		contractVO.setContractLedgerSeq(ledgerVO.getLedgerSeq());
 		
 		try {
 			ledgerVO=ledgerService.selectLedgerDetail(ledgerVO);
