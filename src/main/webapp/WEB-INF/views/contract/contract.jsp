@@ -28,13 +28,13 @@
 <body>
     <div class="wrap">
         <!-- gnb -->
-		<jsp:include page="../common/gnb.jsp" />
-		<!-- //gnb -->
-		
+        <jsp:include page="../common/gnb.jsp" />
+        <!-- //gnb -->
+
         <!-- snb -->
         <jsp:include page="../common/snb.jsp" />
         <!-- //snb -->
-        
+
         <div class="contents">
             <main>
                 <div class="wrapper">
@@ -50,33 +50,33 @@
                                     <label>금융사</label>
                                     <div class="bar-info">
                                         <select id="selFinancialCompanyCode">
-                                        	<option value="all">전체</option>
-			                            	<c:forEach var="list" items="${financialCompanyCodelist }" varStatus="status">
-					                        	<option value="${list.codeId }" <c:if test="${list.codeId eq contractVO.ledgerFinancialCompanyCd }">selected="selected"</c:if>>${list.codeName }</option>
-					                        </c:forEach>
-		                    </select>
+                                            <option value="all">전체</option>
+                                            <c:forEach var="list" items="${financialCompanyCodelist }" varStatus="status">
+                                                <option value="${list.codeId }" <c:if test="${list.codeId eq contractVO.ledgerFinancialCompanyCd }">selected="selected"</c:if>>${list.codeName }</option>
+                                            </c:forEach>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="bar">
                                     <label>금융상품</label>
                                     <div class="bar-info">
                                         <select id="selFinancialProduct">
-                                        <option value="all">전체</option>
-				                        	<c:forEach var="list" items="${financialProductCodelist }" varStatus="status">
-						                      	<option value="${list.codeId }" <c:if test="${list.codeId eq contractVO.ledgerFinancialProductCd }">selected="selected"</c:if>>${list.codeName }</option>
-					                      	</c:forEach>
-					                 	 </select>
+                                            <option value="all">전체</option>
+                                            <c:forEach var="list" items="${financialProductCodelist }" varStatus="status">
+                                                <option value="${list.codeId }" <c:if test="${list.codeId eq contractVO.ledgerFinancialProductCd }">selected="selected"</c:if>>${list.codeName }</option>
+                                            </c:forEach>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="bar">
                                     <label>AG</label>
                                     <div class="bar-info">
                                         <select id="selUserAg">
-                                        	<option value="all">전체</option>
-					                        <c:forEach var="list" items="${userAglist }" varStatus="status">
-				                        		<option value="${list.userId }" <c:if test="${list.userId eq contractVO.userId }">selected="selected"</c:if>>${list.userName }</option>
-					                        </c:forEach>
-					                    </select>
+                                            <option value="all">전체</option>
+                                            <c:forEach var="list" items="${userAglist }" varStatus="status">
+                                                <option value="${list.userId }" <c:if test="${list.userId eq contractVO.userId }">selected="selected"</c:if>>${list.userName }</option>
+                                            </c:forEach>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="bar">
@@ -87,16 +87,16 @@
                                 </div>
                                 <div class="bar btn">
                                     <button class="btn-main" id="btnSearch">검색</button>
-                                    <button class="btn-gr"  id="btnReset">초기화</button>
-                                    
+                                    <button class="btn-gr" id="btnReset">초기화</button>
+
                                     <form class="search-form" id="searchForm" name="searchForm" action="" method="get">
-											<input type="hidden" name="ledgerFinancialCompanyCd" id="ledgerFinancialCompanyCd" value="${contractVO.ledgerFinancialCompanyCd }">
-											<input type="hidden" name="ledgerFinancialProductCd" id="ledgerFinancialProductCd" value="${contractVO.ledgerFinancialProductCd }">
-											<input type="hidden" name="userId" id="userId" value="${contractVO.userId }">
-											<input type="hidden" name="searchText" id="inputSearchText" value="">
-											<!-- <input type="hidden" name="ledgerCreateYear" id="ledgerCreateYear" value="">
+                                        <input type="hidden" name="ledgerFinancialCompanyCd" id="ledgerFinancialCompanyCd" value="${contractVO.ledgerFinancialCompanyCd }">
+                                        <input type="hidden" name="ledgerFinancialProductCd" id="ledgerFinancialProductCd" value="${contractVO.ledgerFinancialProductCd }">
+                                        <input type="hidden" name="userId" id="userId" value="${contractVO.userId }">
+                                        <input type="hidden" name="searchText" id="inputSearchText" value="">
+                                        <!-- <input type="hidden" name="ledgerCreateYear" id="ledgerCreateYear" value="">
 											<input type="hidden" name="ledgerCreateMonth" id="ledgerCreateMonth" value=""> -->
-									</form>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -122,27 +122,27 @@
                                                 <th>상세</th>
                                             </thead>
                                             <tbody>
-                                            	
-                                            	<c:forEach var="list" items="${list }" varStatus="status">
-                                            		<%-- <c:if test="${status.count eq 1 }">
+
+                                                <c:forEach var="list" items="${list }" varStatus="status">
+                                                    <%-- <c:if test="${status.count eq 1 }">
                                             			<script type="text/javascript">
 		                                            		Contract.contractInfo('${list.contractSeq}');
 														</script>
                                             		</c:if> --%>
-	                                                <tr onclick="Contract.contractInfo('${list.contractSeq}')">
-	                                                    <td>${list.ledgerFinancialCompanyCdName }</td>
-	                                                    <td>${list.ledgerFinancialProductCdName }</td>
-	                                                    <td>${list.userName }</td>
-	                                                    <td>${list.ledgerCarName }</td>
-	                                                    <td>${list.ledgerCustomerName }</td>
-	                                                    <td><button class="btn-bu">상세</button></td>
-	                                                </tr>
-                                               </c:forEach>
-                                               <c:if test="${listCount eq 0 }">
-	                                            <tr>
-	                                                <td colspan="12">조회된 데이터가 없습니다</td>
-	                                            </tr>
-	                                        </c:if>
+                                                    <tr onclick="Contract.contractInfo('${list.contractSeq}')">
+                                                        <td>${list.ledgerFinancialCompanyCdName }</td>
+                                                        <td>${list.ledgerFinancialProductCdName }</td>
+                                                        <td>${list.userName }</td>
+                                                        <td>${list.ledgerCarName }</td>
+                                                        <td>${list.ledgerCustomerName }</td>
+                                                        <td><button class="btn-bu">상세</button></td>
+                                                    </tr>
+                                                </c:forEach>
+                                                <c:if test="${listCount eq 0 }">
+                                                    <tr>
+                                                        <td colspan="12">조회된 데이터가 없습니다</td>
+                                                    </tr>
+                                                </c:if>
                                             </tbody>
                                         </table>
                                     </div>
@@ -207,14 +207,9 @@
                                                 <div>
                                                     <h7>fee VAT여부</h7>
                                                     <p class="info-result">
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>%</strong>
-                                                        </span>
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>원</strong>
-                                                        </span>
+                                                        <select>
+                                                            <option>fee VAT여부</option>
+                                                        </select>
                                                     </p>
                                                 </div>
                                             </div>
@@ -222,7 +217,7 @@
                                     </div>
                                     <!--end::일반fee-->
                                     <!--추가fee-->
-                                    <div class="talble-info">
+                                    <div class="talble-info input-line">
                                         <div class="info-head">
                                             <h6>추가 fee</h6>
                                         </div>
@@ -231,10 +226,6 @@
                                                 <div>
                                                     <h7>총fee</h7>
                                                     <p class="info-result">
-                                                        <span>
-                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
-                                                            <strong>%</strong>
-                                                        </span>
                                                         <span>
                                                             <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
@@ -246,10 +237,6 @@
                                                 <div>
                                                     <h7>AG fee</h7>
                                                     <p class="info-result">
-                                                        <span>
-                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
-                                                            <strong>%</strong>
-                                                        </span>
                                                         <span>
                                                             <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
@@ -265,10 +252,6 @@
                                                     <p class="info-result">
                                                         <span>
                                                             <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
-                                                            <strong>%</strong>
-                                                        </span>
-                                                        <span>
-                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -276,16 +259,11 @@
                                             </div>
                                             <div class="info-row">
                                                 <div>
-                                                    <h7>fee VAT여부</h7>
+                                                    <h7>추가 VAT여부</h7>
                                                     <p class="info-result">
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>%</strong>
-                                                        </span>
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>원</strong>
-                                                        </span>
+                                                        <select>
+                                                            <option>추가 VAT여부</option>
+                                                        </select>
                                                     </p>
                                                 </div>
                                             </div>
@@ -347,16 +325,11 @@
                                             </div>
                                             <div class="info-row">
                                                 <div>
-                                                    <h7>fee VAT여부</h7>
+                                                    <h7>슬라이딩 VAT여부</h7>
                                                     <p class="info-result">
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>%</strong>
-                                                        </span>
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>원</strong>
-                                                        </span>
+                                                        <select>
+                                                            <option>슬라이딩 VAT여부</option>
+                                                        </select>
                                                     </p>
                                                 </div>
                                             </div>
