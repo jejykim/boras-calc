@@ -25,3 +25,7 @@
 	margin-left: 2%;
     width: 32%
 }
+
+.form-control.col-wrap select {
+	margin-bottom: 4px;
+}

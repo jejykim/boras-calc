@@ -2,6 +2,9 @@ package com.boras.CRM.util;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.boras.CRM.services.ContractService;
 import com.boras.CRM.services.LedgerService;
 import com.boras.CRM.services.SurtaxSupportByFinancialService;
@@ -11,13 +14,16 @@ import com.boras.CRM.vo.LedgerVO;
 import com.boras.CRM.vo.SurtaxSupportByFinancialVO;
 
 public class ContractHelper {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ContractHelper.class);
+	
 	public boolean insertContract(ApprovalVO approvalVO, LedgerService ledgerService ,SurtaxSupportByFinancialService surtaxSupportByFinancialService,
 			ContractService contractService) {
 		boolean result = false;
 		
 		ContractVO contractVO = new ContractVO();
 		contractVO.setContractLedgerSeq(approvalVO.getApprovalLedgerSeq());
-		contractVO.setContractUserId(approvalVO.getApprovalUserId());
+		//contractVO.setContractUserId(approvalVO.getApprovalUserId());
 		
 		LedgerVO ledgerVO = new LedgerVO();
 		ledgerVO.setLedgerSeq(approvalVO.getApprovalLedgerSeq());
@@ -75,7 +81,7 @@ public class ContractHelper {
 			result = true;
 			
 		}catch (Exception e) {
-			// TODO: handle exception
+			logger.error(e.getMessage());
 		}
 		return result;
 	}

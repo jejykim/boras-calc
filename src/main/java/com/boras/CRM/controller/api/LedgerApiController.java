@@ -34,14 +34,20 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.boras.CRM.services.CodeService;
+import com.boras.CRM.services.ContractService;
 import com.boras.CRM.services.LedgerExcelService;
 import com.boras.CRM.services.LedgerService;
+import com.boras.CRM.services.SurtaxSupportByFinancialService;
 import com.boras.CRM.services.UserService;
+import com.boras.CRM.util.ContractHelper;
 import com.boras.CRM.util.ExcelValidationHelper;
 import com.boras.CRM.util.FileHelper;
 import com.boras.CRM.util.PermissionHelper;
 import com.boras.CRM.util.ResultCode;
 import com.boras.CRM.util.ResultCode.ResultNum;
+import com.boras.CRM.vo.ApprovalVO;
+import com.boras.CRM.vo.CodeVO;
 import com.boras.CRM.vo.LedgerExcelVO;
 import com.boras.CRM.vo.LedgerVO;
 
@@ -57,7 +63,18 @@ public class LedgerApiController {
 	@Autowired
 	private LedgerService ledgerService;
 	
+	@Autowired
+	private CodeService codeService;
+	
+	@Autowired
+	private ContractService contractService;
+	
+	@Autowired
+	private SurtaxSupportByFinancialService surtaxSupportByFinancialService;
+	
 	ExcelValidationHelper excelValidationHelper = new ExcelValidationHelper();
+	
+	ContractHelper contractHelper = new ContractHelper();
 	
 	@Value("${common.excel.financial.company}")
 	int commonExcelFinancialCompany;
@@ -196,6 +213,40 @@ public class LedgerApiController {
 		
 		return rvt;
 	}
+	
+	/**
+	 * 권한 목록 조회
+	 */
+	@GetMapping(value = "/ledger/financial/{codeId}/branch/list")
+	public Map<String, Object> financialBranchList(HttpServletRequest req, HttpServletResponse resp, @PathVariable("codeId") int codeId) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    CodeVO codeVO = new CodeVO();
+	    codeVO.setCodeParentId(codeId);
+	    
+	    List<CodeVO> codeList = new ArrayList<>();
+	    
+	    try {
+	    	List<CodeVO> list = codeService.selectCodeList(codeVO);
+		    if(list.size()>0) {
+		    	rvt.put("list", list);
+		    	
+		    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+		    }else {
+		    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
+    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
+		    }
+		    	
+	    }catch (Exception e) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
+			logger.error(e.getMessage());
+		}
+	   
+		return rvt;
+	}
+	
 	
 	/**
 	 * 엑셀 원장 등록
@@ -397,6 +448,15 @@ public class LedgerApiController {
 		
 		try {
 			ledgerService.insertLedger(ledgerVO);
+			
+			// 계출 등록
+			if(ledgerVO.getLedgerSeq() > 0) {
+				logger.info("[Try to insert contract from excel] ledger seq : " + ledgerVO.getLedgerSeq());
+				ApprovalVO approvalVO = new ApprovalVO();
+				approvalVO.setApprovalLedgerSeq(ledgerVO.getLedgerSeq());
+				
+				contractHelper.insertContract(approvalVO, ledgerService, surtaxSupportByFinancialService, contractService);
+			}
 			
 			flag = true;
 		} catch (Exception e) {
