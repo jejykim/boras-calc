@@ -46,9 +46,11 @@ public class ContractVO extends PagingVO {
 	// 고객명
 	private String ledgerCustomerName;
 	
-	/* 사용자 */
+	/* 사용자(ag) */
 	//이름
 	private String userName;
+	//id
+	private String userId;
 	
 	public int getContractLedgerSeq() {
 		return contractLedgerSeq;
@@ -273,6 +275,13 @@ public class ContractVO extends PagingVO {
 	}
 	public void setLedgerFinancialProductCdName(String ledgerFinancialProductCdName) {
 		this.ledgerFinancialProductCdName = ledgerFinancialProductCdName;
+	}
+	
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	@Override
 	public String toString() {

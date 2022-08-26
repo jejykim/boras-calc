@@ -21,14 +21,12 @@
 	<script src='/static/assets/js/common/common.js'></script>
 	<script src='/static/assets/js/contract/contract.js'></script>
 	
+	<script type="text/javascript">
+		var firstRowSeq = <c:choose><c:when test="${not empty list }">${list[0].contractSeq }</c:when><c:otherwise>0</c:otherwise></c:choose>;
+	</script>
 </head>
 <body>
     <div class="wrap">
-        <header>
-            <div class="user">
-                <span>홍길동</span>
-            </div>
-        </header>
         <!-- gnb -->
 		<jsp:include page="../common/gnb.jsp" />
 		<!-- //gnb -->
@@ -54,7 +52,7 @@
                                         <select id="selFinancialCompanyCode">
                                         	<option value="all">전체</option>
 			                            	<c:forEach var="list" items="${financialCompanyCodelist }" varStatus="status">
-					                        	<option value="${list.codeId }">${list.codeName }</option>
+					                        	<option value="${list.codeId }" <c:if test="${list.codeId eq contractVO.ledgerFinancialCompanyCd }">selected="selected"</c:if>>${list.codeName }</option>
 					                        </c:forEach>
 		                    </select>
                                     </div>
@@ -65,7 +63,7 @@
                                         <select id="selFinancialProduct">
                                         <option value="all">전체</option>
 				                        	<c:forEach var="list" items="${financialProductCodelist }" varStatus="status">
-						                      	<option value="${list.codeId }">${list.codeName }</option>
+						                      	<option value="${list.codeId }" <c:if test="${list.codeId eq contractVO.ledgerFinancialProductCd }">selected="selected"</c:if>>${list.codeName }</option>
 					                      	</c:forEach>
 					                 	 </select>
                                     </div>
@@ -76,7 +74,7 @@
                                         <select id="selUserAg">
                                         	<option value="all">전체</option>
 					                        <c:forEach var="list" items="${userAglist }" varStatus="status">
-				                        		<option value="${list.userId }">${list.userName }</option>
+				                        		<option value="${list.userId }" <c:if test="${list.userId eq contractVO.userId }">selected="selected"</c:if>>${list.userName }</option>
 					                        </c:forEach>
 					                    </select>
                                     </div>
@@ -89,12 +87,12 @@
                                 </div>
                                 <div class="bar btn">
                                     <button class="btn-main" id="btnSearch">검색</button>
-                                    <button class="btn-gr">초기화</button>
+                                    <button class="btn-gr"  id="btnReset">초기화</button>
                                     
                                     <form class="search-form" id="searchForm" name="searchForm" action="" method="get">
-											<input type="hidden" name="ledgerFinancialCompanyCd" id="ledgerFinancialCompanyCd">
-											<input type="hidden" name="ledgerFinancialProductCd" id="ledgerFinancialProductCd">
-											<input type="hidden" name="userName" id="userName" value="">
+											<input type="hidden" name="ledgerFinancialCompanyCd" id="ledgerFinancialCompanyCd" value="${contractVO.ledgerFinancialCompanyCd }">
+											<input type="hidden" name="ledgerFinancialProductCd" id="ledgerFinancialProductCd" value="${contractVO.ledgerFinancialProductCd }">
+											<input type="hidden" name="userId" id="userId" value="${contractVO.userId }">
 											<input type="hidden" name="searchText" id="inputSearchText" value="">
 											<!-- <input type="hidden" name="ledgerCreateYear" id="ledgerCreateYear" value="">
 											<input type="hidden" name="ledgerCreateMonth" id="ledgerCreateMonth" value=""> -->
@@ -124,8 +122,14 @@
                                                 <th>상세</th>
                                             </thead>
                                             <tbody>
+                                            	
                                             	<c:forEach var="list" items="${list }" varStatus="status">
-	                                                <tr>
+                                            		<%-- <c:if test="${status.count eq 1 }">
+                                            			<script type="text/javascript">
+		                                            		Contract.contractInfo('${list.contractSeq}');
+														</script>
+                                            		</c:if> --%>
+	                                                <tr onclick="Contract.contractInfo('${list.contractSeq}')">
 	                                                    <td>${list.ledgerFinancialCompanyCdName }</td>
 	                                                    <td>${list.ledgerFinancialProductCdName }</td>
 	                                                    <td>${list.userName }</td>
@@ -157,11 +161,11 @@
                                                     <h7>총fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeePercent" type="text" placeholder="0">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -172,11 +176,11 @@
                                                     <h7>AG fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -189,11 +193,11 @@
                                                     <h7>DP fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -228,11 +232,11 @@
                                                     <h7>총fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -243,11 +247,11 @@
                                                     <h7>AG fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -260,11 +264,11 @@
                                                     <h7>DP fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -299,11 +303,11 @@
                                                     <h7>총fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -314,11 +318,11 @@
                                                     <h7>AG fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -331,11 +335,11 @@
                                                     <h7>DP fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>

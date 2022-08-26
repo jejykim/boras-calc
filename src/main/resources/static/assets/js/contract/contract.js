@@ -62,7 +62,9 @@ Contract.PageLoad = function () {
 ========================================================================*/
 Contract.Init = function () {
     try {
-		
+		if(firstRowSeq > 0) {
+			Contract.contractInfo(firstRowSeq);
+		}
     }
     catch (e) { console.log(e.message); }
 }
@@ -88,8 +90,13 @@ Contract.SetEvent = function () {
 			}else{
 				$("#ledgerFinancialProductCd").val($("#selFinancialProduct").val());	
 			}
-
-			$("#userName").val($("#inputSearchText").val());
+			
+			if($("#selUserAg").val() == "all"){
+				$("#userId").val('');
+			}else{
+				$("#userId").val($('#selUserAg').val());	
+			}
+			
 			$("#searchText").val($("#inputSearchText").val());
 			document.searchForm.submit();
 		});
@@ -101,94 +108,66 @@ Contract.SetEvent = function () {
 		});
 		
 	
-		// 필터 취소
-		$(".btn-line-cancel").click(function() {
-			if($(this).parent().parent().parent().hasClass("filter-modal")) {
-				var filter = $(this).parent().parent().parent();
-				filter.hide();
-				var id = filter.attr("id");
-				switch(id) {
-					case "divCodeTypeFilter" :
-						$("#thCodeType").removeClass("on");
-						break;
-					case "divFinancialCompanyFilter" :
-						$("#thFinancialCompany").removeClass("on");
-						break;
-					case "divFinancialBranchFilter" :
-						$("#thFinancialBranch").removeClass("on");
-						break;
-					case "divFinancialProductFilter" :
-						$("#thFinancialProduct").removeClass("on");
-						break;
-					default :
-						break;
-				}
-			}
+		// 검색 초기화
+		$("#btnReset").click(function() {
+			$("#ledgerFinancialCompanyCd").val(0);
+			$("#ledgerFinancialProductCd").val(0);
+			$("#userId").val('');
+			document.searchForm.submit();
 		});
 	
-		
-		// 필터 초기화
-		$("#btnClearFilter").click(function() {
-			sCodeType = [];
-			sFinancialCompany = [];
-			sFinancialBranch = [];
-			sFinancialProduct = [];
-			Contract.Paging(1);
-		});
 		
     }
     catch (e) { console.log(e.message); }
 }
 
 /*=======================================================================
-내      용  : 목록 조회
+내      용  : 계정 권한 조회 - 사용자 상세 조회용
 작  성  자  : 김은빈
-2022.08.26 - 최초생성
+2022.08.24 - 최초생성
 ========================================================================*/
-Contract.getContractList = function (page) {
+Contract.contractInfo = function (contracatSeq) {
     try {
-		
-		if(sFinancialCompany.length > 0) {
-			for(var value of sFinancialCompany) {
-				$('<input>').attr({
-				    type: 'hidden',
-				    name: 'sLedgerFinancialCompanyCd',
-				    value: value
-				}).appendTo('#searchForm');
+		$.ajax({
+			type : "get",
+			url : "/v1/api/contract/info/" + contracatSeq,
+			success : function(json){
+				console.log(json)
+				if(json.resultCode == "00000") {
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractNomalTotalFeePercent);
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractNomalTotalFeeSum);
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractNomalAgFeePercent);
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractNomalAgFeeSum);
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractNomalDpFeePercent);
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractNomalDpFeeSum);
+					
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractAgFeeSurtaxSupportYn);
+					
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractAddTotalFeeSum);
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractAddAgFeeSum);
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractAddDpFeeSum);
+					
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractAddFeeSurtaxSupportYn);
+					
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractTotalSlidingPercent);
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractTotalSlidingSum);
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractAgSlidingPercent);
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractAgSlidingSum);
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractDpSlidingPercent);
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractDpSlidingSum);
+					
+					$('#txtContractNomalTotalFeePercent').val(json.info.contractSlidingSurtaxSupportYn);
+					
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
 			}
-		}
-		
-		if(sFinancialProduct.length > 0) {
-			for(var value of sFinancialProduct) {
-				$('<input>').attr({
-				    type: 'hidden',
-				    name: 'sLedgerFinancialProductCd',
-				    value: value
-				}).appendTo('#searchForm');
-			}
-		}
-		
-		if(sAgName.length > 0) {
-			for(var value of sAgName) {
-				$('<input>').attr({
-				    type: 'hidden',
-				    name: 'sLedgerFinancialProductCd',
-				    value: value
-				}).appendTo('#searchForm');
-			}
-		}
-		
-		if($("#stateType").val() == "request") {
-			$('<input>').attr({
-			    type: 'hidden',
-			    name: 'multiRequestYn',
-			    value: multiRequest
-			}).appendTo('#searchForm');
-		}
-		
-		document.searchForm.submit();
-	
-    }
+		});
+	    }
     catch (e) { console.log(e.message); }
 }
 

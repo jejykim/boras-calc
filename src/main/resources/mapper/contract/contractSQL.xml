@@ -75,8 +75,8 @@
 			<if test="ledgerFinancialProductCd != 0">
 				AND l.ledger_financial_product_cd = #{ledgerFinancialProductCd}
 			</if>
-			<if test="contractUserId != null and contractUserId != ''">
-				AND contract_user_id = #{contractUserId}
+			<if test="userId != null and userId != ''">
+				AND contract_user_id = #{userId}
 			</if>
 			<if test="searchText != null and searchText != ''">
 				AND (l.ledger_car_name like CONCAT('%',#{searchText},'%')
