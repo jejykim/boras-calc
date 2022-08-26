@@ -426,4 +426,93 @@
 		group by ledger_create_year
   	</select>
   	
+  	<!-- 금융사 원장 합계 표시 -->
+	<select id="selectSumCost" resultType="map">
+		SELECT
+			SUM(data.ledger_car_price) as ledgerCarPrice
+			, SUM(data.ledger_acquisition_cost) as ledgerAcquisitionCost
+			, SUM(data.ledger_total_fee_sum) as ledgerTotalFeeSum
+			, SUM(data.ledger_sliding_sum) as ledgerSlidingSum
+			, SUM(data.ledger_add_promotion) as ledgerAddPromotion
+		FROM (
+			SELECT DISTINCT l.*
+				,(SELECT count(*) FROM approval WHERE approval_ledger_seq = ledger_seq 
+					<if test="stateType != null and stateType != ''">
+						<choose>
+							<when test="stateType.equals('request')">
+								AND a.approval_state = '요청'
+								AND a.approval_yn = 'N'
+							</when>
+							<when test="stateType.equals('complete')">
+								AND a.approval_state = '승인'
+							</when>
+							<when test="stateType.equals('left')">
+								AND a.approval_state is null
+							</when>
+						</choose>
+					</if>
+					) as cnt
+			FROM ledger l
+			left JOIN approval a
+			ON l.ledger_seq = a.approval_ledger_seq
+			WHERE 1=1
+			<if test="sLedgerTypeCd != null and sLedgerTypeCd.size != 0">
+				AND ledger_type_cd in
+				<foreach item="item" index="index" collection="sLedgerTypeCd" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="sLedgerFinancialCompanyCd != null and sLedgerFinancialCompanyCd.size != 0">
+				AND ledger_financial_company_cd in
+				<foreach item="item" index="index" collection="sLedgerFinancialCompanyCd" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="sLedgerFinancialBranchCd != null and sLedgerFinancialBranchCd.size != 0">
+				AND ledger_financial_branch_cd in
+				<foreach item="item" index="index" collection="sLedgerFinancialBranchCd" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="sLedgerFinancialProductCd != null and sLedgerFinancialProductCd.size != 0">
+				AND ledger_financial_product_cd in
+				<foreach item="item" index="index" collection="sLedgerFinancialProductCd" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="stateType != null and stateType != ''">
+				<choose>
+					<when test="stateType.equals('request')">
+						AND a.approval_state = '요청'
+						AND a.approval_yn = 'N'
+					</when>
+					<when test="stateType.equals('complete')">
+						AND a.approval_state = '승인'
+					</when>
+					<when test="stateType.equals('left')">
+						AND a.approval_state is null
+					</when>
+				</choose>
+			</if>
+			<if test="searchText != null and searchText != ''">
+				AND (ledger_car_name like CONCAT('%',#{searchText},'%')
+					OR ledger_car_number like CONCAT('%',#{searchText},'%')
+					OR ledger_other like CONCAT('%',#{searchText},'%')
+					OR ledger_customer_name like CONCAT('%',#{searchText},'%')
+					)
+			</if>
+		) as data
+		WHERE 1=1
+		<if test="multiRequestYn != null and multiRequestYn != ''">
+			<choose>
+				<when test='multiRequestYn == "Y"'>
+					AND cnt = 1
+				</when>
+				<when test='multiRequestYn == "N"'>
+					AND cnt > 1
+				</when>
+			</choose>
+		</if>
+  	</select>
+  	
 </mapper>

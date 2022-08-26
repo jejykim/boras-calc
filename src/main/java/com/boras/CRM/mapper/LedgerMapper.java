@@ -59,4 +59,11 @@ public interface LedgerMapper {
 	 */
 	public List<Map<String, Object>> selectLedgerYear();
 	
+	/**
+	 * 금융사 원장 합계 표시
+	 * @param 
+	 * @return List<Map<String, Object>>
+	 */
+	public List<Map<String, Object>> selectSumCost(LedgerVO ledgerVO);
+	
 }

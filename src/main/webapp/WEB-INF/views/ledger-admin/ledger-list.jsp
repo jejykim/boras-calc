@@ -75,23 +75,78 @@
                         <div class="row f-box">
                             <div class="portlet">
                                 <h5><i class="ico-f1"></i><span>차량가</span></h5>
-                                <span class="price">100,000,000</span>
+                                <span class="price">
+                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
+                                		<c:choose>
+                                			<c:when test="${empty list.ledgercarprice }">
+                                				0
+                                			</c:when>
+                                			<c:otherwise>
+			                                	<fmt:formatNumber value="${list.ledgercarprice }" pattern="#,###"/>
+                                			</c:otherwise>
+                                		</c:choose>
+                                	</c:forEach>
+                                </span>
                             </div>
                             <div class="portlet">
                                 <h5><i class="ico-f2"></i><span>취득원가</span></h5>
-                                <span class="price">100,000,000</span>
+                                <span class="price">
+                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
+                                		<c:choose>
+                                			<c:when test="${empty list.ledgeracquisitioncost }">
+                                				0
+                                			</c:when>
+                                			<c:otherwise>
+			                                	<fmt:formatNumber value="${list.ledgeracquisitioncost }" pattern="#,###"/>
+                                			</c:otherwise>
+                                		</c:choose>
+                                	</c:forEach>
+                                </span>
                             </div>
                             <div class="portlet">
                                 <h5><i class="ico-f3"></i><span>fee합계</span></h5>
-                                <span class="price">100,000,000</span>
+                                <span class="price">
+                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
+                                		<c:choose>
+                                			<c:when test="${empty list.ledgertotalfeesum }">
+                                				0
+                                			</c:when>
+                                			<c:otherwise>
+			                                	<fmt:formatNumber value="${list.ledgertotalfeesum }" pattern="#,###"/>
+                                			</c:otherwise>
+                                		</c:choose>
+                                	</c:forEach>
+                                </span>
                             </div>
                             <div class="portlet">
                                 <h5><i class="ico-f4"></i><span>슬라이딩 합계</span></h5>
-                                <span class="price">100,000,000</span>
+                                <span class="price">
+                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
+                                		<c:choose>
+                                			<c:when test="${empty list.ledgerslidingsum }">
+                                				0
+                                			</c:when>
+                                			<c:otherwise>
+			                                	<fmt:formatNumber value="${list.ledgerslidingsum }" pattern="#,###"/>
+                                			</c:otherwise>
+                                		</c:choose>
+                                	</c:forEach>
+                                </span>
                             </div>
                             <div class="portlet">
                                 <h5><i class="ico-f5"></i><span>추가fee 합계</span></h5>
-                                <span class="price">100,000,000</span>
+                                <span class="price">
+                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
+                                		<c:choose>
+                                			<c:when test="${empty list.ledgeraddpromotion }">
+                                				0
+                                			</c:when>
+                                			<c:otherwise>
+			                                	<fmt:formatNumber value="${list.ledgeraddpromotion }" pattern="#,###"/>
+                                			</c:otherwise>
+                                		</c:choose>
+                                	</c:forEach>
+                                </span>
                             </div>
                         </div>
                         <div class="row w-bg main-content">

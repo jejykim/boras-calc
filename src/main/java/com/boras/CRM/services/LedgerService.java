@@ -50,4 +50,9 @@ public class LedgerService implements LedgerMapper {
 		return ledgerMapper.selectLedgerYear();
 	}
 
+	@Override
+	public List<Map<String, Object>> selectSumCost(LedgerVO ledgerVO) {
+		return ledgerMapper.selectSumCost(ledgerVO);
+	}
+
 }

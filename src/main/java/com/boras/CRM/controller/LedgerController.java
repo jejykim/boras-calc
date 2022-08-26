@@ -96,6 +96,16 @@ public class LedgerController {
 			logger.error(e.getMessage());
 		}
 		
+		// 금융사 원장 합계 표시
+		List<Map<String, Object>> sumCostList = new ArrayList<>();
+		
+		try {
+			sumCostList = ledgerService.selectSumCost(ledgerVO);
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectLedgerYear ]");
+			logger.error(e.getMessage());
+		}
+		
 		// 현재 년, 월
 		Calendar cal = Calendar.getInstance();
 		int thisYear = cal.get(Calendar.YEAR);
@@ -171,6 +181,8 @@ public class LedgerController {
 		model.addAttribute("financialBranchCodelist", financialBranchCodelist);
 		model.addAttribute("financialBranchCodelist2", financialBranchCodelist2);
 		model.addAttribute("financialProductCodelist", financialProductCodelist);
+		
+		model.addAttribute("sumCostList", sumCostList);
     	
 		return result;
 	}
