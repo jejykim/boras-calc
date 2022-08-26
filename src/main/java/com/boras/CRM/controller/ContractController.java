@@ -66,11 +66,11 @@ public class ContractController {
 			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
 			logger.error(e.getMessage());
 		}
-		
+		UserVO userVO = new UserVO();
 		List<UserVO> userAglist = new ArrayList<>();
 		//ag사
 		try {
-			userAglist = userService.selectUserListAg();
+			userAglist = userService.selectUserListAg(userVO);
 		}catch (Exception e) {
 			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectUserListAg ]");
 			logger.error(e.getMessage());

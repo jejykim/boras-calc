@@ -80,6 +80,8 @@ public class ApprovalApiController {
 	    		ApprovalVO approvalVO = new ApprovalVO();
 	    		for(int i=0; i<arrledgerSeq.length; i++) {
 	    			approvalVO.setApprovalSeq(arrledgerSeq[i]);
+	    			approvalVO.setApprovalYn("Y");
+	    			
 				    int cnt = approvalService.insertApproval(approvalVO);
 				    if(cnt>0) {
 				    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
