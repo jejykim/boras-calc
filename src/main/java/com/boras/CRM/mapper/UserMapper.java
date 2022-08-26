@@ -79,5 +79,12 @@ public interface UserMapper {
 	 * @return List<Map<String, Object>>
 	 */
 	public List<Map<String, Object>> selectUserAgNewAdminCount();
+	
+	/**
+	 * AG 사 목록 조회
+	 * @param 
+	 * @return List<UserVO>
+	 */
+	public List<UserVO> selectUserListAg();
 
 }

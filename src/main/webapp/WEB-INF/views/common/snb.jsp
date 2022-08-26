@@ -33,7 +33,7 @@
                 <h4>계출</h4>
                 <div class="submenu">
                     <ul>
-                        <li <%=uri.contains("/") ? "class='on'" : "" %>><a href="/"><i class="fa fa-list-ul" aria-hidden="true"></i><span>계출 목록</span></a></li>
+                        <li <%=uri.contains("/contract/contract") ? "class='on'" : "" %>><a href="/contract/list"><i class="fa fa-list-ul" aria-hidden="true"></i><span>계출 목록</span></a></li>
                     </ul>
                 </div>
             </li>

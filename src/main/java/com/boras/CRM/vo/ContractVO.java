@@ -32,6 +32,17 @@ public class ContractVO extends PagingVO {
 	private String searchFilter;
 	private String searchText;
 	
+	/* 원장 */
+	// 금융사 코드
+	private int ledgerFinancialCompanyCd;
+	// 금융상품 코드
+	private int ledgerFinancialProductCd;
+	// 차량명
+	private String ledgerCarName;
+	
+	/* 사용자 */
+	//이름
+	private String userName;
 	
 	public int getContractLedgerSeq() {
 		return contractLedgerSeq;
@@ -212,6 +223,53 @@ public class ContractVO extends PagingVO {
 	}
 	public void setSearchText(String searchText) {
 		this.searchText = searchText;
+	}
+	public int getLedgerFinancialCompanyCd() {
+		return ledgerFinancialCompanyCd;
+	}
+	public void setLedgerFinancialCompanyCd(int ledgerFinancialCompanyCd) {
+		this.ledgerFinancialCompanyCd = ledgerFinancialCompanyCd;
+	}
+	public int getLedgerFinancialProductCd() {
+		return ledgerFinancialProductCd;
+	}
+	public void setLedgerFinancialProductCd(int ledgerFinancialProductCd) {
+		this.ledgerFinancialProductCd = ledgerFinancialProductCd;
+	}
+	public String getLedgerCarName() {
+		return ledgerCarName;
+	}
+	public void setLedgerCarName(String ledgerCarName) {
+		this.ledgerCarName = ledgerCarName;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	@Override
+	public String toString() {
+		return "ContractVO [contractLedgerSeq=" + contractLedgerSeq + ", contractUserId=" + contractUserId
+				+ ", contractSeq=" + contractSeq + ", contractCalculateSeq=" + contractCalculateSeq
+				+ ", contractNomalTotalFeePercent=" + contractNomalTotalFeePercent + ", contractNomalTotalFeeSum="
+				+ contractNomalTotalFeeSum + ", contractNomalAgFeePercent=" + contractNomalAgFeePercent
+				+ ", contractNomalAgFeeSum=" + contractNomalAgFeeSum + ", contractNomalDpFeePercent="
+				+ contractNomalDpFeePercent + ", contractNomalDpFeeSum=" + contractNomalDpFeeSum
+				+ ", contractAddTotalFeeSum=" + contractAddTotalFeeSum + ", contractAddAgFeeSum=" + contractAddAgFeeSum
+				+ ", contractAddDpFeeSum=" + contractAddDpFeeSum + ", contractTotalSlidingPercent="
+				+ contractTotalSlidingPercent + ", contractTotalSlidingSum=" + contractTotalSlidingSum
+				+ ", contractAgSlidingPercent=" + contractAgSlidingPercent + ", contractAgSlidingSum="
+				+ contractAgSlidingSum + ", contractDpSlidingPercent=" + contractDpSlidingPercent
+				+ ", contractDpSlidingSum=" + contractDpSlidingSum + ", contractAgFeeSurtaxSupportYn="
+				+ contractAgFeeSurtaxSupportYn + ", contractSlidingSurtaxSupportYn=" + contractSlidingSurtaxSupportYn
+				+ ", contractAddFeeSurtaxSupportYn=" + contractAddFeeSurtaxSupportYn + ", contractCreateYear="
+				+ contractCreateYear + ", contractCreateMonth=" + contractCreateMonth + ", contractCreateUserId="
+				+ contractCreateUserId + ", contractCreateDate=" + contractCreateDate + ", contractUpdateUserId="
+				+ contractUpdateUserId + ", contractUpdateDate=" + contractUpdateDate + ", searchFilter=" + searchFilter
+				+ ", searchText=" + searchText + ", ledgerFinancialCompanyCd=" + ledgerFinancialCompanyCd
+				+ ", ledgerFinancialProductCd=" + ledgerFinancialProductCd + ", ledgerCarName=" + ledgerCarName
+				+ ", userName=" + userName + "]";
 	}
 	
 	

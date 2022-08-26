@@ -64,4 +64,9 @@ public class UserService implements UserMapper {
 	public List<Map<String, Object>> selectUserAgNewAdminCount() {
 		return userMapper.selectUserAgNewAdminCount();
 	}
+	
+	@Override
+	public List<UserVO> selectUserListAg() {
+		return userMapper.selectUserListAg();
+	}
 }

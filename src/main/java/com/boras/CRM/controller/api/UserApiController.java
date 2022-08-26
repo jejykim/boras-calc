@@ -269,4 +269,27 @@ public class UserApiController {
 	   
 		return rvt;
 	}
+	
+	/**
+	 * AG사 목록
+	 */
+	@GetMapping(value = "/list/ag")
+	public Map<String, Object> userListAg(HttpServletRequest req, HttpServletResponse resp) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    try {
+	    	List<UserVO> list = userService.selectUserListAg();
+			
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+    		rvt.put("list", list);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+	    		
+    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00002));
+    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00002));
+		}
+		
+		return rvt;
+	}
 }
