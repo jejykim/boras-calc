@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class LedgerVO extends PagingVO {
 	
 	// 원장 seq
-	private int ledgerSeq;
+	private int ledgerSeq = 0;
 	
 	// 원장 엑셀 file
 	private MultipartFile ledgerExcelFile;
@@ -101,10 +101,10 @@ public class LedgerVO extends PagingVO {
 	private String ledgerPromotionMemo;
 	
 	// 등록년
-	private int ledgerCreateYear;
+	private int ledgerCreateYear = 0;
 	
 	// 등록월
-	private int ledgerCreateMonth;
+	private int ledgerCreateMonth = 0;
 	
 	// 등록년월일
 	private String ledgerCreateDate;

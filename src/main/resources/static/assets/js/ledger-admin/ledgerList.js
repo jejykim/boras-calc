@@ -85,6 +85,9 @@ LedgerList.Init = function () {
 		if(sCodeType.length == 0 && sFinancialCompany.length == 0 && sFinancialBranch.length == 0 && sFinancialProduct.length == 0) {
 			$("#divFilter").hide();
 		}
+		
+		// 금융지점
+		LedgerList.getFinancialBranchList($("#selFinancialCompanyCode").val());
     }
     catch (e) { console.log(e.message); }
 }
@@ -117,6 +120,15 @@ LedgerList.SetEvent = function () {
 			$("#stateType").val("left");
 			document.searchForm.submit();
 		});
+		
+		// 날짜 변경
+		$("#selMonth, #selYear").change(function() {
+			$("#searchText").val("");
+			$("#ledgerCreateYear").val($("#selYear").val());
+			$("#ledgerCreateMonth").val($("#selMonth").val());
+			document.searchForm.submit();
+		});
+		
 		
 		// 승인요청 - 상태처리 (정상, 중복)
 		$("input[name='multiRequest']").click(function() {
@@ -229,6 +241,16 @@ LedgerList.SetEvent = function () {
 		// 원장 excel 업로드
 		$("#btnAddLedgerForExcel").click(function() {
 			LedgerList.excelSettingExist();
+		});
+		
+		// 원장 Excel 업로드 금융사 -> 금융지점
+		$("#selFinancialCompanyCode").change(function() {
+			LedgerList.getFinancialBranchList($("#selFinancialCompanyCode").val());
+		});
+		
+		//
+		$("#btnAddLedger").click(function() {
+			location.href = "/admin/ledger/add";
 		});
     }
     catch (e) { console.log(e.message); }
@@ -561,13 +583,52 @@ LedgerList.excelSettingExist = function () {
 LedgerList.validationCheck = function () {
     try {
 		var flag = true;
+		$("#selFinancialBranchCode").css("border", "");
 		
 		if(LedgerList.files.length < 1) {
-				flag = false;
-				alert("Excel 파일을 업로드해주세요");
+			flag = false;
+			alert("Excel 파일을 업로드해주세요");
+		}
+		
+		else if($("#selFinancialBranchCode").val() == "") {
+			flag = false;
+			alert("금융지점을 선택해주세요");
+			$("#selFinancialBranchCode").css("border", "red solid 1px");
 		}
 		
 		return flag;
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 금융지점 목록 조회
+작  성  자  : 김진열
+2022.08.25 - 최초생성
+========================================================================*/
+LedgerList.getFinancialBranchList = function (codeParentId) {
+    try {
+		$.ajax({
+			type : "get",
+			url : "/v1/api/ledger/financial/" + codeParentId + "/branch/list",
+			success : function(json){
+				if(json.resultCode == "00000") {
+					$("#selFinancialBranchCode").children().remove();
+					
+					for(var data of json.list) {
+						option = "<option value='" + data.codeId + "'> " + data.codeName + "</option>";
+						
+						$("#selFinancialBranchCode").append(option);
+					}
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
     }
     catch (e) { console.log(e.message); }
 }

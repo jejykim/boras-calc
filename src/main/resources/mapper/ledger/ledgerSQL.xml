@@ -3,7 +3,7 @@
 <mapper namespace="com.boras.CRM.mapper.LedgerMapper">
   	
   	<!-- 원장 등록 -->
-  	<insert id="insertLedger" parameterType="ledgerVO">
+  	<insert id="insertLedger" parameterType="ledgerVO" useGeneratedKeys="true" keyProperty="ledgerSeq">
 		INSERT INTO ledger(
 			ledger_financial_company_cd
 			, ledger_financial_branch_cd
@@ -229,7 +229,7 @@
 		,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
 		,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
 		FROM ledger l
-		WHERE ledger_seq = #{ledgerExcelSeq}
+		WHERE ledger_seq = #{ledgerSeq}
   	</select>
   	
   	<!-- 원장 목록 -->
@@ -307,6 +307,12 @@
 					OR ledger_other like CONCAT('%',#{searchText},'%')
 					OR ledger_customer_name like CONCAT('%',#{searchText},'%')
 					)
+			</if>
+			<if test="ledgerCreateYear != null">
+				AND ledger_create_year = #{ledgerCreateYear}
+			</if>
+			<if test="ledgerCreateMonth != null">
+				AND ledger_create_month = #{ledgerCreateMonth}
 			</if>
 			) data
 		WHERE 1=1
@@ -393,6 +399,12 @@
 					OR ledger_other like CONCAT('%',#{searchText},'%')
 					OR ledger_customer_name like CONCAT('%',#{searchText},'%')
 					)
+			</if>
+			<if test="ledgerCreateYear != null">
+				AND ledger_create_year = #{ledgerCreateYear}
+			</if>
+			<if test="ledgerCreateMonth != null">
+				AND ledger_create_month = #{ledgerCreateMonth}
 			</if>
 		) as data
 		WHERE 1=1
@@ -500,6 +512,12 @@
 					OR ledger_other like CONCAT('%',#{searchText},'%')
 					OR ledger_customer_name like CONCAT('%',#{searchText},'%')
 					)
+			</if>
+			<if test="ledgerCreateYear != null">
+				AND ledger_create_year = #{ledgerCreateYear}
+			</if>
+			<if test="ledgerCreateMonth != null">
+				AND ledger_create_month = #{ledgerCreateMonth}
 			</if>
 		) as data
 		WHERE 1=1

@@ -273,7 +273,7 @@ public class UserApiController {
 	/**
 	 * AG사 목록
 	 */
-	@GetMapping(value = "/list/ag")
+	@PostMapping(value = "/list/ag")
 	public Map<String, Object> userListAg(HttpServletRequest req, HttpServletResponse resp, UserVO userVO) {
 	    Map<String, Object> rvt = new HashMap<>();
 	    

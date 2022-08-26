@@ -66,6 +66,8 @@ LedgerExcelList.Init = function () {
 			$("#inputSearchText").focus();
 			$('#inputSearchText')[0].setSelectionRange($('#inputSearchText').val().length, $('#inputSearchText').val().length);
 		}
+		
+		LedgerExcelList.getFinancialBranchList($("#selFinancialCompanyCode").val());
     }
     catch (e) { console.log(e.message); }
 }
@@ -122,6 +124,11 @@ LedgerExcelList.SetEvent = function () {
 		// 원장 excel 등록 btnAddExcelSettingOk
 		$("#btnAddExcelSettingOk").click(function() {
 			LedgerExcelList.excelSettingExist();
+		});
+		
+		// 금융지점 변경
+		$("#selFinancialCompanyCode").change(function() {
+			LedgerExcelList.getFinancialBranchList($("#selFinancialCompanyCode").val());
 		});
     }
     catch (e) { console.log(e.message); }
@@ -284,6 +291,38 @@ LedgerExcelList.validationCheck = function () {
 		}
 		
 		return flag;
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 금융지점 목록 조회
+작  성  자  : 김진열
+2022.08.25 - 최초생성
+========================================================================*/
+LedgerExcelList.getFinancialBranchList = function (codeParentId) {
+    try {
+		$.ajax({
+			type : "get",
+			url : "/v1/api/ledger/financial/" + codeParentId + "/branch/list",
+			success : function(json){
+				if(json.resultCode == "00000") {
+					$("#selFinancialBranchCode").children().remove();
+					
+					for(var data of json.list) {
+						option = "<option value='" + data.codeId + "'> " + data.codeName + "</option>";
+						
+						$("#selFinancialBranchCode").append(option);
+					}
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
     }
     catch (e) { console.log(e.message); }
 }

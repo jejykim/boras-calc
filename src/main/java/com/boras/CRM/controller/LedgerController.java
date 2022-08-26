@@ -68,6 +68,19 @@ public class LedgerController {
 			ledgerVO.setPage((ledgerVO.getNowPage()-1)*ledgerVO.getPagePerRows());
 		}
 		
+		// 현재 년, 월
+		Calendar cal = Calendar.getInstance();
+		int thisYear = cal.get(Calendar.YEAR);
+		int thisMonth = cal.get(Calendar.MONTH) + 1;
+		
+		if(ledgerVO.getLedgerCreateYear() == 0) {
+			ledgerVO.setLedgerCreateYear(thisYear);
+		}
+		
+		if(ledgerVO.getLedgerCreateMonth() == 0) {
+			ledgerVO.setLedgerCreateMonth(thisMonth);
+		}
+		
 		// 원장 목록
 		List<LedgerVO> list = new ArrayList<>();
 		int listCount = 0;
@@ -105,11 +118,6 @@ public class LedgerController {
 			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectLedgerYear ]");
 			logger.error(e.getMessage());
 		}
-		
-		// 현재 년, 월
-		Calendar cal = Calendar.getInstance();
-		int thisYear = cal.get(Calendar.YEAR);
-		int thisMonth = cal.get(Calendar.MONTH) + 1;
 		
 		List<CodeVO> codeCompanyCodelist = new ArrayList<>();
 		List<CodeVO> financialCompanyCodelist = new ArrayList<>();
@@ -183,6 +191,63 @@ public class LedgerController {
 		model.addAttribute("financialProductCodelist", financialProductCodelist);
 		
 		model.addAttribute("sumCostList", sumCostList);
+    	
+		return result;
+	}
+	
+	/*
+	 * 원장 등록 페이지
+	 */
+	@GetMapping(value = "/admin/ledger/add")
+	public String adminLedgerAdd(Model model, HttpServletRequest req, HttpServletResponse resp, LedgerVO ledgerVO) {
+		String result = "ledger-admin/ledger-add";
+    	
+		List<CodeVO> codeCompanyCodelist = new ArrayList<>();
+		List<CodeVO> financialCompanyCodelist = new ArrayList<>();
+		List<CodeVO> financialProductCodelist = new ArrayList<>();
+		List<CodeVO> dealerBrandCodelist = new ArrayList<>();
+		CodeVO codeVO = new CodeVO();
+		
+		// 코드사
+		codeVO.setCodeParentId(2000);
+		try {
+			codeCompanyCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		// 금융사
+		codeVO.setCodeParentId(3000);
+		try {
+			financialCompanyCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		// 금융상품
+		codeVO.setCodeParentId(3100);
+		try {
+			financialProductCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		// 딜러브랜드
+		codeVO.setCodeParentId(4000);
+		try {
+			dealerBrandCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		model.addAttribute("codeCompanyCodelist", codeCompanyCodelist);
+		model.addAttribute("financialCompanyCodelist", financialCompanyCodelist);
+		model.addAttribute("financialProductCodelist", financialProductCodelist);
+		model.addAttribute("dealerBrandCodelist", dealerBrandCodelist);
     	
 		return result;
 	}

@@ -59,7 +59,7 @@
                                 </select>
                                 <select id="selMonth">
                                 	<c:forEach var="monthList" begin="1" end="12" step="1" varStatus="status">
-                                    	<option value="${monthList }" <c:if test="${monthList eq thisMonth}">selected="selected"</c:if>>${monthList } 월</option>
+                                    	<option value="${monthList }" <c:if test="${monthList eq ledgerVO.ledgerCreateMonth}">selected="selected"</c:if>>${monthList } 월</option>
                                 	</c:forEach>
                                 </select>
                             </span>
@@ -76,76 +76,86 @@
                             <div class="portlet">
                                 <h5><i class="ico-f1"></i><span>차량가</span></h5>
                                 <span class="price">
-                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
-                                		<c:choose>
-                                			<c:when test="${empty list.ledgercarprice }">
-                                				0
-                                			</c:when>
-                                			<c:otherwise>
-			                                	<fmt:formatNumber value="${list.ledgercarprice }" pattern="#,###"/>
-                                			</c:otherwise>
-                                		</c:choose>
-                                	</c:forEach>
+                                	<c:if test="${not empty sumCostList[0] }">
+	                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
+	                                		<c:choose>
+	                                			<c:when test="${empty list.ledgercarprice }">
+	                                				0
+	                                			</c:when>
+	                                			<c:otherwise>
+				                                	<fmt:formatNumber value="${list.ledgercarprice }" pattern="#,###"/>
+	                                			</c:otherwise>
+	                                		</c:choose>
+	                                	</c:forEach>
+                                	</c:if>
                                 </span>
                             </div>
                             <div class="portlet">
                                 <h5><i class="ico-f2"></i><span>취득원가</span></h5>
                                 <span class="price">
-                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
-                                		<c:choose>
-                                			<c:when test="${empty list.ledgeracquisitioncost }">
-                                				0
-                                			</c:when>
-                                			<c:otherwise>
-			                                	<fmt:formatNumber value="${list.ledgeracquisitioncost }" pattern="#,###"/>
-                                			</c:otherwise>
-                                		</c:choose>
-                                	</c:forEach>
+                                	<c:if test="${not empty sumCostList[0] }">
+	                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
+	                                		<c:choose>
+	                                			<c:when test="${empty list.ledgeracquisitioncost }">
+	                                				0
+	                                			</c:when>
+	                                			<c:otherwise>
+				                                	<fmt:formatNumber value="${list.ledgeracquisitioncost }" pattern="#,###"/>
+	                                			</c:otherwise>
+	                                		</c:choose>
+	                                	</c:forEach>
+                                	</c:if>
                                 </span>
                             </div>
                             <div class="portlet">
                                 <h5><i class="ico-f3"></i><span>fee합계</span></h5>
                                 <span class="price">
-                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
-                                		<c:choose>
-                                			<c:when test="${empty list.ledgertotalfeesum }">
-                                				0
-                                			</c:when>
-                                			<c:otherwise>
-			                                	<fmt:formatNumber value="${list.ledgertotalfeesum }" pattern="#,###"/>
-                                			</c:otherwise>
-                                		</c:choose>
-                                	</c:forEach>
+                                	<c:if test="${not empty sumCostList[0] }">
+	                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
+	                                		<c:choose>
+	                                			<c:when test="${empty list.ledgertotalfeesum }">
+	                                				0
+	                                			</c:when>
+	                                			<c:otherwise>
+				                                	<fmt:formatNumber value="${list.ledgertotalfeesum }" pattern="#,###"/>
+	                                			</c:otherwise>
+	                                		</c:choose>
+	                                	</c:forEach>
+                                	</c:if>
                                 </span>
                             </div>
                             <div class="portlet">
                                 <h5><i class="ico-f4"></i><span>슬라이딩 합계</span></h5>
                                 <span class="price">
-                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
-                                		<c:choose>
-                                			<c:when test="${empty list.ledgerslidingsum }">
-                                				0
-                                			</c:when>
-                                			<c:otherwise>
-			                                	<fmt:formatNumber value="${list.ledgerslidingsum }" pattern="#,###"/>
-                                			</c:otherwise>
-                                		</c:choose>
-                                	</c:forEach>
+                                	<c:if test="${not empty sumCostList[0] }">
+	                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
+	                                		<c:choose>
+	                                			<c:when test="${empty list.ledgerslidingsum }">
+	                                				0
+	                                			</c:when>
+	                                			<c:otherwise>
+				                                	<fmt:formatNumber value="${list.ledgerslidingsum }" pattern="#,###"/>
+	                                			</c:otherwise>
+	                                		</c:choose>
+	                                	</c:forEach>
+                                	</c:if>
                                 </span>
                             </div>
                             <div class="portlet">
                                 <h5><i class="ico-f5"></i><span>추가fee 합계</span></h5>
                                 <span class="price">
-                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
-                                		<c:choose>
-                                			<c:when test="${empty list.ledgeraddpromotion }">
-                                				0
-                                			</c:when>
-                                			<c:otherwise>
-			                                	<fmt:formatNumber value="${list.ledgeraddpromotion }" pattern="#,###"/>
-                                			</c:otherwise>
-                                		</c:choose>
-                                	</c:forEach>
+                                	<c:if test="${not empty sumCostList[0] }">
+	                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
+	                                		<c:choose>
+	                                			<c:when test="${empty list.ledgeraddpromotion }">
+	                                				0
+	                                			</c:when>
+	                                			<c:otherwise>
+				                                	<fmt:formatNumber value="${list.ledgeraddpromotion }" pattern="#,###"/>
+	                                			</c:otherwise>
+	                                		</c:choose>
+	                                	</c:forEach>
+                               		</c:if>
                                 </span>
                             </div>
                         </div>
@@ -167,6 +177,8 @@
                                         <form class="search-form" id="searchForm" name="searchForm" action="" method="get">
 											<input type="hidden" name="searchText" id="searchText" value="${ledgerVO.searchText }">
 											<input type="hidden" name="stateType" id="stateType" value="${ledgerVO.stateType }">
+											<input type="hidden" name="ledgerCreateYear" id="ledgerCreateYear" value="${ledgerVO.ledgerCreateYear }">
+											<input type="hidden" name="ledgerCreateMonth" id="ledgerCreateMonth" value="${ledgerVO.ledgerCreateMonth }">
 											<input type='hidden' id="now_page" name="nowPage" value="${ledgerVO.nowPage }">
 										</form>
                                     </div>
@@ -511,9 +523,10 @@
 		                        <h6>금융지점</h6>
 		                    </div>
 		                    <select id="selFinancialBranchCode">
-                            	<c:forEach var="list" items="${financialBranchCodelist2 }" varStatus="status">
+		                    	<option value="">--금융사를 먼저 선택해주세요--</option>
+                            	<%-- <c:forEach var="list" items="${financialBranchCodelist2 }" varStatus="status">
 		                        	<option value="${list.codeId }">${list.codeName }</option>
-		                        </c:forEach>
+		                        </c:forEach> --%>
 		                    </select>
 		                </div>
 		            </div>
