@@ -3,6 +3,7 @@ package com.boras.CRM.controller;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.boras.CRM.services.CodeService;
 import com.boras.CRM.services.LedgerService;
 import com.boras.CRM.util.PagingControl;
+import com.boras.CRM.util.PermissionHelper;
+import com.boras.CRM.vo.ApprovalVO;
 import com.boras.CRM.vo.CodeVO;
 import com.boras.CRM.vo.LedgerVO;
 import com.boras.CRM.vo.PagingVO;
@@ -42,17 +45,127 @@ public class LedgerController {
 	public String agLedgerList(Model model, HttpServletRequest req, HttpServletResponse resp, LedgerVO ledgerVO) {
 		String result = "ledger/ledger-list";
     	
-		List<LedgerVO> list = new ArrayList<>();
+		// 현재 년, 월
+		Calendar cal = Calendar.getInstance();
+		int thisYear = cal.get(Calendar.YEAR);
+		int thisMonth = cal.get(Calendar.MONTH) + 1;
+		
+		if(ledgerVO.getLedgerCreateYear() == 0) {
+			ledgerVO.setLedgerCreateYear(thisYear);
+		}
+		
+		if(ledgerVO.getLedgerCreateMonth() == 0) {
+			ledgerVO.setLedgerCreateMonth(thisMonth);
+		}
+		
+		ApprovalVO approvalVO = new ApprovalVO();
+		approvalVO.setApprovalUserId(PermissionHelper.getSessionUserId(req));
+		ledgerVO.setApprovalUserId(PermissionHelper.getSessionUserId(req));
+		
+		// AG 승인 여부 체크
+		List<Map<String, Object>> approvalCount = new ArrayList<>();
 		
 		try {
-			list = ledgerService.selectLedgerListForAg(ledgerVO);
+			approvalCount = ledgerService.selectCountOfApprovalThisMonth(approvalVO);
 		} catch (Exception e) {
-			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectLedgerListForAg ]");
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCountOfApprovalThisMonth ]");
+			logger.error(e.getMessage());
+		}
+		
+		int totalCount = 0;
+		int requestCount = 0;
+		
+		for(Map<String, Object> map : approvalCount) {
+			if(map.get("approval_state").toString().equals("전체")) {
+				totalCount = Integer.parseInt(map.get("cnt").toString());
+			}else if(map.get("approval_state").toString().equals("요청")) {
+				requestCount = Integer.parseInt(map.get("cnt").toString());
+			}
+		}
+		
+		List<LedgerVO> list = new ArrayList<>();
+		
+		if(totalCount > 0 && !(requestCount > 0)) {
+			try {
+				list = ledgerService.selectLedgerListForAgDone(ledgerVO);
+			} catch (Exception e) {
+				logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectLedgerListForAgDone ]");
+				logger.error(e.getMessage());
+			}
+		}else {
+			try {
+				list = ledgerService.selectLedgerListForAg(ledgerVO);
+			} catch (Exception e) {
+				logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectLedgerListForAg ]");
+				logger.error(e.getMessage());
+			}
+		}
+		
+		List<CodeVO> financialCompanyCodelist = new ArrayList<>();
+		List<CodeVO> financialBranchCodelist = new ArrayList<>();
+		List<CodeVO> financialBranchCodelist2 = new ArrayList<>();
+		List<CodeVO> financialProductCodelist = new ArrayList<>();
+		List<CodeVO> dealerBrandCodeList = new ArrayList<>();
+		CodeVO codeVO = new CodeVO();
+		
+		// 금융사
+		codeVO.setCodeParentId(3000);
+		try {
+			financialCompanyCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		for(int fcCode : ledgerVO.getsLedgerFinancialCompanyCd()) {
+			// 금융지점
+			codeVO.setCodeParentId(fcCode);
+			try {
+				financialBranchCodelist = codeService.selectCodeList(codeVO);
+			}catch (Exception e) {
+				logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+				logger.error(e.getMessage());
+			}
+		}
+		
+		// 금융지점
+		codeVO.setCodeParentId(3200);
+		try {
+			financialBranchCodelist2 = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		// 금융상품
+		codeVO.setCodeParentId(3100);
+		try {
+			financialProductCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		// 딜러사 브랜드
+		codeVO.setCodeParentId(4000);
+		try {
+			dealerBrandCodeList = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
 			logger.error(e.getMessage());
 		}
 		
 		model.addAttribute("list", list);
 		model.addAttribute("ledgerVO", ledgerVO);
+		
+		model.addAttribute("financialCompanyCodelist", financialCompanyCodelist);
+		model.addAttribute("financialBranchCodelist", financialBranchCodelist);
+		model.addAttribute("financialBranchCodelist2", financialBranchCodelist2);
+		model.addAttribute("financialProductCodelist", financialProductCodelist);
+		model.addAttribute("dealerBrandCodeList", dealerBrandCodeList);
+		
+		model.addAttribute("thisYear", thisYear);
+		model.addAttribute("thisMonth", thisMonth);
     	
 		return result;
 	}
@@ -124,6 +237,7 @@ public class LedgerController {
 		List<CodeVO> financialBranchCodelist = new ArrayList<>();
 		List<CodeVO> financialBranchCodelist2 = new ArrayList<>();
 		List<CodeVO> financialProductCodelist = new ArrayList<>();
+		List<CodeVO> dealerBrandCodeList = new ArrayList<>();
 		CodeVO codeVO = new CodeVO();
 		
 		// 코드사
@@ -173,6 +287,15 @@ public class LedgerController {
 			logger.error(e.getMessage());
 		}
 		
+		// 딜러사 브랜드
+		codeVO.setCodeParentId(4000);
+		try {
+			dealerBrandCodeList = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
 		PagingControl pc = new PagingControl();
 		PagingVO pagingVO = pc.paging(listCount, ledgerVO.getNowPage(), ledgerVO.getPagePerRows());
 		
@@ -189,6 +312,7 @@ public class LedgerController {
 		model.addAttribute("financialBranchCodelist", financialBranchCodelist);
 		model.addAttribute("financialBranchCodelist2", financialBranchCodelist2);
 		model.addAttribute("financialProductCodelist", financialProductCodelist);
+		model.addAttribute("dealerBrandCodeList", dealerBrandCodeList);
 		
 		model.addAttribute("sumCostList", sumCostList);
     	

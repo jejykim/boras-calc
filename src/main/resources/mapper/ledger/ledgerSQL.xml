@@ -15,10 +15,10 @@
 			, ledger_type_cd
 			</if>
 			<if test="ledgerDealerBrandCd != null and ledgerDealerBrandCd != ''">
-			, ledge_dealer_brand_cd
+			, ledger_dealer_brand_cd
 			</if>
 			<if test="ledgerDealerCompanyCd != null and ledgerDealerCompanyCd != ''">
-			, ledge_dealer_company_cd
+			, ledger_dealer_company_cd
 			</if>
 			<if test="ledgerDeliveryDate != null and ledgerDeliveryDate != ''">
 			, ledger_delivery_date
@@ -235,6 +235,7 @@
   	<!-- 원장 목록 -->
 	<select id="selectLedgerList" resultType="ledgerVO" parameterType="ledgerVO">
 		SELECT *
+			,(SELECT user_name from users where user_id = data.agUserId) as agUserName
 		FROM
 			(SELECT DISTINCT l.*
 				,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
@@ -243,7 +244,9 @@
 				,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
 				,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
 				,(SELECT code_name FROM code WHERE code_id = l.ledger_type_cd) as ledgerTypeCdName
-				,(SELECT count(*) FROM approval WHERE approval_ledger_seq = ledger_seq 
+				,(SELECT approval_user_id from approval where approval_ledger_seq = ledger_seq limit 1) as agUserId
+				,(SELECT approval_seq from approval where approval_ledger_seq = ledger_seq limit 1) as approval_seq
+				,(SELECT count(*) FROM approval WHERE approval_ledger_seq = ledger_seq
 				<if test="stateType != null and stateType != ''">
 					<choose>
 						<when test="stateType.equals('request')">
@@ -422,13 +425,112 @@
   	
   	<!-- 원장 목록 (AG용) -->
 	<select id="selectLedgerListForAg" resultType="ledgerVO" parameterType="ledgerVO">
-		SELECT l.*
-		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
-		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
-		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_product_cd) as ledgerFinancialProductCdName
-		,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
-		,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
-		FROM ledger l
+		SELECT *
+		FROM
+			(SELECT DISTINCT l.*
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_product_cd) as ledgerFinancialProductCdName
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_type_cd) as ledgerTypeCdName
+				,(SELECT count(*) FROM approval WHERE approval_ledger_seq = ledger_seq) as cnt
+				,(SELECT approval_state FROM approval WHERE approval_ledger_seq = l.ledger_seq AND approval_user_id = #{approvalUserId}) as approval_state
+			FROM ledger l
+			left JOIN approval a
+			ON l.ledger_seq = a.approval_ledger_seq
+			WHERE 1=1
+			AND ledger_create_year = extract(year from now())
+			AND ledger_create_month = extract(month from now())
+			<if test="sLedgerTypeCd != null and sLedgerTypeCd.size != 0">
+				AND ledger_type_cd in
+				<foreach item="item" index="index" collection="sLedgerTypeCd" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="sLedgerFinancialCompanyCd != null and sLedgerFinancialCompanyCd.size != 0">
+				AND ledger_financial_company_cd in
+				<foreach item="item" index="index" collection="sLedgerFinancialCompanyCd" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="sLedgerFinancialBranchCd != null and sLedgerFinancialBranchCd.size != 0">
+				AND ledger_financial_branch_cd in
+				<foreach item="item" index="index" collection="sLedgerFinancialBranchCd" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="sLedgerFinancialProductCd != null and sLedgerFinancialProductCd.size != 0">
+				AND ledger_financial_product_cd in
+				<foreach item="item" index="index" collection="sLedgerFinancialProductCd" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="searchText != null and searchText != ''">
+				AND (ledger_car_name like CONCAT('%',#{searchText},'%')
+					OR ledger_car_number like CONCAT('%',#{searchText},'%')
+					OR ledger_other like CONCAT('%',#{searchText},'%')
+					OR ledger_customer_name like CONCAT('%',#{searchText},'%')
+					)
+			</if>
+			) data
+		ORDER BY data.approval_state, data.ledger_create_date desc
+  	</select>
+  	
+  	<!-- 원장 목록 (AG용) - 금월 승인 요청 완료 목록 -->
+	<select id="selectLedgerListForAgDone" resultType="ledgerVO" parameterType="ledgerVO">
+		SELECT *
+		FROM
+			(SELECT DISTINCT l.*
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_product_cd) as ledgerFinancialProductCdName
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
+				,(SELECT code_name FROM code WHERE code_id = l.ledger_type_cd) as ledgerTypeCdName
+				,(SELECT count(*) FROM approval WHERE approval_ledger_seq = ledger_seq) as cnt
+				, a.approval_state
+			FROM ledger l
+			left JOIN approval a
+			ON l.ledger_seq = a.approval_ledger_seq
+			WHERE 1=1
+			AND a.approval_user_id = #{approvalUserId}
+			AND a.approval_state = '승인'
+			AND ledger_create_year = extract(year from now())
+			AND ledger_create_month = extract(month from now())
+			<if test="sLedgerTypeCd != null and sLedgerTypeCd.size != 0">
+				AND ledger_type_cd in
+				<foreach item="item" index="index" collection="sLedgerTypeCd" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="sLedgerFinancialCompanyCd != null and sLedgerFinancialCompanyCd.size != 0">
+				AND ledger_financial_company_cd in
+				<foreach item="item" index="index" collection="sLedgerFinancialCompanyCd" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="sLedgerFinancialBranchCd != null and sLedgerFinancialBranchCd.size != 0">
+				AND ledger_financial_branch_cd in
+				<foreach item="item" index="index" collection="sLedgerFinancialBranchCd" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="sLedgerFinancialProductCd != null and sLedgerFinancialProductCd.size != 0">
+				AND ledger_financial_product_cd in
+				<foreach item="item" index="index" collection="sLedgerFinancialProductCd" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="searchText != null and searchText != ''">
+				AND (ledger_car_name like CONCAT('%',#{searchText},'%')
+					OR ledger_car_number like CONCAT('%',#{searchText},'%')
+					OR ledger_other like CONCAT('%',#{searchText},'%')
+					OR ledger_customer_name like CONCAT('%',#{searchText},'%')
+					)
+			</if>
+			) data
+		ORDER BY data.ledger_create_date desc
   	</select>
   	
   	<!-- 등록 년 조회 -->
@@ -531,6 +633,24 @@
 				</when>
 			</choose>
 		</if>
+  	</select>
+  	
+  	<!-- 승인 처리 완료 여부 -->
+	<select id="selectCountOfApprovalThisMonth" resultType="map" parameterType="approvalVO">
+		SELECT COUNT(approval_state) as cnt
+			, approval_state
+		FROM approval
+		WHERE approval_user_id = #{approvalUserId}
+		AND extract(year from approval_request_date) = extract(year from now())
+		AND extract(month from approval_request_date) = extract(month from now())
+		GROUP BY approval_state
+		union
+		SELECT COUNT(*) as cnt
+			, '전체'
+		FROM approval
+		WHERE approval_user_id = #{approvalUserId}
+		AND extract(year from approval_request_date) = extract(year from now())
+		AND extract(month from approval_request_date) = extract(month from now())
   	</select>
   	
 </mapper>

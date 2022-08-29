@@ -209,7 +209,7 @@
 		FROM users
 		WHERE user_permission_cd >= 1200
 		<if test="searchText != null and searchText != ''">
-			AND user_id like CONCAT('%',#{searchText},'%')
+			AND user_name like CONCAT('%',#{searchText},'%')
 		</if>
 		ORDER BY user_join_date desc
   	</select>

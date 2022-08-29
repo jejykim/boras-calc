@@ -29,7 +29,6 @@ var LedgerList = {};
 
 //LedgerList Variable
 LedgerList.files = [];
-LedgerList.selectLedgerSeq = 0;
 var multiRequest = "";
 var checkExcelFlag = false;
 
@@ -87,8 +86,6 @@ LedgerList.Init = function () {
 			$("#divFilter").hide();
 		}
 		
-		// 금융지점
-		LedgerList.getFinancialBranchList($("#selFinancialCompanyCode").val());
     }
     catch (e) { console.log(e.message); }
 }
@@ -100,43 +97,6 @@ LedgerList.Init = function () {
 ========================================================================*/
 LedgerList.SetEvent = function () {
     try {
-		// 사용자 탭 li
-		$("#liAll").click(function() {
-			$("#searchText").val("");
-			$("#stateType").val("all");
-			document.searchForm.submit();
-		});
-		$("#liRequest").click(function() {
-			$("#searchText").val("");
-			$("#stateType").val("request");
-			document.searchForm.submit();
-		});
-		$("#liComplete").click(function() {
-			$("#searchText").val("");
-			$("#stateType").val("complete");
-			document.searchForm.submit();
-		});
-		$("#liLeft").click(function() {
-			$("#searchText").val("");
-			$("#stateType").val("left");
-			document.searchForm.submit();
-		});
-		
-		// 날짜 변경
-		$("#selMonth, #selYear").change(function() {
-			$("#searchText").val("");
-			$("#ledgerCreateYear").val($("#selYear").val());
-			$("#ledgerCreateMonth").val($("#selMonth").val());
-			document.searchForm.submit();
-		});
-		
-		
-		// 승인요청 - 상태처리 (정상, 중복)
-		$("input[name='multiRequest']").click(function() {
-			multiRequest = $("input[name='multiRequest']:checked").val();
-			LedgerList.Paging(1);
-		});
-	
 		// 검색
 		$("#btnSearch").click(function() {
 			$("#searchText").val($("#inputSearchText").val());
@@ -208,34 +168,6 @@ LedgerList.SetEvent = function () {
 			}
 		});
 		
-		// 모달 닫기
-		$(".btn-line-cancel").click(function() {
-			if($(this).parent().parent().parent().parent().hasClass("modal")) {
-				var filter = $(this).parent().parent().parent().parent();
-				filter.addClass("hide");
-				
-				$("#textOther").val("");
-				LedgerList.selectLedgerSeq = 0;
-				
-				$("#selDealerBrand").val("");
-				$("#selDealerCompany").val("");
-			}
-		});
-		
-		// 원장 엑셀 업로드 모달
-		$("#btnAddExcel").click(function() {
-			if(!$('#addExcelModal').is(':visible')) {
-				$("#addExcelModal").removeClass("hide");
-			}
-		});
-		
-		// 구분 선택
-		$("#btnAddExcel").click(function() {
-			if(!$('#addExcelModal').is(':visible')) {
-				$("#addExcelModal").removeClass("hide");
-			}
-		});
-		
 		// 필터 초기화
 		$("#btnClearFilter").click(function() {
 			sCodeType = [];
@@ -243,21 +175,6 @@ LedgerList.SetEvent = function () {
 			sFinancialBranch = [];
 			sFinancialProduct = [];
 			LedgerList.Paging(1);
-		});
-		
-		// 원장 excel 업로드
-		$("#btnAddLedgerForExcel").click(function() {
-			LedgerList.excelSettingExist();
-		});
-		
-		// 원장 Excel 업로드 금융사 -> 금융지점
-		$("#selFinancialCompanyCode").change(function() {
-			LedgerList.getFinancialBranchList($("#selFinancialCompanyCode").val());
-		});
-		
-		// 원장 수기 추가 페이지 이동
-		$("#btnAddLedger").click(function() {
-			location.href = "/admin/ledger/add";
 		});
 		
 		// 체크박스
@@ -269,9 +186,9 @@ LedgerList.SetEvent = function () {
 			}
 		});
 		
-		// 승인 처리
-		$("#btnApprovalOk").click(function() {
-			LedgerList.approvalOk();
+		// 승인 요청
+		$("#btnRequestApproval").click(function() {
+			LedgerList.requestApproval();
 		});
 		
 		// 기타사항 완료/수정
@@ -580,77 +497,6 @@ LedgerList.addLedgerForExcel = function () {
 }
 
 /*=======================================================================
-내      용  : 원장 excel setting is exist
-작  성  자  : 김진열
-2022.08.25 - 최초생성
-========================================================================*/
-LedgerList.excelSettingExist = function () {
-    try {
-		var data = {
-			"ledgerFinancialCompanyCd" : $("#selFinancialCompanyCode").val()
-			, "ledgerFinancialBranchCd" : $("#selFinancialBranchCode").val()
-			, "ledgerFinancialProductCd" : $("#selFinancialProduct").val()
-		};
-	
-		$.ajax({
-			type : "post",
-			url : "/v1/api/ledger/setting/excel/exist",
-			data : data,
-			success : function(json){
-				if(json.resultCode == "00000") {
-					if(json.isExist == "Y") {
-						checkExcelFlag = false;
-					}else if(json.isExist == "N") {
-						checkExcelFlag = true;
-					}
-					
-					if(checkExcelFlag) {
-						alert("등록된 설정이 없습니다\n설정을 먼저 등록해주세요");
-					}else {
-						if(LedgerList.validationCheck()) {
-							LedgerList.addLedgerForExcel();
-						}
-					}
-				}else {
-					alert(json.resultMsg);
-				}
-			},
-			error: function(request,status,error,data){
-				alert("잘못된 접근 경로입니다.");
-				return false;
-			}
-		});
-    }
-    catch (e) { console.log(e.message); }
-}
-
-/*=======================================================================
-내      용  : 유효성 검사
-작  성  자  : 김진열
-2022.08.25 - 최초생성
-========================================================================*/
-LedgerList.validationCheck = function () {
-    try {
-		var flag = true;
-		$("#selFinancialBranchCode").css("border", "");
-		
-		if(LedgerList.files.length < 1) {
-			flag = false;
-			alert("Excel 파일을 업로드해주세요");
-		}
-		
-		else if($("#selFinancialBranchCode").val() == "") {
-			flag = false;
-			alert("금융지점을 선택해주세요");
-			$("#selFinancialBranchCode").css("border", "red solid 1px");
-		}
-		
-		return flag;
-    }
-    catch (e) { console.log(e.message); }
-}
-
-/*=======================================================================
 내      용  : 금융지점 목록 조회
 작  성  자  : 김진열
 2022.08.25 - 최초생성
@@ -683,17 +529,17 @@ LedgerList.getFinancialBranchList = function (codeParentId) {
 }
 
 /*=======================================================================
-내      용  : 승인 처리
+내      용  : 승인 요청
 작  성  자  : 김진열
 2022.08.25 - 최초생성
 ========================================================================*/
-LedgerList.approvalOk = function () {
+LedgerList.requestApproval = function () {
     try {
 		var chkLength = $("input[name=chk]:checked").length;
 		
 		if(chkLength > 0) {
 			
-			var flag = confirm("총 " + chkLength + "건의 원장을 승인하시겠습니까?");
+			var flag = confirm("총 " + chkLength + "건의 원장을 승인요청하시겠습니까?");
 			if(flag) {
 				var chkArray = new Array();
 				
@@ -707,11 +553,11 @@ LedgerList.approvalOk = function () {
 				
 				$.ajax({
 					type : "post",
-					url : "/v1/api/approval/confrim",
+					url : "/v1/api/approval/request",
 					data : data,
 					success : function(json){
 						if(json.resultCode == "00000") {
-							alert("승인되었습니다");
+							alert("승인요청되었습니다\n관리자 승인까지 기다려주세요");
 							location.reload();
 						}else {
 							alert(json.resultMsg);
@@ -724,7 +570,7 @@ LedgerList.approvalOk = function () {
 				});
 			}
 		}else {
-			alert("승인할 원장을 선택해주세요");
+			alert("승인요청할 원장을 선택해주세요");
 		}
     }
     catch (e) { console.log(e.message); }

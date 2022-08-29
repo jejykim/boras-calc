@@ -47,7 +47,7 @@
                             <div class="btn">
                                 <!-- <button class="btn-bu btn-sm">수정</button>
                                 <button class="btn-red btn-sm">삭제</button> -->
-                                <button class="btn-bu btn-sm">추가</button>
+                                <button class="btn-bu btn-sm" id="btnAddLedger">추가</button>
                             </div>
                         </div>
                     </div>
@@ -205,14 +205,6 @@
                                             </label>
                                             <div class="form-control span-box">
                                                 <button class="btn-bu btn-sm" id="btnSelectAg">선택</button>
-                                                <span>
-                                                    <strong>A AG사</strong>
-                                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                                </span>
-                                                <span>
-                                                    <strong>B AG사</strong>
-                                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -238,7 +230,7 @@
                                 <button><i class="fa fa-search" aria-hidden="true"></i></button>
                             </div>
                             <div class="search-result">
-                                <select size="4">
+                                <select size="4" id="selAgList">
                                 </select>
                             </div>
                         </div>
@@ -246,7 +238,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="modal-btn">
-                        <button class="btn-bu">확인</button>
+                        <button class="btn-bu" id="btnAddAg">확인</button>
                         <button class="btn-line-cancel">취소</button>
                     </div>
                 </div>

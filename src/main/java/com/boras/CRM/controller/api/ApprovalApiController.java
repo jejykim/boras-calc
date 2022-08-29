@@ -14,9 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.boras.CRM.services.ApprovalService;
+import com.boras.CRM.util.PermissionHelper;
 import com.boras.CRM.util.ResultCode;
 import com.boras.CRM.util.ResultCode.ResultNum;
 import com.boras.CRM.vo.ApprovalVO;
@@ -35,32 +37,30 @@ public class ApprovalApiController {
 	 * 승인요청 - ag사
 	 */
 	@PostMapping(value = "/request")
-	public Map<String, Object> requestApproval(HttpServletRequest req, HttpServletResponse resp, @RequestBody int[] arrledgerSeq) {
+	public Map<String, Object> requestApproval(HttpServletRequest req, HttpServletResponse resp, @RequestParam("arrledgerSeq[]") int[] arrledgerSeq) {
 		
 	    Map<String, Object> rvt = new HashMap<>();
 	    
 	    try {
-	    	if(arrledgerSeq.length>0) {
+	    	if(arrledgerSeq.length > 0) {
 	    		ApprovalVO approvalVO = new ApprovalVO();
-	    		for(int i=0; i<arrledgerSeq.length; i++) {
-	    			approvalVO.setApprovalSeq(arrledgerSeq[i]);
-				    int cnt = approvalService.requestApproval(approvalVO);
-				    if(cnt>0) {
-				    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
-		    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
-				    }else {
-				    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
-		    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
-				    }
+	    		approvalVO.setApprovalUserId(PermissionHelper.getSessionUserId(req));
+	    		approvalVO.setApprovalState("요청");
+	    		
+	    		for(int ledgerSeq : arrledgerSeq) {
+	    			approvalVO.setApprovalLedgerSeq(ledgerSeq);
+				    approvalService.requestApproval(approvalVO);
 	    		}
+	    		
+		    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
 	    	}else {
-	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00008));
-    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00008));
+	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00007));
+    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00007) + " 원장 seq");
 	    	}
-		    	
 	    }catch (Exception e) {
-	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
-			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
 			logger.error(e.getMessage());
 		}
 	   
@@ -71,15 +71,15 @@ public class ApprovalApiController {
 	 * 승인요청 - 관리자용
 	 */
 	@PostMapping(value = "/insert")
-	public Map<String, Object> insertApproval(HttpServletRequest req, HttpServletResponse resp, @RequestBody int[] arrledgerSeq) {
+	public Map<String, Object> insertApproval(HttpServletRequest req, HttpServletResponse resp, @RequestParam("arrledgerSeq[]") int[] arrledgerSeq) {
 		
 	    Map<String, Object> rvt = new HashMap<>();
 	    
 	    try {
 	    	if(arrledgerSeq.length>0) {
 	    		ApprovalVO approvalVO = new ApprovalVO();
-	    		for(int i=0; i<arrledgerSeq.length; i++) {
-	    			approvalVO.setApprovalSeq(arrledgerSeq[i]);
+	    		for(int ledgerSeq : arrledgerSeq) {
+	    			approvalVO.setApprovalSeq(ledgerSeq);
 	    			approvalVO.setApprovalYn("Y");
 	    			
 				    int cnt = approvalService.insertApproval(approvalVO);
@@ -109,7 +109,7 @@ public class ApprovalApiController {
 	 * 승인 - 관리자
 	 */
 	@PostMapping(value = "/confrim")
-	public Map<String, Object> confrimApproval(HttpServletRequest req, HttpServletResponse resp, @RequestBody int[] arrledgerSeq) {
+	public Map<String, Object> confrimApproval(HttpServletRequest req, HttpServletResponse resp, @RequestParam("arrledgerSeq[]") int[] arrledgerSeq) {
 		
 	    Map<String, Object> rvt = new HashMap<>();
 	    
@@ -117,8 +117,10 @@ public class ApprovalApiController {
 	    	if(arrledgerSeq.length>0) {
 	    	
 	    		ApprovalVO approvalVO = new ApprovalVO();
-	    		for(int i=0; i<arrledgerSeq.length; i++) {
-	    			approvalVO.setApprovalSeq(arrledgerSeq[i]);
+	    		for(int ledgerSeq : arrledgerSeq) {
+	    			approvalVO.setApprovalSeq(ledgerSeq);
+	    			approvalVO.setApprovalState("승인");
+	    			approvalVO.setApprovalYn("Y");
 	    			
 	    			int cntApprovalLedgerSeq = approvalService.cntApprovalLedgerSeq(approvalVO);
 	    			

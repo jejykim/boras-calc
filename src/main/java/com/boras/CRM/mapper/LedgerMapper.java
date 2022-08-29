@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.boras.CRM.vo.ApprovalVO;
 import com.boras.CRM.vo.LedgerVO;
 
 @Mapper
@@ -53,6 +54,13 @@ public interface LedgerMapper {
 	public List<LedgerVO> selectLedgerListForAg(LedgerVO ledgerVO);
 	
 	/**
+	 * 원장 목록 (AG용) - 금월 승인 요청 완료 목록
+	 * @param ledgerVO
+	 * @return
+	 */
+	public List<LedgerVO> selectLedgerListForAgDone(LedgerVO ledgerVO);
+	
+	/**
 	 * 등록 년 조회
 	 * @param 
 	 * @return List<Map<String, Object>>
@@ -66,4 +74,10 @@ public interface LedgerMapper {
 	 */
 	public List<Map<String, Object>> selectSumCost(LedgerVO ledgerVO);
 	
+	/**
+	 * 승인 처리 완료 여부
+	 * @param 
+	 * @return List<Map<String, Object>>
+	 */
+	public List<Map<String, Object>> selectCountOfApprovalThisMonth(ApprovalVO approvalVO);
 }

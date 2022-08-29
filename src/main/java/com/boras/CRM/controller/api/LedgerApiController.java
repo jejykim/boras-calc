@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.boras.CRM.services.ApprovalService;
 import com.boras.CRM.services.CodeService;
 import com.boras.CRM.services.ContractService;
 import com.boras.CRM.services.LedgerExcelService;
@@ -68,6 +69,9 @@ public class LedgerApiController {
 	
 	@Autowired
 	private ContractService contractService;
+	
+	@Autowired
+	private ApprovalService approvalService;
 	
 	@Autowired
 	private SurtaxSupportByFinancialService surtaxSupportByFinancialService;
@@ -247,6 +251,51 @@ public class LedgerApiController {
 		return rvt;
 	}
 	
+	/**
+	 * 기타사항 등록/수정
+	 */
+	@PostMapping(value = "/ledger/other/update")
+	public Map<String, Object> ledgerOtherUpdate(HttpServletRequest req, HttpServletResponse resp, LedgerVO ledgerVO) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    ledgerVO.setLedgerUpdateUserId(PermissionHelper.getSessionUserId(req));
+	    
+	    try {
+	    	ledgerService.updateLedger(ledgerVO);
+	    	
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+	    }catch (Exception e) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
+			logger.error(e.getMessage());
+		}
+	   
+		return rvt;
+	}
+	
+	/**
+	 * 딜러사 등록/수정
+	 */
+	@PostMapping(value = "/ledger/dealer/update")
+	public Map<String, Object> ledgerDealerUpdate(HttpServletRequest req, HttpServletResponse resp, LedgerVO ledgerVO) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    ledgerVO.setLedgerUpdateUserId(PermissionHelper.getSessionUserId(req));
+	    
+	    try {
+	    	ledgerService.updateLedger(ledgerVO);
+	    	
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+	    }catch (Exception e) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
+			logger.error(e.getMessage());
+		}
+	   
+		return rvt;
+	}
 	
 	/**
 	 * 엑셀 원장 등록
@@ -449,13 +498,22 @@ public class LedgerApiController {
 		try {
 			ledgerService.insertLedger(ledgerVO);
 			
+			ApprovalVO approvalVO = new ApprovalVO();
+			approvalVO.setApprovalLedgerSeq(ledgerVO.getLedgerSeq());
+			approvalVO.setApprovalState("승인");
+			approvalVO.setApprovalYn("Y");
+			approvalVO.setApprovalUserId(ledgerVO.getAgUserId());
+			
 			// 계출 등록
 			if(ledgerVO.getLedgerSeq() > 0) {
 				logger.info("[Try to insert contract from excel] ledger seq : " + ledgerVO.getLedgerSeq());
-				ApprovalVO approvalVO = new ApprovalVO();
-				approvalVO.setApprovalLedgerSeq(ledgerVO.getLedgerSeq());
 				
-				contractHelper.insertContract(approvalVO, ledgerService, surtaxSupportByFinancialService, contractService);
+				contractHelper.insertContract(ledgerVO, ledgerService, surtaxSupportByFinancialService, contractService);
+			}
+			
+			// AG 맵핑 등록 (승인)
+			if(!ledgerVO.getAgUserId().isEmpty()) {
+				approvalService.insertApproval(approvalVO);
 			}
 			
 			flag = true;

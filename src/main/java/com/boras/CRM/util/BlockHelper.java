@@ -31,6 +31,7 @@ public class BlockHelper {
 	private static String[] exceptUri = {
 			"/v1/api/user/check/id"
 			, "/v1/api/user/permission/list"
+			, "/v1/api/user/list/ag"
 			};
 	
 	/**

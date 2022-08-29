@@ -182,6 +182,9 @@
 											<input type='hidden' id="now_page" name="nowPage" value="${ledgerVO.nowPage }">
 										</form>
                                     </div>
+                                    <c:if test="${ledgerVO.stateType eq 'request' }">
+										<button class="btn-bu" id="btnApprovalOk">승인</button>
+									</c:if>
                                 </div>
                             </div>
                             <div class="portlet-body">
@@ -298,20 +301,24 @@
 	                                            	<c:choose>
 		                                    			<c:when test="${ledgerVO.stateType eq 'request' or ledgerVO.stateType eq 'left' }">
 		                                    				<td>
-			                                                    <span>
-			                                                        <input class="styled-checkbox" id="checkbox-${status.count + 1 }" type="checkbox">
-			                                                        <label for="checkbox-${status.count + 1 }"></label>
-			                                                    </span>
+		                                    					<c:choose>
+			                                                		<c:when test="${list.cnt eq 1 }">
+			                                                			<span>
+					                                                        <input class="styled-checkbox" id="checkbox-${status.count + 1 }" type="checkbox" name="chk" value="${list.approvalSeq }">
+					                                                        <label for="checkbox-${status.count + 1 }"></label>
+					                                                    </span>
+			                                                		</c:when>
+			                                                	</c:choose>
 			                                                </td>
 		                                    			</c:when>
 		                                    		</c:choose>
 	                                                <td>
 	                                                	<c:choose>
 	                                                		<c:when test="${empty list.ledgerOther }">
-	                                                			<button class="btn-line-main">추가</button>
+	                                                			<button class="btn-line-main" onclick="LedgerList.otherModal(${list.ledgerSeq }, '')">추가</button>
 	                                                		</c:when>
 	                                                		<c:otherwise>
-	                                                			<button class="btn-main">보기</button>
+	                                                			<button class="btn-main" onclick="LedgerList.otherModal(${list.ledgerSeq }, '${list.ledgerOther }')">보기</button>
 	                                                		</c:otherwise>
 	                                                	</c:choose>
 	                                                </td>
@@ -323,11 +330,11 @@
 	                                                <td>${list.ledgerCustomerName }</td>
 	                                                <td>
 	                                                	<c:choose>
-	                                                		<c:when test="${empty list.ledgerDealerBrandCdName }">
-	                                                			<button class="btn-main">선택</button>
+	                                                		<c:when test="${empty list.ledgerDealerCompanyCdName }">
+	                                                			<button class="btn-main" onclick="LedgerList.dealerModal(${list.ledgerSeq }, 0, 0)">선택</button>
 	                                                		</c:when>
 	                                                		<c:otherwise>
-	                                                			<a class="text-line">${list.ledgerDealerBrandCdName }</a>
+	                                                			<a class="text-line" onclick="LedgerList.dealerModal(${list.ledgerSeq }, ${list.ledgerDealerBrandCd }, ${list.ledgerDealerCompanyCd })">${list.ledgerDealerBrandCdName } ${list.ledgerDealerCompanyCdName }</a>
 	                                                		</c:otherwise>
 	                                                	</c:choose>
 	                                                </td>
@@ -341,11 +348,14 @@
 	                                                </td>
 	                                                <td>
 	                                                	<c:choose>
-	                                                		<c:when test="${empty list.ledgerDealerBrandCdName }">
-	                                                			<button class="btn-main">선택</button>
+	                                                		<c:when test="${list.cnt gt 1 }">
+	                                                			<a class="text-line" style="color: red;">중복</a>
+	                                                		</c:when>
+	                                                		<c:when test="${list.cnt eq 1 }">
+	                                                			<a class="text-line">${list.agUserName }</a>
 	                                                		</c:when>
 	                                                		<c:otherwise>
-	                                                			<a class="text-line">ag사명</a>
+	                                                			<button class="btn-main">선택</button>
 	                                                		</c:otherwise>
 	                                                	</c:choose>
 	                                                </td>
@@ -573,6 +583,68 @@
 		    </div>
 		</div>
 		<!--end::modal-->
+		
+		<!--modal / 기타사항추가-->
+        <div class="modal hide" id="ledgerOtherModal">
+            <div class="modal-contents sm">
+                <div class="modal-head">
+                    <h4>기타사항 <span id="spanOtherModalHeader">추가</span></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-form">
+                        <textarea cols="30" rows="10" id="textOther"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-btn">
+                        <button class="btn-bu" id="completeOtherOk">완료</button>
+                        <button class="btn-line-cancel">취소</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::modal-->
+        
+        <!--modal / 딜러사선택-->
+        <div class="modal hide" id="dealerModal">
+            <div class="modal-contents sm">
+                <div class="modal-head">
+                    <h4>딜러사 선택</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-form">
+                        <div>
+                            <div class="from-title">
+                                <h6>딜러브랜드</h6>
+                            </div>
+                            <select id="selDealerBrand">
+                            	<option value="">--딜러브랜드를 선택해주세요--</option>
+                            	<c:forEach var="list" items="${dealerBrandCodeList }" varStatus="status">
+	                                <option value="${list.codeId }">${list.codeName }</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-form">
+                        <div>
+                            <div class="from-title">
+                                <h6>달러사</h6>
+                            </div>
+                            <select id="selDealerCompany">
+                                <option value="">--딜러사를 선택해주세요--</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-btn">
+                        <button class="btn-bu" id="btnAddDealer">완료</button>
+                        <button class="btn-line-cancel">취소</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::modal-->
         
     </div>
     

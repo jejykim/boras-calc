@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.boras.CRM.mapper.LedgerMapper;
+import com.boras.CRM.vo.ApprovalVO;
 import com.boras.CRM.vo.LedgerVO;
 
 @Service
@@ -53,6 +54,16 @@ public class LedgerService implements LedgerMapper {
 	@Override
 	public List<Map<String, Object>> selectSumCost(LedgerVO ledgerVO) {
 		return ledgerMapper.selectSumCost(ledgerVO);
+	}
+
+	@Override
+	public List<LedgerVO> selectLedgerListForAgDone(LedgerVO ledgerVO) {
+		return ledgerMapper.selectLedgerListForAgDone(ledgerVO);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectCountOfApprovalThisMonth(ApprovalVO approvalVO) {
+		return ledgerMapper.selectCountOfApprovalThisMonth(approvalVO);
 	}
 
 }

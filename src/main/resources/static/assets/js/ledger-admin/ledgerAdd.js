@@ -28,9 +28,8 @@ var LedgerAdd = {};
 //LedgerAdd Const
 
 //LedgerAdd Variable
-LedgerAdd.files = [];
-var multiRequest = "";
-var checkExcelFlag = false;
+LedgerAdd.ag = "";
+
 
 //LedgerAdd
 var Properties = {};
@@ -86,6 +85,7 @@ LedgerAdd.SetEvent = function () {
 		
 		// ag 선택 모달
 		$("#btnSelectAg").click(function() {
+			LedgerAdd.getAgList();
 			$("#addAgModal").removeClass("hide");
 		});
 		
@@ -95,6 +95,38 @@ LedgerAdd.SetEvent = function () {
 				var filter = $(this).parent().parent().parent().parent();
 				filter.addClass("hide");
 			}
+		});
+		
+		// AG 선택
+		$("#btnAddAg").click(function() {
+			if($("#selAgList").val() == null || $("#selAgList").val() == "") {
+				$("#selAgList").css("border", "1px solid red");
+				alert("AG를 선택해주세요");
+			}else {
+				$(".span-box").find("span").remove();
+				
+				var data = $("#selAgList").val().split("|");
+				var userId = data[0];
+				var userName = data[1];
+				
+				LedgerAdd.ag = userId;
+				
+				$("#addAgModal").addClass("hide");
+				
+				var span = '<span><strong>' + userName + ' </strong><i class="fa fa-times" aria-hidden="true" style="cursor: pointer;" onclick="LedgerAdd.deleteAgBox(this)"></i></span>';
+				
+				$(".span-box").append(span);
+			}
+		});
+		
+		// ag사 검색
+		$("#textAgSearch").keyup(function() {
+			LedgerAdd.getAgList();
+		});
+		
+		// 원장 등록
+		$("#btnAddLedger").click(function() {
+			LedgerAdd.addLedger();
 		});
     }
     catch (e) { console.log(e.message); }
@@ -202,18 +234,87 @@ LedgerAdd.getAgList = function () {
 		};
 		
 		$.ajax({
-			type : "get",
+			type : "post",
 			url : "/v1/api/user/list/ag",
 			data : data,
 			success : function(json){
 				if(json.resultCode == "00000") {
-					$("#selDealerCompanyCode").children().remove();
+					$("#selAgList").children().remove();
 					
 					for(var data of json.list) {
-						option = "<option value='" + data.codeId + "'> " + data.codeName + "</option>";
+						var option = "<option value='" + data.userId + "|" + data.userName + "'> " + data.userName + "</option>";
 						
-						$("#selDealerCompanyCode").append(option);
+						$("#selAgList").append(option);
 					}
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : AG 박스 제거
+작  성  자  : 김진열
+2022.08.25 - 최초생성
+========================================================================*/
+LedgerAdd.deleteAgBox = function (agBox) {
+    try {
+		LedgerAdd.ag = "";
+		
+		$(agBox).parent().remove();
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 원장 등록
+작  성  자  : 김진열
+2022.08.25 - 최초생성
+========================================================================*/
+LedgerAdd.addLedger = function () {
+    try {
+		var data = {
+			"ledgerOther" : $("#textOther").val()
+			, "ledgerTypeCd" : $("#selCodeCompany").val()
+			, "ledgerFinancialCompanyCd" : $("#selFinancialCompanyCode").val()
+			, "ledgerFinancialBranchCd" : $("#selFinancialBranchCode").val()
+			, "ledgerFinancialProductCd" : $("#selFinancialProduct").val()
+			, "ledgerDeliveryDate" : $("#textDeliveryDate").val()
+			, "ledgerCustomerName" : $("#textCustomerName").val()
+			, "ledgerDealerBrandCd" : $("#selDealerBrandCode").val()
+			, "ledgerDealerCompanyCd" : $("#selDealerCompanyCode").val()
+			, "ledgerCarName" : $("#textCarName").val()
+			, "ledgerCarNumber" : $("#textCarNumber").val()
+			, "ledgerCarPrice" : $("#textCarPrice").val() == "" ? 0 : $("#textCarPrice").val()
+			, "ledgerAcquisitionCost" : $("#textAcquisitionCost").val() == "" ? 0 : $("#textAcquisitionCost").val()
+			, "ledgerTotalFeePercent" : $("#textTotalFeePercent").val() == "" ? 0 : $("#textTotalFeePercent").val()
+			, "ledgerTotalFeeSum" : $("#textTotalFeeSum").val() == "" ? 0 : $("#textTotalFeeSum").val()
+			, "ledgerTotalFeeSupplyPrice" : $("#textTotalFeeSupplyPrice").val() == "" ? 0 : $("#textTotalFeeSupplyPrice").val()
+			, "ledgerTotalFeeSurtax" : $("#textTotalFeeSurtax").val() == "" ? 0 : $("#textTotalFeeSurtax").val()
+			, "ledgerSlidingPercent" : $("#textSlidingPercent").val() == "" ? 0 : $("#textSlidingPercent").val()
+			, "ledgerSlidingSum" : $("#textSlidingSum").val() == "" ? 0 : $("#textSlidingSum").val()
+			, "ledgerSlidingSupplyPrice" : $("#textSlidingSupplyPrice").val() == "" ? 0 : $("#textSlidingSupplyPrice").val()
+			, "ledgerSlidingSurtax" : $("#textSlidingSurtax").val() == "" ? 0 : $("#textSlidingSurtax").val()
+			, "ledgerAddPromotion" : $("#textAddPromotion").val() == "" ? 0 : $("#textAddPromotion").val()
+			, "ledgerPromotionMemo" : $("#textPromotionMemo").val()
+			, "agUserId" : LedgerAdd.ag
+		};
+		
+		$.ajax({
+			type : "post",
+			url : "/v1/api/ledger/insert",
+			data : data,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					alert("등록되었습니다");
+					location.href = "/admin/ledger/list";
 				}else {
 					alert(json.resultMsg);
 				}

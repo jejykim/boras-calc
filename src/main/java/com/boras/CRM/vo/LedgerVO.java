@@ -127,6 +127,15 @@ public class LedgerVO extends PagingVO {
 	// 요청 중복 여부
 	private String multiRequestYn = "";
 	
+	// 맵핑 AG id
+	private String agUserId = "";
+	
+	// 맵핑 AG 명
+	private String agUserName = "";
+	
+	// 맵핑 AG count
+	private int cnt = 0;
+	
 	// 검색 구분 리스트
 	private List<Integer> sLedgerTypeCd = new ArrayList<>();
 	
@@ -138,6 +147,14 @@ public class LedgerVO extends PagingVO {
 	
 	// 검색 금융상품 리스트
 	private List<Integer> sLedgerFinancialProductCd = new ArrayList<>();
+	
+	// 승인 요청 아이디
+	private String approvalUserId = "";
+	
+	// 승인 상태
+	private String approvalState;
+	
+	private int approvalSeq;
 	
 	public int getLedgerSeq() {
 		return ledgerSeq;
@@ -489,6 +506,54 @@ public class LedgerVO extends PagingVO {
 
 	public void setMultiRequestYn(String multiRequestYn) {
 		this.multiRequestYn = multiRequestYn;
+	}
+
+	public String getAgUserId() {
+		return agUserId;
+	}
+
+	public void setAgUserId(String agUserId) {
+		this.agUserId = agUserId;
+	}
+
+	public int getCnt() {
+		return cnt;
+	}
+
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+
+	public String getAgUserName() {
+		return agUserName;
+	}
+
+	public void setAgUserName(String agUserName) {
+		this.agUserName = agUserName;
+	}
+
+	public String getApprovalUserId() {
+		return approvalUserId;
+	}
+
+	public void setApprovalUserId(String approvalUserId) {
+		this.approvalUserId = approvalUserId;
+	}
+
+	public String getApprovalState() {
+		return approvalState;
+	}
+
+	public void setApprovalState(String approvalState) {
+		this.approvalState = approvalState;
+	}
+
+	public int getApprovalSeq() {
+		return approvalSeq;
+	}
+
+	public void setApprovalSeq(int approvalSeq) {
+		this.approvalSeq = approvalSeq;
 	}
 	
 }
