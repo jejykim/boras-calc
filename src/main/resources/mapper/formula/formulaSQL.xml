@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boras.CRM.mapper.FormulaMapper">
+  	
+  	
+  	
+  	<!-- 계출 공식 목록 조회(타입별) -->
+  	<select id="selectFormulaList" parameterType="formulaVO" resultType="formulaVO">
+  		SELECT *
+  		,(SELECT code_name FROM code WHERE code_id = f.formula_financial_product_cd) as formulaFinancialProductCdName
+		,(SELECT code_name FROM code WHERE code_id = f.formula_financial_company_cd) as formulaFinancialCompanyCdName
+  		 FROM formula f
+  		<!-- WHERE formula_type=#{formulaType} -->
+  		ORDER BY formula_type,formula_create_date desc
+  	</select>
+  	
+  
+</mapper>

@@ -40,11 +40,15 @@ public class ContractVO extends PagingVO {
 	// 금융상품 코드
 	private int ledgerFinancialProductCd;
 	// 금융상품 코드명
-		private String ledgerFinancialProductCdName;
+	private String ledgerFinancialProductCdName;
 	// 차량명
 	private String ledgerCarName;
 	// 고객명
 	private String ledgerCustomerName;
+	// 차량가
+	private double ledgerCarPrice;
+	// 취득원가
+	private double ledgerAcquisitionCost;
 	
 	/* 사용자(ag) */
 	//이름
@@ -282,6 +286,19 @@ public class ContractVO extends PagingVO {
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	
+	public double getLedgerCarPrice() {
+		return ledgerCarPrice;
+	}
+	public void setLedgerCarPrice(double ledgerCarPrice) {
+		this.ledgerCarPrice = ledgerCarPrice;
+	}
+	public double getLedgerAcquisitionCost() {
+		return ledgerAcquisitionCost;
+	}
+	public void setLedgerAcquisitionCost(double ledgerAcquisitionCost) {
+		this.ledgerAcquisitionCost = ledgerAcquisitionCost;
 	}
 	@Override
 	public String toString() {

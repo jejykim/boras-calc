@@ -74,3 +74,15 @@ Common.SetEvent = function () {
     }
     catch (e) { console.log(e.message); }
 }
+
+/*=======================================================================
+내      용  : 이벤트 핸들러
+작  성  자  : 김진열
+2022.08.17 - 최초생성
+========================================================================*/
+Common.Comma = function (price) {
+    try {
+		return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+    catch (e) { console.log(e.message); }
+}

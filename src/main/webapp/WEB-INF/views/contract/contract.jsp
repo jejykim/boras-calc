@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" isErrorPage="true"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" isErrorPage="true" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -19,11 +18,13 @@
 	
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	<script src='/static/assets/js/common/common.js'></script>
-	<script src='/static/assets/js/contract/contract.js'></script>
 	
 	<script type="text/javascript">
 		var firstRowSeq = <c:choose><c:when test="${not empty list }">${list[0].contractSeq }</c:when><c:otherwise>0</c:otherwise></c:choose>;
 	</script>
+	
+	<script src='/static/assets/js/contract/contract.js'></script>
+	
 </head>
 <body>
     <div class="wrap">
@@ -123,13 +124,15 @@
                                             </thead>
                                             <tbody>
 
+
                                                 <c:forEach var="list" items="${list }" varStatus="status">
                                                     <%-- <c:if test="${status.count eq 1 }">
                                             			<script type="text/javascript">
 		                                            		Contract.contractInfo('${list.contractSeq}');
 														</script>
                                             		</c:if> --%>
-                                                    <tr onclick="Contract.contractInfo('${list.contractSeq}')">
+                                                    <%-- <tr <c:if test="${status.count eq 1 }"> class="on" </c:if> onclick="Contract.selectContractInfo('${list.contractSeq}')"> --%>
+                                                    <tr class="<c:if test='${status.count eq 1 }'>on</c:if>" onclick="Contract.selectContractInfo('${list.contractSeq}')">
                                                         <td>${list.ledgerFinancialCompanyCdName }</td>
                                                         <td>${list.ledgerFinancialProductCdName }</td>
                                                         <td>${list.userName }</td>
@@ -176,11 +179,11 @@
                                                     <h7>AG fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
+                                                            <input id="txtContractNomalAgFeePercent" type="text" placeholder="0">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
+                                                            <input id="txtContractNomalAgFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -193,11 +196,11 @@
                                                     <h7>DP fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
+                                                            <input id="txtContractNomalDpFeePercent" type="text" placeholder="0">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
+                                                            <input id="txtContractNomalDpFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -207,8 +210,9 @@
                                                 <div>
                                                     <h7>fee VAT여부</h7>
                                                     <p class="info-result">
-                                                        <select>
-                                                            <option>fee VAT여부</option>
+                                                        <select id="selContractAgFeeSurtaxSupport">
+                                                            <option value="N">미지원</option>
+                                                            <option value="Y">지원</option>
                                                         </select>
                                                     </p>
                                                 </div>
@@ -227,7 +231,7 @@
                                                     <h7>총fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
+                                                            <input id="txtContractAddTotalFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -238,7 +242,7 @@
                                                     <h7>AG fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
+                                                            <input id="txtContractAddAgFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -251,7 +255,7 @@
                                                     <h7>DP fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
+                                                            <input id="txtContractAddDpFeeSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -261,8 +265,9 @@
                                                 <div>
                                                     <h7>추가 VAT여부</h7>
                                                     <p class="info-result">
-                                                        <select>
-                                                            <option>추가 VAT여부</option>
+                                                        <select id="selContractSlidingSurtaxSupport">
+                                                            <option value="N">미지원</option>
+                                                            <option value="Y">지원</option>
                                                         </select>
                                                     </p>
                                                 </div>
@@ -281,11 +286,11 @@
                                                     <h7>총fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
+                                                            <input id="txtContractTotalSlidingPercent" type="text" placeholder="0">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
+                                                            <input id="txtContractTotalSlidingSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -296,11 +301,11 @@
                                                     <h7>AG fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
+                                                            <input id="txtContractAgSlidingPercent" type="text" placeholder="0">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
+                                                            <input id="txtContractAgSlidingSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -313,11 +318,11 @@
                                                     <h7>DP fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
+                                                            <input id="txtContractDpSlidingPercent" type="text" placeholder="0">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input id="txtContractNomalTotalFeeSum" type="text" placeholder="0">
+                                                            <input id="txtContractDpSlidingSum" type="text" placeholder="0">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -327,8 +332,9 @@
                                                 <div>
                                                     <h7>슬라이딩 VAT여부</h7>
                                                     <p class="info-result">
-                                                        <select>
-                                                            <option>슬라이딩 VAT여부</option>
+                                                        <select id="selContractAddFeeSurtaxSupport">
+                                                            <option value="N">미지원</option>
+                                                            <option value="Y">지원</option>
                                                         </select>
                                                     </p>
                                                 </div>
@@ -337,7 +343,7 @@
                                     </div>
                                     <!--end::슬라이딩-->
                                     <div class="table-info footer">
-                                        <button class="btn-bu">저장</button>
+                                        <button class="btn-bu" id="btnUpdate">수정</button>
                                     </div>
                                 </div>
                             </div>

@@ -34,6 +34,7 @@ var checkExcelFlag = false;
 //Contract
 var Properties = {};
 Contract.Properties = Properties;
+Contract.ContractSeq = firstRowSeq;
 
 //Contract Method
 Contract.PageLoad = function () { };  //메인 페이지 로드 공통 함수
@@ -62,8 +63,9 @@ Contract.PageLoad = function () {
 ========================================================================*/
 Contract.Init = function () {
     try {
+	
 		if(firstRowSeq > 0) {
-			Contract.contractInfo(firstRowSeq);
+			Contract.selectContractInfo(firstRowSeq);
 		}
     }
     catch (e) { console.log(e.message); }
@@ -116,47 +118,67 @@ Contract.SetEvent = function () {
 			document.searchForm.submit();
 		});
 	
+		// 수정
+		$("#btnUpdate").click(function() {
+			Contract.updateContract();
+		});
 		
     }
     catch (e) { console.log(e.message); }
 }
 
 /*=======================================================================
-내      용  : 계정 권한 조회 - 사용자 상세 조회용
+내      용  : 계출 상세
 작  성  자  : 김은빈
-2022.08.24 - 최초생성
+2022.08.26 - 최초생성
 ========================================================================*/
-Contract.contractInfo = function (contracatSeq) {
+Contract.selectContractInfo = function (contracatSeq) {
     try {
+		Contract.ContractSeq = contracatSeq;
 		$.ajax({
 			type : "get",
 			url : "/v1/api/contract/info/" + contracatSeq,
 			success : function(json){
 				console.log(json)
 				if(json.resultCode == "00000") {
+					
 					$('#txtContractNomalTotalFeePercent').val(json.info.contractNomalTotalFeePercent);
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractNomalTotalFeeSum);
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractNomalAgFeePercent);
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractNomalAgFeeSum);
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractNomalDpFeePercent);
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractNomalDpFeeSum);
+					$('#txtContractNomalAgFeePercent').val(json.info.contractNomalAgFeePercent);
+					$('#txtContractNomalDpFeePercent').val(json.info.contractNomalDpFeePercent);
+					//금융상품이 렌트
+					if(json.info.ledgerFinancialProductCd==3101){
+						var price = json.info.ledgerCarPrice;
+					}
+					//금융상품이 리스
+					else if(json.info.ledgerFinancialProductCd==3102){
+						var price = json.info.ledgerAcquisitionCost;
+					}
 					
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractAgFeeSurtaxSupportYn);
+					var nomalTotalFeeSum = Common.Comma(price*json.info.contractNomalTotalFeePercent);
+					var nomalAgFeeSum = Common.Comma(price*json.info.contractNomalAgFeePercent);
+					var nomalDpFeeSum = Common.Comma(price*json.info.contractNomalDpFeePercent);
 					
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractAddTotalFeeSum);
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractAddAgFeeSum);
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractAddDpFeeSum);
+					$('#txtContractNomalTotalFeeSum').val(nomalTotalFeeSum);
+					$('#txtContractNomalAgFeeSum').val(nomalAgFeeSum);
+					$('#txtContractNomalDpFeeSum').val(nomalDpFeeSum);
 					
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractAddFeeSurtaxSupportYn);
 					
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractTotalSlidingPercent);
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractTotalSlidingSum);
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractAgSlidingPercent);
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractAgSlidingSum);
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractDpSlidingPercent);
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractDpSlidingSum);
+					$('#selContractAgFeeSurtaxSupport').val(json.info.contractAgFeeSurtaxSupportYn);
 					
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractSlidingSurtaxSupportYn);
+					$('#txtContractAddTotalFeeSum').val(json.info.contractAddTotalFeeSum);
+					$('#txtContractAddAgFeeSum').val(json.info.contractAddAgFeeSum);
+					$('#txtContractAddDpFeeSum').val(json.info.contractAddDpFeeSum);
+					
+					$('#selContractSlidingSurtaxSupport').val(json.info.contractSlidingSurtaxSupportYn);
+					
+					$('#txtContractTotalSlidingPercent').val(json.info.contractTotalSlidingPercent);
+					$('#txtContractTotalSlidingSum').val(json.info.contractTotalSlidingSum);
+					$('#txtContractAgSlidingPercent').val(json.info.contractAgSlidingPercent);
+					$('#txtContractAgSlidingSum').val(json.info.contractAgSlidingSum);
+					$('#txtContractDpSlidingPercent').val(json.info.contractDpSlidingPercent);
+					$('#txtContractDpSlidingSum').val(json.info.contractDpSlidingSum);
+					
+					$('#selContractAddFeeSurtaxSupport').val(json.info.contractAddFeeSurtaxSupportYn);
 					
 				}else {
 					alert(json.resultMsg);
@@ -171,3 +193,56 @@ Contract.contractInfo = function (contracatSeq) {
     catch (e) { console.log(e.message); }
 }
 
+
+/*=======================================================================
+내      용  : 계출 수정
+작  성  자  : 김은빈
+2022.08.29 - 최초생성
+========================================================================*/
+Contract.updateContract = function () {
+    try {
+		var data = {
+			"contractNomalTotalFeePercent" : $("#txtContractNomalTotalFeePercent").val()
+			,"contractNomalTotalFeeSum" : $("#txtContractNomalTotalFeeSum").val()
+			,"contractNomalAgFeePercent" : $("#txtContractNomalAgFeePercent").val()
+			,"contractNomalAgFeeSum" : $("#txtContractNomalAgFeeSum").val()
+			,"contractNomalDpFeePercent" : $("#txtContractNomalDpFeePercent").val()
+			,"contractNomalDpFeeSum" : $("#txtContractNomalDpFeeSum").val()
+			
+			,"contractAgFeeSurtaxSupportYn" : $("#selContractAgFeeSurtaxSupport").val()
+			
+			,"contractAddTotalFeeSum" : $("#txtContractAddTotalFeeSum").val()
+			,"contractAddAgFeeSum" : $("#txtContractAddAgFeeSum").val()
+			,"contractAddDpFeeSum" : $("#txtContractAddDpFeeSum").val()
+			
+			,"contractSlidingSurtaxSupportYn" : $("#selContractSlidingSurtaxSupport").val()
+			
+			,"contractTotalSlidingPercent" : $("#txtContractTotalSlidingPercent").val()
+			,"contractTotalSlidingSum" : $("#txtContractTotalSlidingSum").val()
+			,"contractAgSlidingPercent" : $("#txtContractAgSlidingPercent").val()
+			,"contractAgSlidingSum" : $("#txtContractAgSlidingSum").val()
+			,"contractDpSlidingPercent" : $("#txtContractDpSlidingPercent").val()
+			,"contractDpSlidingSum" : $("#txtContractDpSlidingSum").val()
+			
+			,"contractAddFeeSurtaxSupportYn" : $("#selContractAddFeeSurtaxSupport").val()
+		}
+		console.log(data)
+		$.ajax({
+			type : "post",
+			url : "/v1/api/contract/update/" + Contract.ContractSeq,
+			data : data,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					alert("수정되었습니다.");
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+	    }
+    catch (e) { console.log(e.message); }
+}
