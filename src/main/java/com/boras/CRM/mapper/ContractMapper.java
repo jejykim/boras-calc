@@ -39,5 +39,12 @@ public interface ContractMapper {
 	 */
 	public ContractVO selectContractInfo(ContractVO contractVO);
 	
+	/**
+	 * 승인완료되어 ag사 매칭
+	 * @param ContractVO
+	 * @return int
+	 * 
+	 */
+	public int updateContractByApproval(ContractVO contractVO);
 
 }

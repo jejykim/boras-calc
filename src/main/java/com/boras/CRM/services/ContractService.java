@@ -34,5 +34,10 @@ public class ContractService implements ContractMapper {
 	public ContractVO selectContractInfo(ContractVO contractVO) {
 		return contractMapper.selectContractInfo(contractVO);
 	}
+	
+	@Override
+	public int updateContractByApproval(ContractVO contractVO) {
+		return contractMapper.updateContractByApproval(contractVO);
+	}
 
 }
