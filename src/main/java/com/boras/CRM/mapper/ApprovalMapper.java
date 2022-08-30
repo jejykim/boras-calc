@@ -71,4 +71,12 @@ public interface ApprovalMapper {
 	 * 
 	 */
 	public List<ApprovalVO> selectRequestApprovalList(ApprovalVO approvalVO);
+	
+	/**
+	 * 승인완료 상세 조회 (원장 SEQ)
+	 * @param 
+	 * @return int
+	 * 
+	 */
+	public ApprovalVO selectCompeleteApprovalInfo(ApprovalVO approvalVO);
 }

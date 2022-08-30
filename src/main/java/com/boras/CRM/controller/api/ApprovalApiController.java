@@ -18,10 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.boras.CRM.services.ApprovalService;
+import com.boras.CRM.services.ContractService;
+import com.boras.CRM.services.LedgerService;
 import com.boras.CRM.util.PermissionHelper;
 import com.boras.CRM.util.ResultCode;
 import com.boras.CRM.util.ResultCode.ResultNum;
 import com.boras.CRM.vo.ApprovalVO;
+import com.boras.CRM.vo.ContractVO;
 
 @RestController
 @RequestMapping("/v1/api/approval")
@@ -29,9 +32,14 @@ public class ApprovalApiController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ApprovalApiController.class);
 	
-	
 	@Autowired
 	private ApprovalService approvalService;
+	
+	@Autowired
+	private ContractService contractService;
+	
+	@Autowired
+	private LedgerService ledgerService;
 	
 	/**
 	 * 승인요청 - ag사
@@ -109,16 +117,16 @@ public class ApprovalApiController {
 	 * 승인 - 관리자
 	 */
 	@PostMapping(value = "/confrim")
-	public Map<String, Object> confrimApproval(HttpServletRequest req, HttpServletResponse resp, @RequestParam("arrledgerSeq[]") int[] arrledgerSeq) {
+	public Map<String, Object> confrimApproval(HttpServletRequest req, HttpServletResponse resp, @RequestParam("arrApprovalSeq[]") int[] arrApprovalSeq) {
 		
 	    Map<String, Object> rvt = new HashMap<>();
 	    
 	    try {
-	    	if(arrledgerSeq.length>0) {
+	    	if(arrApprovalSeq.length>0) {
 	    	
 	    		ApprovalVO approvalVO = new ApprovalVO();
-	    		for(int ledgerSeq : arrledgerSeq) {
-	    			approvalVO.setApprovalSeq(ledgerSeq);
+	    		for(int approvalrSeq : arrApprovalSeq) {
+	    			approvalVO.setApprovalSeq(approvalrSeq);
 	    			approvalVO.setApprovalState("승인");
 	    			approvalVO.setApprovalYn("Y");
 	    			
@@ -130,6 +138,19 @@ public class ApprovalApiController {
 					    if(cnt>0) {
 					    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
 			    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+			    			
+			    			// 승인 후 계출 update
+			    			approvalVO = approvalService.selectCompeleteApprovalInfo(approvalVO);
+			    			
+			    			ContractVO contractVO = new ContractVO();
+			    			contractVO.setContractLedgerSeq(approvalVO.getApprovalLedgerSeq());
+			    			// 계출 조회
+			    			contractVO = contractService.selectContractSeqByLedgerSeq(contractVO);
+			    			
+			    			contractVO.setContractUserId(approvalVO.getApprovalUserId());
+			    			contractVO.setContractUpdateUserId(PermissionHelper.getSessionUserId(req));
+			    			
+			    			contractService.updateContractByApproval(contractVO);
 					    }else {
 					    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
 			    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));

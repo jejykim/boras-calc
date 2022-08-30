@@ -55,4 +55,9 @@ public class ApprovalService implements ApprovalMapper {
 		return approvalMapper.selectRequestApprovalList(approvalVO);
 	}
 
+	@Override
+	public ApprovalVO selectCompeleteApprovalInfo(ApprovalVO approvalVO) {
+		return approvalMapper.selectCompeleteApprovalInfo(approvalVO);
+	}
+
 }

@@ -30,6 +30,7 @@ var LedgerList = {};
 //LedgerList Variable
 LedgerList.files = [];
 LedgerList.selectLedgerSeq = 0;
+LedgerList.selectAG = "";
 var multiRequest = "";
 var checkExcelFlag = false;
 
@@ -219,6 +220,7 @@ LedgerList.SetEvent = function () {
 				
 				$("#selDealerBrand").val("");
 				$("#selDealerCompany").val("");
+				$("#selAgList").val("");
 			}
 		});
 		
@@ -299,7 +301,18 @@ LedgerList.SetEvent = function () {
 				
 				$("#selDealerBrand").val("");
 				$("#selDealerCompany").val("");
+				$("#selAgList").val("");
 		    }
+		});
+		
+		// AG 선택
+		$("#selAgList").change(function() {
+			LedgerList.selectAg();
+		});
+		
+		// AG 선택 저장
+		$("#btnAddAg").click(function() {
+			LedgerList.addAg();
 		});
     }
     catch (e) { console.log(e.message); }
@@ -702,7 +715,7 @@ LedgerList.approvalOk = function () {
 				}
 				
 				var data = {
-					arrledgerSeq : chkArray
+					arrApprovalSeq : chkArray
 				};
 				
 				$.ajax({
@@ -921,10 +934,77 @@ LedgerList.selectAgModal = function (ledgerSeq, isExist) {
 			});
 			*/
 		}else {
-			$("#divSelectedAg").removeCla
+			$("#divSelectedAg").children().remove();
 			
 			$("#agModal").removeClass("hide");
 		}
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : AG 선택
+작  성  자  : 김진열
+2022.08.29 - 최초생성
+========================================================================*/
+LedgerList.selectAg = function () {
+    try {
+		var agId = $("#selAgList").val();
+		$("#divSelectedAg").children().remove();
+		
+		if(agId != "") {
+			LedgerList.selectAG = agId;
+			
+			var pTag = '<p class="on"><span>' + $("#selAgList option:checked").text() + '</span><i class="fa fa-times" aria-hidden="true" onclick="LedgerList.deleteAg(\'' + agId + '\', this)"></i></p>';
+			
+			$("#divSelectedAg").append(pTag);
+		}
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : AG 삭제
+작  성  자  : 김진열
+2022.08.29 - 최초생성
+========================================================================*/
+LedgerList.deleteAg = function (agId, iTag) {
+    try {
+		LedgerList.selectAG = "";
+		
+		$(iTag).parent().remove();
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : AG 저장
+작  성  자  : 김진열
+2022.08.29 - 최초생성
+========================================================================*/
+LedgerList.addAg = function () {
+    try {
+		var data = {};
+		
+		/*
+		$.ajax({
+			type : "post",
+			url : "/v1/api/ledger/dealer/update",
+			data : data,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					alert("딜러사가 저장되었습니다.");
+					location.reload();
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+		*/
     }
     catch (e) { console.log(e.message); }
 }
