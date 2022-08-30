@@ -64,6 +64,7 @@
   		SELECT *
   		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
 		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_product_cd) as ledgerFinancialProductCdName
+		,(SELECT user_name FROM users u WHERE u.user_id = c.contract_user_id) as user_name
   		 FROM contract c
   		LEFT JOIN ledger l
   		ON c.contract_ledger_seq=l.ledger_seq
@@ -121,7 +122,7 @@
   	<!-- 계출 상세 -->
   	<select id="selectContractInfo" parameterType="contractVO" resultType="contractVO">
   		SELECT *
-  		,(SELECT use_name FROM users u WHERE u.user_id = c.contract_user_id)
+  		,(SELECT user_name FROM users u WHERE u.user_id = c.contract_user_id) as user_name
   		 FROM contract c
   		LEFT JOIN ledger l
   		ON c.contract_ledger_seq=l.ledger_seq
