@@ -120,7 +120,9 @@
   	
   	<!-- 계출 상세 -->
   	<select id="selectContractInfo" parameterType="contractVO" resultType="contractVO">
-  		SELECT * FROM contract c
+  		SELECT *
+  		,(SELECT use_name FROM users u WHERE u.user_id = c.contract_user_id)
+  		 FROM contract c
   		LEFT JOIN ledger l
   		ON c.contract_ledger_seq=l.ledger_seq
   		WHERE c.contract_seq = #{contractSeq}
