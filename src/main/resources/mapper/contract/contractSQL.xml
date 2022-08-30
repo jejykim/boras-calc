@@ -129,7 +129,7 @@
   	<!-- 승인완료되어 ag사 매칭 -->
 	<update id="updateContractByApproval" parameterType="contractVO">
 		UPDATE contract
-			contract_user_id = #{contractUserId},
+		SET	contract_user_id = #{contractUserId},
 			contract_update_user_id=#{contractUpdateUserId},
 			contract_update_date = now()
 		WHERE contract_seq = #{contractSeq} 
