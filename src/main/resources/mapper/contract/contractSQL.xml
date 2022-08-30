@@ -134,5 +134,13 @@
 			contract_update_date = now()
 		WHERE contract_seq = #{contractSeq} 
   	</update>
+  	
+  	<!-- 계출 seq로 원장 seq가져오기 -->
+  	<select id="selectContractSeqByLedgerSeq" parameterType="contractVO" resultType="contractVO">
+  		SELECT c.* FROM contract c
+  		LEFT JOIN ledger l
+  		ON c.contract_ledger_seq=l.ledger_seq
+  		WHERE c.contract_ledger_seq = #{contractLedgerSeq}
+  	</select>
   
 </mapper>

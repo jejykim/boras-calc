@@ -39,5 +39,10 @@ public class ContractService implements ContractMapper {
 	public int updateContractByApproval(ContractVO contractVO) {
 		return contractMapper.updateContractByApproval(contractVO);
 	}
+	
+	@Override
+	public ContractVO selectContractSeqByLedgerSeq(ContractVO contractVO) {
+		return contractMapper.selectContractSeqByLedgerSeq(contractVO);
+	}
 
 }

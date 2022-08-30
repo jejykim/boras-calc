@@ -46,5 +46,11 @@ public interface ContractMapper {
 	 * 
 	 */
 	public int updateContractByApproval(ContractVO contractVO);
-
+	
+	/**
+	 * 계출 seq로 원장 seq가져오기 
+	 * @param ContractVO
+	 * @return ContractVO
+	 */
+	public ContractVO selectContractSeqByLedgerSeq(ContractVO contractVO);
 }
