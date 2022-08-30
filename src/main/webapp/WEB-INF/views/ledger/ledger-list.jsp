@@ -158,7 +158,7 @@
 	                                                <td>
 	                                                	<c:choose>
 	                                                		<c:when test="${empty list.ledgerOther }">
-	                                                			<button class="btn-line-main" onclick="LedgerList.otherModal(${list.ledgerSeq }, '')">추가</button>
+	                                                			-
 	                                                		</c:when>
 	                                                		<c:otherwise>
 	                                                			<button class="btn-main" onclick="LedgerList.otherModal(${list.ledgerSeq }, '${list.ledgerOther }')">보기</button>
@@ -188,7 +188,7 @@
 	                                                    <p><span class="font-blue">차량가 </span><span><fmt:formatNumber value="${list.ledgerCarPrice }" pattern="#,###"/></span></p>
 	                                                    <p><span class="font-red">취득원가 </span><span><fmt:formatNumber value="${list.ledgerAcquisitionCost }" pattern="#,###"/></span></p>
 	                                                </td>
-	                                                <td><button class="btn-pencil"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+	                                                <td><button class="btn-pencil" onclick="LedgerList.inquiryModal(${list.ledgerSeq })"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
 	                                            </tr>
                                             </c:forEach>
                                             <c:if test="${empty list }">
@@ -329,13 +329,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="modal-form">
-                        <textarea cols="30" rows="10" id="textOther"></textarea>
+                        <textarea cols="30" rows="10" id="textOther" readonly="readonly"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <div class="modal-btn">
-                        <button class="btn-bu" id="completeOtherOk">완료</button>
-                        <button class="btn-line-cancel">취소</button>
+                        <button class="btn-line-cancel">닫기</button>
                     </div>
                 </div>
             </div>

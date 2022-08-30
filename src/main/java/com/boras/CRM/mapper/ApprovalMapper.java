@@ -64,5 +64,11 @@ public interface ApprovalMapper {
 	 */
 	public int confirmApprovalForDuplication(ApprovalVO approvalVO);
 	
-
+	/**
+	 * 승인요청 목록 조회
+	 * @param 
+	 * @return int
+	 * 
+	 */
+	public List<ApprovalVO> selectRequestApprovalList(ApprovalVO approvalVO);
 }

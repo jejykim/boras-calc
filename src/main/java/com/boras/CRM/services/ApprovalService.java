@@ -1,5 +1,7 @@
 package com.boras.CRM.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +48,11 @@ public class ApprovalService implements ApprovalMapper {
 	@Override
 	public int confirmApprovalForDuplication(ApprovalVO approvalVO) {
 		return approvalMapper.confirmApprovalForDuplication(approvalVO);
+	}
+
+	@Override
+	public List<ApprovalVO> selectRequestApprovalList(ApprovalVO approvalVO) {
+		return approvalMapper.selectRequestApprovalList(approvalVO);
 	}
 
 }

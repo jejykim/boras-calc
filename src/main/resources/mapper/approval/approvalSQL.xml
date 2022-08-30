@@ -81,4 +81,14 @@
 		WHERE approval_ledger_seq = #{approvalLedgerSeq} 
 			AND approval_user_id = #{approvalUserId}
   	</update>
+  	
+  	<!-- 승인요청 목록 조회 -->
+  	<select id="selectRequestApprovalList" parameterType="approvalVO" resultType="approvalVO">
+  		SELECT *
+  			,(SELECT user_name FROM users WHERE user_id = a.approval_user_id) as userName
+  		FROM approval a
+  		WHERE approval_ledger_seq = #{approvalLedgerSeq}
+  		AND approval_state = '요청'
+  		AND approval_yn = 'N'
+  	</select>
 </mapper>

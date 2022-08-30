@@ -890,3 +890,72 @@ LedgerList.addDealer = function () {
     }
     catch (e) { console.log(e.message); }
 }
+
+/*=======================================================================
+내      용  : AG사 모달
+작  성  자  : 김진열
+2022.08.29 - 최초생성
+========================================================================*/
+LedgerList.selectAgModal = function (ledgerSeq, isExist) {
+    try {
+		if(isExist == "Y") {
+			var data = {approvalLedgerSeq : ledgerSeq};
+			
+			/*
+			$.ajax({
+				type : "post",
+				url : "/v1/api/ledger/approval/ag",
+				data : data,
+				success : function(json){
+					if(json.resultCode == "00000") {
+						alert("딜러사가 저장되었습니다.");
+						location.reload();
+					}else {
+						alert(json.resultMsg);
+					}
+				},
+				error: function(request,status,error,data){
+					alert("잘못된 접근 경로입니다.");
+					return false;
+				}
+			});
+			*/
+		}else {
+			$("#divSelectedAg").removeCla
+			
+			$("#agModal").removeClass("hide");
+		}
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 문의 모달
+작  성  자  : 김진열
+2022.08.29 - 최초생성
+========================================================================*/
+LedgerList.inquiryModal = function (ledgerSeq) {
+    try {
+		
+		/*
+		$.ajax({
+			type : "post",
+			url : "/v1/api/ledger/dealer/update",
+			data : data,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					alert("딜러사가 저장되었습니다.");
+					location.reload();
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+		*/
+    }
+    catch (e) { console.log(e.message); }
+}

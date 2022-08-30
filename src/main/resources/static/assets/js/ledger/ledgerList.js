@@ -29,6 +29,7 @@ var LedgerList = {};
 
 //LedgerList Variable
 LedgerList.files = [];
+LedgerList.selectLedgerSeq = 0;
 var multiRequest = "";
 var checkExcelFlag = false;
 
@@ -217,6 +218,20 @@ LedgerList.SetEvent = function () {
 				$("#selDealerBrand").val("");
 				$("#selDealerCompany").val("");
 		    }
+		});
+		
+		// 모달 닫기
+		$(".btn-line-cancel").click(function() {
+			if($(this).parent().parent().parent().parent().hasClass("modal")) {
+				var filter = $(this).parent().parent().parent().parent();
+				filter.addClass("hide");
+				
+				$("#textOther").val("");
+				LedgerList.selectLedgerSeq = 0;
+				
+				$("#selDealerBrand").val("");
+				$("#selDealerCompany").val("");
+			}
 		});
     }
     catch (e) { console.log(e.message); }
@@ -600,43 +615,6 @@ LedgerList.otherModal = function (ledgerSeq, otherText) {
 }
 
 /*=======================================================================
-내      용  : 기타사항 완료/수정
-작  성  자  : 김진열
-2022.08.29 - 최초생성
-========================================================================*/
-LedgerList.completeOtherOk = function () {
-    try {
-		var flag = confirm("기타사항을 추가 및 수정하시겠습니까?");
-		
-		if(flag) {
-			var data = {
-				ledgerSeq : LedgerList.selectLedgerSeq
-				, ledgerOther : $("#textOther").val()
-			};
-			
-			$.ajax({
-				type : "post",
-				url : "/v1/api/ledger/other/update",
-				data : data,
-				success : function(json){
-					if(json.resultCode == "00000") {
-						alert("기타사항이 수정되었습니다.");
-						location.reload();
-					}else {
-						alert(json.resultMsg);
-					}
-				},
-				error: function(request,status,error,data){
-					alert("잘못된 접근 경로입니다.");
-					return false;
-				}
-			});
-		}
-    }
-    catch (e) { console.log(e.message); }
-}
-
-/*=======================================================================
 내      용  : 딜러사 모달
 작  성  자  : 김진열
 2022.08.25 - 최초생성
@@ -717,22 +695,53 @@ LedgerList.addDealer = function () {
 		};
 	
 		$.ajax({
-				type : "post",
-				url : "/v1/api/ledger/dealer/update",
-				data : data,
-				success : function(json){
-					if(json.resultCode == "00000") {
-						alert("딜러사가 저장되었습니다.");
-						location.reload();
-					}else {
-						alert(json.resultMsg);
-					}
-				},
-				error: function(request,status,error,data){
-					alert("잘못된 접근 경로입니다.");
-					return false;
+			type : "post",
+			url : "/v1/api/ledger/dealer/update",
+			data : data,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					alert("딜러사가 저장되었습니다.");
+					location.reload();
+				}else {
+					alert(json.resultMsg);
 				}
-			});
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 문의 모달
+작  성  자  : 김진열
+2022.08.29 - 최초생성
+========================================================================*/
+LedgerList.inquiryModal = function (ledgerSeq) {
+    try {
+		
+		/*
+		$.ajax({
+			type : "post",
+			url : "/v1/api/ledger/dealer/update",
+			data : data,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					alert("딜러사가 저장되었습니다.");
+					location.reload();
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+		*/
     }
     catch (e) { console.log(e.message); }
 }

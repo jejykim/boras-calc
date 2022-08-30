@@ -349,17 +349,17 @@
 	                                                <td>
 	                                                	<c:choose>
 	                                                		<c:when test="${list.cnt gt 1 }">
-	                                                			<a class="text-line" style="color: red;">중복</a>
+	                                                			<a class="text-line" style="color: red;" onclick="LedgerList.selectAgModal(${list.ledgerSeq }, 'Y')">중복</a>
 	                                                		</c:when>
 	                                                		<c:when test="${list.cnt eq 1 }">
-	                                                			<a class="text-line">${list.agUserName }</a>
+	                                                			<a class="text-line" onclick="LedgerList.selectAgModal(${list.ledgerSeq }, 'Y')">${list.agUserName }</a>
 	                                                		</c:when>
 	                                                		<c:otherwise>
-	                                                			<button class="btn-main">선택</button>
+	                                                			<button class="btn-main" onclick="LedgerList.selectAgModal(${list.ledgerSeq }, 'N')">선택</button>
 	                                                		</c:otherwise>
 	                                                	</c:choose>
 	                                                </td>
-	                                                <td><button class="btn-pencil"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+	                                                <td><button class="btn-pencil" onclick="LedgerList.inquiryModal(${list.ledgerSeq })"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
 	                                            </tr>
                                             </c:forEach>
                                             <c:if test="${listCount eq 0 }">
@@ -639,6 +639,42 @@
                 <div class="modal-footer">
                     <div class="modal-btn">
                         <button class="btn-bu" id="btnAddDealer">완료</button>
+                        <button class="btn-line-cancel">취소</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::modal-->
+        
+        <!--modal / AG 선택-->
+        <div class="modal hide" id="agModal">
+            <div class="modal-contents sm">
+                <div class="modal-head">
+                    <h4>AG 선택</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-form">
+                        <div>
+                            <div class="from-title">
+                                <h6>AG</h6>
+                            </div>
+                            <select id="selAgList">
+                                <option value="">--AG를 선택해주세요--</option>
+                            	<c:forEach var="list" items="${agList }" varStatus="status">
+	                                <option value="${list.userId }">${list.userName }</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="select-2" id="divSelectedAg">
+                                <p class="on"><span>A AG사</span><i class="fa fa-times" aria-hidden="true"></i></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-btn">
+                        <button class="btn-bu" id="btnAddAg">완료</button>
                         <button class="btn-line-cancel">취소</button>
                     </div>
                 </div>

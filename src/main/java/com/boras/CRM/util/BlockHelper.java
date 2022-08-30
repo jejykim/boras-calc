@@ -32,6 +32,8 @@ public class BlockHelper {
 			"/v1/api/user/check/id"
 			, "/v1/api/user/permission/list"
 			, "/v1/api/user/list/ag"
+			, "/v1/api/code/"
+			, "/v1/api/ledger/financial/"
 			};
 	
 	/**

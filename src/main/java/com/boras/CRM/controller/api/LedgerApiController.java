@@ -219,7 +219,7 @@ public class LedgerApiController {
 	}
 	
 	/**
-	 * 권한 목록 조회
+	 * 금융지점 목록 조회
 	 */
 	@GetMapping(value = "/ledger/financial/{codeId}/branch/list")
 	public Map<String, Object> financialBranchList(HttpServletRequest req, HttpServletResponse resp, @PathVariable("codeId") int codeId) {
@@ -286,6 +286,30 @@ public class LedgerApiController {
 	    try {
 	    	ledgerService.updateLedger(ledgerVO);
 	    	
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+	    }catch (Exception e) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
+			logger.error(e.getMessage());
+		}
+	   
+		return rvt;
+	}
+	
+	/**
+	 * 승인요청 AG
+	 */
+	@PostMapping(value = "/ledger/approval/ag")
+	public Map<String, Object> ledgerApprovalAg(HttpServletRequest req, HttpServletResponse resp, ApprovalVO approvalVO) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    List<ApprovalVO> list = new ArrayList<>();
+	    
+	    try {
+	    	list = approvalService.selectRequestApprovalList(approvalVO);
+	    	
+	    	rvt.put("list", list);
 	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
 			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
 	    }catch (Exception e) {

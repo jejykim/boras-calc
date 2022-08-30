@@ -9,6 +9,9 @@ public class ApprovalVO {
 	private String approvalRequestDate;
 	private String approvalDate;
 	
+	// 사용자명
+	private String userName;
+	
 	public int getApprovalLedgerSeq() {
 		return approvalLedgerSeq;
 	}
@@ -50,6 +53,12 @@ public class ApprovalVO {
 	}
 	public void setApprovalDate(String approvalDate) {
 		this.approvalDate = approvalDate;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
 }

@@ -20,12 +20,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.boras.CRM.services.CodeService;
 import com.boras.CRM.services.LedgerService;
+import com.boras.CRM.services.UserService;
 import com.boras.CRM.util.PagingControl;
 import com.boras.CRM.util.PermissionHelper;
 import com.boras.CRM.vo.ApprovalVO;
 import com.boras.CRM.vo.CodeVO;
 import com.boras.CRM.vo.LedgerVO;
 import com.boras.CRM.vo.PagingVO;
+import com.boras.CRM.vo.UserVO;
 
 @Controller
 public class LedgerController {
@@ -37,6 +39,9 @@ public class LedgerController {
 	
 	@Autowired
 	private CodeService codeService;
+	
+	@Autowired
+	private UserService userService;
 	
 	/*
 	 * 원장 목록 페이지 (AG용)
@@ -296,6 +301,16 @@ public class LedgerController {
 			logger.error(e.getMessage());
 		}
 		
+		List<UserVO> agList = new ArrayList<>();
+		UserVO userVO = new UserVO();
+		
+		try {
+			agList = userService.selectUserListAg(userVO);
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
 		PagingControl pc = new PagingControl();
 		PagingVO pagingVO = pc.paging(listCount, ledgerVO.getNowPage(), ledgerVO.getPagePerRows());
 		
@@ -313,6 +328,7 @@ public class LedgerController {
 		model.addAttribute("financialBranchCodelist2", financialBranchCodelist2);
 		model.addAttribute("financialProductCodelist", financialProductCodelist);
 		model.addAttribute("dealerBrandCodeList", dealerBrandCodeList);
+		model.addAttribute("agList", agList);
 		
 		model.addAttribute("sumCostList", sumCostList);
     	
