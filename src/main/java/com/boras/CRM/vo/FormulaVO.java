@@ -6,7 +6,7 @@ public class FormulaVO {
 	private int formulaSeq;
 	
 	// type(총fee,agfee,dpdee,총슬,ag슬)
-	private int formulaType;
+	private String formulaType;
 	
 	// 금융상품
 	private String formulaFinancialProductCd;
@@ -52,11 +52,11 @@ public class FormulaVO {
 		this.formulaSeq = formulaSeq;
 	}
 
-	public int getFormulaType() {
+	public String getFormulaType() {
 		return formulaType;
 	}
 
-	public void setFormulaType(int formulaType) {
+	public void setFormulaType(String formulaType) {
 		this.formulaType = formulaType;
 	}
 

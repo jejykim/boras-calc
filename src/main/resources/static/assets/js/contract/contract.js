@@ -140,11 +140,55 @@ Contract.selectContractInfo = function (contracatSeq) {
 			url : "/v1/api/contract/info/" + contracatSeq,
 			success : function(json){
 				console.log(json)
+				var contract = json.info;
 				if(json.resultCode == "00000") {
 					
-					$('#txtContractNomalTotalFeePercent').val(json.info.contractNomalTotalFeePercent);
-					$('#txtContractNomalAgFeePercent').val(json.info.contractNomalAgFeePercent);
-					$('#txtContractNomalDpFeePercent').val(json.info.contractNomalDpFeePercent);
+					$('#txtContractNomalTotalFeePercent').val(contract.contractNomalTotalFeePercent);
+					$('#txtContractNomalAgFeePercent').val(contract.contractNomalAgFeePercent);
+					$('#txtContractNomalDpFeePercent').val(contract.contractNomalDpFeePercent);
+					
+					for(var i=0; i<json.formulaList.length; i++){
+						var formula = json.formulaList[i];
+						if(formula.formulaType=='NTotalFee' && formula.formulaFinancialProductCd==contract.ledgerFinancialProductCd){
+							if(formula.formulaFinancialCompanyCd==contract.ledgerFinancialCompanyCd){
+								var NTotalFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],contract[formula.formula3])
+							}else{
+								var NTotalFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],contract[formula.formula3])
+							}
+						}else if(formula.formulaType=='NAGFee' && formula.formulaFinancialProductCd==contract.ledgerFinancialProductCd){
+							if(formula.formulaFinancialCompanyCd==contract.ledgerFinancialCompanyCd){
+								var NAGFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],contract[formula.formula3])	
+							}else{
+								var NAGFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],contract[formula.formula3]) 
+							}
+						}else if(formula.formulaType=='NDPFee' && formula.formulaFinancialProductCd==contract.ledgerFinancialProductCd){
+							if(formula.formulaFinancialCompanyCd==contract.ledgerFinancialCompanyCd){
+								var NDPFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],contract[formula.formula3])
+							}else{
+								var NDPFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],contract[formula.formula3])
+							}
+						}else if(formula.formulaType=='STotalFee' && formula.formulaFinancialProductCd==contract.ledgerFinancialProductCd){
+							if(formula.formulaFinancialCompanyCd==contract.ledgerFinancialCompanyCd){
+								var STotalFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],contract[formula.formula3])
+							}else{
+								var STotalFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],contract[formula.formula3])
+							}
+						}else if(formula.formulaType=='SAGFee' && formula.formulaFinancialProductCd==contract.ledgerFinancialProductCd){
+							if(formula.formulaFinancialCompanyCd==contract.ledgerFinancialCompanyCd){
+								var SAGFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],contract[formula.formula3])	
+							}else{
+								var SAGFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],contract[formula.formula3]) 
+							}
+						}else if(formula.formulaType=='SDPFee' && formula.formulaFinancialProductCd==contract.ledgerFinancialProductCd){
+							if(formula.formulaFinancialCompanyCd==contract.ledgerFinancialCompanyCd){
+								var SDPFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],contract[formula.formula3])
+							}else{
+								var SDPFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],contract[formula.formula3])
+							}
+						}
+					}
+					
+					/*
 					//금융상품이 렌트
 					if(json.info.ledgerFinancialProductCd==3101){
 						var price = json.info.ledgerCarPrice;
@@ -153,10 +197,14 @@ Contract.selectContractInfo = function (contracatSeq) {
 					else if(json.info.ledgerFinancialProductCd==3102){
 						var price = json.info.ledgerAcquisitionCost;
 					}
+					*/
+					var nomalTotalFeeSum = Common.Comma(NTotalFee);
+					var nomalAgFeeSum = Common.Comma(NAGFee);
+					var nomalDpFeeSum = Common.Comma(NDPFee);
 					
-					var nomalTotalFeeSum = Common.Comma(price*json.info.contractNomalTotalFeePercent);
-					var nomalAgFeeSum = Common.Comma(price*json.info.contractNomalAgFeePercent);
-					var nomalDpFeeSum = Common.Comma(price*json.info.contractNomalDpFeePercent);
+					var slidingTotalFeeSum = Common.Comma(STotalFee);
+					var slidingAgFeeSum = Common.Comma(SAGFee);
+					var slidingDpFeeSum = Common.Comma(SDPFee);
 					
 					$('#txtContractNomalTotalFeeSum').val(nomalTotalFeeSum);
 					$('#txtContractNomalAgFeeSum').val(nomalAgFeeSum);
@@ -172,11 +220,13 @@ Contract.selectContractInfo = function (contracatSeq) {
 					$('#selContractSlidingSurtaxSupport').val(json.info.contractSlidingSurtaxSupportYn);
 					
 					$('#txtContractTotalSlidingPercent').val(json.info.contractTotalSlidingPercent);
-					$('#txtContractTotalSlidingSum').val(json.info.contractTotalSlidingSum);
 					$('#txtContractAgSlidingPercent').val(json.info.contractAgSlidingPercent);
-					$('#txtContractAgSlidingSum').val(json.info.contractAgSlidingSum);
 					$('#txtContractDpSlidingPercent').val(json.info.contractDpSlidingPercent);
-					$('#txtContractDpSlidingSum').val(json.info.contractDpSlidingSum);
+					
+					
+					$('#txtContractTotalSlidingSum').val(slidingTotalFeeSum);
+					$('#txtContractAgSlidingSum').val(slidingAgFeeSum);
+					$('#txtContractDpSlidingSum').val(slidingDpFeeSum);
 					
 					$('#selContractAddFeeSurtaxSupport').val(json.info.contractAddFeeSurtaxSupportYn);
 					
@@ -243,6 +293,23 @@ Contract.updateContract = function () {
 				return false;
 			}
 		});
+	    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 계출 계산
+작  성  자  : 김은빈
+2022.08.30 - 최초생성
+========================================================================*/
+Contract.Calculation = function (formula1,formula2,formula3) {
+    try {
+		if(formula3!=null){
+			var cal = formula1 * formula2 * formula3	
+		}else{
+			var cal = formula1 * formula2 
+		}
+		return cal
 	    }
     catch (e) { console.log(e.message); }
 }
