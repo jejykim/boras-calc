@@ -27,6 +27,9 @@ public class ContractHelper {
 		try {
 			ledgerVO=ledgerService.selectLedgerDetail(ledgerVO);
 			
+			contractVO.setContractCreateMonth(ledgerVO.getLedgerCreateMonth());
+			contractVO.setContractCreateYear(ledgerVO.getLedgerCreateYear());
+			
 			//일반 총 fee
 			contractVO.setContractNomalTotalFeePercent(ledgerVO.getLedgerTotalFeePercent());
 			contractVO.setContractNomalTotalFeeSum(0);
