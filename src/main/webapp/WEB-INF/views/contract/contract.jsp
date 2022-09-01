@@ -43,6 +43,12 @@
                         <div class="header-title">
                             <h3>계출</h3>
                         </div>
+                        <div class="header-sub">
+                            <div class="btn">
+                                <button class="btn-su">재정산하기</button>
+                                <button id="btnCalculate" class="btn-su">정산하기</button>
+                            </div>
+                        </div>
                     </div>
                     <div class="main-body">
                         <div class="row w-bg m-bmg-12 box-sh">
@@ -123,16 +129,14 @@
                                                 <th>상세</th>
                                             </thead>
                                             <tbody>
-
-
-                                                <c:forEach var="list" items="${list }" varStatus="status">
+                                            <c:forEach var="list" items="${list }" varStatus="status">
                                                     <%-- <c:if test="${status.count eq 1 }">
                                             			<script type="text/javascript">
 		                                            		Contract.contractInfo('${list.contractSeq}');
 														</script>
                                             		</c:if> --%>
                                                     <%-- <tr <c:if test="${status.count eq 1 }"> class="on" </c:if> onclick="Contract.selectContractInfo('${list.contractSeq}')"> --%>
-                                                    <tr class="<c:if test='${status.count eq 1 }'>on</c:if>" onclick="Contract.selectContractInfo('${list.contractSeq}')">
+                                                    <tr class="<c:if test='${status.count eq 1 }'>on</c:if>" onclick="Contract.selectContractInfo('${list.contractSeq}',this)">
                                                         <td>${list.ledgerFinancialCompanyCdName }</td>
                                                         <td>${list.ledgerFinancialProductCdName }</td>
                                                         <td>${list.userName }</td>

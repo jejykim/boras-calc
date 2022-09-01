@@ -16,6 +16,7 @@
 		<typeAlias type="com.boras.CRM.vo.BlockIpVO" alias="blockIpVO"/>
 		<typeAlias type="com.boras.CRM.vo.InquiryVO" alias="inquiryVO"/>
 		<typeAlias type="com.boras.CRM.vo.FormulaVO" alias="formulaVO"/>
+		<typeAlias type="com.boras.CRM.vo.CalculateVO" alias="calculateVO"/>
 	</typeAliases>
 
 </configuration>

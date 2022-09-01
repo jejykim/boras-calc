@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boras.CRM.mapper.CalculateMapper">
+  	
+  	<!-- 정산 등록-->
+  	<insert id="insertCalculate" parameterType="calculateVO">
+		INSERT INTO calculate(
+			calculate_user_id,
+			calculate_year,
+			calculate_month,
+			calculate_ag_fee_sum,
+			calculate_sliding_sum,
+			calculate_add_fee_sum,
+			calculate_supply_sum,
+			calculate_surtax_sum,
+			calculate_personal_ag_sum,
+			calculate_business_sum,
+			calculate_total_sum,
+			calculate_create_date
+		)
+		VALUES(
+			#{calculateUserId},
+			#{calculateYear},
+			#{calculateMonth},
+			#{calculateAgFeeSum},
+			#{calculateSlidingSum},
+			#{calculateAddFeeSum},
+			#{calculateSupplySum},
+			#{calculateSurtaxSum},
+			#{calculatePersonalAgSum},
+			#{calculateBusinessSum},
+			#{calculateTotalSum}
+			now()
+			
+		) 
+  	</insert>
+  	
+  	<!-- 정산 된 계출목록 조회 -->
+  	<select id="selectCalculateList" parameterType="calculateVO" resultType="calculateVO">
+  		SELECT *
+  		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_product_cd) as ledgerFinancialProductCdName
+		,(c.contract_add_ag_fee_sum+c.contract_ag_sliding_sum+c.contract_nomal_ag_fee_sum) as calculateFeeSum
+		FROM contract c
+  		LEFT JOIN ledger l
+  		ON c.contract_ledger_seq=l.ledger_seq
+  		WHERE contract_create_year = #{contractCreateYear} 
+  			AND contract_create_month = #{contractCreateMonth}
+  			AND contract_user_id = #{contractUserId}
+  			<!-- AND contract_calculate_seq > 0 -->
+  	</select>
+  	<!-- 정산 된 계출상세 조회 -->
+  	<select id="selectCalculateInfo" parameterType="calculateVO" resultType="calculateVO">
+  		SELECT *
+  		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_product_cd) as ledgerFinancialProductCdName
+  		FROM contract c
+  		LEFT JOIN ledger l
+  		ON c.contract_ledger_seq=l.ledger_seq
+  		WHERE l.ledger_seq = #{ledgerSeq} 
+  	</select>
+  	
+</mapper>

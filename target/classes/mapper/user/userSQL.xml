@@ -169,6 +169,13 @@
 		WHERE user_id = #{userId}
   	</update>
   	
+  	<!-- 사용자 비밀번호 변경 -->
+	<update id="updateUserPw" parameterType="userVO">
+		UPDATE users
+		SET user_pw = #{userPw}
+		WHERE user_id = #{userId}
+  	</update>
+  	
   	<!-- 사용자 비활성화 -->
 	<update id="updateUserUseN" parameterType="userVO">
 		UPDATE users

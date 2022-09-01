@@ -25,7 +25,7 @@
                 <div class="submenu">
                     <ul>
                         <li <%=uri.contains("/ledger/ledger") ? "class='on'" : "" %>><a href="/ag/ledger/list"><i class="fa fa-file-text-o" aria-hidden="true"></i><span>금융사 원장 목록</span></a></li>
-                        <li <%=uri.contains("/ledger-admin/ledger") ? "class='on'" : "" %>><a href="/admin/ledger/list"><i class="fa fa-file-text-o" aria-hidden="true"></i><span>금융사 원장 목록</span></a></li>
+                        <li <%=uri.contains("/ledger-admin/ledger") ? "class='on'" : "" %>><a href="/admin/ledger/list"><i class="fa fa-file-text-o" aria-hidden="true"></i><span>금융사 원장 목록(관리자)</span></a></li>
                     </ul>
                 </div>
             </li>
@@ -42,8 +42,8 @@
                 <div class="submenu">
                     <ul>
                         <li <%=uri.contains("/") ? "class='on'" : "" %>><a href="/"><i class="fa fa-television" aria-hidden="true"></i><span>정산 대시보드</span></a></li>
-                        <li <%=uri.contains("/") ? "class='on'" : "" %>><a href="/"><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록</span></a></li>
-                        <li <%=uri.contains("/") ? "class='on'" : "" %>><a href="/"><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록</span></a></li>
+                        <li <%=uri.contains("/calculate/calculate") ? "class='on'" : "" %>><a href="/ag/calc/list"><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록</span></a></li>
+                        <li <%=uri.contains("/calculate/calculate") ? "class='on'" : "" %>><a href="/ag/calc/list"><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록(관리자)</span></a></li>
                     </ul>
                 </div>
             </li>

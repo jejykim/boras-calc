@@ -145,5 +145,28 @@
   		ON c.contract_ledger_seq=l.ledger_seq
   		WHERE c.contract_ledger_seq = #{contractLedgerSeq}
   	</select>
+  	
+  	<!-- 정산할 계출목록 조회 -->
+  	<select id="selectContractListForCalculate" parameterType="contractVO" resultType="contractVO">
+  		SELECT * FROM contract 
+  		WHERE contract_create_year = #{contractCreateYear} 
+  			AND contract_create_month = #{contractCreateMonth}
+  			AND contract_user_id = #{contractUserId}
+  	</select>
+  	
+  	<!-- 정산용 계출 합 -->
+  	<select id="ttftrtrtrtrtrt" parameterType="contractVO" resultType="contractVO">
+  		SELECT sum(contract_nomal_ag_fee_sum)as calculate_ag_fee_sum
+  		,sum(calculate_sliding_sum)as calculate_sliding_sum
+  		sum(calculate_add_fee_sum)as calculate_add_fee_sum
+  		sum(contract_nomal_ag_fee_sum)as calculate_supply_sum
+  		sum(contract_nomal_ag_fee_sum)as calculate_surtax_sum
+  		sum(contract_nomal_ag_fee_sum)as calculate_personal_ag_sum
+  		sum(contract_nomal_ag_fee_sum)as calculate_business_sum
+  		 FROM contract 
+  		WHERE contract_create_year = #{contractCreateYear} 
+  			AND contract_create_month = #{contractCreateMonth}
+  			AND contract_user_id = #{contractUserId}
+  	</select>
   
 </mapper>

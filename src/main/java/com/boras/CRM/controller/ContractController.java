@@ -93,7 +93,6 @@ public class ContractController {
 		model.addAttribute("userAglist", userAglist);
 		model.addAttribute("contractVO", contractVO);
 		
-		System.out.println("contractVOToString : " + contractVO.toString());
 		return result;
 	}
 }
