@@ -203,7 +203,15 @@ UserList.userDetail = function (userId) {
 						$('#textInfoAgCompanyName').parent().parent().css("display","");
 						$('#selInfoCodeCompany').parent().parent().css("display","");
 						$('#selInfoBusinessCode').parent().parent().css("display","");
+					}else if(json.info.userPermissionCd == 0){
+						$('#textInfoUserType').val("AG");
+						type="ag";
+						
+						$('#textInfoAgCompanyName').parent().parent().css("display","");
+						$('#selInfoCodeCompany').parent().parent().css("display","");
+						$('#selInfoBusinessCode').parent().parent().css("display","");
 					}
+					
 					UserList.getPermissionListForInfo(type, json.info.userPermissionCd);
 					
 					$('#textInfoUserId').val(json.info.userId);

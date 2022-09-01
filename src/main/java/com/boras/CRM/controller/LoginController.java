@@ -1,6 +1,8 @@
 package com.boras.CRM.controller;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.boras.CRM.services.BlockIdService;
+import com.boras.CRM.services.CodeService;
 import com.boras.CRM.services.LoginService;
 import com.boras.CRM.services.LogsService;
 import com.boras.CRM.services.UserService;
@@ -25,6 +28,7 @@ import com.boras.CRM.session.WebSessionListener;
 import com.boras.CRM.util.BlockHelper;
 import com.boras.CRM.util.HashHelper;
 import com.boras.CRM.util.PermissionHelper;
+import com.boras.CRM.vo.CodeVO;
 import com.boras.CRM.vo.UserVO;
 
 @Controller
@@ -42,7 +46,12 @@ public class LoginController {
 	private LogsService logsService;
 	
 	@Autowired
+	private CodeService codeService;
+	
+	@Autowired
 	BlockIdService blockIdService;
+	
+	HashHelper hashHelper = new HashHelper();
 	
 	/**
 	 * 로그인 페이지
@@ -67,6 +76,8 @@ public class LoginController {
 		String result = "redirect:/login";
 		
 		int iResult = -1;
+		
+		String bfSaltPw = userVO.getUserPw();
 		
 		if(PermissionHelper.checkUserSession(req)) {
 			result = "redirect:/";
@@ -157,7 +168,7 @@ public class LoginController {
 				}
 				
 				PermissionHelper.setLoginSession(req, userVO);
-				
+					
 				//LogHelper.insertLog(req, logsService, "LOG001", "LA004", "LS001", "", PermissionHelper.getIP(req));
 				
 				//idSave
@@ -169,7 +180,12 @@ public class LoginController {
 					resp.addCookie(cookie);
 				}
 				
-				result = "redirect:/dashboard";
+				if(bfSaltPw.equals("boras1234!")) {
+					result = "redirect:/change/password";
+				}else {
+					result = "redirect:/dashboard";
+				}
+				
 				break;
 			case 2:
 				logger.warn("[ Login Result : " + iResult + " ] No Required ID or PW!");
@@ -223,6 +239,105 @@ public class LoginController {
 	@GetMapping(value = "/find/password")
 	public String findPassword(HttpServletRequest req, HttpServletResponse resp) {
 		String result = "login/find-password";
+	    
+		return result;
+	}
+	
+	/**
+	 * 초기 비밀번호 변경 페이지
+	 */
+	@GetMapping(value = "/change/password")
+	public String changePassword(HttpServletRequest req, HttpServletResponse resp) {
+		String result = "login/change-password";
+	    
+		return result;
+	}
+	
+	/**
+	 * 초기 비밀번호 변경 완료
+	 */
+	@PostMapping(value = "/change/password/ok")
+	public String changePasswordOk(HttpServletRequest req, HttpServletResponse resp
+			, @RequestParam(value="userPw") String userPw, @RequestParam(value="userPwCheck") String userPwCheck) {
+		String result = "redirect:/dashboard";
+		
+		if(userPw.equals(userPwCheck)) {
+			UserVO userVO = new UserVO();
+			userVO.setUserId(PermissionHelper.getSessionUserId(req));
+			
+			try {
+				userVO = userService.selectUserInfo(userVO);
+				
+				userVO.setUserPw(hashHelper.sha512(userPw, userVO.getUserSalt()));
+				
+				userService.changeUserPw(userVO);
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				result = "redirect:/logout";
+			}
+			
+		}else {
+			result = "redirect:/logout";
+		}
+	    
+		return result;
+	}
+	
+	/**
+	 * 회원가입 페이지
+	 */
+	@GetMapping(value = "/singup")
+	public String signup(Model model, HttpServletRequest req, HttpServletResponse resp) {
+		String result = "login/signup";
+		
+		List<CodeVO> businessCodeList = new ArrayList<>();
+		CodeVO codeVO = new CodeVO();
+		
+		// 금융사
+		codeVO.setCodeParentId(5000);
+		try {
+			businessCodeList = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : businessCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		model.addAttribute("businessCodeList", businessCodeList);
+	    
+		return result;
+	}
+	
+	/**
+	 * 회원가입 완료
+	 */
+	@PostMapping(value = "/signup/ok")
+	public String signupOk(Model model, HttpServletRequest req, HttpServletResponse resp, UserVO userVO) {
+		String result = "redirect:/signup/done";
+		
+		userVO.setUserPermissionCd(0);
+		userVO.setUserCodeCompanyCd(2001);
+		
+		try {
+			String salt = hashHelper.makeSalt();
+			
+			userVO.setUserSalt(salt);
+			userVO.setUserPw(hashHelper.sha512(userVO.getUserPw(), salt));
+			
+			userService.insertUser(userVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : insertUser ]");
+			logger.error(e.getMessage());
+		}
+	    
+		return result;
+	}
+	
+	/**
+	 * 회원가입 완료 페이지
+	 */
+	@GetMapping(value = "/signup/done")
+	public String signupDone(HttpServletRequest req, HttpServletResponse resp) {
+		String result = "login/signup-done";
 	    
 		return result;
 	}

@@ -21,13 +21,7 @@
 	
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	<script src='/static/assets/js/common/common.js'></script>
-	<script src="/static/assets/js/login/login.js"></script>
-	<script>
-        var errorMsg = '${errorMsg}';
-        if(errorMsg != '') {
-        	alert(errorMsg);
-        }
-    </script>
+	<script src="/static/assets/js/login/signup.js"></script>
 
 </head>
 
@@ -40,22 +34,30 @@
                     <span> 정산 시스템</span>
                 </div>
                 
-                <form action="/login/check" method="post" id="formLogin">
-	                <div class="login-info">
-	                    <h7>로그인</h7>
-	                    <input type="text" id="mId" name="userId" required="required" class="form-control m-input" placeholder="아이디">
-	                    <input type="password" id="mPw" name="userPw" required="required"  class="form-control m-input" placeholder="패스워드">
-	                    <div class="log-save">
-	                        <span>
-	                            <input class="styled-checkbox" name="idSave" id="idSave" type="checkbox"><label for="idSave">ID저장</label>
-	                        </span>
-	                    </div>
+                <form action="/signup/ok" method="post" id="formSignup">
+	                <div class="login-info signup">
+	                    <h7>회원가입</h7>
+	                    <input type="text" placeholder="아이디" id="userId" name="userId" required="required">
+	                    <input type="password" placeholder="패스워드" id="userPw" name="userPw" required="required">
+	                    <input type="password" placeholder="패스워드 확인" id="userPwCheck" name="userPwCheck" required="required">
+	                    <input type="text" placeholder="이름" id="userName" name="userName">
+	                    <input type="text" placeholder="이메일" id="userEmail" name="userEmail" required="required">
+	                    <!-- <input type="text" placeholder="전화번호" id=""> -->
+	                    <select id="selBusinessType" name="userBusinessTypeCd">
+	                    	<option value="">--사업자 형태--</option>
+	                    	<c:forEach var="list" items="${businessCodeList }" varStatus="status">
+	                    		<c:if test="${list.codeName ne '전체'}">
+	                    			<option value="${list.codeId }">${list.codeName }</option>
+	                    		</c:if>
+	                    	</c:forEach>
+	                    </select>
+	                    <input type="text" placeholder="회사명(사업자의 경우 필수)" id="userAgCompany" name="userAgCompany">
 	                    <div class="log-btn">
-	                        <button type="submit">로그인</button>
+	                        <button type="button" id="btnSignup">회원가입</button>
 	                        <div class="log-info-btn">
 	                            <ul>
+	                                <li><a href="/login">로그인</a></li>
 	                                <li><a href="/find/password">비밀번호찾기</a></li>
-	                                <li><a href="/singup">회원가입</a></li>
 	                            </ul>
 	                        </div>
 	                    </div>

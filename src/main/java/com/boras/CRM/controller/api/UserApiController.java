@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.boras.CRM.services.CodeService;
 import com.boras.CRM.services.UserService;
+import com.boras.CRM.util.EmailHelper;
 import com.boras.CRM.util.HashHelper;
+import com.boras.CRM.util.NonceHelper;
 import com.boras.CRM.util.ResultCode;
 import com.boras.CRM.util.ResultCode.ResultNum;
 import com.boras.CRM.vo.CodeVO;
@@ -40,7 +44,26 @@ public class UserApiController {
 	@Autowired
 	private CodeService codeService;
 	
+	@Autowired
+	private JavaMailSenderImpl mailSender;
+	
 	HashHelper hashHelper = new HashHelper();
+	
+	NonceHelper nonceHelper = new NonceHelper();
+	
+	EmailHelper emailHelper = new EmailHelper();
+	
+	@Value("${spring.mail.username}")
+	String smtpId;
+	
+	@Value("${spring.mail.password}")
+	String smtpPw;
+	
+	@Value("${spring.mail.host}")
+	String smtpIp;
+	
+	@Value("${spring.mail.port}")
+	String smtpPort;
 	
 	/**
 	 * 사용자 등록
@@ -300,8 +323,6 @@ public class UserApiController {
 	public Map<String, Object> sendImsiPassword(HttpServletRequest req, HttpServletResponse resp, UserVO userVO) {
 	    Map<String, Object> rvt = new HashMap<>();
 	    
-	    boolean flag = false;
-	    
 	    try {
 			userVO = userService.selectUserInfoForImsiPw(userVO);
 		} catch (Exception e) {
@@ -312,7 +333,23 @@ public class UserApiController {
 		}
 	    
 	    if(userVO != null) {
+	    	mailSender.setUsername(smtpId);
+			mailSender.setPassword(smtpPw);
+			mailSender.setHost(smtpIp);
+			mailSender.setPort(Integer.parseInt(smtpPort));
+		
+	    	String imsiPw = nonceHelper.makeImsiPassword();
+	    	
 	    	try {
+	    		userVO.setUserPw(hashHelper.sha512(imsiPw, userVO.getUserSalt()));
+	    		userService.changeUserPw(userVO);
+	    		
+	    		Map<String, Object> param = new HashMap<>();
+	    		param.put("imsiPw", imsiPw);
+	    		
+	    		// 메일 발송
+	    		emailHelper.SendForEmail(mailSender, userVO, "imsiPw", param);
+	    		
 	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
 	    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
 	    	} catch (Exception e) {
@@ -321,6 +358,9 @@ public class UserApiController {
 	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00002));
 	    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00002));
 	    	}
+	    }else {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
+    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
 	    }
 		
 		return rvt;

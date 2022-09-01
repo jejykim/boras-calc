@@ -21,7 +21,6 @@
 	
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	<script src='/static/assets/js/common/common.js'></script>
-	<script src="/static/assets/js/login/findPassword.js"></script>
 
 </head>
 
@@ -33,44 +32,20 @@
                     <img src="/static/assets/images/common/logo.svg" alt="">
                     <span> 정산 시스템</span>
                 </div>
+                
                 <div class="login-info signup">
-                    <h7>비밀번호 찾기</h7>
-                    <input type="text" name="userId" id="userId" placeholder="아이디" required="required">
-                    <input type="email" name="userEmail" id="userEmail" placeholder="이메일" required="required">
+                    <div class="signup-mesege">
+                        <img src="/static/assets/images/common/check.png"> <br>
+                        <strong>회원가입이 <span>완료</span>되었습니다.</strong>
+                        담당자가 확인 후 가입 완료 처리 되면 로그인이 가능합니다.
+                    </div>
                     <div class="log-btn">
-                        <button id="btnFindPassword">전송</button>
-                        <div class="log-info-btn">
-                            <ul>
-                                <li><a href="/login">로그인</a></li>
-                                <li><a href="/singup">회원가입</a></li>
-                            </ul>
-                        </div>
+                        <button onclick="location.href='/login'">로그인</button>
                     </div>
                 </div>
+                
             </div>
         </div>
-
-        <!--modal-->
-        <div class="modal log hide" id="completeFindPasswordModal">
-            <div class="modal-contents sm">
-                <div class="modal-body">
-                    <div class="modal-form">
-                        <span>
-                            해당 이메일로 임시비밀번호가 전송되었습니다. <br>
-                            로그인 후에 비밀번호를 변경해주세요.
-                        </span>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="modal-btn">
-                    	<button class="btn-bu" onclick="location.href='/login'">로그인하기</button>
-                        <button class="btn-bu" id="btnResend">재전송</button>
-                        <button class="btn-line-cancel" id="btnCloseModal">닫기</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--end::modal-->
     </div>
 </body>
 

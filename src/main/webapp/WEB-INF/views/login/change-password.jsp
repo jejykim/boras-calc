@@ -21,13 +21,7 @@
 	
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	<script src='/static/assets/js/common/common.js'></script>
-	<script src="/static/assets/js/login/login.js"></script>
-	<script>
-        var errorMsg = '${errorMsg}';
-        if(errorMsg != '') {
-        	alert(errorMsg);
-        }
-    </script>
+	<script src="/static/assets/js/login/changePassword.js"></script>
 
 </head>
 
@@ -39,31 +33,19 @@
                     <img src="/static/assets/images/common/logo.svg" alt="">
                     <span> 정산 시스템</span>
                 </div>
-                
-                <form action="/login/check" method="post" id="formLogin">
-	                <div class="login-info">
-	                    <h7>로그인</h7>
-	                    <input type="text" id="mId" name="userId" required="required" class="form-control m-input" placeholder="아이디">
-	                    <input type="password" id="mPw" name="userPw" required="required"  class="form-control m-input" placeholder="패스워드">
-	                    <div class="log-save">
-	                        <span>
-	                            <input class="styled-checkbox" name="idSave" id="idSave" type="checkbox"><label for="idSave">ID저장</label>
-	                        </span>
-	                    </div>
+                <form action="/change/password/ok" method="post" id="formChangePassword">
+	                <div class="login-info signup">
+	                    <h7>비밀번호 변경</h7>
+	                    <input type="password" name="userPw" id="userPw" placeholder="새 비밀번호" required="required">
+	                    <input type="password" name="userPwCheck" id="userPwCheck" placeholder="새 비밀번호 확인" required="required">
 	                    <div class="log-btn">
-	                        <button type="submit">로그인</button>
-	                        <div class="log-info-btn">
-	                            <ul>
-	                                <li><a href="/find/password">비밀번호찾기</a></li>
-	                                <li><a href="/singup">회원가입</a></li>
-	                            </ul>
-	                        </div>
+	                        <button id="btnchangePassword">변경</button>
 	                    </div>
 	                </div>
                 </form>
-                
             </div>
         </div>
+
     </div>
 </body>
 

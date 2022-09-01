@@ -3,7 +3,7 @@ Content  : FormLoad
 ========================================================================*/
 $(document).ready(function(){
 	try{
-		FindPassword.PageLoad();
+		ChangePassword.PageLoad();
 	}
 	catch(e){ console.log(e.message); }
 	
@@ -20,24 +20,24 @@ function FormBeforeUnLoad() {
 }
 
 /*=======================================================================
-FindPassword Class 명세 시작 (상수(변수)>>속성>>메서드)
+ChangePassword Class 명세 시작 (상수(변수)>>속성>>메서드)
 ========================================================================*/
-//FindPassword Class
-var FindPassword = {};
+//ChangePassword Class
+var ChangePassword = {};
 
-//FindPassword Const
+//ChangePassword Const
 
-//FindPassword Variable
+//ChangePassword Variable
 
-//FindPassword
+//ChangePassword
 var Properties = {};
-FindPassword.Properties = Properties;
+ChangePassword.Properties = Properties;
 
-//FindPassword Method
-FindPassword.PageLoad = function () { };  //메인 페이지 로드 공통 함수
-FindPassword.SetEvent = function () { };  //메인 페이지 이벤트 바인딩
+//ChangePassword Method
+ChangePassword.PageLoad = function () { };  //메인 페이지 로드 공통 함수
+ChangePassword.SetEvent = function () { };  //메인 페이지 이벤트 바인딩
 /*=======================================================================
-FindPassword Class 명세 끝
+ChangePassword Class 명세 끝
 ========================================================================*/
 
 /*=======================================================================
@@ -45,10 +45,10 @@ FindPassword Class 명세 끝
 작  성  자  : 김진열
 2022.08.05 - 최초생성
 ========================================================================*/
-FindPassword.PageLoad = function () {
+ChangePassword.PageLoad = function () {
     try {
-        FindPassword.Init();
-        FindPassword.SetEvent();
+        ChangePassword.Init();
+        ChangePassword.SetEvent();
     }
     catch (e) { console.log(e.message); }
 }
@@ -58,9 +58,11 @@ FindPassword.PageLoad = function () {
 작  성  자  : 김진열
 2022.08.05 - 최초생성
 ========================================================================*/
-FindPassword.Init = function () {
+ChangePassword.Init = function () {
     try {
-		$("#userId").focus();
+		$("#userPw").focus();
+		
+		alert("초기 비밀번호로 로그인하셨습니다.\n비밀번호를 변경 후 이용해주세요.");
     }
     catch (e) { console.log(e.message); }
 }
@@ -70,29 +72,20 @@ FindPassword.Init = function () {
 작  성  자  : 김진열
 2022.08.05 - 최초생성
 ========================================================================*/
-FindPassword.SetEvent = function () {
+ChangePassword.SetEvent = function () {
     try {
 		// 이메일 전송
-		$("#btnFindPassword").click(function() {
-			if(FindPassword.ValidationCheck()) {
-				FindPassword.SendImsiPassword("new");
+		$("#btnchangePassword").click(function() {
+			if(ChangePassword.ValidationCheck()) {
+				ChangePassword.SendImsiPassword("new");
 			}
 		});
-		$("#userEmail").keyup(function(e) {
+		$("#userPwCheck").keyup(function(e) {
 			if(e.keyCode == 13) {
-				if(FindPassword.ValidationCheck()) {
-					FindPassword.SendImsiPassword("new");
+				if(ChangePassword.ValidationCheck()) {
+					ChangePassword.SendImsiPassword("new");
 				}
 			}
-		});
-		
-		// 모달 닫기
-		$("#btnCloseModal").click(function() {
-			$("#completeFindPasswordModal").addClass("hide");
-		});
-		
-		$("#btnResend").click(function() {
-			FindPassword.SendImsiPassword("resend");
 		});
     }
     catch (e) { console.log(e.message); }
@@ -103,35 +96,9 @@ FindPassword.SetEvent = function () {
 작  성  자  : 김진열
 2022.08.05 - 최초생성
 ========================================================================*/
-FindPassword.SendImsiPassword = function (type) {
+ChangePassword.ChangePassword = function () {
     try {
-		var data = {
-			userId : $("#userId").val()
-			, userEmail : $("#userEmail").val()
-		};
-		
-		$.ajax({
-			type : "post",
-			url : "/v1/api/user/send/imsi/password",
-			data : data,
-			success : function(json){
-				if(json.resultCode == "00000") {
-					if(type == "resend") {
-						alert("재전송 되었습니다.\n최신메일을 확인해주세요.");
-					}else {
-						$("#completeFindPasswordModal").removeClass("hide");
-					}
-				}else if(json.resultCode == "10002"){
-					alert("등록된 ID와 이메일 주소가 없습니다.\n다시 입력해주세요.");
-				}else {
-					alert(json.resultMsg);
-				}
-			},
-			error: function(request,status,error,data){
-				alert("잘못된 접근 경로입니다.");
-				return false;
-			}
-		});
+		$("#formChangePassword").submit();
     }
     catch (e) { console.log(e.message); }
 }
@@ -141,24 +108,31 @@ FindPassword.SendImsiPassword = function (type) {
 작  성  자  : 김진열
 2022.08.05 - 최초생성
 ========================================================================*/
-FindPassword.ValidationCheck = function () {
+ChangePassword.ValidationCheck = function () {
     try {
 		var flag = true;
-		$("#userId").css("border", "");
-		$("#userEmail").css("border", "");
+		$("#userPw").css("border", "");
+		$("#userPwCheck").css("border", "");
 		
-		if($("#userId").val() == "") {
+		if($("#userPw").val() == "") {
 			flag = false;
-			alert("아이디를 입력해주세요");
-			$("#userId").focus();
-			$("#userId").css("border", "red solid 1px");
+			alert("새 비밀번호를 입력해주세요");
+			$("#userPw").focus();
+			$("#userPw").css("border", "red solid 1px");
 		}
 		
-		else if($("#userEmail").val() == "") {
+		else if($("#userPwCheck").val() == "") {
 			flag = false;
-			alert("이메일을 입력해주세요");
-			$("#userEmail").focus();
-			$("#userEmail").css("border", "red solid 1px");
+			alert("새 비밀번호 확인을 입력해주세요");
+			$("#userPwCheck").focus();
+			$("#userPwCheck").css("border", "red solid 1px");
+		}
+		
+		else if($("#userPw").val() != $("#userPwCheck").val()) {
+			flag = false;
+			alert("비밀번호가 다릅니다.\n재입력해주세요.");
+			$("#userPwCheck").focus();
+			$("#userPwCheck").css("border", "red solid 1px");
 		}
 		
 		return flag;
