@@ -214,4 +214,11 @@
 		ORDER BY user_join_date desc
   	</select>
   	
+  	<!-- 아이디 이메일 검증 -->
+	<select id="selectUserInfoForImsiPw" resultType="userVO" parameterType="userVO">
+		SELECT *
+		FROM users
+		WHERE user_id = #{userId}
+		AND user_email = #{userEmail}
+  	</select>
 </mapper>

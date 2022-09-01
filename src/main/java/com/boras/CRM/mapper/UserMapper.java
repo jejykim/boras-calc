@@ -87,4 +87,10 @@ public interface UserMapper {
 	 */
 	public List<UserVO> selectUserListAg(UserVO userVO);
 
+	/**
+	 * 아이디 이메일 검증
+	 * @param 
+	 * @return int
+	 */
+	public UserVO selectUserInfoForImsiPw(UserVO userVO);
 }

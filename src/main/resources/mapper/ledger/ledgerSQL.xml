@@ -14,10 +14,10 @@
 			<if test="ledgerTypeCd != null and ledgerTypeCd != ''">
 			, ledger_type_cd
 			</if>
-			<if test="ledgerDealerBrandCd != null and ledgerDealerBrandCd != ''">
+			<if test="ledgerDealerBrandCd > 0">
 			, ledger_dealer_brand_cd
 			</if>
-			<if test="ledgerDealerCompanyCd != null and ledgerDealerCompanyCd != ''">
+			<if test="ledgerDealerCompanyCd > 0">
 			, ledger_dealer_company_cd
 			</if>
 			<if test="ledgerDeliveryDate != null and ledgerDeliveryDate != ''">
@@ -82,10 +82,10 @@
 			<if test="ledgerTypeCd != null and ledgerTypeCd != ''">
 			, #{ledgerTypeCd}
 			</if>
-			<if test="ledgerDealerBrandCd != null and ledgerDealerBrandCd != ''">
+			<if test="ledgerDealerBrandCd > 0">
 			, #{ledgerDealerBrandCd}
 			</if>
-			<if test="ledgerDealerCompanyCd != null and ledgerDealerCompanyCd != ''">
+			<if test="ledgerDealerCompanyCd > 0">
 			, #{ledgerDealerCompanyCd}
 			</if>
 			<if test="ledgerDeliveryDate != null and ledgerDeliveryDate != ''">
@@ -154,19 +154,19 @@
 			<if test="ledgerTypeCd != null and ledgerTypeCd != ''">
 			, ledger_type_cd = #{ledgerTypeCd}
 			</if>
-			<if test="ledgerFinancialCompanyCd != null and ledgerFinancialCompanyCd != ''">
+			<if test="ledgerFinancialCompanyCd > 0">
 			, ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
 			</if>
-			<if test="ledgerFinancialBranchCd != null and ledgerFinancialBranchCd != ''">
+			<if test="ledgerFinancialBranchCd > 0">
 			, ledger_financial_branch_cd = #{ledgerFinancialBranchCd}
 			</if>
-			<if test="ledgerFinancialProductCd != null and ledgerFinancialProductCd != ''">
+			<if test="ledgerFinancialProductCd !> 0">
 			, ledger_financial_product_cd = #{ledgerFinancialProductCd}
 			</if>
-			<if test="ledgerDealerBrandCd != null and ledgerDealerBrandCd != ''">
+			<if test="ledgerDealerBrandCd > 0">
 			, ledger_dealer_brand_cd = #{ledgerDealerBrandCd}
 			</if>
-			<if test="ledgerDealerCompanyCd != null and ledgerDealerCompanyCd != ''">
+			<if test="ledgerDealerCompanyCd > 0">
 			, ledger_dealer_company_cd = #{ledgerDealerCompanyCd}
 			</if>
 			<if test="ledgerDeliveryDate != null and ledgerDeliveryDate != ''">
@@ -250,15 +250,18 @@
 				<if test="stateType != null and stateType != ''">
 					<choose>
 						<when test="stateType.equals('request')">
-							AND a.approval_state = '요청'
-							AND a.approval_yn = 'N'
+							AND approval_state = '요청'
+							AND approval_yn = 'N'
 						</when>
 						<when test="stateType.equals('complete')">
-							AND a.approval_state = '승인'
+							AND approval_state = '승인'
 						</when>
 						<when test="stateType.equals('left')">
-							AND a.approval_state is null
+							AND (approval_state is null or approval_state not in ('승인', '요청', '거부'))
 						</when>
+						<otherwise>
+							AND (approval_state is null or approval_state != '거부')
+						</otherwise>
 					</choose>
 				</if>
 				) as cnt
@@ -300,8 +303,11 @@
 						AND a.approval_state = '승인'
 					</when>
 					<when test="stateType.equals('left')">
-						AND a.approval_state is null
+						AND (a.approval_state is null or a.approval_state not in ('승인', '요청', '거부'))
 					</when>
+					<otherwise>
+						AND (a.approval_state is null or a.approval_state != '거부')
+					</otherwise>
 				</choose>
 			</if>
 			<if test="searchText != null and searchText != ''">
@@ -342,15 +348,18 @@
 					<if test="stateType != null and stateType != ''">
 						<choose>
 							<when test="stateType.equals('request')">
-								AND a.approval_state = '요청'
-								AND a.approval_yn = 'N'
+								AND approval_state = '요청'
+								AND approval_yn = 'N'
 							</when>
 							<when test="stateType.equals('complete')">
-								AND a.approval_state = '승인'
+								AND approval_state = '승인'
 							</when>
 							<when test="stateType.equals('left')">
-								AND a.approval_state is null
+								AND (approval_state is null or approval_state not in ('승인', '요청', '거부'))
 							</when>
+							<otherwise>
+								AND (approval_state is null or approval_state != '거부')
+							</otherwise>
 						</choose>
 					</if>
 					) as cnt
@@ -392,8 +401,11 @@
 						AND a.approval_state = '승인'
 					</when>
 					<when test="stateType.equals('left')">
-						AND a.approval_state is null
+						AND (a.approval_state is null or a.approval_state not in ('승인', '요청', '거부'))
 					</when>
+					<otherwise>
+						AND (a.approval_state is null or a.approval_state != '거부')
+					</otherwise>
 				</choose>
 			</if>
 			<if test="searchText != null and searchText != ''">
@@ -434,8 +446,12 @@
 				,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
 				,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
 				,(SELECT code_name FROM code WHERE code_id = l.ledger_type_cd) as ledgerTypeCdName
-				,(SELECT count(*) FROM approval WHERE approval_ledger_seq = ledger_seq) as cnt
-				,(SELECT approval_state FROM approval WHERE approval_ledger_seq = l.ledger_seq AND approval_user_id = #{approvalUserId}) as approval_state
+				,(SELECT count(*) FROM approval WHERE approval_ledger_seq = l.ledger_seq AND approval_user_id != 'admin' AND approval_state = '승인') as temp_state1
+				, CASE
+					WHEN (SELECT approval_state FROM approval WHERE approval_ledger_seq = l.ledger_seq AND approval_user_id = 'admin') = '거부'
+			 		THEN null
+			 		ELSE (SELECT approval_state FROM approval WHERE approval_ledger_seq = l.ledger_seq AND approval_user_id = 'admin')
+				END as approval_state
 			FROM ledger l
 			left JOIN approval a
 			ON l.ledger_seq = a.approval_ledger_seq
@@ -474,6 +490,7 @@
 					)
 			</if>
 			) data
+			WHERE temp_state1 = 0
 		ORDER BY data.approval_state, data.ledger_create_date desc
   	</select>
   	
@@ -554,15 +571,18 @@
 					<if test="stateType != null and stateType != ''">
 						<choose>
 							<when test="stateType.equals('request')">
-								AND a.approval_state = '요청'
-								AND a.approval_yn = 'N'
+								AND approval_state = '요청'
+								AND approval_yn = 'N'
 							</when>
 							<when test="stateType.equals('complete')">
-								AND a.approval_state = '승인'
+								AND approval_state = '승인'
 							</when>
 							<when test="stateType.equals('left')">
-								AND a.approval_state is null
+								AND (approval_state is null or approval_state not in ('승인', '요청', '거부'))
 							</when>
+							<otherwise>
+								AND (approval_state is null or approval_state != '거부')
+							</otherwise>
 						</choose>
 					</if>
 					) as cnt
@@ -604,8 +624,11 @@
 						AND a.approval_state = '승인'
 					</when>
 					<when test="stateType.equals('left')">
-						AND a.approval_state is null
+						AND (a.approval_state is null or a.approval_state not in ('승인', '요청', '거부'))
 					</when>
+					<otherwise>
+						AND (a.approval_state is null or a.approval_state != '거부')
+					</otherwise>
 				</choose>
 			</if>
 			<if test="searchText != null and searchText != ''">

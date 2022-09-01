@@ -126,7 +126,9 @@ LedgerAdd.SetEvent = function () {
 		
 		// 원장 등록
 		$("#btnAddLedger").click(function() {
-			LedgerAdd.addLedger();
+			if(LedgerAdd.validationCheck()) {
+				LedgerAdd.addLedger();
+			}
 		});
     }
     catch (e) { console.log(e.message); }
@@ -274,6 +276,57 @@ LedgerAdd.deleteAgBox = function (agBox) {
 }
 
 /*=======================================================================
+내      용  : 유효성 검사
+작  성  자  : 김진열
+2022.08.25 - 최초생성
+========================================================================*/
+LedgerAdd.validationCheck = function () {
+    try {
+		var flag = true;
+		
+		$("#selFinancialCompanyCode").css("border", "");
+		$("#selFinancialBranchCode").css("border", "");
+		$("#selFinancialProduct").css("border", "");
+		$("#selCodeCompany").css("border", "");
+		$("#textCustomerName").css("border", "");
+		
+		if($("#selFinancialCompanyCode").val() == "") {
+			flag = false;
+			alert("금융사를 선택해주세요");
+			$("#selFinancialCompanyCode").css("border", "1px solid red");
+		}
+		
+		else if($("#selFinancialBranchCode").val() == "") {
+			flag = false;
+			alert("금융지점을 선택해주세요");
+			$("#selFinancialBranchCode").css("border", "1px solid red");
+		}
+		
+		else if($("#selFinancialProduct").val() == "") {
+			flag = false;
+			alert("금융상품을 선택해주세요");
+			$("#selFinancialProduct").css("border", "1px solid red");
+		}
+		
+		else if($("#selCodeCompany").val() == "") {
+			flag = false;
+			alert("코드사를 선택해주세요");
+			$("#selCodeCompany").css("border", "1px solid red");
+		}
+		
+		else if($("#textCustomerName").val() == "") {
+			flag = false;
+			alert("고객명을 입력해주세요");
+			$("#textCustomerName").focus();
+			$("#textCustomerName").css("border", "1px solid red");
+		}
+		
+		return flag;
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
 내      용  : 원장 등록
 작  성  자  : 김진열
 2022.08.25 - 최초생성
@@ -288,8 +341,8 @@ LedgerAdd.addLedger = function () {
 			, "ledgerFinancialProductCd" : $("#selFinancialProduct").val()
 			, "ledgerDeliveryDate" : $("#textDeliveryDate").val()
 			, "ledgerCustomerName" : $("#textCustomerName").val()
-			, "ledgerDealerBrandCd" : $("#selDealerBrandCode").val()
-			, "ledgerDealerCompanyCd" : $("#selDealerCompanyCode").val()
+			, "ledgerDealerBrandCd" : $("#selDealerBrandCode").val() == "" ? 0 : $("#selDealerBrandCode").val()
+			, "ledgerDealerCompanyCd" : $("#selDealerCompanyCode").val() == "" ? 0 : $("#selDealerCompanyCode").val()
 			, "ledgerCarName" : $("#textCarName").val()
 			, "ledgerCarNumber" : $("#textCarNumber").val()
 			, "ledgerCarPrice" : $("#textCarPrice").val() == "" ? 0 : $("#textCarPrice").val()

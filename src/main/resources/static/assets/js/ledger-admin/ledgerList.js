@@ -105,21 +105,25 @@ LedgerList.SetEvent = function () {
 		$("#liAll").click(function() {
 			$("#searchText").val("");
 			$("#stateType").val("all");
+			$("#now_page").val("1");
 			document.searchForm.submit();
 		});
 		$("#liRequest").click(function() {
 			$("#searchText").val("");
 			$("#stateType").val("request");
+			$("#now_page").val("1");
 			document.searchForm.submit();
 		});
 		$("#liComplete").click(function() {
 			$("#searchText").val("");
 			$("#stateType").val("complete");
+			$("#now_page").val("1");
 			document.searchForm.submit();
 		});
 		$("#liLeft").click(function() {
 			$("#searchText").val("");
 			$("#stateType").val("left");
+			$("#now_page").val("1");
 			document.searchForm.submit();
 		});
 		
@@ -130,7 +134,6 @@ LedgerList.SetEvent = function () {
 			$("#ledgerCreateMonth").val($("#selMonth").val());
 			document.searchForm.submit();
 		});
-		
 		
 		// 승인요청 - 상태처리 (정상, 중복)
 		$("input[name='multiRequest']").click(function() {
@@ -217,6 +220,7 @@ LedgerList.SetEvent = function () {
 				
 				$("#textOther").val("");
 				LedgerList.selectLedgerSeq = 0;
+				LedgerList.selectAG = "";
 				
 				$("#selDealerBrand").val("");
 				$("#selDealerCompany").val("");
@@ -298,6 +302,7 @@ LedgerList.SetEvent = function () {
 				
 				$("#textOther").val("");
 				LedgerList.selectLedgerSeq = 0;
+				LedgerList.selectAG = "";
 				
 				$("#selDealerBrand").val("");
 				$("#selDealerCompany").val("");
@@ -312,7 +317,10 @@ LedgerList.SetEvent = function () {
 		
 		// AG 선택 저장
 		$("#btnAddAg").click(function() {
-			LedgerList.addAg();
+			var flag = confirm("AG를 매칭하시겠습니까?");
+			if(flag) {
+				LedgerList.addAg();
+			}
 		});
     }
     catch (e) { console.log(e.message); }
@@ -911,18 +919,31 @@ LedgerList.addDealer = function () {
 ========================================================================*/
 LedgerList.selectAgModal = function (ledgerSeq, isExist) {
     try {
+		LedgerList.selectLedgerSeq = ledgerSeq;
+		
 		if(isExist == "Y") {
 			var data = {approvalLedgerSeq : ledgerSeq};
 			
-			/*
 			$.ajax({
 				type : "post",
 				url : "/v1/api/ledger/approval/ag",
 				data : data,
 				success : function(json){
 					if(json.resultCode == "00000") {
-						alert("딜러사가 저장되었습니다.");
-						location.reload();
+						$("#divSelectedAg").children().remove();
+						
+						console.log(json.list);
+						
+						if(json.list.length > 1) {
+							LedgerList.selectAG = "중복";
+						}
+						
+						for(var item of json.list) {
+							var pTag = '<p class="on" data="' + item.approvalUserId + '"><span>' + item.userName + '</span><i class="fa fa-times" aria-hidden="true" onclick="LedgerList.deleteAg(\'' + item.approvalUserId + '\', this)"></i></p>';
+							$("#divSelectedAg").append(pTag);
+						}
+						
+						$("#agModal").removeClass("hide");
 					}else {
 						alert(json.resultMsg);
 					}
@@ -932,7 +953,6 @@ LedgerList.selectAgModal = function (ledgerSeq, isExist) {
 					return false;
 				}
 			});
-			*/
 		}else {
 			$("#divSelectedAg").children().remove();
 			
@@ -955,7 +975,7 @@ LedgerList.selectAg = function () {
 		if(agId != "") {
 			LedgerList.selectAG = agId;
 			
-			var pTag = '<p class="on"><span>' + $("#selAgList option:checked").text() + '</span><i class="fa fa-times" aria-hidden="true" onclick="LedgerList.deleteAg(\'' + agId + '\', this)"></i></p>';
+			var pTag = '<p class="on" data="' + agId + '"><span>' + $("#selAgList option:checked").text() + '</span><i class="fa fa-times" aria-hidden="true" onclick="LedgerList.deleteAg(\'' + agId + '\', this)"></i></p>';
 			
 			$("#divSelectedAg").append(pTag);
 		}
@@ -970,41 +990,59 @@ LedgerList.selectAg = function () {
 ========================================================================*/
 LedgerList.deleteAg = function (agId, iTag) {
     try {
-		LedgerList.selectAG = "";
-		
 		$(iTag).parent().remove();
+		$("#selAgList").val("");
+		
+		var pLength = $("#divSelectedAg p").length;
+		
+		if(pLength == 1) {
+			LedgerList.selectAG = $("#divSelectedAg p").attr("data");
+		}else if(pLength == 0) {
+			LedgerList.selectAG = "";
+		}
     }
     catch (e) { console.log(e.message); }
 }
 
 /*=======================================================================
-내      용  : AG 저장
+내      용  : AG 저장 + 유효성
 작  성  자  : 김진열
 2022.08.29 - 최초생성
 ========================================================================*/
 LedgerList.addAg = function () {
     try {
-		var data = {};
-		
-		/*
-		$.ajax({
-			type : "post",
-			url : "/v1/api/ledger/dealer/update",
-			data : data,
-			success : function(json){
-				if(json.resultCode == "00000") {
-					alert("딜러사가 저장되었습니다.");
-					location.reload();
-				}else {
-					alert(json.resultMsg);
+		$("#selAgList").css("border", "");
+	
+		if(LedgerList.selectAG == "중복") {
+			alert("AG를 하나만 선택해주세요");
+			$("#selAgList").css("border", "red solid 1px");
+		}else if(LedgerList.selectAG == "") {
+			alert("AG를 선택해주세요");
+			$("#selAgList").css("border", "red solid 1px");
+		}else {
+			var data = {
+				approvalUserId : LedgerList.selectAG
+				, approvalLedgerSeq : LedgerList.selectLedgerSeq
+			};
+			
+			$.ajax({
+				type : "post",
+				url : "/v1/api/ledger/mapping/ag",
+				data : data,
+				success : function(json){
+					if(json.resultCode == "00000") {
+						alert("AG가 매칭되었습니다.");
+						location.reload();
+					}else {
+						alert(json.resultMsg);
+					}
+				},
+				error: function(request,status,error,data){
+					alert("잘못된 접근 경로입니다.");
+					return false;
 				}
-			},
-			error: function(request,status,error,data){
-				alert("잘못된 접근 경로입니다.");
-				return false;
-			}
-		});
-		*/
+			});
+		}
     }
     catch (e) { console.log(e.message); }
 }
@@ -1016,6 +1054,7 @@ LedgerList.addAg = function () {
 ========================================================================*/
 LedgerList.inquiryModal = function (ledgerSeq) {
     try {
+		//LedgerList.selectLedgerSeq = ledgerSeq;
 		
 		/*
 		$.ajax({

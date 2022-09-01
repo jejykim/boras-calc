@@ -60,7 +60,13 @@ Login.PageLoad = function () {
 ========================================================================*/
 Login.Init = function () {
     try {
-		$("#mId").focus();
+		if(Common.GetCookie("userId") != null) {
+			$("#mId").val(Common.GetCookie("userId"));
+			$("#mPw").focus();
+			$("#idSave").prop("checked", true);
+		}else {
+			$("#mId").focus();
+		}
     }
     catch (e) { console.log(e.message); }
 }

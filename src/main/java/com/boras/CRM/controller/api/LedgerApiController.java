@@ -298,7 +298,7 @@ public class LedgerApiController {
 	}
 	
 	/**
-	 * 승인요청 AG
+	 * 승인요청 AG 목록
 	 */
 	@PostMapping(value = "/ledger/approval/ag")
 	public Map<String, Object> ledgerApprovalAg(HttpServletRequest req, HttpServletResponse resp, ApprovalVO approvalVO) {
@@ -317,6 +317,53 @@ public class LedgerApiController {
 			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
 			logger.error(e.getMessage());
 		}
+	   
+		return rvt;
+	}
+	
+	/**
+	 * AG mapping 관리자용
+	 */
+	@PostMapping(value = "/ledger/mapping/ag")
+	public Map<String, Object> ledgerMappingAg(HttpServletRequest req, HttpServletResponse resp, ApprovalVO approvalVO) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    approvalVO.setApprovalState("승인");
+	    approvalVO.setApprovalYn("Y");
+	    
+	    int isExist = -1;
+	    
+	    try {
+			isExist = approvalService.cntApprovalLedgerSeq(approvalVO);
+		} catch (Exception e) {
+			rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
+			logger.error(e.getMessage());
+		}
+	    
+	    if(isExist > 0) {
+	    	try {
+	    		approvalService.refusalApproval(approvalVO);
+	    		
+	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+	    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+	    	}catch (Exception e) {
+	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
+	    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
+	    		logger.error(e.getMessage());
+	    	}
+	    }else if(isExist == 0) {
+	    	try {
+	    		approvalService.insertApproval(approvalVO);
+	    		
+	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+	    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+	    	}catch (Exception e) {
+	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
+	    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
+	    		logger.error(e.getMessage());
+	    	}
+	    }
 	   
 		return rvt;
 	}

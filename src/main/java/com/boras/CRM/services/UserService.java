@@ -69,4 +69,9 @@ public class UserService implements UserMapper {
 	public List<UserVO> selectUserListAg(UserVO userVO) {
 		return userMapper.selectUserListAg(userVO);
 	}
+
+	@Override
+	public UserVO selectUserInfoForImsiPw(UserVO userVO) {
+		return userMapper.selectUserInfoForImsiPw(userVO);
+	}
 }

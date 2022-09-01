@@ -2,6 +2,7 @@ package com.boras.CRM.controller;
 
 import java.security.NoSuchAlgorithmException;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.boras.CRM.services.BlockIdService;
@@ -60,17 +62,11 @@ public class LoginController {
 	 * 로그인 확인
 	 */
 	@PostMapping(value = "/login/check")
-	public String loginCheck(Model model, HttpServletRequest req, HttpServletResponse resp, @ModelAttribute("userVO")UserVO userVO, RedirectAttributes redirectAttributes) {
+	public String loginCheck(Model model, HttpServletRequest req, HttpServletResponse resp
+			, @ModelAttribute("userVO")UserVO userVO, RedirectAttributes redirectAttributes, @RequestParam(value="idSave", required=false) String idSave) {
 		String result = "redirect:/login";
 		
 		int iResult = -1;
-		
-		/*** 임시 개발 로그인 (삭제 요망) ***/
-		if(userVO.getUserId().equals("dev") && userVO.getUserPw().equals("1234")) {
-			PermissionHelper.setTestLoginSession(req);
-			return "redirect:/dashboard";
-		}
-		/*** 임시 개발 로그인 (삭제 요망) ***/
 		
 		if(PermissionHelper.checkUserSession(req)) {
 			result = "redirect:/";
@@ -164,6 +160,15 @@ public class LoginController {
 				
 				//LogHelper.insertLog(req, logsService, "LOG001", "LA004", "LS001", "", PermissionHelper.getIP(req));
 				
+				//idSave
+				if(idSave != null) {
+					Cookie cookie = new Cookie("userId", userVO.getUserId());
+					cookie.setPath("/");
+					cookie.setSecure(true);
+					cookie.setMaxAge(60*60*60*24*30);
+					resp.addCookie(cookie);
+				}
+				
 				result = "redirect:/dashboard";
 				break;
 			case 2:
@@ -210,5 +215,15 @@ public class LoginController {
 	    req.getSession().invalidate();
 	    
 		return "redirect:/login";
+	}
+	
+	/**
+	 * 비밀번호 찾기 페이지
+	 */
+	@GetMapping(value = "/find/password")
+	public String findPassword(HttpServletRequest req, HttpServletResponse resp) {
+		String result = "login/find-password";
+	    
+		return result;
 	}
 }

@@ -122,7 +122,7 @@ public class UserApiController {
 	}
 	
 	/**
-	 * 사용자 비활성화
+	 * 아이디 중복체크
 	 */
 	@GetMapping(value = "/check/id/{id}")
 	public Map<String, Object> userCheckId(HttpServletRequest req, HttpServletResponse resp, @PathVariable("id") String id) {
@@ -289,6 +289,39 @@ public class UserApiController {
     		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00002));
     		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00002));
 		}
+		
+		return rvt;
+	}
+	
+	/**
+	 * 임시비밀번호 발송
+	 */
+	@PostMapping(value = "/send/imsi/password")
+	public Map<String, Object> sendImsiPassword(HttpServletRequest req, HttpServletResponse resp, UserVO userVO) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    boolean flag = false;
+	    
+	    try {
+			userVO = userService.selectUserInfoForImsiPw(userVO);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+	    		
+    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00002));
+    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00002));
+		}
+	    
+	    if(userVO != null) {
+	    	try {
+	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+	    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+	    	} catch (Exception e) {
+	    		logger.error(e.getMessage());
+	    		
+	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00002));
+	    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00002));
+	    	}
+	    }
 		
 		return rvt;
 	}

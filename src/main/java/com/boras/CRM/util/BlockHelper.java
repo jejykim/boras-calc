@@ -27,6 +27,12 @@ public class BlockHelper {
 	
 	private static JSONObject blockIdList = new JSONObject();
 	
+	// IP 연속 접속 시도 횟수
+	private static final int LIMIT_IP_TRY_COUNT = 9;
+	
+	// ID 계정 접근 시도 회수
+	private static final int LIMIT_ID_TRY_COUNT = 4;
+	
 	// 예외 uri 목록
 	private static String[] exceptUri = {
 			"/v1/api/user/check/id"
@@ -110,7 +116,7 @@ public class BlockHelper {
 							jobj.put("count", 0);
 						}
 						
-						if(count > 4) {
+						if(count > LIMIT_IP_TRY_COUNT) {
 							jobj.put("blockYn", "Y");
 							logger.warn("[CONNECTION IP : " + ip + ", COUNT : " + count + " ] BLOCKED");
 							
@@ -232,10 +238,10 @@ public class BlockHelper {
 		if(blockIdList.containsKey(id)) {
 			int count = (int) blockIdList.get(id);
 			
-			if(!(count > 5)) {
+			if(!(count > LIMIT_ID_TRY_COUNT+1)) {
 				count = count + 1;
 				
-				if(count > 4) {
+				if(count > LIMIT_ID_TRY_COUNT) {
 					BlockIdVO vo = new BlockIdVO();
 					vo.setBlockId(id);
 					
