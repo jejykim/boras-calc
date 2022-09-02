@@ -90,7 +90,7 @@
 					)
 			</if>
   		ORDER BY contract_create_date desc
-		LIMIT #{pagePerRows} offset #{page}
+		<!-- LIMIT #{pagePerRows} offset #{page} -->
   	</select>
   	
   	<!-- 계출 수정 -->

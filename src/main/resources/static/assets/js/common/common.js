@@ -83,7 +83,9 @@ Common.SetEvent = function () {
 Common.Comma = function (price) {
 	try {
 		if(price!=null){
-			return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+			let splitVal = price.toString().split('.');   
+			splitVal[0] = splitVal[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","); 
+			return splitVal.join("."); 
 		}
 		else{
 			return 0;
