@@ -160,7 +160,7 @@ public class PermissionHelper {
 		if(isLocalhost(req)) {
 			bRetval = true;
 		}else{
-			if(uri.equals("/") || uri.contains("login") || uri.contains("logout")) {
+			if(uri.equals("/") || uri.contains("login") || uri.contains("logout") || uri.contains("find/password") || uri.contains("singup")) {
 				bRetval = true;
 			}else if(getSessionUserPermissionLevel(req) == 0) {
 				req.getSession().invalidate();
