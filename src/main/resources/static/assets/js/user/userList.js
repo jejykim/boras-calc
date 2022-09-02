@@ -120,6 +120,12 @@ UserList.SetEvent = function () {
 		$("#btnUpdateCancelModal").click(function() {
 			$("#modalInfoUser").hide();
 		});
+		// ESC
+		$(document).keyup(function(e) {
+			if (e.keyCode == 27) { // escape key maps to keycode `27`
+				$("#modalInfoUser").hide();
+		    }
+		});
 		
 		// 계정 형태 (모달)
 		$("input[name=custom-radio]").click(function() {

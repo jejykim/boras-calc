@@ -14,8 +14,14 @@ public class FormulaService implements FormulaMapper {
 
 	@Autowired
 	FormulaMapper formulaMapper;
+	
 	@Override
 	public List<FormulaVO> selectFormulaList() {
 		return formulaMapper.selectFormulaList();
+	}
+	
+	@Override
+	public List<FormulaVO> selectFormulaListByFinancial(FormulaVO formulaVO) {
+		return formulaMapper.selectFormulaListByFinancial(formulaVO);
 	}
 }

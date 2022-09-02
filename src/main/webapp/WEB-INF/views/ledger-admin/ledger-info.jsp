@@ -24,7 +24,7 @@
 
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	<script src='/static/assets/js/common/common.js'></script>
-	<script src='/static/assets/js/ledger-admin/ledgerAdd.js'></script>
+	<script src='/static/assets/js/ledger-admin/ledgerInfo.js'></script>
 </head>
 <body>
     <div class="wrap">
@@ -41,13 +41,12 @@
                 <div class="wrapper">
                     <div class="main-header">
                         <div class="header-title">
-                            <h3>원장추가</h3>
+                            <h3>원장상세</h3>
                         </div>
                         <div class="header-sub">
                             <div class="btn">
-                                <!-- <button class="btn-bu btn-sm">수정</button>
-                                <button class="btn-red btn-sm">삭제</button> -->
-                                <button class="btn-bu btn-sm" id="btnAddLedger">추가</button>
+                                <button class="btn-bu btn-sm" id="btnUpdateLedger">수정</button>
+                                <button class="btn-red btn-sm" id="btnDeleteLedger">삭제</button>
                             </div>
                         </div>
                     </div>
@@ -67,23 +66,26 @@
                                                 <select class="col-2" id="selFinancialCompanyCode">
                                                     <option value="">--금융사를 선택해주세요--</option>
                                                     <c:forEach var="list" items="${financialCompanyCodelist }" varStatus="status">
-							                        	<option value="${list.codeId }">${list.codeName }</option>
+							                        	<option value="${list.codeId }" <c:if test="${list.codeId eq ledgerVO.ledgerFinancialCompanyCd }">selected="selected"</c:if>>${list.codeName }</option>
 							                        </c:forEach>
                                                 </select>
                                                 <select class="col-2" id="selFinancialBranchCode">
                                                     <option value="">--금융지점을 선택해주세요--</option>
+                                                    <c:forEach var="list" items="${financialBranchCodelist }" varStatus="status">
+							                        	<option value="${list.codeId }" <c:if test="${list.codeId eq ledgerVO.ledgerFinancialBranchCd }">selected="selected"</c:if>>${list.codeName }</option>
+							                        </c:forEach>
                                                 </select>
                                                 <select class="col-2" id="selFinancialProduct">
                                                     <option value="">--금융상품를 선택해주세요--</option>
                                                     <c:forEach var="list" items="${financialProductCodelist }" varStatus="status">
-							                        	<option value="${list.codeId }">${list.codeName }</option>
+							                        	<option value="${list.codeId }" <c:if test="${list.codeId eq ledgerVO.ledgerFinancialProductCd }">selected="selected"</c:if>>${list.codeName }</option>
 							                        </c:forEach>
                                                 </select>
                                                 <select class="col-2" id="selCodeCompany">
                                                     <option value="">--코드사를 선택해주세요--</option>
                                                     <c:forEach var="list" items="${codeCompanyCodelist }" varStatus="status">
 							                        	<c:if test="${list.codeName ne '전체'}">
-							                        		<option value="${list.codeId }">${list.codeName }</option>
+							                        		<option value="${list.codeId }" <c:if test="${list.codeId eq ledgerVO.ledgerTypeCd }">selected="selected"</c:if>>${list.codeName }</option>
 							                        	</c:if>
 							                        </c:forEach>
                                                 </select>
@@ -94,7 +96,7 @@
                                                 인도일
                                             </label>
                                             <div class="form-control">
-                                                <input type="date" class="col-1" id="textDeliveryDate">
+                                                <input type="date" class="col-1" id="textDeliveryDate" value="${fn:substring(ledgerVO.ledgerDeliveryDate, 0, 10) }">
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -102,7 +104,7 @@
                                                 <span style="color: red;">* </span>고객명
                                             </label>
                                             <div class="form-control">
-                                                <input type="text" placeholder="고객명을 입력하세요" class="col-1" id="textCustomerName">
+                                                <input type="text" placeholder="고객명을 입력하세요" class="col-1" id="textCustomerName" value="${ledgerVO.ledgerCustomerName }">
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -114,12 +116,17 @@
                                                     <option value="">--딜러사 브랜드를 선택해주세요--</option>
                                                     <c:forEach var="list" items="${dealerBrandCodelist }" varStatus="status">
 							                        	<c:if test="${list.codeName ne '전체'}">
-							                        		<option value="${list.codeId }">${list.codeName }</option>
+							                        		<option value="${list.codeId }" <c:if test="${list.codeId eq ledgerVO.ledgerDealerBrandCd }">selected="selected"</c:if>>${list.codeName }</option>
 							                        	</c:if>
 							                        </c:forEach>
                                                 </select>
                                                 <select class="col-2" id="selDealerCompanyCode">
                                                     <option value="">--딜러사를 선택해주세요--</option>
+                                                    <c:forEach var="list" items="${dealerCompanyCodelist }" varStatus="status">
+							                        	<c:if test="${list.codeName ne '전체'}">
+							                        		<option value="${list.codeId }" <c:if test="${list.codeId eq ledgerVO.ledgerDealerCompanyCd }">selected="selected"</c:if>>${list.codeName }</option>
+							                        	</c:if>
+							                        </c:forEach>
                                                 </select>
                                             </div>
                                         </div>
@@ -128,9 +135,9 @@
                                                 차량정보
                                             </label>
                                             <div class="form-control">
-                                                <input type="text" placeholder="차량명을 입력하세요" class="col-3" id="textCarName">
-                                                <input type="text" placeholder="차량번호를 입력하세요" class="col-3" id="textCarNumber">
-                                                <input type="text" placeholder="차량가를 입력하세요" class="col-3" id="textCarPrice">
+                                                <input type="text" placeholder="차량명을 입력하세요" class="col-3" id="textCarName" value="${ledgerVO.ledgerCarName }">
+                                                <input type="text" placeholder="차량번호를 입력하세요" class="col-3" id="textCarNumber" value="${ledgerVO.ledgerCarNumber }">
+                                                <input type="text" placeholder="차량가를 입력하세요" class="col-3" id="textCarPrice" value="<fmt:formatNumber value="${ledgerVO.ledgerCarPrice }" pattern="#,###"/>">
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -138,7 +145,7 @@
                                                 취득원가
                                             </label>
                                             <div class="form-control">
-                                                <input type="text" placeholder="취득원가를 입력하세요" class="col-1" id="textAcquisitionCost">
+                                                <input type="text" placeholder="취득원가를 입력하세요" class="col-1" id="textAcquisitionCost" value="<fmt:formatNumber value="${ledgerVO.ledgerAcquisitionCost }" pattern="#,###"/>">
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -146,7 +153,7 @@
                                                 기타사항
                                             </label>
                                             <div class="form-control">
-                                                <textarea name="" id="textOther" cols="30" rows="10" placeholder="기타사항을 입력하세요"></textarea>
+                                                <textarea name="" id="textOther" cols="30" rows="10" placeholder="기타사항을 입력하세요">${ledgerVO.ledgerOther }</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -165,10 +172,10 @@
                                                 Fee
                                             </label>
                                             <div class="form-control col-wrap">
-                                                <input type="text" placeholder="총Fee%를 입력하세요" class="col-2" id="textTotalFeePercent">
-                                                <input type="text" placeholder="총Fee 합계" class="col-2" id="textTotalFeeSum">
-                                                <input type="text" placeholder="총Fee 공급가" class="col-2" id="textTotalFeeSupplyPrice">
-                                                <input type="text" placeholder="총Fee 부가세" class="col-2" id="textTotalFeeSurtax">
+                                                <input type="text" placeholder="총Fee%를 입력하세요" class="col-2" id="textTotalFeePercent" value="${ledgerVO.ledgerTotalFeePercent }">
+                                                <input type="text" placeholder="총Fee 합계" class="col-2" id="textTotalFeeSum" value="<fmt:formatNumber value="${ledgerVO.ledgerTotalFeeSum }" pattern="#,###"/>">
+                                                <input type="text" placeholder="총Fee 공급가" class="col-2" id="textTotalFeeSupplyPrice" value="<fmt:formatNumber value="${ledgerVO.ledgerTotalFeeSupplyPrice }" pattern="#,###"/>">
+                                                <input type="text" placeholder="총Fee 부가세" class="col-2" id="textTotalFeeSurtax" value="<fmt:formatNumber value="${ledgerVO.ledgerTotalFeeSurtax }" pattern="#,###"/>">
 
                                             </div>
                                         </div>
@@ -177,10 +184,10 @@
                                                 슬라이딩
                                             </label>
                                             <div class="form-control col-wrap">
-                                                <input type="text" placeholder="슬라이딩% 를 입력하세요" class="col-2" id="textSlidingPercent">
-                                                <input type="text" placeholder="슬라이딩 합계" class="col-2" id="textSlidingSum">
-                                                <input type="text" placeholder="슬라이딩 공급가" class="col-2" id="textSlidingSupplyPrice">
-                                                <input type="text" placeholder="슬라이딩 부가세" class="col-2" id="textSlidingSurtax">
+                                                <input type="text" placeholder="슬라이딩% 를 입력하세요" class="col-2" id="textSlidingPercent" value="${ledgerVO.ledgerSlidingPercent }">
+                                                <input type="text" placeholder="슬라이딩 합계" class="col-2" id="textSlidingSum" value="<fmt:formatNumber value="${ledgerVO.ledgerSlidingSum }" pattern="#,###"/>">
+                                                <input type="text" placeholder="슬라이딩 공급가" class="col-2" id="textSlidingSupplyPrice" value="<fmt:formatNumber value="${ledgerVO.ledgerSlidingSupplyPrice }" pattern="#,###"/>">
+                                                <input type="text" placeholder="슬라이딩 부가세" class="col-2" id="textSlidingSurtax" value="<fmt:formatNumber value="${ledgerVO.ledgerSlidingSurtax }" pattern="#,###"/>">
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -188,7 +195,7 @@
                                                 추가프로모션
                                             </label>
                                             <div class="form-control">
-                                                <input type="text" placeholder="추가프로모션을 입력하세요" class="col-1" id="textAddPromotion">
+                                                <input type="text" placeholder="추가프로모션을 입력하세요" class="col-1" id="textAddPromotion" value="<fmt:formatNumber value="${ledgerVO.ledgerAddPromotion }" pattern="#,###"/>">
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -196,7 +203,7 @@
                                                 프로모션리스트-수기작성
                                             </label>
                                             <div class="form-control">
-                                                <textarea name="" id="textPromotionMemo" cols="30" rows="10" placeholder="프로모션리스트-수기작성"></textarea>
+                                                <textarea name="" id="textPromotionMemo" cols="30" rows="10" placeholder="프로모션리스트-수기작성">${ledgerVO.ledgerPromotionMemo }</textarea>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -205,6 +212,9 @@
                                             </label>
                                             <div class="form-control span-box">
                                                 <button class="btn-bu btn-sm" id="btnSelectAg">선택</button>
+                                                <c:forEach var="list" items="${approvalList }" varStatus="status">
+	                                                <span data="${list.approvalUserId }"><strong>${list.userName } </strong><i class="fa fa-times" aria-hidden="true" style="cursor: pointer;" onclick="LedgerInfo.deleteAgBox(this)"></i></span>
+                                                </c:forEach>
                                             </div>
                                         </div>
                                     </div>

@@ -16,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.boras.CRM.services.ApprovalService;
 import com.boras.CRM.services.CodeService;
 import com.boras.CRM.services.LedgerService;
 import com.boras.CRM.services.UserService;
@@ -42,6 +44,9 @@ public class LedgerController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ApprovalService approvalService;
 	
 	/*
 	 * 원장 목록 페이지 (AG용)
@@ -388,6 +393,112 @@ public class LedgerController {
 		model.addAttribute("financialCompanyCodelist", financialCompanyCodelist);
 		model.addAttribute("financialProductCodelist", financialProductCodelist);
 		model.addAttribute("dealerBrandCodelist", dealerBrandCodelist);
+    	
+		return result;
+	}
+	
+	/*
+	 * 원장 등록 페이지
+	 */
+	@GetMapping(value = "/admin/ledger/info/{ledgerSeq}")
+	public String adminLedgerInfo(Model model, HttpServletRequest req, HttpServletResponse resp, @PathVariable("ledgerSeq") int ledgerSeq) {
+		String result = "ledger-admin/ledger-info";
+		
+		// 원장 상세
+		LedgerVO ledgerVO = new LedgerVO();
+		ledgerVO.setLedgerSeq(ledgerSeq);
+		
+		try {
+			ledgerVO = ledgerService.selectLedgerDetail(ledgerVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectLedgerDetail ]");
+			logger.error(e.getMessage());
+		}
+		
+		// 승인 요청 AG
+		ApprovalVO approvalVO = new ApprovalVO();
+		approvalVO.setApprovalLedgerSeq(ledgerSeq);
+		
+		List<ApprovalVO> approvalList = new ArrayList<>();
+	    
+	    try {
+	    	approvalList = approvalService.selectRequestApprovalList(approvalVO);
+	    }catch (Exception e) {
+	    	logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectRequestApprovalList ]");
+			logger.error(e.getMessage());
+		}
+    	
+		List<CodeVO> codeCompanyCodelist = new ArrayList<>();
+		List<CodeVO> financialCompanyCodelist = new ArrayList<>();
+		List<CodeVO> financialBranchCodelist = new ArrayList<>();
+		List<CodeVO> financialProductCodelist = new ArrayList<>();
+		List<CodeVO> dealerBrandCodelist = new ArrayList<>();
+		List<CodeVO> dealerCompanyCodelist = new ArrayList<>();
+		CodeVO codeVO = new CodeVO();
+		
+		// 코드사
+		codeVO.setCodeParentId(2000);
+		try {
+			codeCompanyCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		// 금융사
+		codeVO.setCodeParentId(3000);
+		try {
+			financialCompanyCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		// 금융지점
+		codeVO.setCodeParentId(ledgerVO.getLedgerFinancialCompanyCd());
+		try {
+			financialBranchCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		// 금융상품
+		codeVO.setCodeParentId(3100);
+		try {
+			financialProductCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		// 딜러브랜드
+		codeVO.setCodeParentId(4000);
+		try {
+			dealerBrandCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		// 딜러사
+		codeVO.setCodeParentId(ledgerVO.getLedgerDealerBrandCd());
+		try {
+			dealerCompanyCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		model.addAttribute("codeCompanyCodelist", codeCompanyCodelist);
+		model.addAttribute("financialCompanyCodelist", financialCompanyCodelist);
+		model.addAttribute("financialBranchCodelist", financialBranchCodelist);
+		model.addAttribute("financialProductCodelist", financialProductCodelist);
+		model.addAttribute("dealerBrandCodelist", dealerBrandCodelist);
+		model.addAttribute("dealerCompanyCodelist", dealerCompanyCodelist);
+		
+		model.addAttribute("ledgerVO", ledgerVO);
+		model.addAttribute("approvalList", approvalList);
     	
 		return result;
 	}

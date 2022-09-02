@@ -79,4 +79,12 @@ public interface ApprovalMapper {
 	 * 
 	 */
 	public ApprovalVO selectCompeleteApprovalInfo(ApprovalVO approvalVO);
+	
+	/**
+	 * 원장 & 사용자 ID 요청건 유무 확인
+	 * @param 
+	 * @return int
+	 * 
+	 */
+	public ApprovalVO selectApprovalInfoByUserId(ApprovalVO approvalVO);
 }

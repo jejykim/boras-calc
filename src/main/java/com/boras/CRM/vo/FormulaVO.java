@@ -9,10 +9,10 @@ public class FormulaVO {
 	private String formulaType;
 	
 	// 금융상품
-	private String formulaFinancialProductCd;
+	private int formulaFinancialProductCd;
 	
 	// 금융사
-	private String formulaFinancialCompanyCd;
+	private int formulaFinancialCompanyCd;
 	
 	// 금융상품명                                   
 	private String formulaFinancialProductCdName;     
@@ -60,19 +60,19 @@ public class FormulaVO {
 		this.formulaType = formulaType;
 	}
 
-	public String getFormulaFinancialProductCd() {
+	public int getFormulaFinancialProductCd() {
 		return formulaFinancialProductCd;
 	}
 
-	public void setFormulaFinancialProductCd(String formulaFinancialProductCd) {
+	public void setFormulaFinancialProductCd(int formulaFinancialProductCd) {
 		this.formulaFinancialProductCd = formulaFinancialProductCd;
 	}
 
-	public String getFormulaFinancialCompanyCd() {
+	public int getFormulaFinancialCompanyCd() {
 		return formulaFinancialCompanyCd;
 	}
 
-	public void setFormulaFinancialCompanyCd(String formulaFinancialCompanyCd) {
+	public void setFormulaFinancialCompanyCd(int formulaFinancialCompanyCd) {
 		this.formulaFinancialCompanyCd = formulaFinancialCompanyCd;
 	}
 	

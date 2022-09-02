@@ -88,8 +88,8 @@
   			,(SELECT user_name FROM users WHERE user_id = a.approval_user_id) as userName
   		FROM approval a
   		WHERE approval_ledger_seq = #{approvalLedgerSeq}
-  		AND approval_state = '요청'
-  		AND approval_yn = 'N'
+  		AND approval_state in ('요청', '승인')
+  		<!-- AND approval_yn = 'N' -->
   	</select>
   	
   	<!-- 승인완료 상세 조회 (원장 SEQ) -->
@@ -97,5 +97,13 @@
   		SELECT *
   		FROM approval a
   		WHERE approval_seq = #{approvalSeq}
+  	</select>
+  	
+  	<!-- 원장 & 사용자 ID 요청건 유무 확인 -->
+  	<select id="selectApprovalInfoByUserId" parameterType="approvalVO" resultType="approvalVO">
+  		SELECT *
+  		FROM approval
+  		WHERE approval_ledger_seq = #{approvalLedgerSeq}
+  		AND approval_user_id = #{approvalUserId}
   	</select>
 </mapper>

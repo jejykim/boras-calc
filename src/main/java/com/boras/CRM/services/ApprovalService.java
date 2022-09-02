@@ -60,4 +60,9 @@ public class ApprovalService implements ApprovalMapper {
 		return approvalMapper.selectCompeleteApprovalInfo(approvalVO);
 	}
 
+	@Override
+	public ApprovalVO selectApprovalInfoByUserId(ApprovalVO approvalVO) {
+		return approvalMapper.selectApprovalInfoByUserId(approvalVO);
+	}
+
 }

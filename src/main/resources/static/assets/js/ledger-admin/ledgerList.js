@@ -31,7 +31,7 @@ var LedgerList = {};
 LedgerList.files = [];
 LedgerList.selectLedgerSeq = 0;
 LedgerList.selectAG = "";
-var multiRequest = "";
+
 var checkExcelFlag = false;
 
 //LedgerList
@@ -1043,6 +1043,18 @@ LedgerList.addAg = function () {
 				}
 			});
 		}
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 원장 상세 이동
+작  성  자  : 김진열
+2022.08.29 - 최초생성
+========================================================================*/
+LedgerList.ledgerInfo = function (ledgerSeq) {
+    try {
+		location.href="/admin/ledger/info/" + ledgerSeq;
     }
     catch (e) { console.log(e.message); }
 }

@@ -14,5 +14,15 @@
   		ORDER BY formula_type,formula_create_date desc
   	</select>
   	
+  	<!-- 계출 공식 조회(타입별) -->
+  	<select id="selectFormulaListByFinancial" parameterType="formulaVO" resultType="formulaVO">
+  		SELECT *
+  		,(SELECT code_name FROM code WHERE code_id = f.formula_financial_product_cd) as formulaFinancialProductCdName
+		,(SELECT code_name FROM code WHERE code_id = f.formula_financial_company_cd) as formulaFinancialCompanyCdName
+  		FROM formula f
+  		WHERE formula_financial_product_cd = #{formulaFinancialProductCd}
+  		AND formula_financial_company_cd = #{formulaFinancialCompanyCd}
+  	</select>
+  	
   
 </mapper>

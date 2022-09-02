@@ -160,7 +160,7 @@
 			<if test="ledgerFinancialBranchCd > 0">
 			, ledger_financial_branch_cd = #{ledgerFinancialBranchCd}
 			</if>
-			<if test="ledgerFinancialProductCd !> 0">
+			<if test="ledgerFinancialProductCd > 0">
 			, ledger_financial_product_cd = #{ledgerFinancialProductCd}
 			</if>
 			<if test="ledgerDealerBrandCd > 0">
@@ -228,6 +228,7 @@
 		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_product_cd) as ledgerFinancialProductCdName
 		,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
 		,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_type_cd) as ledgerTypeCdName
 		FROM ledger l
 		WHERE ledger_seq = #{ledgerSeq}
   	</select>
@@ -244,14 +245,13 @@
 				,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
 				,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
 				,(SELECT code_name FROM code WHERE code_id = l.ledger_type_cd) as ledgerTypeCdName
-				,(SELECT approval_user_id from approval where approval_ledger_seq = ledger_seq limit 1) as agUserId
+				,(SELECT approval_user_id from approval where approval_ledger_seq = ledger_seq AND approval_state != '거부' limit 1) as agUserId
 				,(SELECT approval_seq from approval where approval_ledger_seq = ledger_seq limit 1) as approval_seq
 				,(SELECT count(*) FROM approval WHERE approval_ledger_seq = ledger_seq
 				<if test="stateType != null and stateType != ''">
 					<choose>
 						<when test="stateType.equals('request')">
 							AND approval_state = '요청'
-							AND approval_yn = 'N'
 						</when>
 						<when test="stateType.equals('complete')">
 							AND approval_state = '승인'
@@ -297,7 +297,6 @@
 				<choose>
 					<when test="stateType.equals('request')">
 						AND a.approval_state = '요청'
-						AND a.approval_yn = 'N'
 					</when>
 					<when test="stateType.equals('complete')">
 						AND a.approval_state = '승인'
@@ -349,7 +348,6 @@
 						<choose>
 							<when test="stateType.equals('request')">
 								AND approval_state = '요청'
-								AND approval_yn = 'N'
 							</when>
 							<when test="stateType.equals('complete')">
 								AND approval_state = '승인'
@@ -395,7 +393,6 @@
 				<choose>
 					<when test="stateType.equals('request')">
 						AND a.approval_state = '요청'
-						AND a.approval_yn = 'N'
 					</when>
 					<when test="stateType.equals('complete')">
 						AND a.approval_state = '승인'
@@ -513,8 +510,10 @@
 			WHERE 1=1
 			AND a.approval_user_id = #{approvalUserId}
 			AND a.approval_state = '승인'
-			AND ledger_create_year = extract(year from now())
-			AND ledger_create_month = extract(month from now())
+			AND extract(year from a.approval_request_date) = extract(year from now())
+			AND extract(month from a.approval_request_date) = extract(month from now())
+			<!-- AND ledger_create_year = extract(year from now())
+			AND ledger_create_month = extract(month from now()) -->
 			<if test="sLedgerTypeCd != null and sLedgerTypeCd.size != 0">
 				AND ledger_type_cd in
 				<foreach item="item" index="index" collection="sLedgerTypeCd" open="(" separator="," close=")">
@@ -572,7 +571,6 @@
 						<choose>
 							<when test="stateType.equals('request')">
 								AND approval_state = '요청'
-								AND approval_yn = 'N'
 							</when>
 							<when test="stateType.equals('complete')">
 								AND approval_state = '승인'
@@ -617,8 +615,7 @@
 			<if test="stateType != null and stateType != ''">
 				<choose>
 					<when test="stateType.equals('request')">
-						AND a.approval_state = '요청'
-						AND a.approval_yn = 'N'
+						AND (a.approval_state = '요청' or a.approval_state != '거부')
 					</when>
 					<when test="stateType.equals('complete')">
 						AND a.approval_state = '승인'

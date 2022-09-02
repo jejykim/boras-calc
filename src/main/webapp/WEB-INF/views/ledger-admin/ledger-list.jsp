@@ -26,6 +26,7 @@
 		var sFinancialCompany = <c:choose><c:when test="${not empty ledgerVO.sLedgerFinancialCompanyCd }">${ledgerVO.sLedgerFinancialCompanyCd }</c:when><c:otherwise>[]</c:otherwise></c:choose>;
 		var sFinancialBranch = <c:choose><c:when test="${not empty ledgerVO.sLedgerFinancialBranchCd }">${ledgerVO.sLedgerFinancialBranchCd }</c:when><c:otherwise>[]</c:otherwise></c:choose>;
 		var sFinancialProduct = <c:choose><c:when test="${not empty ledgerVO.sLedgerFinancialProductCd }">${ledgerVO.sLedgerFinancialProductCd }</c:when><c:otherwise>[]</c:otherwise></c:choose>;
+		var multiRequest = "${ledgerVO.multiRequestYn }";
 	</script>
 										
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
@@ -297,10 +298,10 @@
                                         </thead>
                                         <tbody>
                                         	<c:forEach var="list" items="${list }" varStatus="status">
-	                                            <tr>
+	                                            <tr onclick="LedgerList.ledgerInfo(${list.ledgerSeq });">
 	                                            	<c:choose>
 		                                    			<c:when test="${ledgerVO.stateType eq 'request' or ledgerVO.stateType eq 'left' }">
-		                                    				<td>
+		                                    				<td onclick="event.cancelBubble=true">
 		                                    					<c:choose>
 			                                                		<c:when test="${list.cnt eq 1 }">
 			                                                			<span>
@@ -312,7 +313,7 @@
 			                                                </td>
 		                                    			</c:when>
 		                                    		</c:choose>
-	                                                <td>
+	                                                <td onclick="event.cancelBubble=true">
 	                                                	<c:choose>
 	                                                		<c:when test="${empty list.ledgerOther }">
 	                                                			<button class="btn-line-main" onclick="LedgerList.otherModal(${list.ledgerSeq }, '')">추가</button>
@@ -328,7 +329,7 @@
 	                                                <td>${list.ledgerFinancialProductCdName }</td>
 	                                                <td>${fn:substring(list.ledgerDeliveryDate, 0, 10) }</td>
 	                                                <td>${list.ledgerCustomerName }</td>
-	                                                <td>
+	                                                <td onclick="event.cancelBubble=true">
 	                                                	<c:choose>
 	                                                		<c:when test="${empty list.ledgerDealerCompanyCdName }">
 	                                                			<button class="btn-main" onclick="LedgerList.dealerModal(${list.ledgerSeq }, 0, 0)">선택</button>
@@ -346,7 +347,7 @@
 	                                                    <p><span class="font-blue">차량가 </span><span><fmt:formatNumber value="${list.ledgerCarPrice }" pattern="#,###"/></span></p>
 	                                                    <p><span class="font-red">취득원가 </span><span><fmt:formatNumber value="${list.ledgerAcquisitionCost }" pattern="#,###"/></span></p>
 	                                                </td>
-	                                                <td>
+	                                                <td onclick="event.cancelBubble=true">
 	                                                	<c:choose>
 	                                                		<c:when test="${list.cnt gt 1 }">
 	                                                			<a class="text-line" style="color: red;" onclick="LedgerList.selectAgModal(${list.ledgerSeq }, 'Y')">중복</a>
@@ -359,7 +360,7 @@
 	                                                		</c:otherwise>
 	                                                	</c:choose>
 	                                                </td>
-	                                                <td><button class="btn-pencil" onclick="LedgerList.inquiryModal(${list.ledgerSeq })"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+	                                                <td onclick="event.cancelBubble=true"><button class="btn-pencil" onclick="LedgerList.inquiryModal(${list.ledgerSeq })"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
 	                                            </tr>
                                             </c:forEach>
                                             <c:if test="${listCount eq 0 }">

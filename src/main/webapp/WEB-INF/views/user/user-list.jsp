@@ -318,17 +318,17 @@
 				                            <div class="from-title">
 				                                <div class="radio-tile-group">
 				                                	
-												    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;">
+												    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;cursor: pointer;">
 												      <input id="rY" class="radio-button" type="radio" name="radio" checked="checked" value="ag"/>
-												      <div class="radio-tile">
-												        <label for="rY" class="radio-tile-label">사용</label>
+												      <div class="radio-tile" >
+												        <label for="rY" class="radio-tile-label" style="cursor: pointer;">사용</label>
 												      </div>
 												    </div>
 												
-												    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;">
+												    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;cursor: pointer;">
 												      <input id="rN" class="radio-button" type="radio" name="radio" value="admin"/>
-												      <div class="radio-tile">
-												        <label for="rN" class="radio-tile-label">미사용</label>
+												      <div class="radio-tile" >
+												        <label for="rN" class="radio-tile-label" style="cursor: pointer;">미사용</label>
 												      </div>
 												    </div>
 												
@@ -406,14 +406,14 @@
                             <div class="from-title">
                                 <h6>가입일</h6>
                             </div>
-                            <input type="text" id="textInfoUserJoinDate">
+                            <input type="text" id="textInfoUserJoinDate" readonly="readonly">
                         </div>
                    
 	                    <div>
 	                        <div class="from-title">
 	                            <h6>마지막 접속일</h6>
 	                        </div>
-	                        <input type="text" id="textInfoUserLastAccessDate">
+	                        <input type="text" id="textInfoUserLastAccessDate" readonly="readonly">
 	                    </div>
                      </div>
                     <div class="modal-form">
@@ -421,7 +421,7 @@
                             <div class="from-title">
                                 <h6>접속 IP</h6>
                             </div>
-                            <input type="text" id="textInfoUserLastAccessIp">
+                            <input type="text" id="textInfoUserLastAccessIp" readonly="readonly">
                         </div>
                     </div>
                     
