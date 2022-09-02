@@ -17,30 +17,27 @@ import com.boras.CRM.services.CalculateService;
 import com.boras.CRM.vo.CalculateVO;
 
 @Controller
-public class CalculateController {
+public class CalculateDashboardController {
 
-	private static final Logger logger = LoggerFactory.getLogger(CalculateController.class);
+	private static final Logger logger = LoggerFactory.getLogger(CalculateDashboardController.class);
 	
 	@Autowired
 	private CalculateService calculateService;
 	
-	
 	/*
-	 * main page
+	 * 정산 대시보드 페이지
 	 */
-	@GetMapping(value = "ag/calc/list")
-	public String agCalculateList(Model model, HttpServletRequest req, HttpServletResponse resp, CalculateVO calculateVO) {
-		String result = "calculate/calculate";
-		
-		List<CalculateVO> list = new ArrayList<>();
+	@GetMapping(value = "/calc/dashboard")
+	public String calcDashboard(Model model, HttpServletRequest req, HttpServletResponse resp) {
+		String result = "calculate/dashboard";
 		
 		try {
-			list = calculateService.selectCalculateList(calculateVO);
+			
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
-		model.addAttribute("list", list);
     	
 		return result;
 	}
+	
 }

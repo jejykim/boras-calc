@@ -41,7 +41,7 @@
                 <h4>정산</h4>
                 <div class="submenu">
                     <ul>
-                        <li <%=uri.contains("/") ? "class='on'" : "" %>><a href="/"><i class="fa fa-television" aria-hidden="true"></i><span>정산 대시보드</span></a></li>
+                        <li <%=uri.contains("/calculate/dashboard") ? "class='on'" : "" %>><a href="/calc/dashboard"><i class="fa fa-television" aria-hidden="true"></i><span>정산 대시보드</span></a></li>
                         <li <%=uri.contains("/calculate/calculate") ? "class='on'" : "" %>><a href="/ag/calc/list"><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록</span></a></li>
                         <li <%=uri.contains("/calculate/calculate") ? "class='on'" : "" %>><a href="/ag/calc/list"><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록(관리자)</span></a></li>
                     </ul>
