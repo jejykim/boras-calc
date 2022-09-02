@@ -81,8 +81,13 @@ Common.SetEvent = function () {
 2022.08.17 - 최초생성
 ========================================================================*/
 Common.Comma = function (price) {
-    try {
-		return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	try {
+		if(price!=null){
+			return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		}
+		else{
+			return 0;
+		}
     }
     catch (e) { console.log(e.message); }
 }

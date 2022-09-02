@@ -27,41 +27,37 @@ public class ContractHelper {
 		try {
 			ledgerVO=ledgerService.selectLedgerDetail(ledgerVO);
 			
-			contractVO.setContractCreateMonth(ledgerVO.getLedgerCreateMonth());
-			contractVO.setContractCreateYear(ledgerVO.getLedgerCreateYear());
+			//값이 없으면 -1이아닌 조회한값으로 세팅해야됨
 			
 			//일반 총 fee
 			contractVO.setContractNomalTotalFeePercent(ledgerVO.getLedgerTotalFeePercent());
-			contractVO.setContractNomalTotalFeeSum(0);
-			
+			contractVO.setContractNomalTotalFeeSum(ledgerVO.getLedgerTotalFeeSum());
 			//일반 ag fee
-			contractVO.setContractNomalAgFeePercent(0);
-			contractVO.setContractNomalAgFeeSum(0);
-			
+			contractVO.setContractNomalAgFeePercent(ledgerVO.getLedgerTotalFeePercent());
+			contractVO.setContractNomalAgFeeSum(ledgerVO.getLedgerTotalFeeSum());
 			//일반dp fee
 			contractVO.setContractNomalDpFeePercent(0);
 			contractVO.setContractNomalDpFeeSum(0);
 			
-			//추가
-			contractVO.setContractAddTotalFeeSum(0);
-			contractVO.setContractAddAgFeeSum(0);
-			contractVO.setContractAddDpFeeSum(0);
-			
 			//슬 총
 			contractVO.setContractTotalSlidingPercent(ledgerVO.getLedgerSlidingPercent());
-			contractVO.setContractTotalSlidingSum(0);
+			contractVO.setContractTotalSlidingSum(ledgerVO.getLedgerSlidingSum());
 			//슬 ag
-			contractVO.setContractAgSlidingPercent(0);
-			contractVO.setContractAgSlidingSum(0);
-			
+			contractVO.setContractAgSlidingPercent(ledgerVO.getLedgerSlidingPercent());
+			contractVO.setContractAgSlidingSum(ledgerVO.getLedgerSlidingSum());
 			//슬 dp
 			contractVO.setContractDpSlidingPercent(0);
 			contractVO.setContractDpSlidingSum(0);
 			
-			//등록년월
-			contractVO.setContractCreateYear(0);
-			contractVO.setContractCreateMonth(0);
+			//추가
+			contractVO.setContractAddTotalFeeSum(ledgerVO.getLedgerTotalFeeSum());
+			contractVO.setContractAddAgFeeSum(ledgerVO.getLedgerSlidingSum());
+			contractVO.setContractAddDpFeeSum(ledgerVO.getLedgerTotalFeeSum()-ledgerVO.getLedgerSlidingSum());
 			
+			
+			//등록년월
+			contractVO.setContractCreateMonth(ledgerVO.getLedgerCreateMonth());
+			contractVO.setContractCreateYear(ledgerVO.getLedgerCreateYear());
 			
 			List<SurtaxSupportByFinancialVO> ssList = surtaxSupportByFinancialService.selectSurtaxSupportByFinancialList();
 			
