@@ -214,14 +214,6 @@ Contract.selectContractInfo = function (contracatSeq,trThis) {
 		$(trThis).parent().children().removeClass('on');
 		$(trThis).addClass("on");
 		Contract.ContractSeq = contracatSeq;
-		
-		var NTotalFee = 0;
-		var NAGFee = 0;
-		var NDPFee = 0;
-		var STotalFee = 0;
-		var SAGFee = 0;
-		var SDPFee = 0;
-		
 		$.ajax({
 			type : "get",
 			url : "/v1/api/contract/info/" + contracatSeq,
@@ -234,6 +226,9 @@ Contract.selectContractInfo = function (contracatSeq,trThis) {
 					//취득원가 세팅
 					Contract.ledgerAcquisitionCost = contract.ledgerAcquisitionCost;
 					
+					console.log("Contract.ledgerCarPrice : "+Contract.ledgerCarPrice)
+					console.log("Contract.ledgerAcquisitionCost : "+Contract.ledgerAcquisitionCost)
+					
 					//금융상품 세팅
 					Contract.ledgerFinancialProductCd = contract.ledgerFinancialProductCd;
 					//금융사 세팅
@@ -245,75 +240,7 @@ Contract.selectContractInfo = function (contracatSeq,trThis) {
 					Contract.contractTotalSlidingPercent = contract.contractTotalSlidingPercent;
 					Contract.contractAgSlidingPercent = contract.contractAgSlidingPercent;
 					Contract.contractDpSlidingPercent = contract.contractDpSlidingPercent;
-										
-					$('#txtContractNomalTotalFeePercent').val(contract.contractNomalTotalFeePercent);
-					$('#txtContractNomalAgFeePercent').val(contract.contractNomalAgFeePercent);
-					$('#txtContractNomalDpFeePercent').val(contract.contractNomalDpFeePercent);
-					
-					for(var i=0; i<json.formulaList.length; i++){
-						var formula = json.formulaList[i];
-						if(formula.formulaType=='NTotalFee' && formula.formulaFinancialProductCd==contract.ledgerFinancialProductCd){
-							if(formula.formulaFinancialCompanyCd==contract.ledgerFinancialCompanyCd){
-								NTotalFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],formula.formula3)
-							}else{
-								NTotalFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],formula.formula3)
-							}
-						}else if(formula.formulaType=='NAGFee' && formula.formulaFinancialProductCd==contract.ledgerFinancialProductCd){
-							if(formula.formulaFinancialCompanyCd==contract.ledgerFinancialCompanyCd){
-								NAGFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],formula.formula3)	
-							}else{
-								NAGFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],formula.formula3) 
-							}
-						}else if(formula.formulaType=='NDPFee' && formula.formulaFinancialProductCd==contract.ledgerFinancialProductCd){
-							if(formula.formulaFinancialCompanyCd==contract.ledgerFinancialCompanyCd){
-								NDPFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],formula.formula3)
-							}else{
-								NDPFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],formula.formula3)
-							}
-						}else if(formula.formulaType=='STotalFee' && formula.formulaFinancialProductCd==contract.ledgerFinancialProductCd){
-							if(formula.formulaFinancialCompanyCd==contract.ledgerFinancialCompanyCd){
-								STotalFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],formula.formula3)
-							}else{
-								STotalFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],formula.formula3)
-							}
-						}else if(formula.formulaType=='SAGFee' && formula.formulaFinancialProductCd==contract.ledgerFinancialProductCd){
-							if(formula.formulaFinancialCompanyCd==contract.ledgerFinancialCompanyCd){
-								SAGFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],formula.formula3)	
-							}else{
-								SAGFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],formula.formula3) 
-							}
-						}else if(formula.formulaType=='SDPFee' && formula.formulaFinancialProductCd==contract.ledgerFinancialProductCd){
-							if(formula.formulaFinancialCompanyCd==contract.ledgerFinancialCompanyCd){
-								SDPFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],formula.formula3)
-							}else{
-								SDPFee = Contract.Calculation(contract[formula.formula1],contract[formula.formula2],formula.formula3)
-							}
-						}
-					}
-					
-					/*
-					//금융상품이 렌트
-					if(json.info.ledgerFinancialProductCd==3101){
-						var price = json.info.ledgerCarPrice;
-					}
-					//금융상품이 리스
-					else if(json.info.ledgerFinancialProductCd==3102){
-						var price = json.info.ledgerAcquisitionCost;
-					}
-					*/
-					var nomalTotalFeeSum = Common.Comma(NTotalFee);
-					var nomalAgFeeSum = Common.Comma(NAGFee);
-					var nomalDpFeeSum = Common.Comma(NDPFee);
-					
-					var slidingTotalFeeSum = Common.Comma(STotalFee);
-					var slidingAgFeeSum = Common.Comma(SAGFee);
-					var slidingDpFeeSum = Common.Comma(SDPFee);
-					
-					$('#txtContractNomalTotalFeeSum').val(nomalTotalFeeSum);
-					$('#txtContractNomalAgFeeSum').val(nomalAgFeeSum);
-					$('#txtContractNomalDpFeeSum').val(nomalDpFeeSum);
-					
-					
+								
 					$('#selContractAgFeeSurtaxSupport').val(json.info.contractAgFeeSurtaxSupportYn);
 					
 					$('#txtContractAddTotalFeeSum').val(json.info.contractAddTotalFeeSum);
@@ -327,10 +254,6 @@ Contract.selectContractInfo = function (contracatSeq,trThis) {
 					$('#txtContractDpSlidingPercent').val(json.info.contractDpSlidingPercent);
 					
 					
-					$('#txtContractTotalSlidingSum').val(slidingTotalFeeSum);
-					$('#txtContractAgSlidingSum').val(slidingAgFeeSum);
-					$('#txtContractDpSlidingSum').val(slidingDpFeeSum);
-					
 					$('#selContractAddFeeSurtaxSupport').val(json.info.contractAddFeeSurtaxSupportYn);
 					
 				}else {
@@ -342,6 +265,8 @@ Contract.selectContractInfo = function (contracatSeq,trThis) {
 				return false;
 			}
 		});
+		
+		Contract.ContractCalculation();
 	    }
     catch (e) { console.log(e.message); }
 }
@@ -437,17 +362,6 @@ Contract.getFormulaList = function () {
 Contract.ContractCalculation = function () {
     try {
 	
-	
-console.log(Contract.ledgerCarPrice)
-console.log(Contract.ledgerAcquisitionCost)
-console.log(Contract.ledgerFinancialProductCd)
-console.log(Contract.ledgerFinancialCompanyCd)
-console.log(Contract.contractNomalTotalFeePercent)
-console.log(Contract.contractNomalAgFeePercent)
-console.log(Contract.contractNomalDpFeePercent)
-console.log(Contract.contractTotalSlidingPercent)
-console.log(Contract.contractAgSlidingPercent)
-console.log(Contract.contractDpSlidingPercent)
 		var price1 = 0;
 		var price2 = 0;
 		var price3 = 0;
@@ -603,9 +517,6 @@ console.log(Contract.contractDpSlidingPercent)
 			}
 			
 		}
-		console.log(NTotalFee);
-		console.log(NTotalFee.sum);
-		console.log(NTotalFee.percent);
 		var nomalTotalFeePercent = Common.Comma(NTotalFee.percent);
 		var nomalAgFeePercent = Common.Comma(NAGFee.percent);
 		var nomalDpFeePercent = Common.Comma(NDPFee.percent);
