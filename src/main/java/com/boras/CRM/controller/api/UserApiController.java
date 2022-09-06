@@ -23,10 +23,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.boras.CRM.services.CodeService;
+import com.boras.CRM.services.LoginService;
 import com.boras.CRM.services.UserService;
 import com.boras.CRM.util.EmailHelper;
 import com.boras.CRM.util.HashHelper;
 import com.boras.CRM.util.NonceHelper;
+import com.boras.CRM.util.PasswordRole;
+import com.boras.CRM.util.PermissionHelper;
 import com.boras.CRM.util.ResultCode;
 import com.boras.CRM.util.ResultCode.ResultNum;
 import com.boras.CRM.vo.CodeVO;
@@ -46,6 +49,9 @@ public class UserApiController {
 	
 	@Autowired
 	private JavaMailSenderImpl mailSender;
+	
+	@Autowired
+	private LoginService loginService;
 	
 	HashHelper hashHelper = new HashHelper();
 	
@@ -173,20 +179,71 @@ public class UserApiController {
 	 * 사용자 비밀번호 변경
 	 */
 	@PostMapping(value = "/update/pw")
-	public Map<String, Object> userUpdatePw(HttpServletRequest req, HttpServletResponse resp, UserVO userVO) {
+	public Map<String, Object> userUpdatePw(HttpServletRequest req, HttpServletResponse resp, UserVO userVO
+			, @RequestParam("nowPw")String nowPw, @RequestParam("newPw")String newPw, @RequestParam("newPwCheck")String newPwCheck) { 
 	    Map<String, Object> rvt = new HashMap<>();
 	    
-	    try {
-	    	userService.changeUserPw(userVO);
-			
-	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
-    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
-		} catch (Exception e) {
-			logger.error(e.getMessage());
+	    userVO.setUserId(PermissionHelper.getSessionUserId(req));
+	    
+	    // 비밀번호 규칙성 확인
+	    Map<String, Object> passwordMap = PasswordRole.checkPassword(newPw, userVO.getUserId());
+	    if((boolean) passwordMap.get("flag")) {
+	    	// 현재 비밀번호 확인
+	    	String salt = null;
+	    	
+	    	try {
+	    		salt = loginService.selectUserSalt(userVO);
+	    	} catch (Exception e) {
+	    		logger.error("[ URL : " + req.getRequestURI() + " ] ERROR : DB_selectUserSalt");
+	    		logger.error(e.getMessage());
+	    	}
+	    	
+	    	if(salt != null) {
+	    		try {
+	    			userVO.setUserPw(new HashHelper().sha512(nowPw, salt));
+	    		} catch (NoSuchAlgorithmException e) {
+	    			logger.error("[ URL : " + req.getRequestURI() + " ] ERROR : Hashing PW");
+	    			logger.error(e.getMessage());
+	    		}
+	    	}
+	    	
+	    	int loginCheck = 0;
+	    	try {
+	    		loginCheck = loginService.login(userVO);
+	    	} catch (Exception e) {
+	    		logger.error("[ URL : " + req.getRequestURI() + " ] ERROR : login");
+	    		logger.error(e.getMessage());
+	    	}
+	    	
+	    	if(loginCheck == 1) {
+	    		try {
+	    			userVO.setUserPw(new HashHelper().sha512(newPw, salt));
+	    		} catch (NoSuchAlgorithmException e) {
+	    			logger.error("[ URL : " + req.getRequestURI() + " ] ERROR : Hashing PW");
+	    			logger.error(e.getMessage());
+	    		}
 	    		
-    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00002));
-    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00002));
-		}
+	    		try {
+	    			userService.changeUserPw(userVO);
+	    			
+	    			rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+	    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+	    		} catch (Exception e) {
+	    			logger.error(e.getMessage());
+	    			
+	    			rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00002));
+	    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00002));
+	    		}
+	    	}else {
+	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
+    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
+    			rvt.put("msg", "현재 비밀번호가 다릅니다");
+	    	}
+	    }else {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10003));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10003));
+			rvt.put("msg", passwordMap.get("msg").toString());
+	    }
 		
 		return rvt;
 	}

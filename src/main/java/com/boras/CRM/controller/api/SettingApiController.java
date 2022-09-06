@@ -101,6 +101,60 @@ public class SettingApiController {
 	}
 	
 	/**
+	 * 원장 엑셀 설정 수정
+	 */
+	@PostMapping(value = "/ledger/setting/excel/update")
+	public Map<String, Object> ledgerSettingExcelUpdate(HttpServletRequest req, HttpServletResponse resp, @RequestPart("ledgerExcelFile") MultipartFile ledgerExcelFile, @RequestPart("ledgerExcelVO") LedgerExcelVO ledgerExcelVO) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    boolean fileFlag = true;
+	    
+	    ledgerExcelVO.setLedgerExcelFile(ledgerExcelFile);
+	    
+	    // excel 양식 유무 확인
+	    if(ledgerExcelVO.getLedgerExcelFile() != null) {
+	    	try {
+	    		Map<String, Object> fileMap = fileHelper.saveFile(ledgerExcelVO.getLedgerExcelFile().getOriginalFilename(), ledgerExcelVO.getLedgerExcelFile().getBytes(), req, "ledger_excel_setting", "F", serverPath);
+	    		
+	    		if(fileMap.get("success").toString().equals("Y")) {
+	    			ledgerExcelVO.setLedgerExcelFileName(ledgerExcelVO.getLedgerExcelFile().getOriginalFilename());
+	    			ledgerExcelVO.setLedgerExcelFilePath(fileMap.get("RealFilePath").toString());
+	    		}else {
+	    			fileFlag = false;
+					
+					rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_30001));
+			    	rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_30001));
+	    		}
+			} catch (IOException e) {
+				logger.error(e.getMessage());
+				fileFlag = false;
+				
+				rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_30001));
+		    	rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_30001));
+			}
+	    }
+	    
+	    if(fileFlag) {
+	    	ledgerExcelVO.setLedgerExcelUpdateId(PermissionHelper.getSessionUserId(req));
+	    	
+	    	// DB 저장
+	    	try {
+	    		ledgerExcelService.updateLedgerExcelSetting(ledgerExcelVO);
+	    		
+	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+	    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+	    	} catch (Exception e) {
+	    		logger.error(e.getMessage());
+	    		
+	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00002));
+	    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00002));
+	    	}
+	    }
+		
+		return rvt;
+	}
+	
+	/**
 	 * 원장 엑셀 설정 목록
 	 */
 	@PostMapping(value = "/ledger/setting/excel/list")

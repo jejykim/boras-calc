@@ -11,7 +11,7 @@
             <i class="i-menu"></i>
         </div>
         <ul>
-            <li class="mainmenu"><a href="/dashboard"><i class="fa fa-home" aria-hidden="true"></i>Dashboard</a></li>
+            <li class="mainmenu <%=uri.contains("/dashboard/dashboard") ? "on" : "" %>"><a href="/dashboard"><i class="fa fa-home" aria-hidden="true"></i>Dashboard</a></li>
             <li class="mainmenu">
                 <h4>사용자</h4>
                 <div class="submenu">

@@ -84,18 +84,38 @@ public class LedgerController {
 		
 		int totalCount = 0;
 		int requestCount = 0;
+		int compeleteCount = 0;
 		
 		for(Map<String, Object> map : approvalCount) {
 			if(map.get("approval_state").toString().equals("전체")) {
 				totalCount = Integer.parseInt(map.get("cnt").toString());
 			}else if(map.get("approval_state").toString().equals("요청")) {
 				requestCount = Integer.parseInt(map.get("cnt").toString());
+			}else if(map.get("approval_state").toString().equals("승인")) {
+				requestCount = Integer.parseInt(map.get("cnt").toString());
+			}
+		}
+		
+		// AG 코드사 조회
+		UserVO userVO = new UserVO();
+		userVO.setUserId(PermissionHelper.getSessionUserId(req));
+		
+		try {
+			userVO =userService.selectUserInfo(userVO);
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectUserInfo ]");
+			logger.error(e.getMessage());
+		}
+		
+		if(userVO != null) {
+			if(userVO.getUserPermissionCd() >= 1200 && userVO.getUserPermissionCd() < 1300 && userVO.getUserCodeCompanyCd() > 2001 && userVO.getUserCodeCompanyCd() < 3000) {
+				ledgerVO.setLedgerTypeCd(userVO.getUserCodeCompanyCd());
 			}
 		}
 		
 		List<LedgerVO> list = new ArrayList<>();
 		
-		if(totalCount > 0 && !(requestCount > 0)) {
+		if(totalCount > 0 && totalCount == compeleteCount) {
 			try {
 				list = ledgerService.selectLedgerListForAgDone(ledgerVO);
 			} catch (Exception e) {

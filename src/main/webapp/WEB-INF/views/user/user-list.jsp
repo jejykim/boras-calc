@@ -90,7 +90,7 @@
                                                 <th>사용여부</th>
                                                 <th>마지막 접속일</th>
                                                 <th>접속 IP</th>
-                                                <th>로그인 여부</th>
+                                                <th>접속 여부</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -148,7 +148,16 @@
 	                                                	${fn:substring(list.userLastAccessDate, 0, 19) }
 	                                                </td>
 	                                                <td>${list.userLastAccessIp }</td>
-	                                                <td>${list.sessionLive }</td>
+	                                                <td>
+	                                                	<c:choose>
+	                                                		<c:when test="${list.sessionLive eq 'Y' }">
+	                                                			<span style="color: green;">접속중</span>
+	                                                		</c:when>
+	                                                		<c:otherwise>
+	                                                			<!-- <span style="color: gray;">미접속</span> -->
+	                                                		</c:otherwise>
+	                                                	</c:choose>
+	                                                </td>
 	                                            </tr>
                                         	</c:forEach>
                                         	<c:if test="${listCount eq 0 }">

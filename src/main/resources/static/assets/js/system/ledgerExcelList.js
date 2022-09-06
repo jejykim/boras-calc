@@ -29,6 +29,7 @@ var LedgerExcelList = {};
 
 //LedgerExcelList Variable
 LedgerExcelList.files = [];
+LedgerExcelList.ledgerExcelSeq = 0;
 var checkIdFlag = false;
 
 //LedgerExcelList
@@ -68,6 +69,10 @@ LedgerExcelList.Init = function () {
 		}
 		
 		LedgerExcelList.getFinancialBranchList($("#selFinancialCompanyCode").val());
+		
+		if($("input[name='common-radio']:checked").val() == "Y") {
+			$("#modalAddExcel input[type=text]").attr("disabled", "disabled");
+		}
     }
     catch (e) { console.log(e.message); }
 }
@@ -79,6 +84,15 @@ LedgerExcelList.Init = function () {
 ========================================================================*/
 LedgerExcelList.SetEvent = function () {
     try {
+		// 통합 엑셀 사용여부
+		$("input[name=common-radio]").change(function() {
+			if($("input[name='common-radio']:checked").val() == "Y") {
+				$("#modalAddExcel input[type=text]").attr("disabled", "disabled");
+			}else {
+				$("#modalAddExcel input[type=text]").removeAttr("disabled");
+			}
+		});
+	
 		// 상태 탭 li
 		$("#liAll").click(function() {
 			$("#searchText").val("");
@@ -118,7 +132,22 @@ LedgerExcelList.SetEvent = function () {
 			if($(this).parent().parent().parent().parent().hasClass("modal")) {
 				var filter = $(this).parent().parent().parent().parent();
 				filter.addClass("hide");
+				LedgerExcelList.files = [];
+				Dropzone.forElement("#my-dropzone").removeAllFiles(true);
+				Dropzone.forElement("#my-dropzone2").removeAllFiles(true);
+				$("input[type=text]").val("");
 			}
+		});
+		// ESC
+		$(document).keyup(function(e) {
+			if (e.keyCode == 27) { // escape key maps to keycode `27`
+				$(document).find(".modal").addClass("hide");
+				
+				LedgerExcelList.files = [];
+				Dropzone.forElement("#my-dropzone").removeAllFiles(true);
+				Dropzone.forElement("#my-dropzone2").removeAllFiles(true);
+				$("input[type=text]").val("");
+		    }
 		});
 		
 		// 원장 excel 등록 btnAddExcelSettingOk
@@ -129,6 +158,14 @@ LedgerExcelList.SetEvent = function () {
 		// 금융지점 변경
 		$("#selFinancialCompanyCode").change(function() {
 			LedgerExcelList.getFinancialBranchList($("#selFinancialCompanyCode").val());
+		});
+		
+		// 원장 excel 수정
+		$("#btnModifyExcelSettingOk").click(function() {
+			var flag = confirm("정말 수정하시겠습니까?");
+			if(flag) {
+				LedgerExcelList.modifyExcelSetting();
+			}
 		});
     }
     catch (e) { console.log(e.message); }
@@ -198,6 +235,70 @@ LedgerExcelList.addExcelSetting = function () {
 			success : function(json){
 				if(json.resultCode == "00000") {
 					alert("등록되었습니다");
+					location.reload();
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 원장 excel setting 수정
+작  성  자  : 김진열
+2022.08.25 - 최초생성
+========================================================================*/
+LedgerExcelList.modifyExcelSetting = function () {
+    try {
+		var formData = new FormData($("#addForm")[0]);
+		
+		if(LedgerExcelList.files.length > 0) {
+			formData.append("ledgerExcelFile", LedgerExcelList.files[0]);
+		}
+		
+    	var data = {
+			"ledgerFinancialCompanyCd" : $("#textFinancialCompanyCd").val()
+			, "ledgerFinancialBranchCd" : $("#textFinancialBranchCd").val()
+			, "ledgerFinancialProductCd" : $("#textFinancialProductcd").val()
+			, "ledgerExcelUseYn" : $("input[name='auto-radio2']:checked").val()
+			, "ledgerExcelCommonYn" : $("input[name='common-radio2']:checked").val()
+			, "ledgerExcelHeaderRow" : $("#textExcelHeader2").val()
+			, "ledgerExcelSheet" : $("#textExcelSheet2").val()
+			, "ledgerCarPrice" : $("#textCarPrice2").val()
+			, "ledgerAcquisitionCost" : $("#textAcquisitionCost2").val()
+			, "ledgerDeliveryDate" : $("#textDeliveryDate2").val()
+			, "ledgerCustomerName" : $("#textCustomerName2").val()
+			, "ledgerCarName" : $("#textCarName2").val()
+			, "ledgerCarNumber" : $("#textCarNumber2").val()
+			, "ledgerTotalFeePercent" : $("#textTotalFeePercent2").val()
+			, "ledgerTotalFeeSum" : $("#textTotalFeeSum2").val()
+			, "ledgerTotalFeeSupplyPrice" : $("#textTotalFeeSupplyPrice2").val()
+			, "ledgerTotalFeeSurtax" : $("#textTotalFeeSurtax2").val()
+			, "ledgerSlidingPercent" : $("#textSlidingPercent2").val()
+			, "ledgerSlidingSum" : $("#textSlidingSum2").val()
+			, "ledgerSlidingSupplyPrice" : $("#textSlidingSupplyPrice2").val()
+			, "ledgerSlidingSurtax" : $("#textSlidingSurtax2").val()
+			, "ledgerExcelSeq" : LedgerExcelList.ledgerExcelSeq
+		};
+		
+		formData.append("ledgerExcelVO", new Blob([JSON.stringify(data)], {type: "application/json"}));
+		
+		$.ajax({
+			type : "post",
+			url : "/v1/api/ledger/setting/excel/update",
+			data : formData,
+			contentType: false,
+			processData: false,
+			enctype: 'multipart/form-data',
+			success : function(json){
+				if(json.resultCode == "00000") {
+					alert("수정되었습니다");
 					location.reload();
 				}else {
 					alert(json.resultMsg);
@@ -314,6 +415,82 @@ LedgerExcelList.getFinancialBranchList = function (codeParentId) {
 						
 						$("#selFinancialBranchCode").append(option);
 					}
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 원장 상세 모달
+작  성  자  : 김진열
+2022.08.25 - 최초생성
+========================================================================*/
+LedgerExcelList.getledgerExcelInfo = function (ledgerExcelSeq) {
+    try {
+		LedgerExcelList.ledgerExcelSeq = ledgerExcelSeq;
+		
+		var data = {
+			ledgerExcelSeq : ledgerExcelSeq
+		};
+		
+		$.ajax({
+			type : "post",
+			url : "/v1/api/ledger/setting/excel/detail",
+			data : data,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					var vo = json.ledgerExcelVO;
+					
+					$("#textFinancialCompanyCode2").val(vo.ledgerFinancialCompanyCdName);
+					$("#textFinancialBranchCode2").val(vo.ledgerFinancialBranchCdName);
+					$("#textFinancialProduct2").val(vo.ledgerFinancialProductCdName);
+					
+					$("#textFinancialCompanyCd").val(vo.ledgerFinancialCompanyCd);
+					$("#textFinancialBranchCd").val(vo.ledgerFinancialBranchCd);
+					$("#textFinancialProductcd").val(vo.ledgerFinancialProductCd);
+					
+					if(vo.ledgerExcelUseYn == "Y") {
+						$("#arY2").prop("checked", true);
+					}else {
+						$("#arN2").prop("checked", true);
+					}
+					
+					if(vo.ledgerExcelCommonYn == "Y") {
+						$("#crY2").prop("checked", true);
+						
+						$("#modalInfoExcel input[type=text]").attr("disabled", "disabled");
+					}else {
+						$("#crN2").prop("checked", true);
+					}
+					
+					$("#textExcelHeader2").val(vo.ledgerExcelHeaderRow);
+					$("#textExcelSheet2").val(vo.ledgerExcelSheet);
+					$("#textCarPrice2").val(vo.ledgerCarPrice);
+					$("#textAcquisitionCost2").val(vo.ledgerAcquisitionCost);
+					$("#textDeliveryDate2").val(vo.ledgerDeliveryDate);
+					$("#textCustomerName2").val(vo.ledgerCustomerName);
+					$("#textCarName2").val(vo.ledgerCarName);
+					$("#textCarNumber2").val(vo.ledgerCarNumber);
+					$("#textTotalFeePercent2").val(vo.ledgerTotalFeePercent);
+					$("#textTotalFeeSum2").val(vo.ledgerTotalFeeSum);
+					$("#textTotalFeeSupplyPrice2").val(vo.ledgerTotalFeeSupplyPrice);
+					$("#textTotalFeeSurtax2").val(vo.ledgerTotalFeeSurtax);
+					$("#textSlidingPercent2").val(vo.ledgerSlidingPercent);
+					$("#textSlidingSum2").val(vo.ledgerSlidingSum);
+					$("#textSlidingSupplyPrice2").val(vo.ledgerSlidingSupplyPrice);
+					$("#textSlidingSurtax2").val(vo.ledgerSlidingSurtax);
+					$("#aExcelFile").attr("href", vo.ledgerExcelFilePath);
+					$("#aExcelFile").html(vo.ledgerExcelFileName);
+					
+					$("#modalInfoExcel").removeClass("hide");
 				}else {
 					alert(json.resultMsg);
 				}

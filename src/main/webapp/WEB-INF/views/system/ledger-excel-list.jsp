@@ -90,7 +90,7 @@
                                         </thead>
                                         <tbody>
                                         	<c:forEach var="list" items="${list }" varStatus="status">
-	                                            <tr>
+	                                            <tr onclick="LedgerExcelList.getledgerExcelInfo(${list.ledgerExcelSeq });">
 	                                                <td>${list.ledgerFinancialCompanyCdName }</td>
 	                                                <td>${list.ledgerFinancialBranchCdName }</td>
 	                                                <td>${list.ledgerFinancialProductCdName }</td>
@@ -123,17 +123,17 @@
 	                                                </td>
 	                                                <td>
 	                                                	<c:choose>
-	                                                		<c:when test="${empty ledgerExcelUpdateId }">
-	                                                			${ledgerExcelCreateId }
+	                                                		<c:when test="${empty list.ledgerExcelUpdateId }">
+	                                                			${list.ledgerExcelCreateId }
 	                                                		</c:when>
 	                                                		<c:otherwise>
-	                                                			${ledgerExcelUpdateId }
+	                                                			${list.ledgerExcelUpdateId }
 	                                                		</c:otherwise>
 	                                                	</c:choose>
 	                                                </td>
 	                                                <td>
 	                                                	<c:choose>
-	                                                		<c:when test="${empty ledgerExcelUpdateDate }">
+	                                                		<c:when test="${empty list.ledgerExcelUpdateDate }">
 	                                                			${fn:substring(list.ledgerExcelCreateDate, 0, 19) }
 	                                                		</c:when>
 	                                                		<c:otherwise>
@@ -372,11 +372,245 @@
         </div>
         <!--end::modal-->
         
+        <!--modal / 원장 엑셀 상세-->
+        <div class="modal hide" id="modalInfoExcel">
+            <div class="modal-contents" style="width: 580px;">
+                <div class="modal-head">
+                    <h4>원장 Excel 수정</h4>
+                </div>
+                <div class="modal-body">
+		            <div class="modal-form custom-modal-input-3">
+		            	<div>
+                            <div class="from-title">
+                                <h6>금융사</h6>
+                            </div>
+                            <input type="text" disabled="disabled" id="textFinancialCompanyCode2">
+                            <input type="hidden" id="textFinancialCompanyCd">
+                        </div>
+		            	<div>
+                            <div class="from-title">
+                                <h6>금융지점</h6>
+                            </div>
+                            <input type="text" disabled="disabled" id="textFinancialBranchCode2">
+                            <input type="hidden" id="textFinancialBranchCd">
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>금융상품</h6>
+                            </div>
+                            <input type="text" disabled="disabled" id="textFinancialProduct2">
+                            <input type="hidden" id="textFinancialProductcd">
+                        </div>
+                    </div>
+                    <div class="modal-form input-sh">
+		            	<div>
+                            <div class="from-title">
+                                <h6>자동화 사용여부</h6>
+                            </div>
+                            <div>
+	                            <div class="from-title">
+	                                <div class="radio-tile-group">
+									    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;">
+									      <input id="arY2" class="radio-button" type="radio" name="auto-radio2" checked="checked" value="Y"/>
+									      <div class="radio-tile">
+									        <label for="arY2" class="radio-tile-label">사용</label>
+									      </div>
+									    </div>
+									    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;">
+									      <input id="arN2" class="radio-button" type="radio" name="auto-radio2" value="N"/>
+									      <div class="radio-tile">
+									        <label for="arN2" class="radio-tile-label">미사용</label>
+									      </div>
+									    </div>
+									  </div>
+	                            </div>
+	                        </div>
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>통합 엑셀 사용여부</h6>
+                            </div>
+                            <div>
+	                            <div class="from-title">
+	                                <div class="radio-tile-group">
+									    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;">
+									      <input id="crY2" class="radio-button" type="radio" name="common-radio2" checked="checked" value="Y"/>
+									      <div class="radio-tile">
+									        <label for="crY2" class="radio-tile-label">사용</label>
+									      </div>
+									    </div>
+									    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;">
+									      <input id="crN2" class="radio-button" type="radio" name="common-radio2" value="N"/>
+									      <div class="radio-tile">
+									        <label for="crN2" class="radio-tile-label">미사용</label>
+									      </div>
+									    </div>
+									  </div>
+	                            </div>
+	                        </div>
+                        </div>
+                    </div>
+                    <div class="modal-form custom-modal-input-4">
+		            	<div>
+                            <div class="from-title">
+                                <h6>엑셀 헤더 열 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) A3" id="textExcelHeader2">
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>엑셀 시트 명</h6>
+                            </div>
+                            <input type="text" placeholder="예) sheet1" id="textExcelSheet2">
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>차량가 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textCarPrice2">
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>취득원가</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textAcquisitionCost2">
+                        </div>
+                    </div>
+                    <div class="modal-form custom-modal-input-4">
+		            	<div>
+                            <div class="from-title">
+                                <h6>인도일 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textDeliveryDate2">
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>고객명 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textCustomerName2">
+                        </div>
+		            	<div>
+                            <div class="from-title">
+                                <h6>차량명 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textCarName2">
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>차량번호 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textCarNumber2">
+                        </div>
+                    </div>
+                    <div class="modal-form custom-modal-input-4">
+		            	<div>
+                            <div class="from-title">
+                                <h6>총 fee % 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textTotalFeePercent2">
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>총 fee 합계 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textTotalFeeSum2">
+                        </div>
+		            	<div>
+                            <div class="from-title">
+                                <h6>총 fee 공급가 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textTotalFeeSupplyPrice2">
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>총 fee 부가세 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textTotalFeeSurtax2">
+                        </div>
+                    </div>
+                    <div class="modal-form custom-modal-input-4">
+		            	<div>
+                            <div class="from-title">
+                                <h6>슬라이딩 % 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textSlidingPercent2">
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>슬라이딩 합계 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textSlidingSum2">
+                        </div>
+		            	<div>
+                            <div class="from-title">
+                                <h6>슬라이딩 공급가 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textSlidingSupplyPrice2">
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>슬라이딩 부가세 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textSlidingSurtax2">
+                        </div>
+                    </div>
+                    <div class="modal-form">
+                    	<div>
+                    		<div class="from-title">
+                                <h6>Excel 파일</h6>
+                            </div>
+	                    	<div class="dropzone" id="my-dropzone2">
+							</div>
+                    	</div>
+                   	</div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-btn">
+                        <button class="btn-bu" id="btnModifyExcelSettingOk">완료</button>
+		                <button class="btn-line-cancel">취소</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::modal-->
+        
     </div>
     
     <script type="text/javascript">
 		// dropzone 파일 1개 설정
 		Dropzone.options.myDropzone = {
+			url: 'http://localhost:58090', //업로드할 url (ex)컨트롤러)
+            autoProcessQueue: false, // 자동업로드 여부 (true일 경우, 바로 업로드 되어지며, false일 경우, 서버에는 올라가지 않은 상태임 processQueue() 호출시 올라간다.)
+            autoQueue: false, // 드래그 드랍 후 바로 서버로 전송
+            clickable: true, // 클릭가능여부
+            createImageThumbnails: true, //파일 업로드 썸네일 생성
+            thumbnailHeight: 90, // Upload icon size
+            thumbnailWidth: 90, // Upload icon size
+            maxFiles: 1, // 업로드 파일수
+            maxFilesize: 10, // 최대업로드용량 : 10MB
+            parallelUploads: 1, // 동시파일업로드 수(이걸 지정한 수 만큼 여러파일을 한번에 컨트롤러에 넘긴다.)
+            addRemoveLinks: true, // 삭제버튼 표시 여부
+            dictRemoveFile: '삭제', // 삭제버튼 표시 텍스트
+            uploadMultiple: false, // 다중업로드 기능
+            acceptedFiles: '.xlsx', // 파일 포맷만 허용
+            dictDefaultMessage: "<p>Drop file here or click to upload</p><p>XLSX file only</p>",
+			init: function() {
+				this.on("addedfile", function(file) {
+					if (this.files[1] != null) {
+						this.removeFile(this.files[0]);
+					}
+					LedgerExcelList.files = [];
+					LedgerExcelList.files.push(file);
+				});
+				this.on("removedfile", function(file) {
+					var index = LedgerExcelList.files.indexOf(file);
+					LedgerExcelList.files.splice(index, 1);
+				});
+			},
+		};
+		
+		// dropzone 파일 1개 설정
+		Dropzone.options.myDropzone2 = {
 			url: 'http://localhost:58090', //업로드할 url (ex)컨트롤러)
             autoProcessQueue: false, // 자동업로드 여부 (true일 경우, 바로 업로드 되어지며, false일 경우, 서버에는 올라가지 않은 상태임 processQueue() 호출시 올라간다.)
             autoQueue: false, // 드래그 드랍 후 바로 서버로 전송

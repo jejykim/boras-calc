@@ -486,6 +486,9 @@
 					OR ledger_customer_name like CONCAT('%',#{searchText},'%')
 					)
 			</if>
+			<if test="ledgerTypeCd != null and ledgerTypeCd != ''">
+				AND ledger_type_cd = #{ledgerTypeCd}
+			</if>
 			) data
 			WHERE temp_state1 = 0
 		ORDER BY data.approval_state, data.ledger_create_date desc
