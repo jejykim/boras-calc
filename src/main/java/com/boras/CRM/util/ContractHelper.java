@@ -69,6 +69,12 @@ public class ContractHelper {
 						contractVO.setContractSlidingSurtaxSupportYn(ssVO.getSurtaxSupportByFinancialSlidingSurtaxSupportYn());
 						
 						contractService.insertContract(contractVO);
+					}else {
+						contractVO.setContractAddFeeSurtaxSupportYn(null);
+						contractVO.setContractAgFeeSurtaxSupportYn(null);
+						contractVO.setContractSlidingSurtaxSupportYn(null);
+						
+						contractService.insertContract(contractVO);
 					}
 				}
 			}
