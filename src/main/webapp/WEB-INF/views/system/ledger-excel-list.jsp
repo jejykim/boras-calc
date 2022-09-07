@@ -47,6 +47,7 @@
                         </div>
                         <div class="header-sub">
                             <div class="btn">
+                                <button class="btn-su" id="btnDlCommonExcel">통합 Excel 다운</button>
                                 <button class="btn-main" id="btnAddExcel">원장 Excel 추가</button>
                             </div>
                         </div>

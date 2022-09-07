@@ -167,6 +167,11 @@ LedgerExcelList.SetEvent = function () {
 				LedgerExcelList.modifyExcelSetting();
 			}
 		});
+		
+		// 통합 excel 수정
+		$("#btnDlCommonExcel").click(function() {
+			LedgerExcelList.getCommonExcel();
+		});
     }
     catch (e) { console.log(e.message); }
 }
@@ -500,6 +505,18 @@ LedgerExcelList.getledgerExcelInfo = function (ledgerExcelSeq) {
 				return false;
 			}
 		});
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 통합 excel 다운로드
+작  성  자  : 김진열
+2022.08.25 - 최초생성
+========================================================================*/
+LedgerExcelList.getCommonExcel = function () {
+    try {
+		window.open("/system/ledger/excel/dl/common");
     }
     catch (e) { console.log(e.message); }
 }

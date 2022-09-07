@@ -132,6 +132,10 @@ public class LedgerApiController {
 	    	
 	    ledgerVO.setLedgerUpdateUserId(PermissionHelper.getSessionUserId(req));
 	    
+	    if(ledgerVO.getLedgerDeliveryDate().indexOf("-") > 0) {
+	    	ledgerVO.setLedgerDeliveryDate(ledgerVO.getLedgerDeliveryDate().replaceAll("-", ""));
+	    }
+	    
 	    boolean updateFlag = updateLedgerDB(ledgerVO);
 	    
 	    if(updateFlag) {
@@ -740,59 +744,61 @@ public class LedgerApiController {
 		boolean flag = false;
 		
 		try {
-			ledgerService.updateLedger(ledgerVO);
+			int i = ledgerService.updateLedger(ledgerVO);
 			
-			ApprovalVO approvalVO = new ApprovalVO();
-			approvalVO.setApprovalLedgerSeq(ledgerVO.getLedgerSeq());
-			approvalVO.setApprovalState("승인");
-			approvalVO.setApprovalYn("Y");
-			approvalVO.setApprovalUserId(ledgerVO.getAgUserId());
-			
-			int isExist = -1;
-	    
-		    try {
-				isExist = approvalService.cntApprovalLedgerSeq(approvalVO);
-			} catch (Exception e) {
-				logger.error(e.getMessage());
-			}
-		    
-		    if(isExist > 0) {
-		    	// 본인 제외 모두 거부
-		    	try {
-		    		approvalService.refusalApproval(approvalVO);
-		    	}catch (Exception e) {
-		    		logger.error(e.getMessage());
-		    	}
-		    	
-		    	// 본인 유무 확인
-		    	ApprovalVO tempApprovalVO = approvalService.selectApprovalInfoByUserId(approvalVO);
-		    	
-		    	if(tempApprovalVO == null) {
-		    		try {
-			    		approvalService.insertApproval(approvalVO);
-			    	}catch (Exception e) {
-			    		logger.error(e.getMessage());
-			    	}
-		    	}
-		    	
-		    }else if(isExist == 0) {
-		    	try {
-		    		approvalService.insertApproval(approvalVO);
-		    	}catch (Exception e) {
-		    		logger.error(e.getMessage());
-		    	}
-		    }
-	    
-			// 계출 등록
-			if(ledgerVO.getLedgerSeq() > 0) {
-				logger.info("[Try to update contract] ledger seq : " + ledgerVO.getLedgerSeq());
-				
-				contractHelper.updateContract(ledgerVO, ledgerService, surtaxSupportByFinancialService, contractService);
-			}
-			
-			// AG 맵핑 등록 (승인)
 			if(!ledgerVO.getAgUserId().isEmpty()) {
-				approvalService.insertApproval(approvalVO);
+				ApprovalVO approvalVO = new ApprovalVO();
+				approvalVO.setApprovalLedgerSeq(ledgerVO.getLedgerSeq());
+				approvalVO.setApprovalState("승인");
+				approvalVO.setApprovalYn("Y");
+				approvalVO.setApprovalUserId(ledgerVO.getAgUserId());
+				
+				int isExist = -1;
+				
+				try {
+					isExist = approvalService.cntApprovalLedgerSeq(approvalVO);
+				} catch (Exception e) {
+					logger.error(e.getMessage());
+				}
+				
+				if(isExist > 0) {
+					// 본인 제외 모두 거부
+					try {
+						approvalService.refusalApproval(approvalVO);
+					}catch (Exception e) {
+						logger.error(e.getMessage());
+					}
+					
+					// 본인 유무 확인
+					ApprovalVO tempApprovalVO = approvalService.selectApprovalInfoByUserId(approvalVO);
+					
+					if(tempApprovalVO == null) {
+						try {
+							approvalService.insertApproval(approvalVO);
+						}catch (Exception e) {
+							logger.error(e.getMessage());
+						}
+					}
+					
+				}else if(isExist == 0) {
+					try {
+						approvalService.insertApproval(approvalVO);
+					}catch (Exception e) {
+						logger.error(e.getMessage());
+					}
+				}
+				
+				// 계출 등록
+				if(ledgerVO.getLedgerSeq() > 0) {
+					logger.info("[Try to update contract] ledger seq : " + ledgerVO.getLedgerSeq());
+					
+					contractHelper.updateContract(ledgerVO, ledgerService, surtaxSupportByFinancialService, contractService);
+				}
+				
+				// AG 맵핑 등록 (승인)
+				if(!ledgerVO.getAgUserId().isEmpty()) {
+					approvalService.insertApproval(approvalVO);
+				}
 			}
 			
 			flag = true;

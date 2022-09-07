@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boras.CRM.mapper.CalculateFinanicalCompanyMapper">
+  	
+  	<!-- 금융사별 정산 등록-->
+  	<insert id="insertCalculate" parameterType="calculateFinanicalCompanyVO">
+  		INSERT INTO calculate_finanical_company(
+			calculate_finanical_company_calculate_seq
+			, calculate_finanical_company_year
+			, calculate_finanical_company_month
+			, calculate_finanical_company_cd
+			, calculate_finanical_company_bill_sum
+			, calculate_finanical_company_personal_sum
+			, calculate_finanical_company_profit_sum
+			, calculate_finanical_company_personal_supply_sum
+			, calculate_finanical_company_personal_surtax_sum
+			, calculate_finanical_company_withholding_tax_sum
+			, calculate_finanical_company_business_income_sum
+			, calculate_finanical_company_create_date
+			, calculate_finanical_company_create_id
+		) VALUES (
+			#{calculateFinanicalCompanyCalculateSeq}
+			, #{calculateFinanicalCompanyYear}
+			, #{calculateFinanicalCompanyMonth}
+			, #{calculateFinanicalCompanyCd}
+			, #{calculateFinanicalCompanyBillSum}
+			, #{calculateFinanicalCompanyPersonalSum}
+			, #{calculateFinanicalCompanyProfitSum}
+			, #{calculateFinanicalCompanyPersonalSupplySum}
+			, #{calculateFinanicalCompanyPersonalSurtaxSum}
+			, #{calculateFinanicalCompanyWithholdingTaxSum}
+			, #{calculateFinanicalCompanyBusinessIncomeSum}
+			, now()
+			, #{calculateFinanicalCompanyCreateId}
+		)
+  	</insert>
+  	
+  	<!-- 금융사별 정산 수정-->
+  	<update id="updateCalculate" parameterType="calculateFinanicalCompanyVO">
+  		UPDATE calculate_finanical_company
+		SET calculate_finanical_company_bill_sum = #{calculateFinanicalCompanyBillSum}
+			, calculate_finanical_company_personal_sum = #{calculateFinanicalCompanyPersonalSum}
+			, calculate_finanical_company_profit_sum = #{calculateFinanicalCompanyProfitSum}
+			, calculate_finanical_company_personal_supply_sum = #{calculateFinanicalCompanyPersonalSupplySum}
+			, calculate_finanical_company_personal_surtax_sum = #{calculateFinanicalCompanyPersonalSurtaxSum}
+			, calculate_finanical_company_withholding_tax_sum = #{calculateFinanicalCompanyWithholdingTaxSum}
+			, calculate_finanical_company_business_income_sum = #{calculateFinanicalCompanyBusinessIncomeSum}
+			, calculate_finanical_company_create_date = now()
+			, calculate_finanical_company_create_id = #{calculateFinanicalCompanyCreateId}
+		WHERE calculate_finanical_company_year = #{calculateFinanicalCompanyYear}
+		AND calculate_finanical_company_month = #{calculateFinanicalCompanyMonth}
+		AND calculate_finanical_company_cd = #{calculateFinanicalCompanyCd}
+  	</update>
+  	
+  	<!-- 금융사별 정산 목록 조회(월별) -->
+  	<select id="selectCalculateList" parameterType="calculateFinanicalCompanyVO" resultType="calculateFinanicalCompanyVO">
+  		SELECT *
+  			, (SELECT code_name FROM code WHERE code_id = calculate_finanical_company_cd) AS ledger_financial_company_cd_name
+  		FROM calculate_finanical_company
+  		WHERE calculate_finanical_company_year = #{calculateFinanicalCompanyYear}
+  		AND calculate_finanical_company_month = #{calculateFinanicalCompanyMonth}
+  	</select>
+  	
+  	<!-- 등록 유무 확인 -->
+  	<select id="isExistCalculate" parameterType="calculateFinanicalCompanyVO" resultType="int">
+  		SELECT COUNT(*)
+  		FROM calculate_finanical_company
+  		WHERE calculate_finanical_company_year = #{calculateFinanicalCompanyYear}
+  		AND calculate_finanical_company_month = #{calculateFinanicalCompanyMonth}
+  		AND calculate_finanical_company_cd = #{calculateFinanicalCompanyCd}
+  	</select>
+  	
+  	<!-- 등록 년 조회 -->
+  	<select id="selectCalculateYear" resultType="map">
+  		select calculate_finanical_company_year
+		from calculate_finanical_company
+		group by calculate_finanical_company_year
+  	</select>
+  	
+  	<!-- 금융사별 계출 목록 조회 (금월) -->
+  	<select id="calculateFinancialCompany" resultType="map" parameterType="contractVO">
+  		SELECT
+			(SUM(c.contract_nomal_total_fee_sum) + SUM(c.contract_add_total_fee_sum) + SUM(c.contract_total_sliding_sum)) AS total_fee
+			, (SUM(CASE WHEN u.user_business_type_cd = 5100 THEN c.contract_nomal_ag_fee_sum ELSE null END)
+				   + SUM(CASE WHEN u.user_business_type_cd = 5100 THEN c.contract_add_ag_fee_sum ELSE null END)
+				   + SUM(CASE WHEN u.user_business_type_cd = 5100 THEN c.contract_ag_sliding_sum ELSE null END)
+				) AS ag_personal_fee
+			, (SUM(CASE WHEN u.user_business_type_cd = 5200 THEN c.contract_nomal_ag_fee_sum ELSE null END)
+				   + SUM(CASE WHEN u.user_business_type_cd = 5200 THEN c.contract_add_ag_fee_sum ELSE null END)
+				   + SUM(CASE WHEN u.user_business_type_cd = 5200 THEN c.contract_ag_sliding_sum ELSE null END)
+				) AS ag_company_fee
+			, (SUM(c.contract_nomal_dp_fee_sum) + SUM(c.contract_add_dp_fee_sum) + SUM(c.contract_dp_sliding_sum)) AS dp_fee
+			, l.ledger_financial_company_cd
+			, (SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) AS ledger_financial_company_cd_name
+		FROM contract c
+		JOIN ledger l
+		ON c.contract_ledger_seq = l.ledger_seq
+		JOIN approval a
+		ON c.contract_ledger_seq = a.approval_ledger_seq
+		JOIN users u
+		ON a.approval_user_id = u.user_id
+		WHERE c.contract_create_year = #{contractCreateYear}
+		AND c.contract_create_month = #{contractCreateMonth}
+		AND a.approval_state = '승인'
+		AND a.approval_yn = 'Y'
+		GROUP BY l.ledger_financial_company_cd
+  	</select>
+  	
+</mapper>

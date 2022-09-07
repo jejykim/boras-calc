@@ -322,6 +322,13 @@ LedgerList.SetEvent = function () {
 				LedgerList.addAg();
 			}
 		});
+		
+		// pagePerRows 변경
+		$("#selPagePerRows").change(function() {
+			var pagePerRows = $("#selPagePerRows").val();
+			$("#pagePerRows").val(pagePerRows);
+			LedgerList.Paging(1);
+		});
     }
     catch (e) { console.log(e.message); }
 }

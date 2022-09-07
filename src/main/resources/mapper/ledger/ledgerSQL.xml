@@ -32,37 +32,37 @@
 			<if test="ledgerCarNumber != null and ledgerCarNumber != ''">
 			, ledger_car_number
 			</if>
-			<if test="ledgerCarPrice != null and ledgerCarPrice != ''">
+			<if test="ledgerCarPrice > 0">
 			, ledger_car_price
 			</if>
-			<if test="ledgerAcquisitionCost != null and ledgerAcquisitionCost != ''">
+			<if test="ledgerAcquisitionCost > 0">
 			, ledger_acquisition_cost
 			</if>
-			<if test="ledgerTotalFeePercent != null and ledgerTotalFeePercent != ''">
+			<if test="ledgerTotalFeePercent > 0">
 			, ledger_total_fee_percent
 			</if>
-			<if test="ledgerTotalFeeSum != null and ledgerTotalFeeSum != ''">
+			<if test="ledgerTotalFeeSum > 0">
 			, ledger_total_fee_sum
 			</if>
-			<if test="ledgerTotalFeeSupplyPrice != null and ledgerTotalFeeSupplyPrice != ''">
+			<if test="ledgerTotalFeeSupplyPrice > 0">
 			, ledger_total_fee_supply_price
 			</if>
-			<if test="ledgerTotalFeeSurtax != null and ledgerTotalFeeSurtax != ''">
+			<if test="ledgerTotalFeeSurtax > 0">
 			, ledger_total_fee_surtax
 			</if>
-			<if test="ledgerSlidingPercent != null and ledgerSlidingPercent != ''">
+			<if test="ledgerSlidingPercent > 0">
 			, ledger_sliding_percent
 			</if>
-			<if test="ledgerSlidingSum != null and ledgerSlidingSum != ''">
+			<if test="ledgerSlidingSum > 0">
 			, ledger_sliding_sum
 			</if>
-			<if test="ledgerSlidingSupplyPrice != null and ledgerSlidingSupplyPrice != ''">
+			<if test="ledgerSlidingSupplyPrice > 0">
 			, ledger_sliding_supply_price
 			</if>
-			<if test="ledgerSlidingSurtax != null and ledgerSlidingSurtax != ''">
+			<if test="ledgerSlidingSurtax > 0">
 			, ledger_sliding_surtax
 			</if>
-			<if test="ledgerAddPromotion != null and ledgerAddPromotion != ''">
+			<if test="ledgerAddPromotion > 0">
 			, ledger_add_promotion
 			</if>
 			<if test="ledgerPromotionMemo != null and ledgerPromotionMemo != ''">
@@ -100,37 +100,37 @@
 			<if test="ledgerCarNumber != null and ledgerCarNumber != ''">
 			, #{ledgerCarNumber}
 			</if>
-			<if test="ledgerCarPrice != null and ledgerCarPrice != ''">
+			<if test="ledgerCarPrice > 0">
 			, #{ledgerCarPrice}
 			</if>
-			<if test="ledgerAcquisitionCost != null and ledgerAcquisitionCost != ''">
+			<if test="ledgerAcquisitionCost > 0">
 			, #{ledgerAcquisitionCost}
 			</if>
-			<if test="ledgerTotalFeePercent != null and ledgerTotalFeePercent != ''">
+			<if test="ledgerTotalFeePercent > 0">
 			, #{ledgerTotalFeePercent}
 			</if>
-			<if test="ledgerTotalFeeSum != null and ledgerTotalFeeSum != ''">
+			<if test="ledgerTotalFeeSum > 0">
 			, #{ledgerTotalFeeSum}
 			</if>
-			<if test="ledgerTotalFeeSupplyPrice != null and ledgerTotalFeeSupplyPrice != ''">
+			<if test="ledgerTotalFeeSupplyPrice > 0">
 			, #{ledgerTotalFeeSupplyPrice}
 			</if>
-			<if test="ledgerTotalFeeSurtax != null and ledgerTotalFeeSurtax != ''">
+			<if test="ledgerTotalFeeSurtax > 0">
 			, #{ledgerTotalFeeSurtax}
 			</if>
-			<if test="ledgerSlidingPercent != null and ledgerSlidingPercent != ''">
+			<if test="ledgerSlidingPercent > 0">
 			, #{ledgerSlidingPercent}
 			</if>
-			<if test="ledgerSlidingSum != null and ledgerSlidingSum != ''">
+			<if test="ledgerSlidingSum > 0">
 			, #{ledgerSlidingSum}
 			</if>
-			<if test="ledgerSlidingSupplyPrice != null and ledgerSlidingSupplyPrice != ''">
+			<if test="ledgerSlidingSupplyPrice > 0">
 			, #{ledgerSlidingSupplyPrice}
 			</if>
-			<if test="ledgerSlidingSurtax != null and ledgerSlidingSurtax != ''">
+			<if test="ledgerSlidingSurtax > 0">
 			, #{ledgerSlidingSurtax}
 			</if>
-			<if test="ledgerAddPromotion != null and ledgerAddPromotion != ''">
+			<if test="ledgerAddPromotion > 0">
 			, #{ledgerAddPromotion}
 			</if>
 			<if test="ledgerPromotionMemo != null and ledgerPromotionMemo != ''">
@@ -170,7 +170,7 @@
 			, ledger_dealer_company_cd = #{ledgerDealerCompanyCd}
 			</if>
 			<if test="ledgerDeliveryDate != null and ledgerDeliveryDate != ''">
-			, ledger_delivery_date = #{ledgerDeliveryDate}
+			, ledger_delivery_date = TO_TIMESTAMP(#{ledgerDeliveryDate}, 'YYYYMMDD')
 			</if>
 			<if test="ledgerCustomerName != null and ledgerCustomerName != ''">
 			, ledger_customer_name = #{ledgerCustomerName}
@@ -181,39 +181,17 @@
 			<if test="ledgerCarNumber != null and ledgerCarNumber != ''">
 			, ledger_car_number = #{ledgerCarNumber}
 			</if>
-			<if test="ledgerCarPrice != null and ledgerCarPrice != ''">
 			, ledger_car_price = #{ledgerCarPrice}
-			</if>
-			<if test="ledgerAcquisitionCost != null and ledgerAcquisitionCost != ''">
 			, ledger_acquisition_cost = #{ledgerAcquisitionCost}
-			</if>
-			<if test="ledgerTotalFeePercent != null and ledgerTotalFeePercent != ''">
 			, ledger_total_fee_percent = #{ledgerTotalFeePercent}
-			</if>
-			<if test="ledgerTotalFeeSum != null and ledgerTotalFeeSum != ''">
 			, ledger_total_fee_sum = #{ledgerTotalFeeSum}
-			</if>
-			<if test="ledgerTotalFeeSupplyPrice != null and ledgerTotalFeeSupplyPrice != ''">
 			, ledger_total_fee_supply_price = #{ledgerTotalFeeSupplyPrice}
-			</if>
-			<if test="ledgerTotalFeeSurtax != null and ledgerTotalFeeSurtax != ''">
 			, ledger_total_fee_surtax = #{ledgerTotalFeeSurtax}
-			</if>
-			<if test="ledgerSlidingPercent != null and ledgerSlidingPercent != ''">
 			, ledger_sliding_percent = #{ledgerSlidingPercent}
-			</if>
-			<if test="ledgerSlidingSum != null and ledgerSlidingSum != ''">
 			, ledger_sliding_sum = #{ledgerSlidingSum}
-			</if>
-			<if test="ledgerSlidingSupplyPrice != null and ledgerSlidingSupplyPrice != ''">
 			, ledger_sliding_supply_price = #{ledgerSlidingSupplyPrice}
-			</if>
-			<if test="ledgerSlidingSurtax != null and ledgerSlidingSurtax != ''">
 			, ledger_sliding_surtax = #{ledgerSlidingSurtax}
-			</if>
-			<if test="ledgerAddPromotion != null and ledgerAddPromotion != ''">
 			, ledger_add_promotion = #{ledgerAddPromotion}
-			</if>
 			<if test="ledgerPromotionMemo != null and ledgerPromotionMemo != ''">
 			, ledger_promotion_memo = #{ledgerPromotionMemo}
 			</if>
@@ -563,8 +541,8 @@
 	<select id="selectSumCost" resultType="map">
 		SELECT
 			SUM(data.ledger_car_price) as ledgerCarPrice
-			, SUM(data.ledger_acquisition_cost) as ledgerAcquisitionCost
-			, SUM(data.ledger_total_fee_sum) as ledgerTotalFeeSum
+			, SUM(CASE WHEN data.ledger_financial_product_cd in (3102, 3104, 3106, 3108) THEN data.ledger_acquisition_cost ELSE null END) as ledgerAcquisitionCost
+			, SUM(CASE WHEN data.ledger_financial_product_cd in (3101, 3103, 3105) THEN data.ledger_total_fee_sum ELSE null END) as ledgerTotalFeeSum
 			, SUM(data.ledger_sliding_sum) as ledgerSlidingSum
 			, SUM(data.ledger_add_promotion) as ledgerAddPromotion
 		FROM (
@@ -618,7 +596,7 @@
 			<if test="stateType != null and stateType != ''">
 				<choose>
 					<when test="stateType.equals('request')">
-						AND (a.approval_state = '요청' or a.approval_state != '거부')
+						AND a.approval_state = '요청'
 					</when>
 					<when test="stateType.equals('complete')">
 						AND a.approval_state = '승인'
@@ -638,10 +616,10 @@
 					OR ledger_customer_name like CONCAT('%',#{searchText},'%')
 					)
 			</if>
-			<if test="ledgerCreateYear != null">
+			<if test="ledgerCreateYear > 0">
 				AND ledger_create_year = #{ledgerCreateYear}
 			</if>
-			<if test="ledgerCreateMonth != null">
+			<if test="ledgerCreateMonth > 0">
 				AND ledger_create_month = #{ledgerCreateMonth}
 			</if>
 		) as data

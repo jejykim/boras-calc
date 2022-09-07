@@ -46,6 +46,7 @@
                         <div class="header-sub">
                             <div class="btn">
                                 <button class="btn-bu btn-sm" id="btnUpdateLedger">수정</button>
+                                <input type="hidden" id="ledgerSeq" name="ledgerSeq" value="${ledgerVO.ledgerSeq }">
                                 <button class="btn-red btn-sm" id="btnDeleteLedger">삭제</button>
                             </div>
                         </div>

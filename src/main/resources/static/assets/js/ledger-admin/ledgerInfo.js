@@ -386,6 +386,7 @@ LedgerInfo.updateLedger = function () {
 			, "LedgerInfoPromotion" : $("#textAddPromotion").val() == "" ? 0 : $("#textAddPromotion").val()
 			, "ledgerPromotionMemo" : $("#textPromotionMemo").val()
 			, "agUserId" : LedgerInfo.ag
+			, "ledgerSeq" : $("#ledgerSeq").val()
 		};
 		
 		$.ajax({

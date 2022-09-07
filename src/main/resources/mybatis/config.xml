@@ -17,6 +17,7 @@
 		<typeAlias type="com.boras.CRM.vo.InquiryVO" alias="inquiryVO"/>
 		<typeAlias type="com.boras.CRM.vo.FormulaVO" alias="formulaVO"/>
 		<typeAlias type="com.boras.CRM.vo.CalculateVO" alias="calculateVO"/>
+		<typeAlias type="com.boras.CRM.vo.CalculateFinanicalCompanyVO" alias="calculateFinanicalCompanyVO"/>
 	</typeAliases>
 
 </configuration>

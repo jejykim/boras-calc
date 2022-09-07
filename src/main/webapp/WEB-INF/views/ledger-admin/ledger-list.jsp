@@ -52,7 +52,7 @@
                             <span>
                                 <select id="selYear">
                                 	<c:forEach var="yearList" items="${yearlist }" varStatus="status">
-                                    	<option value="${yearList }">${yearList } 년</option>
+                                    	<option value="${yearList }" <c:if test="${monthList eq ledgerVO.ledgerCreateYear}">selected="selected"</c:if>>${yearList } 년</option>
                                 	</c:forEach>
                                 	<c:if test="${empty yearlist }">
                                 		<option value="${thisYear }">${thisYear } 년</option>
@@ -73,9 +73,28 @@
                         </div>
                     </div>
                     <div class="main-body">
+                    	<div class="row f-box">
+                    		<div class="portlet">
+                                <h5><i class="ico-f1"></i><span>총 금액</span></h5>
+                                <span class="price">
+                                	<c:if test="${not empty sumCostList[0] }">
+	                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
+	                                		<c:choose>
+	                                			<c:when test="${empty list.ledgercarprice and empty list.ledgeracquisitioncost }">
+	                                				0
+	                                			</c:when>
+	                                			<c:otherwise>
+				                                	<fmt:formatNumber value="${list.ledgercarprice + list.ledgeracquisitioncost }" pattern="#,###"/>
+	                                			</c:otherwise>
+	                                		</c:choose>
+	                                	</c:forEach>
+                                	</c:if>
+                                </span>
+                            </div>
+                        </div>
                         <div class="row f-box">
                             <div class="portlet">
-                                <h5><i class="ico-f1"></i><span>차량가</span></h5>
+                                <h5><i class="ico-f1"></i><span>차량가 (렌트)</span></h5>
                                 <span class="price">
                                 	<c:if test="${not empty sumCostList[0] }">
 	                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
@@ -92,7 +111,7 @@
                                 </span>
                             </div>
                             <div class="portlet">
-                                <h5><i class="ico-f2"></i><span>취득원가</span></h5>
+                                <h5><i class="ico-f2"></i><span>취득원가 (리스)</span></h5>
                                 <span class="price">
                                 	<c:if test="${not empty sumCostList[0] }">
 	                                	<c:forEach var="list" items="${sumCostList }" varStatus="status">
@@ -171,6 +190,15 @@
                                     </ul>
                                 </div>
                                 <div class="header-sub">
+                                	<div class="form-control">
+                                        <select class="col-2" id="selPagePerRows" style="width: 100px;">
+	                                   		<option value="10" <c:if test="${ledgerVO.pagePerRows eq 10 }">selected="selected"</c:if>>10 줄</option>
+	                                   		<option value="20" <c:if test="${ledgerVO.pagePerRows eq 20 }">selected="selected"</c:if>>20 줄</option>
+	                                   		<option value="50" <c:if test="${ledgerVO.pagePerRows eq 50 }">selected="selected"</c:if>>50 줄</option>
+	                                   		<option value="100" <c:if test="${ledgerVO.pagePerRows eq 100 }">selected="selected"</c:if>>100 줄</option>
+	                                   	</select>
+                                	</div>
+                                	&nbsp;
                                     <div class="search">
                                         <input id="inputSearchText" type="text" placeholder="검색" value="${ledgerVO.searchText }">
                                         <button id="btnSearch"><i class="fa fa-search" aria-hidden="true"></i></button>
@@ -181,6 +209,7 @@
 											<input type="hidden" name="ledgerCreateYear" id="ledgerCreateYear" value="${ledgerVO.ledgerCreateYear }">
 											<input type="hidden" name="ledgerCreateMonth" id="ledgerCreateMonth" value="${ledgerVO.ledgerCreateMonth }">
 											<input type='hidden' id="now_page" name="nowPage" value="${ledgerVO.nowPage }">
+											<input type='hidden' id="pagePerRows" name="pagePerRows" value="${ledgerVO.pagePerRows }">
 										</form>
                                     </div>
                                     <c:if test="${ledgerVO.stateType eq 'request' }">

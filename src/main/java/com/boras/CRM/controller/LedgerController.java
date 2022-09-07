@@ -258,7 +258,7 @@ public class LedgerController {
 		try {
 			sumCostList = ledgerService.selectSumCost(ledgerVO);
 		} catch (Exception e) {
-			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectLedgerYear ]");
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectSumCost ]");
 			logger.error(e.getMessage());
 		}
 		
