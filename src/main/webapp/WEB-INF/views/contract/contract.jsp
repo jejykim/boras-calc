@@ -60,7 +60,6 @@
                         </div>
                         <div class="header-sub">
                             <div class="btn">
-                                <button class="btn-su">재정산하기</button>
                                 <button id="btnCalculate" class="btn-su">정산하기</button>
                             </div>
                         </div>

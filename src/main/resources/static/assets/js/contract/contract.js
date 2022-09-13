@@ -142,7 +142,7 @@ Contract.SetEvent = function() {
 
 		// 정산
 		$("#btnCalculate").click(function() {
-			Contract.calculate();
+			Contract.calculateProceed();
 		});
 
 		/* 계출 수정 값 변화 감치 % <-> sum */
@@ -199,6 +199,7 @@ Contract.SetEvent = function() {
 		$("#txtContractDpSlidingSum").change(function() {
 			Contract.ContractCalculation('SDPFee', 'SDPS');
 		});
+		
 
 	}
 	catch (e) { console.log(e.message); }
@@ -465,6 +466,7 @@ Contract.ContractCalculation = function(type, type2) {
 					price3 = formula.formula3;
 					Contract.SwitchCalculation(type, price1, price2, price3, type2);
 				} else if (formula.formulaFinancialCompanyCd == 0) {
+					console.log(formula.formula2)
 					console.log("예외일경우,,,")
 					if (formula.formula1 == "ledgerAcquisitionCost") {
 						price1 = Contract.ledgerAcquisitionCost;
@@ -507,7 +509,7 @@ Contract.ContractCalculation = function(type, type2) {
 				}
 
 			} else {
-				alert("관리자에게 문의하세요.");
+				//alert("관리자에게 문의하세요.");
 				console.log("formula.formulaType:" + formula.formulaType)
 				console.log("type:" + type)
 				console.log("formula.formulaFinancialProductCd:" + formula.formulaFinancialProductCd)
@@ -640,5 +642,33 @@ Contract.Calculation = function(formula1, formula2, formula3, type2) {
 		return json;
 	}
 
+	catch (e) { console.log(e.message); }
+}
+
+
+/*=======================================================================
+내      용  : 정산하기
+작  성  자  : 김은빈
+2022.09.13 - 최초생성
+========================================================================*/
+Contract.calculateProceed = function() {
+	try {
+
+		$.ajax({
+			type: "get",
+			url: "/v1/api/calculate/proceed",
+			success: function(json) {
+				if (json.resultCode == "00000") {
+					alert("정산처리가 완료되었습니다.")
+				} else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request, status, error, data) {
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+	}
 	catch (e) { console.log(e.message); }
 }

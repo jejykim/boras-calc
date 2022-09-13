@@ -55,5 +55,15 @@ public class ContractService implements ContractMapper {
 	public ContractVO selectContractSeqByLedgerSeq(ContractVO contractVO) {
 		return contractMapper.selectContractSeqByLedgerSeq(contractVO);
 	}
+	
+	@Override
+	public int calculateProceed(ContractVO contractVO) {
+		return contractMapper.calculateProceed(contractVO);
+	}
+	
+	@Override
+	public int updateContractByCalculate(ContractVO contractVO) {
+		return contractMapper.updateContractByCalculate(contractVO);
+	}
 
 }

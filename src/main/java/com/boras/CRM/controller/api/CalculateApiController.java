@@ -37,41 +37,49 @@ public class CalculateApiController {
 	
 	
 	/**
-	 * 정산 하기
+	 * 정산 하기 
 	 */
 	@GetMapping(value = "/proceed")
 	public Map<String, Object> calculateProceed(HttpServletRequest req, HttpServletResponse resp) {
 	    Map<String, Object> rvt = new HashMap<>();
-	    try {
-	    	//정산할 년월 가져오기
-			Calendar cal = Calendar.getInstance();
-			int thisYear = cal.get(Calendar.YEAR);
-			int thisMonth = cal.get(Calendar.MONTH) + 1;
-	    	
-	    	ContractVO contractVO = new ContractVO();
-	    	contractVO.setContractCreateYear(thisYear);
-	    	contractVO.setContractCreateMonth(thisMonth);
-	    	
-	    	contractVO = contractService.selectContractInfo(contractVO);
-	    	
-		   
-		    if(contractVO.getContractLedgerSeq() > 0) {	
-		    	rvt.put("info", contractVO);
-		    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
-    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
-		    }else {
-		    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
-    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
-		    }
-		    	
+	    
+    	//정산할 년월 가져오기
+		Calendar cal = Calendar.getInstance();
+		int thisYear = cal.get(Calendar.YEAR);
+		int thisMonth = cal.get(Calendar.MONTH) + 1;
+    	
+    	ContractVO contractVO = new ContractVO();
+    	contractVO.setContractCreateYear(thisYear);
+    	contractVO.setContractCreateMonth(thisMonth);
+    	
+    	int insertCnt = 0;
+    	int updateCnt = 0; 
+    	
+    	try {
+    		insertCnt = contractService.calculateProceed(contractVO);
 	    }catch (Exception e) {
-	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
-			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00002));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00002));
 			logger.error(e.getMessage());
 		}
+    	
+    	try {
+    		updateCnt = contractService.updateContractByCalculate(contractVO);
+	    }catch (Exception e) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00002));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00002));
+			logger.error(e.getMessage());
+		}
+    	
+    	if(insertCnt>0 && updateCnt>0) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+    	}else {
+    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
+	    	rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
+    	}
 	   
 		return rvt;
 	}
-	
 	
 }

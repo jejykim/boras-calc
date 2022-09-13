@@ -68,4 +68,18 @@ public interface ContractMapper {
 	 * @return ContractVO
 	 */
 	public ContractVO selectContractSeqByLedgerSeq(ContractVO contractVO);
+	
+	/**
+	 * 정산하기
+	 * @param ContractVO
+	 * @return
+	 */
+	public int calculateProceed(ContractVO contractVO);
+	
+	/**
+	 * 정산하고 계출데이터에 정산seq넣어주기-
+	 * @param ContractVO
+	 * @return
+	 */
+	public int updateContractByCalculate(ContractVO contractVO);
 }
