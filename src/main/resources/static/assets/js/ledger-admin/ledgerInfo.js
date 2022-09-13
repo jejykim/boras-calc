@@ -147,6 +147,34 @@ LedgerInfo.SetEvent = function () {
 				LedgerInfo.deleteLedger();
 			}
 		});
+		
+		// 일반 fee 수정
+		$("#textTotalFeePercent").change(function() {
+			LedgerInfo.calcNormalFee("percent");
+		});
+		$("#textTotalFeeSum").change(function() {
+			LedgerInfo.calcNormalFee("totalFee");
+		});
+		$("#textTotalFeeSupplyPrice").change(function() {
+			LedgerInfo.calcNormalFee("supplyPrice");
+		});
+		$("#textTotalFeeSurtax").change(function() {
+			LedgerInfo.calcNormalFee("surtax");
+		});
+		
+		// 슬라이딩 fee 수정
+		$("#textSlidingPercent").change(function() {
+			LedgerInfo.calcSlidingFee("percent");
+		});
+		$("#textSlidingSum").change(function() {
+			LedgerInfo.calcSlidingFee("totalFee");
+		});
+		$("#textSlidingSupplyPrice").change(function() {
+			LedgerInfo.calcSlidingFee("supplyPrice");
+		});
+		$("#textSlidingSurtax").change(function() {
+			LedgerInfo.calcSlidingFee("surtax");
+		});
     }
     catch (e) { console.log(e.message); }
 }
@@ -446,6 +474,183 @@ LedgerInfo.deleteLedger = function () {
 				return false;
 			}
 		});
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 일반 fee 계산
+작  성  자  : 김진열
+2022.08.25 - 최초생성
+========================================================================*/
+LedgerInfo.calcNormalFee = function (type) {
+    try {
+		var percent = Number($("#textTotalFeePercent").val().replaceAll(",", ""));
+		var supplyPrice = Number($("#textTotalFeeSupplyPrice").val().replaceAll(",", ""));
+		var surtax = Number($("#textTotalFeeSurtax").val().replaceAll(",", ""));
+		var totalFee = Number($("#textTotalFeeSum").val().replaceAll(",", ""));
+		
+		var product = $("#selFinancialProduct").val();
+		
+		var carPrice = Number($("#textCarPrice").val().replaceAll(",", ""));
+		var acquisitionCost = Number($("#textAcquisitionCost").val().replaceAll(",", ""));
+		
+		switch(product) {
+			// 렌트
+			case "3101" :
+			case "3103" :
+			case "3105" :
+				switch(type) {
+					case "percent" :
+						totalFee = parseInt(carPrice * percent / 100);
+						supplyPrice = parseInt(totalFee / 1.1);
+						surtax = totalFee - supplyPrice;
+						break;
+					case "supplyPrice" :
+						surtax = supplyPrice * 0.1;
+						totalFee = surtax + supplyPrice;
+						percent = totalFee / carPrice * 100;
+						break;
+					case "surtax" :
+						supplyPrice = surtax * 10;
+						totalFee = surtax + supplyPrice;
+						percent = totalFee / carPrice * 100;
+						break;
+					case "totalFee" :
+						percent = totalFee / carPrice * 100;
+						supplyPrice = parseInt(totalFee / 1.1);
+						surtax = totalFee - supplyPrice;
+						break;
+					default :
+						break;
+				}
+				break;
+			// 리스
+			case "3102" :
+			case "3104" :
+			case "3106" :
+			case "3108" :
+				switch(type) {
+					case "percent" :
+						totalFee = parseInt(acquisitionCost * percent / 100);
+						supplyPrice = parseInt(totalFee / 1.1);
+						surtax = totalFee - supplyPrice;
+						break;
+					case "supplyPrice" :
+						surtax = supplyPrice * 0.1;
+						totalFee = surtax + supplyPrice;
+						percent = totalFee / acquisitionCost * 100;
+						break;
+					case "surtax" :
+						supplyPrice = surtax * 10;
+						totalFee = surtax + supplyPrice;
+						percent = totalFee / acquisitionCost * 100;
+						break;
+					case "totalFee" :
+						percent = totalFee / acquisitionCost * 100;
+						supplyPrice = parseInt(totalFee / 1.1);
+						surtax = totalFee - supplyPrice;
+						break;
+					default :
+						break;
+				}
+				break;
+			default :
+				break;
+		}
+		
+		$("#textTotalFeePercent").val(Common.Comma(percent));
+		$("#textTotalFeeSupplyPrice").val(Common.Comma(supplyPrice));
+		$("#textTotalFeeSurtax").val(Common.Comma(surtax));
+		$("#textTotalFeeSum").val(Common.Comma(totalFee));
+    }
+    catch (e) { console.log(e.message); }
+}
+/*=======================================================================
+내      용  : 슬라이딩 fee 계산
+작  성  자  : 김진열
+2022.08.25 - 최초생성
+========================================================================*/
+LedgerInfo.calcSlidingFee = function (type) {
+    try {
+		var percent = Number($("#textSlidingPercent").val().replaceAll(",", ""));
+		var supplyPrice = Number($("#textSlidingSupplyPrice").val().replaceAll(",", ""));
+		var surtax = Number($("#textSlidingSurtax").val().replaceAll(",", ""));
+		var totalFee = Number($("#textSlidingSum").val().replaceAll(",", ""));
+		
+		var product = $("#selFinancialProduct").val();
+		
+		var carPrice = Number($("#textCarPrice").val().replaceAll(",", ""));
+		var acquisitionCost = Number($("#textAcquisitionCost").val().replaceAll(",", ""));
+		
+		switch(product) {
+			// 렌트
+			case "3101" :
+			case "3103" :
+			case "3105" :
+				switch(type) {
+					case "percent" :
+						totalFee = parseInt(carPrice * percent / 100);
+						supplyPrice = parseInt(totalFee / 1.1);
+						surtax = totalFee - supplyPrice;
+						break;
+					case "supplyPrice" :
+						surtax = supplyPrice * 0.1;
+						totalFee = surtax + supplyPrice;
+						percent = totalFee / carPrice * 100;
+						break;
+					case "surtax" :
+						supplyPrice = surtax * 10;
+						totalFee = surtax + supplyPrice;
+						percent = totalFee / carPrice * 100;
+						break;
+					case "totalFee" :
+						percent = totalFee / carPrice * 100;
+						supplyPrice = parseInt(totalFee / 1.1);
+						surtax = totalFee - supplyPrice;
+						break;
+					default :
+						break;
+				}
+				break;
+			// 리스
+			case "3102" :
+			case "3104" :
+			case "3106" :
+			case "3108" :
+				switch(type) {
+					case "percent" :
+						totalFee = parseInt(acquisitionCost * percent / 100);
+						supplyPrice = parseInt(totalFee / 1.1);
+						surtax = totalFee - supplyPrice;
+						break;
+					case "supplyPrice" :
+						surtax = supplyPrice * 0.1;
+						totalFee = surtax + supplyPrice;
+						percent = totalFee / acquisitionCost * 100;
+						break;
+					case "surtax" :
+						supplyPrice = surtax * 10;
+						totalFee = surtax + supplyPrice;
+						percent = totalFee / acquisitionCost * 100;
+						break;
+					case "totalFee" :
+						percent = totalFee / acquisitionCost * 100;
+						supplyPrice = parseInt(totalFee / 1.1);
+						surtax = totalFee - supplyPrice;
+						break;
+					default :
+						break;
+				}
+				break;
+			default :
+				break;
+		}
+		
+		$("#textSlidingPercent").val(Common.Comma(percent));
+		$("#textSlidingSupplyPrice").val(Common.Comma(supplyPrice));
+		$("#textSlidingSurtax").val(Common.Comma(surtax));
+		$("#textSlidingSum").val(Common.Comma(totalFee));
     }
     catch (e) { console.log(e.message); }
 }
