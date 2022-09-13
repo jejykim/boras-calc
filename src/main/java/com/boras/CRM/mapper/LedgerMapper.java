@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.boras.CRM.vo.ApprovalVO;
+import com.boras.CRM.vo.ContractVO;
 import com.boras.CRM.vo.LedgerVO;
 
 @Mapper
@@ -80,4 +81,39 @@ public interface LedgerMapper {
 	 * @return List<Map<String, Object>>
 	 */
 	public List<Map<String, Object>> selectCountOfApprovalThisMonth(ApprovalVO approvalVO);
+	
+	/**
+	 * 원장 승인 여부 확인 (삭제 확인 용)
+	 * @param approvalVO
+	 * @return
+	 */
+	public int isApprovalYCount(ApprovalVO approvalVO);
+	
+	/**
+	 * 원장 승인 삭제 (삭제 용)
+	 * @param approvalVO
+	 * @return
+	 */
+	public int deleteApproval(ApprovalVO approvalVO);
+	
+	/**
+	 * 계출 정산 여부 확인 (삭제 확인 용)
+	 * @param contractVO
+	 * @return
+	 */
+	public int isCalculateCount(ContractVO contractVO);
+	
+	/**
+	 * 계출 삭제 (삭제 용)
+	 * @param contractVO
+	 * @return
+	 */
+	public int deleteContract(ContractVO contractVO);
+	
+	/**
+	 * 원장 삭제
+	 * @param ledgerVO
+	 * @return
+	 */
+	public int deleteLedger(LedgerVO ledgerVO);
 }

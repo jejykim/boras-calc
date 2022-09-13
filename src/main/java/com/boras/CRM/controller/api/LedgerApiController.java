@@ -52,7 +52,9 @@ import com.boras.CRM.util.PermissionHelper;
 import com.boras.CRM.util.ResultCode;
 import com.boras.CRM.util.ResultCode.ResultNum;
 import com.boras.CRM.vo.ApprovalVO;
+import com.boras.CRM.vo.CalculateVO;
 import com.boras.CRM.vo.CodeVO;
+import com.boras.CRM.vo.ContractVO;
 import com.boras.CRM.vo.FormulaVO;
 import com.boras.CRM.vo.LedgerExcelVO;
 import com.boras.CRM.vo.LedgerVO;
@@ -332,6 +334,71 @@ public class LedgerApiController {
 	}
 	
 	/**
+	 * 원장 삭제
+	 */
+	@PostMapping(value = "/ledger/delete")
+	public Map<String, Object> ledgerDelete(HttpServletRequest req, HttpServletResponse resp, LedgerVO ledgerVO) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    /*
+	     * 원장 삭제 시
+	     * approval에 승인 여부 확인
+	     * 1. 요청만 있을 경우 approval 삭제 후 계출 삭제 후 원장 삭제
+	     * 2. 승인 되었을 경우 계출테이블에 정산 seq가 update 되었는지 확인 (정산 완료인지 여부)
+	     * 	a. 정산 전일 경우 approval 삭제 후 계출 삭제 후 원장 삭제
+	     * 	b. 정산완료일 경우 삭제 X
+	     */
+	    
+	    ApprovalVO approvalVO = new ApprovalVO();
+	    approvalVO.setApprovalLedgerSeq(ledgerVO.getLedgerSeq());
+	    
+	    ContractVO contractVO = new ContractVO();
+	    contractVO.setContractLedgerSeq(ledgerVO.getLedgerSeq());
+
+	    
+	    int isApproval = 0;
+	    int isCalculate = 0;
+	    
+	    // 승인 되었는지 확인
+	    try {
+	    	isApproval = ledgerService.isApprovalYCount(approvalVO);
+	    }catch (Exception e) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00002));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00002));
+			logger.error(e.getMessage());
+		}
+	    
+	    // 정산 되었는지 확인
+    	try {
+	    	isCalculate = ledgerService.isCalculateCount(contractVO);
+	    }catch (Exception e) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00002));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00002));
+			logger.error(e.getMessage());
+		}
+	    
+	    if(isApproval > 0 && isCalculate > 0) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
+	    	rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
+	    	rvt.put("msg", "이미 정산된 원장으로 삭제가 불가능 합니다.");
+	    }else {
+	    	try {
+	    		ledgerService.deleteContract(contractVO);
+	    		ledgerService.deleteApproval(approvalVO);
+	    		ledgerService.deleteLedger(ledgerVO);
+	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+	    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+			} catch (Exception e) {
+				rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00002));
+				rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00002));
+				logger.error(e.getMessage());
+			}
+	    }
+	   
+		return rvt;
+	}
+	
+	/**
 	 * AG mapping 관리자용
 	 */
 	@PostMapping(value = "/ledger/mapping/ag")
@@ -571,6 +638,7 @@ public class LedgerApiController {
 								
 								if(percent > 0) {
 									ledgerVO.setLedgerTotalFeePercent(percent * 100d);
+									//ledgerVO.setLedgerTotalFeePercent(percent);
 								}else {
 									ledgerVO.setLedgerTotalFeePercent(0);
 								}
@@ -639,6 +707,7 @@ public class LedgerApiController {
 								
 								if(percent > 0) {
 									ledgerVO.setLedgerSlidingPercent(percent * 100d);
+									//ledgerVO.setLedgerSlidingPercent(percent);
 								}else {
 									ledgerVO.setLedgerSlidingPercent(0);
 								}

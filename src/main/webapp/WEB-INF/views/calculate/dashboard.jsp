@@ -76,7 +76,7 @@
 	                                <div class="board" style="cursor: pointer;" onclick="Dashboard.getInfo(${list.calculateFinanicalCompanyCd})">
 	                                    <div class="box confirm">
 	                                        <div class="box-head">
-	                                            <h5>${list.calculateFinanicalCompanyCdName}</h5>
+	                                            <h5>${list.calculateFinanicalCompanyCdName }</h5>
 	                                            <div class="total">
 	                                                <span class="num"><i class="ico-r-krw"></i><strong><fmt:formatNumber value="${list.calculateFinanicalCompanyBillSum + list.calculateFinanicalCompanyPersonalSum + list.calculateFinanicalCompanyProfitSum }" pattern="#,###"/></strong></span>
 	                                                <span class="text">총 합계</span>

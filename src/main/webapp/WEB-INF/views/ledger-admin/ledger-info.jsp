@@ -173,7 +173,7 @@
                                                 Fee
                                             </label>
                                             <div class="form-control col-wrap">
-                                                <input type="text" placeholder="총Fee%를 입력하세요" class="col-2" id="textTotalFeePercent" value="${ledgerVO.ledgerTotalFeePercent }">
+                                                <input type="text" placeholder="총Fee%를 입력하세요" class="col-2" id="textTotalFeePercent" value="<fmt:formatNumber value="${ledgerVO.ledgerTotalFeePercent }" pattern=".00"/>">
                                                 <input type="text" placeholder="총Fee 합계" class="col-2" id="textTotalFeeSum" value="<fmt:formatNumber value="${ledgerVO.ledgerTotalFeeSum }" pattern="#,###"/>">
                                                 <input type="text" placeholder="총Fee 공급가" class="col-2" id="textTotalFeeSupplyPrice" value="<fmt:formatNumber value="${ledgerVO.ledgerTotalFeeSupplyPrice }" pattern="#,###"/>">
                                                 <input type="text" placeholder="총Fee 부가세" class="col-2" id="textTotalFeeSurtax" value="<fmt:formatNumber value="${ledgerVO.ledgerTotalFeeSurtax }" pattern="#,###"/>">
@@ -185,7 +185,7 @@
                                                 슬라이딩
                                             </label>
                                             <div class="form-control col-wrap">
-                                                <input type="text" placeholder="슬라이딩% 를 입력하세요" class="col-2" id="textSlidingPercent" value="${ledgerVO.ledgerSlidingPercent }">
+                                                <input type="text" placeholder="슬라이딩% 를 입력하세요" class="col-2" id="textSlidingPercent" value="<fmt:formatNumber value="${ledgerVO.ledgerSlidingPercent }" pattern=".00"/>">
                                                 <input type="text" placeholder="슬라이딩 합계" class="col-2" id="textSlidingSum" value="<fmt:formatNumber value="${ledgerVO.ledgerSlidingSum }" pattern="#,###"/>">
                                                 <input type="text" placeholder="슬라이딩 공급가" class="col-2" id="textSlidingSupplyPrice" value="<fmt:formatNumber value="${ledgerVO.ledgerSlidingSupplyPrice }" pattern="#,###"/>">
                                                 <input type="text" placeholder="슬라이딩 부가세" class="col-2" id="textSlidingSurtax" value="<fmt:formatNumber value="${ledgerVO.ledgerSlidingSurtax }" pattern="#,###"/>">

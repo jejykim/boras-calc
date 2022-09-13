@@ -139,6 +139,14 @@ LedgerInfo.SetEvent = function () {
 				LedgerInfo.updateLedger();
 			}
 		});
+		
+		// 원장 삭제
+		$("#btnDeleteLedger").click(function() {
+			var flag = confirm("정말 삭제하시겠습니까?");
+			if(flag) {
+				LedgerInfo.deleteLedger();
+			}
+		});
     }
     catch (e) { console.log(e.message); }
 }
@@ -344,7 +352,7 @@ LedgerInfo.validationCheck = function () {
 }
 
 /*=======================================================================
-내      용  : 원장 등록
+내      용  : 원장 수정
 작  성  자  : 김진열
 2022.08.25 - 최초생성
 ========================================================================*/
@@ -397,6 +405,38 @@ LedgerInfo.updateLedger = function () {
 				if(json.resultCode == "00000") {
 					alert("수정되었습니다");
 					location.reload();
+				}else {
+					alert(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 원장 삭제
+작  성  자  : 김진열
+2022.08.25 - 최초생성
+========================================================================*/
+LedgerInfo.deleteLedger = function () {
+    try {
+		var data = {
+			"ledgerSeq" : $("#ledgerSeq").val()
+		};
+		
+		$.ajax({
+			type : "post",
+			url : "/v1/api/ledger/delete",
+			data : data,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					alert("삭제 되었습니다");
+					location.href = "/admin/ledger/list";
 				}else {
 					alert(json.resultMsg);
 				}

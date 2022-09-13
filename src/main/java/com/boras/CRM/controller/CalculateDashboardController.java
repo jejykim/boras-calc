@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.boras.CRM.services.CalculateFinanicalCompanyService;
 import com.boras.CRM.services.CalculateService;
+import com.boras.CRM.util.CalculateDashboardHelper;
 import com.boras.CRM.vo.CalculateFinanicalCompanyVO;
 import com.boras.CRM.vo.CalculateVO;
 
@@ -80,7 +81,7 @@ public class CalculateDashboardController {
 	}
 	
 	/*
-	 * 정산 대시보드 페이지
+	 * 정산 대시보드 상세 페이지
 	 */
 	@GetMapping(value = "/calc/dashboard/{financialCompanyCd}/{year}/{month}")
 	public String calcDashboardInfo(Model model, HttpServletRequest req, HttpServletResponse resp
@@ -93,4 +94,14 @@ public class CalculateDashboardController {
 		return result;
 	}
 	
+	
+	// 테스트 정산
+	@GetMapping(value = "/calc/dashboard/test")
+	public String calcDashboardTest(HttpServletRequest req, HttpServletResponse resp) {
+		
+		CalculateDashboardHelper cdh = new CalculateDashboardHelper();
+		cdh.calculateFinancialCompany(req, calculateFinanicalCompanyService, 2022, 9, 0);
+		
+		return "redirect:/calc/dashboard";
+	}
 }

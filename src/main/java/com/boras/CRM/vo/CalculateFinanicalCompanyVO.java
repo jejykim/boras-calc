@@ -12,7 +12,7 @@ public class CalculateFinanicalCompanyVO {
 	private int calculateFinanicalCompanyCd;
 	
 	// 금융사 코드명
-	private int calculateFinanicalCompanyCdName;
+	private String calculateFinanicalCompanyCdName;
 	
 	// 정산 년
 	private int calculateFinanicalCompanyYear;
@@ -159,11 +159,11 @@ public class CalculateFinanicalCompanyVO {
 		this.calculateFinanicalCompanyProfitSum = calculateFinanicalCompanyProfitSum;
 	}
 
-	public int getCalculateFinanicalCompanyCdName() {
+	public String getCalculateFinanicalCompanyCdName() {
 		return calculateFinanicalCompanyCdName;
 	}
 
-	public void setCalculateFinanicalCompanyCdName(int calculateFinanicalCompanyCdName) {
+	public void setCalculateFinanicalCompanyCdName(String calculateFinanicalCompanyCdName) {
 		this.calculateFinanicalCompanyCdName = calculateFinanicalCompanyCdName;
 	}
 	

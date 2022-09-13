@@ -654,4 +654,40 @@
 		AND extract(month from approval_request_date) = extract(month from now())
   	</select>
   	
+  	<!-- 원장 승인 여부 확인 (삭제 확인 용) -->
+  	<select id="isApprovalYCount" parameterType="approvalVO" resultType="int">
+  		SELECT COUNT(*)
+  		FROM approval
+  		WHERE approval_ledger_seq = #{approvalLedgerSeq}
+  		AND approval_state = '승인'
+  	</select>
+  	
+  	<!-- 원장 승인 삭제 (삭제 용) -->
+  	<delete id="deleteApproval" parameterType="approvalVO">
+  		DELETE
+  		FROM approval
+  		WHERE approval_ledger_seq = #{approvalLedgerSeq}
+  	</delete>
+  	
+  	<!-- 계출 정산 여부 확인 (삭제 확인 용) -->
+  	<select id="isCalculateCount" parameterType="contractVO" resultType="int">
+  		SELECT COUNT(*)
+  		FROM contract
+  		WHERE contract_ledger_seq = #{contractLedgerSeq}
+  		AND contract_calculate_seq is not null
+  	</select>
+  	
+  	<!-- 계출 삭제 (삭제 용) -->
+  	<delete id="deleteContract" parameterType="contractVO">
+  		DELETE
+  		FROM contract
+  		WHERE contract_ledger_seq = #{contractLedgerSeq}
+  	</delete>
+  	
+  	<!-- 원장 삭제 -->
+  	<delete id="deleteLedger" parameterType="ledgerVO">
+  		DELETE
+  		FROM ledger
+  		WHERE ledger_seq = #{ledgerSeq}
+  	</delete>
 </mapper>

@@ -55,7 +55,7 @@
   	<!-- 금융사별 정산 목록 조회(월별) -->
   	<select id="selectCalculateList" parameterType="calculateFinanicalCompanyVO" resultType="calculateFinanicalCompanyVO">
   		SELECT *
-  			, (SELECT code_name FROM code WHERE code_id = calculate_finanical_company_cd) AS ledger_financial_company_cd_name
+  			, (SELECT code_name FROM code WHERE code_id = calculate_finanical_company_cd) AS calculate_finanical_company_cd_name
   		FROM calculate_finanical_company
   		WHERE calculate_finanical_company_year = #{calculateFinanicalCompanyYear}
   		AND calculate_finanical_company_month = #{calculateFinanicalCompanyMonth}

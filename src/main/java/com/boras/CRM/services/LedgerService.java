@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.boras.CRM.mapper.LedgerMapper;
 import com.boras.CRM.vo.ApprovalVO;
+import com.boras.CRM.vo.ContractVO;
 import com.boras.CRM.vo.LedgerVO;
 
 @Service
@@ -64,6 +65,31 @@ public class LedgerService implements LedgerMapper {
 	@Override
 	public List<Map<String, Object>> selectCountOfApprovalThisMonth(ApprovalVO approvalVO) {
 		return ledgerMapper.selectCountOfApprovalThisMonth(approvalVO);
+	}
+
+	@Override
+	public int isApprovalYCount(ApprovalVO approvalVO) {
+		return ledgerMapper.isApprovalYCount(approvalVO);
+	}
+
+	@Override
+	public int deleteApproval(ApprovalVO approvalVO) {
+		return ledgerMapper.deleteApproval(approvalVO);
+	}
+
+	@Override
+	public int isCalculateCount(ContractVO contractVO) {
+		return ledgerMapper.isCalculateCount(contractVO);
+	}
+
+	@Override
+	public int deleteContract(ContractVO contractVO) {
+		return ledgerMapper.deleteContract(contractVO);
+	}
+
+	@Override
+	public int deleteLedger(LedgerVO ledgerVO) {
+		return ledgerMapper.deleteLedger(ledgerVO);
 	}
 
 }

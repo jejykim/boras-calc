@@ -106,4 +106,5 @@
   		WHERE approval_ledger_seq = #{approvalLedgerSeq}
   		AND approval_user_id = #{approvalUserId}
   	</select>
+  	
 </mapper>
