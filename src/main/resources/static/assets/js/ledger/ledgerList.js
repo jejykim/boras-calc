@@ -468,50 +468,6 @@ LedgerList.addFilter = function (type, btn) {
 }
 
 /*=======================================================================
-내      용  : 필터 추가
-작  성  자  : 김진열
-2022.08.24 - 최초생성
-========================================================================*/
-LedgerList.addLedgerForExcel = function () {
-    try {
-		var formData = new FormData($("#addForm")[0]);
-		
-		formData.append("ledgerExcelFile", LedgerList.files[0]);
-		
-    	var data = {
-			"ledgerFinancialCompanyCd" : $("#selFinancialCompanyCode").val()
-			, "ledgerFinancialBranchCd" : $("#selFinancialBranchCode").val()
-			, "ledgerFinancialProductCd" : $("#selFinancialProduct").val()
-			, "ledgerTypeCd" : $("#selCodeCompany").val()
-		};
-		
-		formData.append("ledgerVO", new Blob([JSON.stringify(data)], {type: "application/json"}));
-		
-		$.ajax({
-			type : "post",
-			url : "/v1/api/ledger/excel/insert",
-			data : formData,
-			contentType: false,
-			processData: false,
-			enctype: 'multipart/form-data',
-			success : function(json){
-				if(json.resultCode == "00000") {
-					alert("등록되었습니다");
-					location.reload();
-				}else {
-					alert(json.resultMsg);
-				}
-			},
-			error: function(request,status,error,data){
-				alert("잘못된 접근 경로입니다.");
-				return false;
-			}
-		});
-    }
-    catch (e) { console.log(e.message); }
-}
-
-/*=======================================================================
 내      용  : 금융지점 목록 조회
 작  성  자  : 김진열
 2022.08.25 - 최초생성

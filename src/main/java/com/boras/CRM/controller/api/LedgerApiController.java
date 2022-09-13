@@ -1,10 +1,6 @@
 package com.boras.CRM.controller.api;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.util.CellReference;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -30,9 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,15 +37,12 @@ import com.boras.CRM.services.FormulaService;
 import com.boras.CRM.services.LedgerExcelService;
 import com.boras.CRM.services.LedgerService;
 import com.boras.CRM.services.SurtaxSupportByFinancialService;
-import com.boras.CRM.services.UserService;
 import com.boras.CRM.util.ContractHelper;
 import com.boras.CRM.util.ExcelValidationHelper;
-import com.boras.CRM.util.FileHelper;
 import com.boras.CRM.util.PermissionHelper;
 import com.boras.CRM.util.ResultCode;
 import com.boras.CRM.util.ResultCode.ResultNum;
 import com.boras.CRM.vo.ApprovalVO;
-import com.boras.CRM.vo.CalculateVO;
 import com.boras.CRM.vo.CodeVO;
 import com.boras.CRM.vo.ContractVO;
 import com.boras.CRM.vo.FormulaVO;
@@ -98,6 +88,8 @@ public class LedgerApiController {
 	
 	@Value("${common.excel.financial.product}")
 	int commonExcelFinancialProduct;
+	
+	private static final String COMMON_EXCEL_FILE_PATH = "D:/file/ledger_excel_setting/";
 	
 	/**
 	 * 원장 상세 조회
@@ -196,20 +188,23 @@ public class LedgerApiController {
 	    	boolean isCommonExcel = ledgerExcelVO.getLedgerExcelCommonYn().equals("Y") ? true : false;
 	    	
 	    	if(isCommonExcel) {
+	    		/*
 	    		ledgerExcelVO = new LedgerExcelVO();
 		    	ledgerExcelVO.setLedgerFinancialCompanyCd(commonExcelFinancialCompany);
 		    	ledgerExcelVO.setLedgerFinancialBranchCd(commonExcelFinancialBranch);
 		    	ledgerExcelVO.setLedgerFinancialProductCd(commonExcelFinancialProduct);
 		    	
 		    	ledgerExcelVO = ledgerExcelService.selectLedgerExcelDetailForValidation(ledgerExcelVO);
+		    	*/
+	    		ledgerExcelVO = settingCommonExcel(ledgerExcelVO);
 	    	}
 	    	
-	    	Map<String, Object> validationMap = excelValidationHelper.isSameExcelSample(ledgerExcelVO.getLedgerExcelFilePath(), ledgerExcelVO.getLedgerExcelHeaderRow(), ledgerExcelVO.getLedgerExcelSheet(), ledgerVO.getLedgerExcelFile());
+	    	Map<String, Object> validationMap = excelValidationHelper.isSameExcelSample(ledgerExcelVO.getLedgerExcelFilePath(), ledgerExcelVO.getLedgerExcelHeaderRow(), ledgerExcelVO.getLedgerExcelSheet(), ledgerVO.getLedgerExcelFile(), isCommonExcel);
 	    	
 	    	if(validationMap.get("success").equals("Y")) {
 	    		ledgerVO.setLedgerCreateUserId(PermissionHelper.getSessionUserId(req));
 	    		
-	    		boolean insertFlag = insertLedgerFormExcel(ledgerVO, ledgerExcelVO, formulaService);
+	    		boolean insertFlag = insertLedgerFormExcel(ledgerVO, ledgerExcelVO, formulaService, isCommonExcel);
 	    		
 	    		if(insertFlag) {
 	    			rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
@@ -239,8 +234,6 @@ public class LedgerApiController {
 	    
 	    CodeVO codeVO = new CodeVO();
 	    codeVO.setCodeParentId(codeId);
-	    
-	    List<CodeVO> codeList = new ArrayList<>();
 	    
 	    try {
 	    	List<CodeVO> list = codeService.selectCodeList(codeVO);
@@ -468,12 +461,16 @@ public class LedgerApiController {
 	 * @param ledgerVO
 	 * @return
 	 */
-	public boolean insertLedgerFormExcel(LedgerVO ledgerVO, LedgerExcelVO ledgerExcelVO, FormulaService formulaService) {
+	public boolean insertLedgerFormExcel(LedgerVO ledgerVO, LedgerExcelVO ledgerExcelVO, FormulaService formulaService, boolean isCommonExcel) {
 		boolean flag = true;
 		
 		File fNewExcelFile = null;
 		try {
-			fNewExcelFile = new File(ledgerExcelVO.getLedgerExcelFilePath().substring(0, ledgerExcelVO.getLedgerExcelFilePath().lastIndexOf("/")) + ledgerVO.getLedgerExcelFile().getOriginalFilename());
+			if(isCommonExcel) {
+				fNewExcelFile = new File(COMMON_EXCEL_FILE_PATH + ledgerVO.getLedgerExcelFile().getOriginalFilename());
+			}else {
+				fNewExcelFile = new File(ledgerExcelVO.getLedgerExcelFilePath().substring(0, ledgerExcelVO.getLedgerExcelFilePath().lastIndexOf("/")) + ledgerVO.getLedgerExcelFile().getOriginalFilename());
+			}
 			if(fNewExcelFile.exists()) {
 				if(fNewExcelFile.delete()) {
 					ledgerVO.getLedgerExcelFile().transferTo(fNewExcelFile);
@@ -885,6 +882,35 @@ public class LedgerApiController {
 		beforeDate = beforeDate.replaceAll("[^0-9]", "");
 		
 		rvt = beforeDate;
+		
+		return rvt;
+	}
+	
+	/**
+	 * 통합 엑셀 설정
+	 * @param ledgerExcelVO
+	 * @return
+	 */
+	public LedgerExcelVO settingCommonExcel(LedgerExcelVO ledgerExcelVO) {
+		LedgerExcelVO rvt = ledgerExcelVO;
+		
+		rvt = new LedgerExcelVO();
+		rvt.setLedgerExcelHeaderRow("A3");
+		rvt.setLedgerExcelSheet("통합엑셀(변경금지)");
+		rvt.setLedgerCarPrice("E3");
+		rvt.setLedgerAcquisitionCost("F3");
+		rvt.setLedgerDeliveryDate("B3");
+		rvt.setLedgerCustomerName("A3");
+		rvt.setLedgerCarName("C3");
+		rvt.setLedgerCarNumber("D3");
+		rvt.setLedgerTotalFeePercent("H3");
+		rvt.setLedgerTotalFeeSum("G3");
+		rvt.setLedgerTotalFeeSupplyPrice("I3");
+		rvt.setLedgerTotalFeeSurtax("J3");
+		rvt.setLedgerSlidingPercent("L3");
+		rvt.setLedgerSlidingSum("K3");
+		rvt.setLedgerSlidingSupplyPrice("M3");
+		rvt.setLedgerSlidingSurtax("N3");
 		
 		return rvt;
 	}

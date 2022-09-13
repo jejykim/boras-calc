@@ -183,7 +183,13 @@ public class LoginController {
 				if(bfSaltPw.equals("boras1234!")) {
 					result = "redirect:/change/password";
 				}else {
-					result = "redirect:/dashboard";
+					if(PermissionHelper.isLevel1AG(req)) {
+						result = "redirect:/ag/calc/list";
+					}else if(PermissionHelper.isAdmin(req)) {
+						result = "redirect:/dashboard";
+					}else {
+						result = "redirect:/ag/ledger/list";
+					}
 				}
 				
 				break;

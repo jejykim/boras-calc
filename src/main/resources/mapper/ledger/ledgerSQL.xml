@@ -423,9 +423,9 @@
 				,(SELECT code_name FROM code WHERE code_id = l.ledger_type_cd) as ledgerTypeCdName
 				,(SELECT count(*) FROM approval WHERE approval_ledger_seq = l.ledger_seq AND approval_user_id != 'admin' AND approval_state = '승인') as temp_state1
 				, CASE
-					WHEN (SELECT approval_state FROM approval WHERE approval_ledger_seq = l.ledger_seq AND approval_user_id = 'admin') = '거부'
+					WHEN (SELECT approval_state FROM approval WHERE approval_ledger_seq = l.ledger_seq AND approval_user_id = #{approvalUserId}) = '거부'
 			 		THEN null
-			 		ELSE (SELECT approval_state FROM approval WHERE approval_ledger_seq = l.ledger_seq AND approval_user_id = 'admin')
+			 		ELSE (SELECT approval_state FROM approval WHERE approval_ledger_seq = l.ledger_seq AND approval_user_id = #{approvalUserId})
 				END as approval_state
 			FROM ledger l
 			left JOIN approval a
@@ -540,9 +540,9 @@
   	<!-- 금융사 원장 합계 표시 -->
 	<select id="selectSumCost" resultType="map">
 		SELECT
-			SUM(data.ledger_car_price) as ledgerCarPrice
+			SUM(CASE WHEN data.ledger_financial_product_cd in (3101, 3103, 3105) THEN data.ledger_car_price ELSE null END) as ledgerCarPrice
 			, SUM(CASE WHEN data.ledger_financial_product_cd in (3102, 3104, 3106, 3108) THEN data.ledger_acquisition_cost ELSE null END) as ledgerAcquisitionCost
-			, SUM(CASE WHEN data.ledger_financial_product_cd in (3101, 3103, 3105) THEN data.ledger_total_fee_sum ELSE null END) as ledgerTotalFeeSum
+			, SUM(data.ledger_total_fee_sum) as ledgerTotalFeeSum
 			, SUM(data.ledger_sliding_sum) as ledgerSlidingSum
 			, SUM(data.ledger_add_promotion) as ledgerAddPromotion
 		FROM (

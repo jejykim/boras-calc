@@ -28,9 +28,25 @@ public class PermissionHelper {
 	private static final String USER_NAME = "userName";
 	private static final String PERMISSION_LEVEL = "permissionLevel";
 	
-	private static final String[] AG_LEVEL_3_PERMISSON_URL_LIST = { "/" };
-	private static final String[] AG_LEVEL_2_PERMISSON_URL_LIST = { "/" };
-	private static final String[] AG_LEVEL_1_PERMISSON_URL_LIST = { "/" };
+	private static final String[] AG_LEVEL_3_PERMISSON_URL_LIST = {
+			"/ag/ledger/list"
+			, "/ag/calc/list"
+			, "/v1/api/ledger/financial/"
+			, "/v1/api/approval/request"
+			, "/v1/api/code/select"
+			, "/v1/api/ledger/dealer/update"
+			};
+	private static final String[] AG_LEVEL_2_PERMISSON_URL_LIST = {
+			"/ag/ledger/list"
+			, "/ag/calc/list"
+			, "/v1/api/ledger/financial/"
+			, "/v1/api/approval/request"
+			, "/v1/api/code/select"
+			, "/v1/api/ledger/dealer/update"
+			};
+	private static final String[] AG_LEVEL_1_PERMISSON_URL_LIST = {
+			"/ag/calc/list"
+			};
 	
 	private static final String[] ADMIN_NORMAL_PERMISSON_URL_LIST = { "/" };
 	
@@ -47,21 +63,6 @@ public class PermissionHelper {
 		detailJobj.put(PERMISSION_LEVEL, userVO.getUserPermissionCd());
 		
 		WebSessionListener.userList.put(userVO.getUserId(), detailJobj);
-	}
-	
-	// 테스트 로그인 세션 설정
-	public static void setTestLoginSession(HttpServletRequest req) {
-		req.getSession().setAttribute(USER_ID, "dev");
-		req.getSession().setAttribute(USER_NAME, "임시테스트");
-		req.getSession().setAttribute(PERMISSION_LEVEL, 0);
-		req.getSession().setAttribute(LOGIN_YN, "Y");
-		
-		JSONObject detailJobj = new JSONObject();
-		
-		detailJobj.put(USER_NAME, "임시테스트");
-		detailJobj.put(PERMISSION_LEVEL, 0);
-		
-		WebSessionListener.userList.put("dev", detailJobj);
 	}
 	
 	// 세션 확인
@@ -255,6 +256,11 @@ public class PermissionHelper {
 		}
 		
 		return bRetval;
+	}
+	
+	// 관리자 유무
+	public static boolean isAdmin(HttpServletRequest req) {
+		return getSessionUserPermissionLevel(req) == 1100 || getSessionUserPermissionLevel(req) == 1101 ? true : false;
 	}
 	
 	// 일반관리자 유무

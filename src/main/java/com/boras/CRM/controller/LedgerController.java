@@ -92,7 +92,7 @@ public class LedgerController {
 			}else if(map.get("approval_state").toString().equals("요청")) {
 				requestCount = Integer.parseInt(map.get("cnt").toString());
 			}else if(map.get("approval_state").toString().equals("승인")) {
-				requestCount = Integer.parseInt(map.get("cnt").toString());
+				compeleteCount = Integer.parseInt(map.get("cnt").toString());
 			}
 		}
 		

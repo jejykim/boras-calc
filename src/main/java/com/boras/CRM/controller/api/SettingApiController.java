@@ -104,7 +104,7 @@ public class SettingApiController {
 	 * 원장 엑셀 설정 수정
 	 */
 	@PostMapping(value = "/ledger/setting/excel/update")
-	public Map<String, Object> ledgerSettingExcelUpdate(HttpServletRequest req, HttpServletResponse resp, @RequestPart("ledgerExcelFile") MultipartFile ledgerExcelFile, @RequestPart("ledgerExcelVO") LedgerExcelVO ledgerExcelVO) {
+	public Map<String, Object> ledgerSettingExcelUpdate(HttpServletRequest req, HttpServletResponse resp, @RequestPart(value="ledgerExcelFile", required=false) MultipartFile ledgerExcelFile, @RequestPart("ledgerExcelVO") LedgerExcelVO ledgerExcelVO) {
 	    Map<String, Object> rvt = new HashMap<>();
 	    
 	    boolean fileFlag = true;

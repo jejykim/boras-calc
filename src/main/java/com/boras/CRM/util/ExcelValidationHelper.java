@@ -23,8 +23,10 @@ public class ExcelValidationHelper {
 	private static final String SUCCESS = "success";
 	private static final String MSG = "msg";
 
+	private static final String COMMON_EXCEL_FILE_PATH = "D:/file/ledger_excel_setting/";
+	
 	// 엑셀 기존 양식 변경 여부 확인
-	public Map<String, Object> isSameExcelSample(String oldFilePath, String excelHeaderRow, String excelSheetName, MultipartFile newExcelFile) {
+	public Map<String, Object> isSameExcelSample(String oldFilePath, String excelHeaderRow, String excelSheetName, MultipartFile newExcelFile, boolean isCommonExcel) {
 		Map<String, Object> rvt = new HashMap<>();
 		
 		int oldExcelCellCount = 0;
@@ -36,60 +38,81 @@ public class ExcelValidationHelper {
 		
 		List<String> oldExcelHeaderValueList = new ArrayList<>();
 		
-		try {
-			FileInputStream oldFileIs = new FileInputStream(oldFilePath);
-			
-			excelHeaderRow = excelHeaderRow.replaceAll("[^0-9]", "");
-			
-			int iExcelHeaderRow = Integer.parseInt(excelHeaderRow);
-			iExcelHeaderRow = iExcelHeaderRow - 1;
-			
-			XSSFWorkbook workBook = new XSSFWorkbook(oldFileIs);
-			
-			int totalSheetCount = workBook.getNumberOfSheets();
-			
-			int iExcelSheet = -1;
-			
-			for(int i = 0; i < totalSheetCount; i++) {
-				if(excelSheetName.equals(workBook.getSheetName(i))) {
-					iExcelSheet = i;
-					break;
+		if(isCommonExcel) {
+			oldExcelHeaderValueList.add("고객명");
+			oldExcelHeaderValueList.add("인도일");
+			oldExcelHeaderValueList.add("차량명");
+			oldExcelHeaderValueList.add("차량번호");
+			oldExcelHeaderValueList.add("차량가");
+			oldExcelHeaderValueList.add("취득원가");
+			oldExcelHeaderValueList.add("일반 fee 금액");
+			oldExcelHeaderValueList.add("일반 fee %");
+			oldExcelHeaderValueList.add("일반 fee 공급가");
+			oldExcelHeaderValueList.add("일반 fee 부가세");
+			oldExcelHeaderValueList.add("슬라이딩 fee 금액");
+			oldExcelHeaderValueList.add("슬라이딩 fee %");
+			oldExcelHeaderValueList.add("슬라이딩 fee 공급가");
+			oldExcelHeaderValueList.add("슬라이딩 fee 부가세");
+		}else {
+			try {
+				FileInputStream oldFileIs = new FileInputStream(oldFilePath);
+				
+				excelHeaderRow = excelHeaderRow.replaceAll("[^0-9]", "");
+				
+				int iExcelHeaderRow = Integer.parseInt(excelHeaderRow);
+				iExcelHeaderRow = iExcelHeaderRow - 1;
+				
+				XSSFWorkbook workBook = new XSSFWorkbook(oldFileIs);
+				
+				int totalSheetCount = workBook.getNumberOfSheets();
+				
+				int iExcelSheet = -1;
+				
+				for(int i = 0; i < totalSheetCount; i++) {
+					if(excelSheetName.equals(workBook.getSheetName(i))) {
+						iExcelSheet = i;
+						break;
+					}
 				}
-			}
-			
-			if(iExcelSheet == -1) {
-				rvt.put(SUCCESS, "N");
-				rvt.put(MSG, "(OLD) 일치하는 시트명이 없습니다.");
-			}else {
-				XSSFSheet sheet = workBook.getSheetAt(iExcelSheet);
 				
-				XSSFRow row = sheet.getRow(iExcelHeaderRow);
-				
-				oldExcelCellCount = row.getPhysicalNumberOfCells();
-				
-				for(int columnIndex = 0; columnIndex < oldExcelCellCount; columnIndex++){ 
-					//셀값을 읽는다 
-					XSSFCell cell = row.getCell(columnIndex); 
-					String value = "";
-					//셀이 빈값일경우를 위한 널체크 
-					if(cell != null){ 
-						value = cell.getStringCellValue() + "";
+				if(iExcelSheet == -1) {
+					rvt.put(SUCCESS, "N");
+					rvt.put(MSG, "(OLD) 일치하는 시트명이 없습니다.");
+				}else {
+					XSSFSheet sheet = workBook.getSheetAt(iExcelSheet);
+					
+					XSSFRow row = sheet.getRow(iExcelHeaderRow);
+					
+					oldExcelCellCount = row.getPhysicalNumberOfCells();
+					
+					for(int columnIndex = 0; columnIndex < oldExcelCellCount; columnIndex++){ 
+						//셀값을 읽는다 
+						XSSFCell cell = row.getCell(columnIndex); 
+						String value = "";
+						//셀이 빈값일경우를 위한 널체크 
+						if(cell != null){ 
+							value = cell.getStringCellValue() + "";
+						}
+						
+						oldExcelHeaderValueList.add(value);
 					}
 					
-					oldExcelHeaderValueList.add(value);
 				}
-				
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				rvt.put(SUCCESS, "N");
+				rvt.put(MSG, "시스템 에러");
 			}
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			rvt.put(SUCCESS, "N");
-			rvt.put(MSG, "시스템 에러");
 		}
 		
 		if(oldExcelHeaderValueList.size() > 0) {
 			File fNewExcelFile = null;
 			try {
-				fNewExcelFile = new File(oldFilePath.substring(0, oldFilePath.lastIndexOf("/")) + newExcelFile.getOriginalFilename());
+				if(isCommonExcel) {
+					fNewExcelFile = new File(COMMON_EXCEL_FILE_PATH + newExcelFile.getOriginalFilename());
+				}else {
+					fNewExcelFile = new File(oldFilePath.substring(0, oldFilePath.lastIndexOf("/")) + newExcelFile.getOriginalFilename());
+				}
 				if(fNewExcelFile.exists()) {
 					if(fNewExcelFile.delete()) {
 						newExcelFile.transferTo(fNewExcelFile);
