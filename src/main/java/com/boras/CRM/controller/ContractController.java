@@ -1,11 +1,14 @@
 package com.boras.CRM.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.boras.CRM.services.CodeService;
 import com.boras.CRM.services.ContractService;
+import com.boras.CRM.services.LedgerService;
 import com.boras.CRM.services.UserService;
 import com.boras.CRM.vo.CodeVO;
 import com.boras.CRM.vo.ContractVO;
@@ -36,6 +40,7 @@ public class ContractController {
 	@Autowired
 	private UserService userService;
 	
+	
 	/*
 	 * main page
 	 */
@@ -43,10 +48,34 @@ public class ContractController {
 	public String contractList(Model model, HttpServletRequest req, HttpServletResponse resp, ContractVO contractVO) {
 		String result = "contract/contract";
 		
+		// 현재 년, 월
+		Calendar cal = Calendar.getInstance();
+		int thisYear = cal.get(Calendar.YEAR);
+		int thisMonth = cal.get(Calendar.MONTH) + 1;
+		
+		if(contractVO.getContractCreateYear() == 0) {
+			contractVO.setContractCreateYear(thisYear);
+		}
+		
+		if(contractVO.getContractCreateMonth() == 0) {
+			contractVO.setContractCreateMonth(thisMonth);
+		}
+		
 		List<ContractVO> list = new ArrayList<>();
 		
 		List<CodeVO> financialCompanyCodelist = new ArrayList<>();
 		List<CodeVO> financialProductCodelist = new ArrayList<>();
+		
+		// 등록 년
+		List<Map<String, Object>> yearList = new ArrayList<>();
+		
+		try {
+			yearList = contractService.selectContractYear();
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectLedgerYear ]");
+			logger.error(e.getMessage());
+		}
+		
 		CodeVO codeVO = new CodeVO();
 		// 금융사
 		codeVO.setCodeParentId(3000);
@@ -85,13 +114,24 @@ public class ContractController {
 			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectContractList ]");
 			logger.error(e.getMessage());
 		}
+		int listCount = 0;
+		try {
+			listCount = contractService.selectContractListCount(contractVO);
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectContractListCount ]");
+			logger.error(e.getMessage());
+		}
 		model.addAttribute("list",list);
-		model.addAttribute("listCount",1);
+		model.addAttribute("listCount",listCount);
 		
 		model.addAttribute("financialCompanyCodelist", financialCompanyCodelist);
 		model.addAttribute("financialProductCodelist", financialProductCodelist);
 		model.addAttribute("userAglist", userAglist);
 		model.addAttribute("contractVO", contractVO);
+		
+		model.addAttribute("yearList", yearList);
+		model.addAttribute("thisYear", thisYear);
+		model.addAttribute("thisMonth", thisMonth);
 		
 		return result;
 	}

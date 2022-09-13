@@ -42,6 +42,21 @@
                     <div class="main-header">
                         <div class="header-title">
                             <h3>계출</h3>
+                            <span>
+                                <select id="selYear">
+                                	<c:forEach var="yearList" items="${yearlist }" varStatus="status">
+                                    	<option value="${yearList }">${yearList } 년</option>
+                                	</c:forEach>
+                                	<c:if test="${empty yearlist }">
+                                		<option value="${thisYear }">${thisYear } 년</option>
+                                	</c:if>
+                                </select>
+                                <select id="selMonth">
+                                	<c:forEach var="monthList" begin="1" end="12" step="1" varStatus="status">
+                                    	<option value="${monthList }" <c:if test="${monthList eq contractVO.contractCreateMonth}">selected="selected"</c:if>>${monthList } 월</option>
+                                	</c:forEach>
+                                </select>
+                            </span>
                         </div>
                         <div class="header-sub">
                             <div class="btn">

@@ -51,8 +51,8 @@ public class ContractHelper {
 			
 			//추가
 			contractVO.setContractAddTotalFeeSum(ledgerVO.getLedgerTotalFeeSum());
-			contractVO.setContractAddAgFeeSum(ledgerVO.getLedgerSlidingSum());
-			contractVO.setContractAddDpFeeSum(ledgerVO.getLedgerTotalFeeSum()-ledgerVO.getLedgerSlidingSum());
+			contractVO.setContractAddAgFeeSum(ledgerVO.getLedgerTotalFeeSum());
+			contractVO.setContractAddDpFeeSum(0);
 			
 			
 			//등록년월
@@ -67,17 +67,14 @@ public class ContractHelper {
 						contractVO.setContractAddFeeSurtaxSupportYn(ssVO.getSurtaxSupportByFinancialAddFeeSurtaxSupportYn());
 						contractVO.setContractAgFeeSurtaxSupportYn(ssVO.getSurtaxSupportByFinancialAgFeeSurtaxSupportYn());
 						contractVO.setContractSlidingSurtaxSupportYn(ssVO.getSurtaxSupportByFinancialSlidingSurtaxSupportYn());
-						
-						contractService.insertContract(contractVO);
-					}else {
-						contractVO.setContractAddFeeSurtaxSupportYn(null);
-						contractVO.setContractAgFeeSurtaxSupportYn(null);
-						contractVO.setContractSlidingSurtaxSupportYn(null);
-						
-						contractService.insertContract(contractVO);
 					}
+				}else {
+					contractVO.setContractAddFeeSurtaxSupportYn(null);
+					contractVO.setContractAgFeeSurtaxSupportYn(null);
+					contractVO.setContractSlidingSurtaxSupportYn(null);
 				}
 			}
+			contractService.insertContract(contractVO);
 			
 			result = true;
 			

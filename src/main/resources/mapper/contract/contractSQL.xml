@@ -59,6 +59,13 @@
 		) 
   	</insert>
   	
+  	<!-- 등록 년 조회 -->
+	<select id="selectContractYear" resultType="map">
+		select contract_create_year
+		from contract
+		group by contract_create_year
+  	</select>
+  	
   	<!-- 년월에 따른 계출 목록 조회 -->
   	<select id="selectContractList" parameterType="contractVO" resultType="contractVO">
   		SELECT *
@@ -91,6 +98,35 @@
 			</if>
   		ORDER BY contract_create_date desc
 		<!-- LIMIT #{pagePerRows} offset #{page} -->
+  	</select>
+  	
+  	<!-- 년월에 따른 계출 목록 조회 -->
+  	<select id="selectContractListCount" parameterType="contractVO" resultType="int">
+  		SELECT count(*)
+  		 FROM contract c
+  		LEFT JOIN ledger l
+  		ON c.contract_ledger_seq=l.ledger_seq
+  		WHERE contract_create_year=#{contractCreateYear}
+  			AND contract_create_month=#{contractCreateMonth}
+  			<if test="ledgerFinancialCompanyCd != 0">
+				AND l.ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
+			</if>
+			<if test="ledgerFinancialProductCd != 0">
+				AND l.ledger_financial_product_cd = #{ledgerFinancialProductCd}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND contract_user_id = #{userId}
+			</if>
+			<if test="searchText != null and searchText != ''">
+				AND (l.ledger_car_name like CONCAT('%',#{searchText},'%')
+					OR l.ledger_car_number like CONCAT('%',#{searchText},'%')
+					OR l.ledger_car_price like CONCAT('%',#{searchText},'%')
+					OR l.ledger_acquisition_cost like CONCAT('%',#{searchText},'%')
+					OR l.ledger_delivery_date like CONCAT('%',#{searchText},'%')
+					OR l.ledger_other like CONCAT('%',#{searchText},'%')
+					OR l.ledger_customer_name like CONCAT('%',#{searchText},'%')
+					)
+			</if>
   	</select>
   	
   	<!-- 계출 수정 -->
