@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.boras.CRM.services.CalculateService;
 import com.boras.CRM.services.ContractService;
 import com.boras.CRM.services.FormulaService;
 import com.boras.CRM.util.ResultCode;
 import com.boras.CRM.util.ResultCode.ResultNum;
+import com.boras.CRM.vo.CalculateVO;
 import com.boras.CRM.vo.ContractVO;
 import com.boras.CRM.vo.FormulaVO;
 
@@ -34,6 +36,9 @@ public class CalculateApiController {
 	
 	@Autowired
 	private ContractService contractService;
+	
+	@Autowired
+	private CalculateService calculateService;
 	
 	
 	/**
@@ -78,6 +83,35 @@ public class CalculateApiController {
     		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
 	    	rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
     	}
+	   
+		return rvt;
+	}
+	
+	/**
+	 * 정산(계출&원장) 상세
+	 */
+	@GetMapping(value = "/info/{contractSeq}")
+	public Map<String, Object> selectCalculateInfo(HttpServletRequest req, HttpServletResponse resp, @PathVariable("contractSeq") int contractSeq) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    try {
+	    	CalculateVO calculateVO = new CalculateVO();
+
+	    	calculateVO = calculateService.selectCalculateInfo(contractSeq);
+	    	
+		    if(calculateVO!=null) {	
+		    	rvt.put("info", calculateVO);
+		    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+		    }else {
+		    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
+    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
+		    }
+		    	
+	    }catch (Exception e) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
+			logger.error(e.getMessage());
+		}
 	   
 		return rvt;
 	}

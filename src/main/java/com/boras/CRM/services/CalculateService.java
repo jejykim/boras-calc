@@ -24,5 +24,19 @@ public class CalculateService implements CalculateMapper {
 	public List<CalculateVO> selectCalculateList(CalculateVO calculateVO) {
 		return calculateMapper.selectCalculateList(calculateVO);
 	}
+	
+	@Override
+	public int selectCalculateListCount(CalculateVO calculateVO) {
+		return calculateMapper.selectCalculateListCount(calculateVO);
+	}
 
+	@Override
+	public CalculateVO selectCalculateForAg(CalculateVO calculateVO) {
+		return calculateMapper.selectCalculateForAg(calculateVO);
+	}
+	
+	@Override
+	public CalculateVO selectCalculateInfo(int contractSeq) {
+		return calculateMapper.selectCalculateInfo(contractSeq);
+	}
 }

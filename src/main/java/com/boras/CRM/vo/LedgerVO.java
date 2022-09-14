@@ -1,5 +1,6 @@
 package com.boras.CRM.vo;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,34 +66,34 @@ public class LedgerVO extends PagingVO {
 	private String ledgerCarNumber;
 	
 	// 차량가
-	private double ledgerCarPrice;
+	private BigDecimal ledgerCarPrice;
 	
 	// 취득원가
-	private double ledgerAcquisitionCost;
+	private BigDecimal ledgerAcquisitionCost;
 	
 	// 총fee-%
 	private double ledgerTotalFeePercent;
 	
 	// 총fee-합계
-	private double ledgerTotalFeeSum;
+	private BigDecimal ledgerTotalFeeSum;
 	
 	// 총fee-공급가
-	private double ledgerTotalFeeSupplyPrice;
+	private BigDecimal ledgerTotalFeeSupplyPrice;
 	
 	// 총fee-부가세
-	private double ledgerTotalFeeSurtax;
+	private BigDecimal ledgerTotalFeeSurtax;
 	
 	// 슬라이딩-%
 	private double ledgerSlidingPercent;
 	
 	// 슬라이딩-합계
-	private double ledgerSlidingSum;
+	private BigDecimal ledgerSlidingSum;
 	
 	// 슬라이딩-공급각
-	private double ledgerSlidingSupplyPrice;
+	private BigDecimal ledgerSlidingSupplyPrice;
 	
 	// 슬라이딩-부가세
-	private double ledgerSlidingSurtax;
+	private BigDecimal ledgerSlidingSurtax;
 	
 	// 추가프로모션
 	private double ledgerAddPromotion;
@@ -155,13 +156,21 @@ public class LedgerVO extends PagingVO {
 	private String approvalState;
 	
 	private int approvalSeq;
-	
+
 	public int getLedgerSeq() {
 		return ledgerSeq;
 	}
 
 	public void setLedgerSeq(int ledgerSeq) {
 		this.ledgerSeq = ledgerSeq;
+	}
+
+	public MultipartFile getLedgerExcelFile() {
+		return ledgerExcelFile;
+	}
+
+	public void setLedgerExcelFile(MultipartFile ledgerExcelFile) {
+		this.ledgerExcelFile = ledgerExcelFile;
 	}
 
 	public String getLedgerOther() {
@@ -180,12 +189,28 @@ public class LedgerVO extends PagingVO {
 		this.ledgerTypeCd = ledgerTypeCd;
 	}
 
+	public String getLedgerTypeCdName() {
+		return ledgerTypeCdName;
+	}
+
+	public void setLedgerTypeCdName(String ledgerTypeCdName) {
+		this.ledgerTypeCdName = ledgerTypeCdName;
+	}
+
 	public int getLedgerFinancialCompanyCd() {
 		return ledgerFinancialCompanyCd;
 	}
 
 	public void setLedgerFinancialCompanyCd(int ledgerFinancialCompanyCd) {
 		this.ledgerFinancialCompanyCd = ledgerFinancialCompanyCd;
+	}
+
+	public String getLedgerFinancialCompanyCdName() {
+		return ledgerFinancialCompanyCdName;
+	}
+
+	public void setLedgerFinancialCompanyCdName(String ledgerFinancialCompanyCdName) {
+		this.ledgerFinancialCompanyCdName = ledgerFinancialCompanyCdName;
 	}
 
 	public int getLedgerFinancialBranchCd() {
@@ -196,12 +221,28 @@ public class LedgerVO extends PagingVO {
 		this.ledgerFinancialBranchCd = ledgerFinancialBranchCd;
 	}
 
+	public String getLedgerFinancialBranchCdName() {
+		return ledgerFinancialBranchCdName;
+	}
+
+	public void setLedgerFinancialBranchCdName(String ledgerFinancialBranchCdName) {
+		this.ledgerFinancialBranchCdName = ledgerFinancialBranchCdName;
+	}
+
 	public int getLedgerFinancialProductCd() {
 		return ledgerFinancialProductCd;
 	}
 
 	public void setLedgerFinancialProductCd(int ledgerFinancialProductCd) {
 		this.ledgerFinancialProductCd = ledgerFinancialProductCd;
+	}
+
+	public String getLedgerFinancialProductCdName() {
+		return ledgerFinancialProductCdName;
+	}
+
+	public void setLedgerFinancialProductCdName(String ledgerFinancialProductCdName) {
+		this.ledgerFinancialProductCdName = ledgerFinancialProductCdName;
 	}
 
 	public String getLedgerDeliveryDate() {
@@ -228,12 +269,28 @@ public class LedgerVO extends PagingVO {
 		this.ledgerDealerBrandCd = ledgerDealerBrandCd;
 	}
 
+	public String getLedgerDealerBrandCdName() {
+		return ledgerDealerBrandCdName;
+	}
+
+	public void setLedgerDealerBrandCdName(String ledgerDealerBrandCdName) {
+		this.ledgerDealerBrandCdName = ledgerDealerBrandCdName;
+	}
+
 	public int getLedgerDealerCompanyCd() {
 		return ledgerDealerCompanyCd;
 	}
 
 	public void setLedgerDealerCompanyCd(int ledgerDealerCompanyCd) {
 		this.ledgerDealerCompanyCd = ledgerDealerCompanyCd;
+	}
+
+	public String getLedgerDealerCompanyCdName() {
+		return ledgerDealerCompanyCdName;
+	}
+
+	public void setLedgerDealerCompanyCdName(String ledgerDealerCompanyCdName) {
+		this.ledgerDealerCompanyCdName = ledgerDealerCompanyCdName;
 	}
 
 	public String getLedgerCarName() {
@@ -252,19 +309,19 @@ public class LedgerVO extends PagingVO {
 		this.ledgerCarNumber = ledgerCarNumber;
 	}
 
-	public double getLedgerCarPrice() {
+	public BigDecimal getLedgerCarPrice() {
 		return ledgerCarPrice;
 	}
 
-	public void setLedgerCarPrice(double ledgerCarPrice) {
+	public void setLedgerCarPrice(BigDecimal ledgerCarPrice) {
 		this.ledgerCarPrice = ledgerCarPrice;
 	}
 
-	public double getLedgerAcquisitionCost() {
+	public BigDecimal getLedgerAcquisitionCost() {
 		return ledgerAcquisitionCost;
 	}
 
-	public void setLedgerAcquisitionCost(double ledgerAcquisitionCost) {
+	public void setLedgerAcquisitionCost(BigDecimal ledgerAcquisitionCost) {
 		this.ledgerAcquisitionCost = ledgerAcquisitionCost;
 	}
 
@@ -276,27 +333,27 @@ public class LedgerVO extends PagingVO {
 		this.ledgerTotalFeePercent = ledgerTotalFeePercent;
 	}
 
-	public double getLedgerTotalFeeSum() {
+	public BigDecimal getLedgerTotalFeeSum() {
 		return ledgerTotalFeeSum;
 	}
 
-	public void setLedgerTotalFeeSum(double ledgerTotalFeeSum) {
+	public void setLedgerTotalFeeSum(BigDecimal ledgerTotalFeeSum) {
 		this.ledgerTotalFeeSum = ledgerTotalFeeSum;
 	}
 
-	public double getLedgerTotalFeeSupplyPrice() {
+	public BigDecimal getLedgerTotalFeeSupplyPrice() {
 		return ledgerTotalFeeSupplyPrice;
 	}
 
-	public void setLedgerTotalFeeSupplyPrice(double ledgerTotalFeeSupplyPrice) {
+	public void setLedgerTotalFeeSupplyPrice(BigDecimal ledgerTotalFeeSupplyPrice) {
 		this.ledgerTotalFeeSupplyPrice = ledgerTotalFeeSupplyPrice;
 	}
 
-	public double getLedgerTotalFeeSurtax() {
+	public BigDecimal getLedgerTotalFeeSurtax() {
 		return ledgerTotalFeeSurtax;
 	}
 
-	public void setLedgerTotalFeeSurtax(double ledgerTotalFeeSurtax) {
+	public void setLedgerTotalFeeSurtax(BigDecimal ledgerTotalFeeSurtax) {
 		this.ledgerTotalFeeSurtax = ledgerTotalFeeSurtax;
 	}
 
@@ -308,27 +365,27 @@ public class LedgerVO extends PagingVO {
 		this.ledgerSlidingPercent = ledgerSlidingPercent;
 	}
 
-	public double getLedgerSlidingSum() {
+	public BigDecimal getLedgerSlidingSum() {
 		return ledgerSlidingSum;
 	}
 
-	public void setLedgerSlidingSum(double ledgerSlidingSum) {
+	public void setLedgerSlidingSum(BigDecimal ledgerSlidingSum) {
 		this.ledgerSlidingSum = ledgerSlidingSum;
 	}
 
-	public double getLedgerSlidingSupplyPrice() {
+	public BigDecimal getLedgerSlidingSupplyPrice() {
 		return ledgerSlidingSupplyPrice;
 	}
 
-	public void setLedgerSlidingSupplyPrice(double ledgerSlidingSupplyPrice) {
+	public void setLedgerSlidingSupplyPrice(BigDecimal ledgerSlidingSupplyPrice) {
 		this.ledgerSlidingSupplyPrice = ledgerSlidingSupplyPrice;
 	}
 
-	public double getLedgerSlidingSurtax() {
+	public BigDecimal getLedgerSlidingSurtax() {
 		return ledgerSlidingSurtax;
 	}
 
-	public void setLedgerSlidingSurtax(double ledgerSlidingSurtax) {
+	public void setLedgerSlidingSurtax(BigDecimal ledgerSlidingSurtax) {
 		this.ledgerSlidingSurtax = ledgerSlidingSurtax;
 	}
 
@@ -388,54 +445,6 @@ public class LedgerVO extends PagingVO {
 		this.ledgerUpdateUserId = ledgerUpdateUserId;
 	}
 
-	public String getLedgerFinancialCompanyCdName() {
-		return ledgerFinancialCompanyCdName;
-	}
-
-	public void setLedgerFinancialCompanyCdName(String ledgerFinancialCompanyCdName) {
-		this.ledgerFinancialCompanyCdName = ledgerFinancialCompanyCdName;
-	}
-
-	public String getLedgerFinancialBranchCdName() {
-		return ledgerFinancialBranchCdName;
-	}
-
-	public void setLedgerFinancialBranchCdName(String ledgerFinancialBranchCdName) {
-		this.ledgerFinancialBranchCdName = ledgerFinancialBranchCdName;
-	}
-
-	public String getLedgerFinancialProductCdName() {
-		return ledgerFinancialProductCdName;
-	}
-
-	public void setLedgerFinancialProductCdName(String ledgerFinancialProductCdName) {
-		this.ledgerFinancialProductCdName = ledgerFinancialProductCdName;
-	}
-
-	public String getLedgerDealerBrandCdName() {
-		return ledgerDealerBrandCdName;
-	}
-
-	public void setLedgerDealerBrandCdName(String ledgerDealerBrandCdName) {
-		this.ledgerDealerBrandCdName = ledgerDealerBrandCdName;
-	}
-
-	public String getLedgerDealerCompanyCdName() {
-		return ledgerDealerCompanyCdName;
-	}
-
-	public void setLedgerDealerCompanyCdName(String ledgerDealerCompanyCdName) {
-		this.ledgerDealerCompanyCdName = ledgerDealerCompanyCdName;
-	}
-
-	public MultipartFile getLedgerExcelFile() {
-		return ledgerExcelFile;
-	}
-
-	public void setLedgerExcelFile(MultipartFile ledgerExcelFile) {
-		this.ledgerExcelFile = ledgerExcelFile;
-	}
-
 	public String getLedgerUpdateDate() {
 		return ledgerUpdateDate;
 	}
@@ -460,12 +469,36 @@ public class LedgerVO extends PagingVO {
 		this.stateType = stateType;
 	}
 
-	public String getLedgerTypeCdName() {
-		return ledgerTypeCdName;
+	public String getMultiRequestYn() {
+		return multiRequestYn;
 	}
 
-	public void setLedgerTypeCdName(String ledgerTypeCdName) {
-		this.ledgerTypeCdName = ledgerTypeCdName;
+	public void setMultiRequestYn(String multiRequestYn) {
+		this.multiRequestYn = multiRequestYn;
+	}
+
+	public String getAgUserId() {
+		return agUserId;
+	}
+
+	public void setAgUserId(String agUserId) {
+		this.agUserId = agUserId;
+	}
+
+	public String getAgUserName() {
+		return agUserName;
+	}
+
+	public void setAgUserName(String agUserName) {
+		this.agUserName = agUserName;
+	}
+
+	public int getCnt() {
+		return cnt;
+	}
+
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
 	}
 
 	public List<Integer> getsLedgerTypeCd() {
@@ -498,38 +531,6 @@ public class LedgerVO extends PagingVO {
 
 	public void setsLedgerFinancialProductCd(List<Integer> sLedgerFinancialProductCd) {
 		this.sLedgerFinancialProductCd = sLedgerFinancialProductCd;
-	}
-
-	public String getMultiRequestYn() {
-		return multiRequestYn;
-	}
-
-	public void setMultiRequestYn(String multiRequestYn) {
-		this.multiRequestYn = multiRequestYn;
-	}
-
-	public String getAgUserId() {
-		return agUserId;
-	}
-
-	public void setAgUserId(String agUserId) {
-		this.agUserId = agUserId;
-	}
-
-	public int getCnt() {
-		return cnt;
-	}
-
-	public void setCnt(int cnt) {
-		this.cnt = cnt;
-	}
-
-	public String getAgUserName() {
-		return agUserName;
-	}
-
-	public void setAgUserName(String agUserName) {
-		this.agUserName = agUserName;
 	}
 
 	public String getApprovalUserId() {

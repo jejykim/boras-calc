@@ -1,5 +1,6 @@
 package com.boras.CRM.util;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -37,7 +38,7 @@ public class ContractHelper {
 			contractVO.setContractNomalAgFeeSum(ledgerVO.getLedgerTotalFeeSum());
 			//일반dp fee
 			contractVO.setContractNomalDpFeePercent(0);
-			contractVO.setContractNomalDpFeeSum(0);
+			contractVO.setContractNomalDpFeeSum(BigDecimal.ZERO);
 			
 			//슬 총
 			contractVO.setContractTotalSlidingPercent(ledgerVO.getLedgerSlidingPercent());
@@ -47,12 +48,12 @@ public class ContractHelper {
 			contractVO.setContractAgSlidingSum(ledgerVO.getLedgerSlidingSum());
 			//슬 dp
 			contractVO.setContractDpSlidingPercent(0);
-			contractVO.setContractDpSlidingSum(0);
+			contractVO.setContractDpSlidingSum(BigDecimal.ZERO);
 			
 			//추가
 			contractVO.setContractAddTotalFeeSum(ledgerVO.getLedgerTotalFeeSum());
 			contractVO.setContractAddAgFeeSum(ledgerVO.getLedgerTotalFeeSum());
-			contractVO.setContractAddDpFeeSum(0);
+			contractVO.setContractAddDpFeeSum(BigDecimal.ZERO);
 			
 			
 			//등록년월
@@ -112,7 +113,7 @@ public class ContractHelper {
 			contractVO.setContractNomalAgFeeSum(ledgerVO.getLedgerTotalFeeSum());
 			//일반dp fee
 			contractVO.setContractNomalDpFeePercent(0);
-			contractVO.setContractNomalDpFeeSum(0);
+			contractVO.setContractNomalDpFeeSum(BigDecimal.ZERO);
 			
 			//슬 총
 			contractVO.setContractTotalSlidingPercent(ledgerVO.getLedgerSlidingPercent());
@@ -122,12 +123,12 @@ public class ContractHelper {
 			contractVO.setContractAgSlidingSum(ledgerVO.getLedgerSlidingSum());
 			//슬 dp
 			contractVO.setContractDpSlidingPercent(0);
-			contractVO.setContractDpSlidingSum(0);
+			contractVO.setContractDpSlidingSum(BigDecimal.ZERO);
 			
 			//추가
 			contractVO.setContractAddTotalFeeSum(ledgerVO.getLedgerTotalFeeSum());
 			contractVO.setContractAddAgFeeSum(ledgerVO.getLedgerSlidingSum());
-			contractVO.setContractAddDpFeeSum(ledgerVO.getLedgerTotalFeeSum()-ledgerVO.getLedgerSlidingSum());
+			contractVO.setContractAddDpFeeSum(ledgerVO.getLedgerTotalFeeSum().subtract(ledgerVO.getLedgerSlidingSum()));
 			
 			
 			//등록년월

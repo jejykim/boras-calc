@@ -1,25 +1,27 @@
 package com.boras.CRM.vo;
 
+import java.math.BigDecimal;
+
 public class ContractVO extends PagingVO {
 	private int contractLedgerSeq;
 	private String contractUserId;
 	private int contractSeq;
 	private int contractCalculateSeq;
 	private double contractNomalTotalFeePercent;
-	private double contractNomalTotalFeeSum;
+	private BigDecimal contractNomalTotalFeeSum;
 	private double contractNomalAgFeePercent;
-	private double contractNomalAgFeeSum;
+	private BigDecimal contractNomalAgFeeSum;
 	private double contractNomalDpFeePercent;
-	private double contractNomalDpFeeSum;
-	private double contractAddTotalFeeSum;
-	private double contractAddAgFeeSum;
-	private double contractAddDpFeeSum;
+	private BigDecimal contractNomalDpFeeSum;
+	private BigDecimal contractAddTotalFeeSum;
+	private BigDecimal contractAddAgFeeSum;
+	private BigDecimal contractAddDpFeeSum;
 	private double contractTotalSlidingPercent;
-	private double contractTotalSlidingSum;
+	private BigDecimal contractTotalSlidingSum;
 	private double contractAgSlidingPercent;
-	private double contractAgSlidingSum;
+	private BigDecimal contractAgSlidingSum;
 	private double contractDpSlidingPercent;
-	private double contractDpSlidingSum;
+	private BigDecimal contractDpSlidingSum;
 	private String contractAgFeeSurtaxSupportYn;
 	private String contractSlidingSurtaxSupportYn;
 	private String contractAddFeeSurtaxSupportYn;
@@ -46,16 +48,15 @@ public class ContractVO extends PagingVO {
 	// 고객명
 	private String ledgerCustomerName;
 	// 차량가
-	private double ledgerCarPrice;
+	private BigDecimal ledgerCarPrice;
 	// 취득원가
-	private double ledgerAcquisitionCost;
+	private BigDecimal ledgerAcquisitionCost;
 	
 	/* 사용자(ag) */
 	//이름
 	private String userName;
 	//id
 	private String userId;
-	
 	public int getContractLedgerSeq() {
 		return contractLedgerSeq;
 	}
@@ -86,10 +87,10 @@ public class ContractVO extends PagingVO {
 	public void setContractNomalTotalFeePercent(double contractNomalTotalFeePercent) {
 		this.contractNomalTotalFeePercent = contractNomalTotalFeePercent;
 	}
-	public double getContractNomalTotalFeeSum() {
+	public BigDecimal getContractNomalTotalFeeSum() {
 		return contractNomalTotalFeeSum;
 	}
-	public void setContractNomalTotalFeeSum(double contractNomalTotalFeeSum) {
+	public void setContractNomalTotalFeeSum(BigDecimal contractNomalTotalFeeSum) {
 		this.contractNomalTotalFeeSum = contractNomalTotalFeeSum;
 	}
 	public double getContractNomalAgFeePercent() {
@@ -98,10 +99,10 @@ public class ContractVO extends PagingVO {
 	public void setContractNomalAgFeePercent(double contractNomalAgFeePercent) {
 		this.contractNomalAgFeePercent = contractNomalAgFeePercent;
 	}
-	public double getContractNomalAgFeeSum() {
+	public BigDecimal getContractNomalAgFeeSum() {
 		return contractNomalAgFeeSum;
 	}
-	public void setContractNomalAgFeeSum(double contractNomalAgFeeSum) {
+	public void setContractNomalAgFeeSum(BigDecimal contractNomalAgFeeSum) {
 		this.contractNomalAgFeeSum = contractNomalAgFeeSum;
 	}
 	public double getContractNomalDpFeePercent() {
@@ -110,28 +111,28 @@ public class ContractVO extends PagingVO {
 	public void setContractNomalDpFeePercent(double contractNomalDpFeePercent) {
 		this.contractNomalDpFeePercent = contractNomalDpFeePercent;
 	}
-	public double getContractNomalDpFeeSum() {
+	public BigDecimal getContractNomalDpFeeSum() {
 		return contractNomalDpFeeSum;
 	}
-	public void setContractNomalDpFeeSum(double contractNomalDpFeeSum) {
+	public void setContractNomalDpFeeSum(BigDecimal contractNomalDpFeeSum) {
 		this.contractNomalDpFeeSum = contractNomalDpFeeSum;
 	}
-	public double getContractAddTotalFeeSum() {
+	public BigDecimal getContractAddTotalFeeSum() {
 		return contractAddTotalFeeSum;
 	}
-	public void setContractAddTotalFeeSum(double contractAddTotalFeeSum) {
+	public void setContractAddTotalFeeSum(BigDecimal contractAddTotalFeeSum) {
 		this.contractAddTotalFeeSum = contractAddTotalFeeSum;
 	}
-	public double getContractAddAgFeeSum() {
+	public BigDecimal getContractAddAgFeeSum() {
 		return contractAddAgFeeSum;
 	}
-	public void setContractAddAgFeeSum(double contractAddAgFeeSum) {
+	public void setContractAddAgFeeSum(BigDecimal contractAddAgFeeSum) {
 		this.contractAddAgFeeSum = contractAddAgFeeSum;
 	}
-	public double getContractAddDpFeeSum() {
+	public BigDecimal getContractAddDpFeeSum() {
 		return contractAddDpFeeSum;
 	}
-	public void setContractAddDpFeeSum(double contractAddDpFeeSum) {
+	public void setContractAddDpFeeSum(BigDecimal contractAddDpFeeSum) {
 		this.contractAddDpFeeSum = contractAddDpFeeSum;
 	}
 	public double getContractTotalSlidingPercent() {
@@ -140,10 +141,10 @@ public class ContractVO extends PagingVO {
 	public void setContractTotalSlidingPercent(double contractTotalSlidingPercent) {
 		this.contractTotalSlidingPercent = contractTotalSlidingPercent;
 	}
-	public double getContractTotalSlidingSum() {
+	public BigDecimal getContractTotalSlidingSum() {
 		return contractTotalSlidingSum;
 	}
-	public void setContractTotalSlidingSum(double contractTotalSlidingSum) {
+	public void setContractTotalSlidingSum(BigDecimal contractTotalSlidingSum) {
 		this.contractTotalSlidingSum = contractTotalSlidingSum;
 	}
 	public double getContractAgSlidingPercent() {
@@ -152,10 +153,10 @@ public class ContractVO extends PagingVO {
 	public void setContractAgSlidingPercent(double contractAgSlidingPercent) {
 		this.contractAgSlidingPercent = contractAgSlidingPercent;
 	}
-	public double getContractAgSlidingSum() {
+	public BigDecimal getContractAgSlidingSum() {
 		return contractAgSlidingSum;
 	}
-	public void setContractAgSlidingSum(double contractAgSlidingSum) {
+	public void setContractAgSlidingSum(BigDecimal contractAgSlidingSum) {
 		this.contractAgSlidingSum = contractAgSlidingSum;
 	}
 	public double getContractDpSlidingPercent() {
@@ -164,10 +165,10 @@ public class ContractVO extends PagingVO {
 	public void setContractDpSlidingPercent(double contractDpSlidingPercent) {
 		this.contractDpSlidingPercent = contractDpSlidingPercent;
 	}
-	public double getContractDpSlidingSum() {
+	public BigDecimal getContractDpSlidingSum() {
 		return contractDpSlidingSum;
 	}
-	public void setContractDpSlidingSum(double contractDpSlidingSum) {
+	public void setContractDpSlidingSum(BigDecimal contractDpSlidingSum) {
 		this.contractDpSlidingSum = contractDpSlidingSum;
 	}
 	public String getContractAgFeeSurtaxSupportYn() {
@@ -242,37 +243,17 @@ public class ContractVO extends PagingVO {
 	public void setLedgerFinancialCompanyCd(int ledgerFinancialCompanyCd) {
 		this.ledgerFinancialCompanyCd = ledgerFinancialCompanyCd;
 	}
-	public int getLedgerFinancialProductCd() {
-		return ledgerFinancialProductCd;
-	}
-	public void setLedgerFinancialProductCd(int ledgerFinancialProductCd) {
-		this.ledgerFinancialProductCd = ledgerFinancialProductCd;
-	}
-	public String getLedgerCarName() {
-		return ledgerCarName;
-	}
-	public void setLedgerCarName(String ledgerCarName) {
-		this.ledgerCarName = ledgerCarName;
-	}
-	
-	public String getLedgerCustomerName() {
-		return ledgerCustomerName;
-	}
-	public void setLedgerCustomerName(String ledgerCustomerName) {
-		this.ledgerCustomerName = ledgerCustomerName;
-	}
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	
 	public String getLedgerFinancialCompanyCdName() {
 		return ledgerFinancialCompanyCdName;
 	}
 	public void setLedgerFinancialCompanyCdName(String ledgerFinancialCompanyCdName) {
 		this.ledgerFinancialCompanyCdName = ledgerFinancialCompanyCdName;
+	}
+	public int getLedgerFinancialProductCd() {
+		return ledgerFinancialProductCd;
+	}
+	public void setLedgerFinancialProductCd(int ledgerFinancialProductCd) {
+		this.ledgerFinancialProductCd = ledgerFinancialProductCd;
 	}
 	public String getLedgerFinancialProductCdName() {
 		return ledgerFinancialProductCdName;
@@ -280,25 +261,41 @@ public class ContractVO extends PagingVO {
 	public void setLedgerFinancialProductCdName(String ledgerFinancialProductCdName) {
 		this.ledgerFinancialProductCdName = ledgerFinancialProductCdName;
 	}
-	
+	public String getLedgerCarName() {
+		return ledgerCarName;
+	}
+	public void setLedgerCarName(String ledgerCarName) {
+		this.ledgerCarName = ledgerCarName;
+	}
+	public String getLedgerCustomerName() {
+		return ledgerCustomerName;
+	}
+	public void setLedgerCustomerName(String ledgerCustomerName) {
+		this.ledgerCustomerName = ledgerCustomerName;
+	}
+	public BigDecimal getLedgerCarPrice() {
+		return ledgerCarPrice;
+	}
+	public void setLedgerCarPrice(BigDecimal ledgerCarPrice) {
+		this.ledgerCarPrice = ledgerCarPrice;
+	}
+	public BigDecimal getLedgerAcquisitionCost() {
+		return ledgerAcquisitionCost;
+	}
+	public void setLedgerAcquisitionCost(BigDecimal ledgerAcquisitionCost) {
+		this.ledgerAcquisitionCost = ledgerAcquisitionCost;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	public String getUserId() {
 		return userId;
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
-	}
-	
-	public double getLedgerCarPrice() {
-		return ledgerCarPrice;
-	}
-	public void setLedgerCarPrice(double ledgerCarPrice) {
-		this.ledgerCarPrice = ledgerCarPrice;
-	}
-	public double getLedgerAcquisitionCost() {
-		return ledgerAcquisitionCost;
-	}
-	public void setLedgerAcquisitionCost(double ledgerAcquisitionCost) {
-		this.ledgerAcquisitionCost = ledgerAcquisitionCost;
 	}
 	@Override
 	public String toString() {
@@ -320,12 +317,14 @@ public class ContractVO extends PagingVO {
 				+ contractCreateUserId + ", contractCreateDate=" + contractCreateDate + ", contractUpdateUserId="
 				+ contractUpdateUserId + ", contractUpdateDate=" + contractUpdateDate + ", searchFilter=" + searchFilter
 				+ ", searchText=" + searchText + ", ledgerFinancialCompanyCd=" + ledgerFinancialCompanyCd
-				+ ", ledgerFinancialProductCd=" + ledgerFinancialProductCd + ", ledgerCarName=" + ledgerCarName
-				+ ", ledgerCustomerName=" + ledgerCustomerName + ", userName=" + userName + ", getContractLedgerSeq()="
-				+ getContractLedgerSeq() + ", getContractUserId()=" + getContractUserId() + ", getContractSeq()="
-				+ getContractSeq() + ", getContractCalculateSeq()=" + getContractCalculateSeq()
-				+ ", getContractNomalTotalFeePercent()=" + getContractNomalTotalFeePercent()
-				+ ", getContractNomalTotalFeeSum()=" + getContractNomalTotalFeeSum()
+				+ ", ledgerFinancialCompanyCdName=" + ledgerFinancialCompanyCdName + ", ledgerFinancialProductCd="
+				+ ledgerFinancialProductCd + ", ledgerFinancialProductCdName=" + ledgerFinancialProductCdName
+				+ ", ledgerCarName=" + ledgerCarName + ", ledgerCustomerName=" + ledgerCustomerName
+				+ ", ledgerCarPrice=" + ledgerCarPrice + ", ledgerAcquisitionCost=" + ledgerAcquisitionCost
+				+ ", userName=" + userName + ", userId=" + userId + ", getContractLedgerSeq()=" + getContractLedgerSeq()
+				+ ", getContractUserId()=" + getContractUserId() + ", getContractSeq()=" + getContractSeq()
+				+ ", getContractCalculateSeq()=" + getContractCalculateSeq() + ", getContractNomalTotalFeePercent()="
+				+ getContractNomalTotalFeePercent() + ", getContractNomalTotalFeeSum()=" + getContractNomalTotalFeeSum()
 				+ ", getContractNomalAgFeePercent()=" + getContractNomalAgFeePercent() + ", getContractNomalAgFeeSum()="
 				+ getContractNomalAgFeeSum() + ", getContractNomalDpFeePercent()=" + getContractNomalDpFeePercent()
 				+ ", getContractNomalDpFeeSum()=" + getContractNomalDpFeeSum() + ", getContractAddTotalFeeSum()="
@@ -343,15 +342,17 @@ public class ContractVO extends PagingVO {
 				+ ", getContractUpdateUserId()=" + getContractUpdateUserId() + ", getContractUpdateDate()="
 				+ getContractUpdateDate() + ", getSearchFilter()=" + getSearchFilter() + ", getSearchText()="
 				+ getSearchText() + ", getLedgerFinancialCompanyCd()=" + getLedgerFinancialCompanyCd()
-				+ ", getLedgerFinancialProductCd()=" + getLedgerFinancialProductCd() + ", getLedgerCarName()="
-				+ getLedgerCarName() + ", getLedgerCustomerName()=" + getLedgerCustomerName() + ", getUserName()="
-				+ getUserName() + ", getPage()=" + getPage() + ", getNowPage()=" + getNowPage() + ", getPrePage()="
-				+ getPrePage() + ", getNextPage()=" + getNextPage() + ", getTotalCount()=" + getTotalCount()
-				+ ", getPagePerRows()=" + getPagePerRows() + ", getStartPage()=" + getStartPage() + ", getEndPage()="
-				+ getEndPage() + ", getFirstPage()=" + getFirstPage() + ", getLastPage()=" + getLastPage()
-				+ ", getNum()=" + getNum() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ ", toString()=" + super.toString() + "]";
+				+ ", getLedgerFinancialCompanyCdName()=" + getLedgerFinancialCompanyCdName()
+				+ ", getLedgerFinancialProductCd()=" + getLedgerFinancialProductCd()
+				+ ", getLedgerFinancialProductCdName()=" + getLedgerFinancialProductCdName() + ", getLedgerCarName()="
+				+ getLedgerCarName() + ", getLedgerCustomerName()=" + getLedgerCustomerName() + ", getLedgerCarPrice()="
+				+ getLedgerCarPrice() + ", getLedgerAcquisitionCost()=" + getLedgerAcquisitionCost()
+				+ ", getUserName()=" + getUserName() + ", getUserId()=" + getUserId() + ", getPage()=" + getPage()
+				+ ", getNowPage()=" + getNowPage() + ", getPrePage()=" + getPrePage() + ", getNextPage()="
+				+ getNextPage() + ", getTotalCount()=" + getTotalCount() + ", getPagePerRows()=" + getPagePerRows()
+				+ ", getStartPage()=" + getStartPage() + ", getEndPage()=" + getEndPage() + ", getFirstPage()="
+				+ getFirstPage() + ", getLastPage()=" + getLastPage() + ", getNum()=" + getNum() + ", getClass()="
+				+ getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
 	}
-	
 	
 }

@@ -1,6 +1,7 @@
 package com.boras.CRM.controller.api;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -577,14 +578,18 @@ public class LedgerApiController {
 							if(ledgerExcelVO.getLedgerCarPrice() != null) {
 								ref = new CellReference(ledgerExcelVO.getLedgerCarPrice());
 								XSSFCell cell = row.getCell(ref.getCol());
-								ledgerVO.setLedgerCarPrice(cell != null ? Integer.parseInt(getCellValue(cell)) : null);
+								
+								BigDecimal bigD = new BigDecimal(getCellValue(cell));
+								
+								ledgerVO.setLedgerCarPrice(cell != null ? bigD : null);
 							}
 							
 							// 취득원가
 							if(ledgerExcelVO.getLedgerAcquisitionCost() != null) {
 								ref = new CellReference(ledgerExcelVO.getLedgerAcquisitionCost());
 								XSSFCell cell = row.getCell(ref.getCol());
-								ledgerVO.setLedgerAcquisitionCost(cell != null ? Integer.parseInt(getCellValue(cell)) : null);
+								BigDecimal bigD = new BigDecimal(getCellValue(cell));
+								ledgerVO.setLedgerAcquisitionCost(cell != null ? bigD : null);
 							}
 							
 							String nForm1 = "";
@@ -607,9 +612,12 @@ public class LedgerApiController {
 							if(ledgerExcelVO.getLedgerTotalFeeSum() != null) {
 								ref = new CellReference(ledgerExcelVO.getLedgerTotalFeeSum());
 								XSSFCell cell = row.getCell(ref.getCol());
-								int totalFeeSum = cell != null ? Integer.parseInt(getCellValue(cell)) : 0;
+								
+								BigDecimal bigD = new BigDecimal(getCellValue(cell));
+								BigDecimal totalFeeSum = cell != null ? bigD : BigDecimal.ZERO;
+								BigDecimal num = new BigDecimal(1.1);
 								if(!nForm3.isEmpty()) {
-									totalFeeSum = (int) (totalFeeSum * 1.1);
+									totalFeeSum = totalFeeSum.multiply(num);
 								}
 								ledgerVO.setLedgerTotalFeeSum(totalFeeSum);
 							}
@@ -620,21 +628,21 @@ public class LedgerApiController {
 								XSSFCell cell = row.getCell(ref.getCol());
 								ledgerVO.setLedgerTotalFeePercent(cell != null ? Integer.parseInt(getCellValue(cell)) : 0);
 							}else {
-								Double percent = 0d;
+								BigDecimal percent = BigDecimal.ZERO;
 								switch (nForm1) {
 								case "ledgerAcquisitionCost":
-									percent = ledgerVO.getLedgerTotalFeeSum() / ledgerVO.getLedgerAcquisitionCost();
+									percent = ledgerVO.getLedgerTotalFeeSum().divide(ledgerVO.getLedgerAcquisitionCost());
 									break;
 								case "ledgerCarPrice":
-									percent = ledgerVO.getLedgerTotalFeeSum() / ledgerVO.getLedgerCarPrice();
+									percent = ledgerVO.getLedgerTotalFeeSum().divide(ledgerVO.getLedgerCarPrice());
 									break;
 								default:
-									percent = ledgerVO.getLedgerTotalFeeSum() / ledgerVO.getLedgerAcquisitionCost();
+									percent = ledgerVO.getLedgerTotalFeeSum().divide(ledgerVO.getLedgerAcquisitionCost());
 									break;
 								}
-								
-								if(percent > 0) {
-									ledgerVO.setLedgerTotalFeePercent(percent * 100d);
+								Double doublePercent = percent.doubleValue();
+								if(doublePercent > 0) {
+									ledgerVO.setLedgerTotalFeePercent(doublePercent * 100d);
 									//ledgerVO.setLedgerTotalFeePercent(percent);
 								}else {
 									ledgerVO.setLedgerTotalFeePercent(0);
@@ -648,27 +656,31 @@ public class LedgerApiController {
 							if(ledgerExcelVO.getLedgerTotalFeeSupplyPrice() != null) {
 								ref = new CellReference(ledgerExcelVO.getLedgerTotalFeeSupplyPrice());
 								XSSFCell cell = row.getCell(ref.getCol());
-								ledgerVO.setLedgerTotalFeeSupplyPrice(cell != null ? Integer.parseInt(getCellValue(cell)) : 0);
+								BigDecimal bigD = new BigDecimal(getCellValue(cell));
+								ledgerVO.setLedgerTotalFeeSupplyPrice(cell != null ? bigD : BigDecimal.ZERO);
 							}else {
-								if(ledgerVO.getLedgerTotalFeeSum() > 0) {
-									supplyPrice = (int) (ledgerVO.getLedgerTotalFeeSum() / 1.1);
-									surtax = (int) (ledgerVO.getLedgerTotalFeeSum() - supplyPrice);
-									ledgerVO.setLedgerTotalFeeSupplyPrice(supplyPrice);
+								if(ledgerVO.getLedgerTotalFeeSum().compareTo(BigDecimal.ZERO) > 0) {
+									supplyPrice = (int) (ledgerVO.getLedgerTotalFeeSum().doubleValue() / 1.1);
+									surtax = (int) (ledgerVO.getLedgerTotalFeeSum().doubleValue() - supplyPrice);
+									BigDecimal bigI = new BigDecimal(supplyPrice);
+									ledgerVO.setLedgerTotalFeeSupplyPrice(bigI);
 								}else {
-									ledgerVO.setLedgerTotalFeeSupplyPrice(0);
+									ledgerVO.setLedgerTotalFeeSupplyPrice(BigDecimal.ZERO);
 								}
 							}
 							
 							if(surtax > 0) {
-								ledgerVO.setLedgerTotalFeeSurtax(surtax);
+								BigDecimal bigI = new BigDecimal(surtax);
+								ledgerVO.setLedgerTotalFeeSurtax(bigI);
 							}else {
 								// 총fee-부가세
 								if(ledgerExcelVO.getLedgerTotalFeeSurtax() != null) {
 									ref = new CellReference(ledgerExcelVO.getLedgerTotalFeeSurtax());
 									XSSFCell cell = row.getCell(ref.getCol());
-									ledgerVO.setLedgerTotalFeeSurtax(cell != null ? Integer.parseInt(getCellValue(cell)) : 0);
+									BigDecimal bigD = new BigDecimal(getCellValue(cell));
+									ledgerVO.setLedgerTotalFeeSurtax(cell != null ? bigD : BigDecimal.ZERO);
 								}else {
-									ledgerVO.setLedgerTotalFeeSurtax(0);
+									ledgerVO.setLedgerTotalFeeSurtax(BigDecimal.ZERO);
 								}
 							}
 							
@@ -680,7 +692,8 @@ public class LedgerApiController {
 								if(!sForm3.isEmpty()) {
 									sFeeSum = (int) (sFeeSum * 1.1);
 								}
-								ledgerVO.setLedgerSlidingSum(sFeeSum);
+								BigDecimal bigSFS = new BigDecimal(sFeeSum);
+								ledgerVO.setLedgerSlidingSum(bigSFS);
 							}
 							
 							// 슬라이딩-%
@@ -692,13 +705,13 @@ public class LedgerApiController {
 								Double percent = 0d;
 								switch (sForm1) {
 									case "ledgerAcquisitionCost":
-										percent = ledgerVO.getLedgerSlidingSum() / ledgerVO.getLedgerAcquisitionCost();
+										percent = ledgerVO.getLedgerSlidingSum().doubleValue() / ledgerVO.getLedgerAcquisitionCost().doubleValue();
 										break;
 									case "ledgerCarPrice":
-										percent = ledgerVO.getLedgerSlidingSum() / ledgerVO.getLedgerCarPrice();
+										percent = ledgerVO.getLedgerSlidingSum().doubleValue() / ledgerVO.getLedgerCarPrice().doubleValue();
 										break;
 									default:
-										percent = ledgerVO.getLedgerSlidingSum() / ledgerVO.getLedgerAcquisitionCost();
+										percent = ledgerVO.getLedgerSlidingSum().doubleValue() / ledgerVO.getLedgerAcquisitionCost().doubleValue();
 										break;
 								}
 								
@@ -717,27 +730,31 @@ public class LedgerApiController {
 							if(ledgerExcelVO.getLedgerSlidingSupplyPrice() != null) {
 								ref = new CellReference(ledgerExcelVO.getLedgerSlidingSupplyPrice());
 								XSSFCell cell = row.getCell(ref.getCol());
-								ledgerVO.setLedgerSlidingSupplyPrice(cell != null ? Integer.parseInt(getCellValue(cell)) : 0);
+								BigDecimal bigD = new BigDecimal(getCellValue(cell));
+								ledgerVO.setLedgerSlidingSupplyPrice(cell != null ? bigD : BigDecimal.ZERO);
 							}else {
-								if(ledgerVO.getLedgerSlidingSum() > 0) {
-									sSupplyPrice = (int) (ledgerVO.getLedgerSlidingSum() / 1.1);
-									sSurtax = (int) (ledgerVO.getLedgerSlidingSum() - sSupplyPrice);
-									ledgerVO.setLedgerSlidingSupplyPrice(sSupplyPrice);
+								if(ledgerVO.getLedgerSlidingSum().doubleValue() > 0) {
+									sSupplyPrice = (int) (ledgerVO.getLedgerSlidingSum().doubleValue() / 1.1);
+									sSurtax = (int) (ledgerVO.getLedgerSlidingSum().doubleValue() - sSupplyPrice);
+									BigDecimal bigSSupplyPrice = new BigDecimal(sSupplyPrice);
+									ledgerVO.setLedgerSlidingSupplyPrice(bigSSupplyPrice);
 								}else {
-									ledgerVO.setLedgerSlidingSupplyPrice(0);
+									ledgerVO.setLedgerSlidingSupplyPrice(BigDecimal.ZERO);
 								}
 							}
 							
 							if(sSurtax > 0) {
-								ledgerVO.setLedgerSlidingSurtax(sSurtax);
+								BigDecimal bigSS = new BigDecimal(sSurtax);
+								ledgerVO.setLedgerSlidingSurtax(bigSS);
 							}else {
 								// 슬라이딩-부가세
 								if(ledgerExcelVO.getLedgerSlidingSurtax() != null) {
 									ref = new CellReference(ledgerExcelVO.getLedgerSlidingSurtax());
 									XSSFCell cell = row.getCell(ref.getCol());
-									ledgerVO.setLedgerSlidingSurtax(cell != null ? Integer.parseInt(getCellValue(cell)) : 0);
+									BigDecimal bigD = new BigDecimal(getCellValue(cell));
+									ledgerVO.setLedgerSlidingSurtax(cell != null ? bigD : BigDecimal.ZERO);
 								}else {
-									ledgerVO.setLedgerSlidingSurtax(0);
+									ledgerVO.setLedgerSlidingSurtax(BigDecimal.ZERO);
 								}
 							}
 							
