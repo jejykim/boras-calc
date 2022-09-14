@@ -6,11 +6,15 @@ import javax.servlet.http.HttpSessionListener;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class WebSessionListener implements HttpSessionListener {
 
+	@Value("${server.servlet.session.timeout}")
+	private int sessionTime;
+	
 	public static JSONObject userList = new JSONObject();
 	
 	/**
@@ -28,6 +32,10 @@ public class WebSessionListener implements HttpSessionListener {
 	    	userList.remove(userId);
 	    }
 
+	}
+	
+	public void sessionCreated(HttpSessionEvent se) {
+		se.getSession().setMaxInactiveInterval(sessionTime);
 	}
 	
 }

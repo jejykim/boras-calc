@@ -6,6 +6,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.SessionCookieConfig;
 import javax.servlet.SessionTrackingMode;
+import javax.servlet.http.HttpSessionListener;
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSession;
@@ -31,6 +32,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.boras.CRM.session.WebSessionListener;
 
 @Configuration
 @MapperScan(value={"com.**.mapper"})
@@ -111,4 +114,8 @@ public class WebConfig implements WebMvcConfigurer, WebMvcRegistrations {
                 .allowedOrigins("*");
     }
   
+    @Bean
+    public HttpSessionListener httpSessionListener(){
+    	return new WebSessionListener();
+    }
 }
