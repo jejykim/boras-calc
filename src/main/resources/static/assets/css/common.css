@@ -618,6 +618,76 @@ header .user {
     font-weight: 500;
 }
 
+header .user i {
+    color: #A1A5B7;
+    font-size: 18px;
+}
+
+.user-name {
+    display: inline-block;
+    border-left: 1px solid #e0e4f7;
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+.alarm {
+    display: inline-block;
+    position: relative;
+    width: 35px;
+    text-align: left;
+    margin-right: 8px;
+    cursor: pointer;
+
+}
+
+.alarm .badge-alarm {
+    position: absolute;
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    background-color: #F45C5C;
+    font-size: 12px;
+    text-align: center;
+    border-radius: 100px;
+    color: #fff;
+    right: 0;
+    top: -3px;
+}
+
+.user-sub {
+    position: fixed;
+    background-color: #fff;
+    border-radius: 0.475rem;
+    top: 60px;
+    right: 24px;
+    box-shadow: 0px 0px 50px 0px rgba(63, 78, 105, 0.15);
+}
+
+.user-sub {
+    padding: 24px 12px;
+    padding-right: 50px;
+}
+
+.user-sub ul li {
+    padding: 10px 12px;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.user-sub ul li a {
+    cursor: pointer;
+}
+
+.user-sub .logout {
+    border-top: 1px solid #e0e4f7;
+    margin-top: 14px;
+    padding-top: 16px;
+}
+
+.user-sub .logout a {
+    color: #505558
+}
+
 /*--------------------------------------------------------------------------------------
 contents
 ----------------------------------------------------------------------------------------*/
