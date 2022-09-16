@@ -39,24 +39,42 @@ public class ContractVO extends PagingVO {
 	private int ledgerFinancialCompanyCd;
 	// 금융사 코드명
 	private String ledgerFinancialCompanyCdName;
+	// 금융지점 코드
+	private int ledgerFinancialBranchCd;
+	// 금융지점 코드명
+	private String ledgerFinancialBranchCdName;
 	// 금융상품 코드
 	private int ledgerFinancialProductCd;
 	// 금융상품 코드명
 	private String ledgerFinancialProductCdName;
+	// 인도일
+	private String ledgerDeliveryDate;
+	// 딜러브랜드 코드
+	private int ledgerDealerBrandCd;
+	// 딜러브랜드 코드명
+	private String ledgerDealerBrandCdName;
+	// 딜러사 코드
+	private int ledgerDealerCompanyCd;
+	// 딜러사 코드명
+	private String ledgerDealerCompanyCdName;
 	// 차량명
 	private String ledgerCarName;
+	// 차량번호
+	private String ledgerCarNumber;
 	// 고객명
 	private String ledgerCustomerName;
 	// 차량가
 	private BigDecimal ledgerCarPrice;
 	// 취득원가
 	private BigDecimal ledgerAcquisitionCost;
-	
+	// 기타사항
+	private String ledgerOther;
 	/* 사용자(ag) */
 	//이름
 	private String userName;
 	//id
 	private String userId;
+	
 	public int getContractLedgerSeq() {
 		return contractLedgerSeq;
 	}
@@ -249,6 +267,18 @@ public class ContractVO extends PagingVO {
 	public void setLedgerFinancialCompanyCdName(String ledgerFinancialCompanyCdName) {
 		this.ledgerFinancialCompanyCdName = ledgerFinancialCompanyCdName;
 	}
+	public int getLedgerFinancialBranchCd() {
+		return ledgerFinancialBranchCd;
+	}
+	public void setLedgerFinancialBranchCd(int ledgerFinancialBranchCd) {
+		this.ledgerFinancialBranchCd = ledgerFinancialBranchCd;
+	}
+	public String getLedgerFinancialBranchCdName() {
+		return ledgerFinancialBranchCdName;
+	}
+	public void setLedgerFinancialBranchCdName(String ledgerFinancialBranchCdName) {
+		this.ledgerFinancialBranchCdName = ledgerFinancialBranchCdName;
+	}
 	public int getLedgerFinancialProductCd() {
 		return ledgerFinancialProductCd;
 	}
@@ -261,11 +291,47 @@ public class ContractVO extends PagingVO {
 	public void setLedgerFinancialProductCdName(String ledgerFinancialProductCdName) {
 		this.ledgerFinancialProductCdName = ledgerFinancialProductCdName;
 	}
+	public String getLedgerDeliveryDate() {
+		return ledgerDeliveryDate;
+	}
+	public void setLedgerDeliveryDate(String ledgerDeliveryDate) {
+		this.ledgerDeliveryDate = ledgerDeliveryDate;
+	}
+	public int getLedgerDealerBrandCd() {
+		return ledgerDealerBrandCd;
+	}
+	public void setLedgerDealerBrandCd(int ledgerDealerBrandCd) {
+		this.ledgerDealerBrandCd = ledgerDealerBrandCd;
+	}
+	public String getLedgerDealerBrandCdName() {
+		return ledgerDealerBrandCdName;
+	}
+	public void setLedgerDealerBrandCdName(String ledgerDealerBrandCdName) {
+		this.ledgerDealerBrandCdName = ledgerDealerBrandCdName;
+	}
+	public int getLedgerDealerCompanyCd() {
+		return ledgerDealerCompanyCd;
+	}
+	public void setLedgerDealerCompanyCd(int ledgerDealerCompanyCd) {
+		this.ledgerDealerCompanyCd = ledgerDealerCompanyCd;
+	}
+	public String getLedgerDealerCompanyCdName() {
+		return ledgerDealerCompanyCdName;
+	}
+	public void setLedgerDealerCompanyCdName(String ledgerDealerCompanyCdName) {
+		this.ledgerDealerCompanyCdName = ledgerDealerCompanyCdName;
+	}
 	public String getLedgerCarName() {
 		return ledgerCarName;
 	}
 	public void setLedgerCarName(String ledgerCarName) {
 		this.ledgerCarName = ledgerCarName;
+	}
+	public String getLedgerCarNumber() {
+		return ledgerCarNumber;
+	}
+	public void setLedgerCarNumber(String ledgerCarNumber) {
+		this.ledgerCarNumber = ledgerCarNumber;
 	}
 	public String getLedgerCustomerName() {
 		return ledgerCustomerName;
@@ -297,6 +363,7 @@ public class ContractVO extends PagingVO {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+	
 	@Override
 	public String toString() {
 		return "ContractVO [contractLedgerSeq=" + contractLedgerSeq + ", contractUserId=" + contractUserId
@@ -317,42 +384,23 @@ public class ContractVO extends PagingVO {
 				+ contractCreateUserId + ", contractCreateDate=" + contractCreateDate + ", contractUpdateUserId="
 				+ contractUpdateUserId + ", contractUpdateDate=" + contractUpdateDate + ", searchFilter=" + searchFilter
 				+ ", searchText=" + searchText + ", ledgerFinancialCompanyCd=" + ledgerFinancialCompanyCd
-				+ ", ledgerFinancialCompanyCdName=" + ledgerFinancialCompanyCdName + ", ledgerFinancialProductCd="
-				+ ledgerFinancialProductCd + ", ledgerFinancialProductCdName=" + ledgerFinancialProductCdName
-				+ ", ledgerCarName=" + ledgerCarName + ", ledgerCustomerName=" + ledgerCustomerName
-				+ ", ledgerCarPrice=" + ledgerCarPrice + ", ledgerAcquisitionCost=" + ledgerAcquisitionCost
-				+ ", userName=" + userName + ", userId=" + userId + ", getContractLedgerSeq()=" + getContractLedgerSeq()
-				+ ", getContractUserId()=" + getContractUserId() + ", getContractSeq()=" + getContractSeq()
-				+ ", getContractCalculateSeq()=" + getContractCalculateSeq() + ", getContractNomalTotalFeePercent()="
-				+ getContractNomalTotalFeePercent() + ", getContractNomalTotalFeeSum()=" + getContractNomalTotalFeeSum()
-				+ ", getContractNomalAgFeePercent()=" + getContractNomalAgFeePercent() + ", getContractNomalAgFeeSum()="
-				+ getContractNomalAgFeeSum() + ", getContractNomalDpFeePercent()=" + getContractNomalDpFeePercent()
-				+ ", getContractNomalDpFeeSum()=" + getContractNomalDpFeeSum() + ", getContractAddTotalFeeSum()="
-				+ getContractAddTotalFeeSum() + ", getContractAddAgFeeSum()=" + getContractAddAgFeeSum()
-				+ ", getContractAddDpFeeSum()=" + getContractAddDpFeeSum() + ", getContractTotalSlidingPercent()="
-				+ getContractTotalSlidingPercent() + ", getContractTotalSlidingSum()=" + getContractTotalSlidingSum()
-				+ ", getContractAgSlidingPercent()=" + getContractAgSlidingPercent() + ", getContractAgSlidingSum()="
-				+ getContractAgSlidingSum() + ", getContractDpSlidingPercent()=" + getContractDpSlidingPercent()
-				+ ", getContractDpSlidingSum()=" + getContractDpSlidingSum() + ", getContractAgFeeSurtaxSupportYn()="
-				+ getContractAgFeeSurtaxSupportYn() + ", getContractSlidingSurtaxSupportYn()="
-				+ getContractSlidingSurtaxSupportYn() + ", getContractAddFeeSurtaxSupportYn()="
-				+ getContractAddFeeSurtaxSupportYn() + ", getContractCreateYear()=" + getContractCreateYear()
-				+ ", getContractCreateMonth()=" + getContractCreateMonth() + ", getContractCreateUserId()="
-				+ getContractCreateUserId() + ", getContractCreateDate()=" + getContractCreateDate()
-				+ ", getContractUpdateUserId()=" + getContractUpdateUserId() + ", getContractUpdateDate()="
-				+ getContractUpdateDate() + ", getSearchFilter()=" + getSearchFilter() + ", getSearchText()="
-				+ getSearchText() + ", getLedgerFinancialCompanyCd()=" + getLedgerFinancialCompanyCd()
-				+ ", getLedgerFinancialCompanyCdName()=" + getLedgerFinancialCompanyCdName()
-				+ ", getLedgerFinancialProductCd()=" + getLedgerFinancialProductCd()
-				+ ", getLedgerFinancialProductCdName()=" + getLedgerFinancialProductCdName() + ", getLedgerCarName()="
-				+ getLedgerCarName() + ", getLedgerCustomerName()=" + getLedgerCustomerName() + ", getLedgerCarPrice()="
-				+ getLedgerCarPrice() + ", getLedgerAcquisitionCost()=" + getLedgerAcquisitionCost()
-				+ ", getUserName()=" + getUserName() + ", getUserId()=" + getUserId() + ", getPage()=" + getPage()
-				+ ", getNowPage()=" + getNowPage() + ", getPrePage()=" + getPrePage() + ", getNextPage()="
-				+ getNextPage() + ", getTotalCount()=" + getTotalCount() + ", getPagePerRows()=" + getPagePerRows()
-				+ ", getStartPage()=" + getStartPage() + ", getEndPage()=" + getEndPage() + ", getFirstPage()="
-				+ getFirstPage() + ", getLastPage()=" + getLastPage() + ", getNum()=" + getNum() + ", getClass()="
-				+ getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+				+ ", ledgerFinancialCompanyCdName=" + ledgerFinancialCompanyCdName + ", ledgerFinancialBranchCd="
+				+ ledgerFinancialBranchCd + ", ledgerFinancialBranchCdName=" + ledgerFinancialBranchCdName
+				+ ", ledgerFinancialProductCd=" + ledgerFinancialProductCd + ", ledgerFinancialProductCdName="
+				+ ledgerFinancialProductCdName + ", ledgerDeliveryDate=" + ledgerDeliveryDate + ", ledgerDealerBrandCd="
+				+ ledgerDealerBrandCd + ", ledgerDealerBrandCdName=" + ledgerDealerBrandCdName
+				+ ", ledgerDealerCompanyCd=" + ledgerDealerCompanyCd + ", ledgerDealerCompanyCdName="
+				+ ledgerDealerCompanyCdName + ", ledgerCarName=" + ledgerCarName + ", ledgerCarNumber="
+				+ ledgerCarNumber + ", ledgerCustomerName=" + ledgerCustomerName + ", ledgerCarPrice=" + ledgerCarPrice
+				+ ", ledgerAcquisitionCost=" + ledgerAcquisitionCost + ", userName=" + userName + ", userId=" + userId
+				+ "]";
 	}
+	public String getLedgerOther() {
+		return ledgerOther;
+	}
+	public void setLedgerOther(String ledgerOther) {
+		this.ledgerOther = ledgerOther;
+	}
+	
 	
 }

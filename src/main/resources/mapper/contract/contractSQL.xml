@@ -90,9 +90,6 @@
 			<if test="searchText != null and searchText != ''">
 				AND (l.ledger_car_name like CONCAT('%',#{searchText},'%')
 					OR l.ledger_car_number like CONCAT('%',#{searchText},'%')
-					OR l.ledger_car_price like CONCAT('%',#{searchText},'%')
-					OR l.ledger_acquisition_cost like CONCAT('%',#{searchText},'%')
-					OR l.ledger_delivery_date like CONCAT('%',#{searchText},'%')
 					OR l.ledger_other like CONCAT('%',#{searchText},'%')
 					OR l.ledger_customer_name like CONCAT('%',#{searchText},'%')
 					)
@@ -122,9 +119,6 @@
 			<if test="searchText != null and searchText != ''">
 				AND (l.ledger_car_name like CONCAT('%',#{searchText},'%')
 					OR l.ledger_car_number like CONCAT('%',#{searchText},'%')
-					OR l.ledger_car_price like CONCAT('%',#{searchText},'%')
-					OR l.ledger_acquisition_cost like CONCAT('%',#{searchText},'%')
-					OR l.ledger_delivery_date like CONCAT('%',#{searchText},'%')
 					OR l.ledger_other like CONCAT('%',#{searchText},'%')
 					OR l.ledger_customer_name like CONCAT('%',#{searchText},'%')
 					)
@@ -160,6 +154,11 @@
   	<!-- 계출 상세 -->
   	<select id="selectContractInfo" parameterType="contractVO" resultType="contractVO">
   		SELECT *
+  		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
+  		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_product_cd) as ledgerFinancialProductCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
   		,(SELECT user_name FROM users u WHERE u.user_id = c.contract_user_id) as user_name
   		 FROM contract c
   		LEFT JOIN ledger l
@@ -224,9 +223,9 @@
 			contract_user_id
 			,extract('YEAR' from now()::timestamp)
 			,extract('MONTH' from now()::timestamp)
-			,sum(contract_nomal_total_fee_sum) as calculate_ag_fee_sum --ag
-			,sum(contract_ag_sliding_sum) as calculate_sliding_sum --프로모션2
-			,sum(contract_add_ag_fee_sum) as calculate_add_fee_sum --프로모션1
+			,sum(contract_nomal_total_fee_sum) as calculate_ag_fee_sum <!-- ag -->
+			,sum(contract_ag_sliding_sum) as calculate_sliding_sum <!-- 프로모션2 -->
+			,sum(contract_add_ag_fee_sum) as calculate_add_fee_sum <!-- 프로모션1 -->
 			,(sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)) /1.1 as calculate_supply_sum <!-- 공급가 -->
 			,(sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum))
 			 - ((sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)) /1.1)as calculate_surtax_sum <!-- 부가세 -->

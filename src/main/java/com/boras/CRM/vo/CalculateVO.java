@@ -18,7 +18,7 @@ public class CalculateVO extends PagingVO {
 	private String calculateCreateDate;
 	private BigDecimal calculateFeeSum;
 	private BigDecimal calculatePromotion;
-	
+	private String searchText;
 	
 	/* 원장 */
 	// 원장Seq
@@ -507,6 +507,12 @@ public class CalculateVO extends PagingVO {
 				+ contractDpSlidingPercent + ", contractDpSlidingSum=" + contractDpSlidingSum + ", contractCreateYear="
 				+ contractCreateYear + ", contractCreateMonth=" + contractCreateMonth + ", contractUserId="
 				+ contractUserId + "]";
+	}
+	public String getSearchText() {
+		return searchText;
+	}
+	public void setSearchText(String searchText) {
+		this.searchText = searchText;
 	}
 	
 }

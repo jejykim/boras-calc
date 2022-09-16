@@ -1,91 +1,43 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" isErrorPage="true" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!doctype html>
 <html lang="ko">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CRM</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-    <script src="https://use.fontawesome.com/6ab134b18c.js"></script>
-    <link rel="stylesheet" href="../Assets/front/css/common.css">
-    <link rel="stylesheet" href="../Assets/front/css/style.css">
-
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>CRM</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+	<script src="https://use.fontawesome.com/6ab134b18c.js"></script>
+	<link rel="stylesheet" href="/static/assets/css/common.css">
+	<link rel="stylesheet" href="/static/assets/css/style.css">
+	
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	<script src='/static/assets/js/common/common.js'></script>
+	
+	<script type="text/javascript">
+		var firstRowSeq = <c:choose><c:when test="${not empty list }">${list[0].contractSeq }</c:when><c:otherwise>0</c:otherwise></c:choose>;
+	</script>
+	
+	<script src='/static/assets/js/contract/contract.js'></script>
+	<script>
+		console.log(${contractVO})
+	</script>
 </head>
-
 <body>
     <div class="wrap">
-        <header>
-            <div class="user">
-                <span>홍길동</span>
-            </div>
-        </header>
-        <aside>
-            <div class="menu">
-                <div class="logo">
-                    <a>
-                        <img src="../Assets/front/images/common/logo.png" alt="logo">
-                    </a>
-                    <i class="i-menu"></i>
-                </div>
-                <ul>
-                    <li class="mainmenu"><a><i class="fa fa-home" aria-hidden="true"></i>Dashboard</a></li>
-                    <li class="mainmenu">
-                        <h4>사용자</h4>
-                        <div class="submenu">
-                            <ul>
-                                <li><a><i class="fa fa-user-o" aria-hidden="true"></i><span>사용자 목록</span></a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="mainmenu">
-                        <h4>원장</h4>
-                        <div class="submenu">
-                            <ul>
-                                <li><a><i class="fa fa-file-text-o" aria-hidden="true"></i><span>금융사 원장 목록</span></a></li>
-                                <li><a><i class="fa fa-file-text-o" aria-hidden="true"></i><span>금융사 원장 목록</span></a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="mainmenu">
-                        <h4>계출</h4>
-                        <div class="submenu">
-                            <ul>
-                                <li class="on"><a><i class="fa fa-list-ul" aria-hidden="true"></i><span>계출 목록</span></a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="mainmenu">
-                        <h4>정산</h4>
-                        <div class="submenu">
-                            <ul>
-                                <li><a><i class="fa fa-television" aria-hidden="true"></i><span>정산 대시보드</span></a></li>
-                                <li><a><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록</span></a></li>
-                                <li><a><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록</span></a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="mainmenu">
-                        <h4>통계</h4>
-                        <div class="submenu">
-                            <ul>
-                                <li><a><i class="fa fa-bar-chart" aria-hidden="true"></i><span>통계</span></a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="mainmenu">
-                        <h4>시스템</h4>
-                        <div class="submenu">
-                            <ul>
-                                <li><a><i class="fa fa-file-excel-o" aria-hidden="true"></i><span>원장 Excel 설정</span></a></li>
-                                <li><a><i class="fa fa-file-code-o" aria-hidden="true"></i><span>공통코드</span></a></li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </aside>
+        <!-- gnb -->
+        <jsp:include page="../common/gnb.jsp" />
+        <!-- //gnb -->
+
+        <!-- snb -->
+        <jsp:include page="../common/snb.jsp" />
+        <!-- //snb -->
+
         <div class="contents">
             <main>
                 <div class="wrapper">
@@ -105,63 +57,67 @@
                                 <div class="bar">
                                     <label>금융사</label>
                                     <div class="bar-info">
-                                        <span>미래에셋 캐피탈미래에셋 캐피탈미래에셋 캐피탈미래에셋 캐피탈미래에셋</span>
+                                        <span>${contractVO.ledgerFinancialCompanyCdName }</span>
                                     </div>
                                 </div>
                                 <div class="bar">
                                     <label>금융지점</label>
                                     <div class="bar-info">
-                                        <span>미래에셋 캐피탈</span>
+                                        <span>${contractVO.ledgerFinancialBranchCd }</span>
                                     </div>
                                 </div>
                                 <div class="bar">
                                     <label>금융상품</label>
                                     <div class="bar-info">
-                                        <span>리스</span>
+                                        <span>${contractVO.ledgerFinancialProductCdName }</span>
                                     </div>
                                 </div>
                                 <div class="bar">
                                     <label>인도일</label>
                                     <div class="bar-info">
-                                        <span>2022.08.03</span>
+                                        <span>${contractVO.ledgerDeliveryDate }</span>
                                     </div>
                                 </div>
                                 <div class="bar">
                                     <label>고객명</label>
                                     <div class="bar-info">
-                                        <span>주식회사 보라스 엔터테이먼트</span>
+                                        <span>${contractVO.ledgerCustomerName }</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="search-bar">
                                 <div class="bar">
-                                    <label>달러사</label>
+                                    <label>딜러사</label>
                                     <div class="bar-info">
-                                        <span>미래에셋 캐피탈</span>
+                                        <span>${contractVO.ledgerDealerBrandCdName } ${contractVO.ledgerDealerCompanyCdName }</span>
                                     </div>
                                 </div>
                                 <div class="bar">
                                     <label>차량명</label>
                                     <div class="bar-info">
-                                        <span>미래에셋 캐피탈</span>
+                                        <span>${contractVO.ledgerCarName }</span>
                                     </div>
                                 </div>
                                 <div class="bar">
                                     <label>차량번호</label>
                                     <div class="bar-info">
-                                        <span>리스</span>
+                                        <span>${contractVO.ledgerCarNumber }</span>
                                     </div>
                                 </div>
                                 <div class="bar">
                                     <label>차량가</label>
                                     <div class="bar-info">
-                                        <span>2022.08.03</span>
+                                        <span>
+                                            <fmt:formatNumber value="${contractVO.ledgerCarPrice }" pattern="#,###" />
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="bar">
                                     <label>취득원가</label>
                                     <div class="bar-info">
-                                        <span>주식회사 보라스 엔터테이먼트</span>
+                                        <span>
+                                            <fmt:formatNumber value="${contractVO.ledgerAcquisitionCost }" pattern="#,###" />
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -169,13 +125,13 @@
                                 <div class="bar">
                                     <label>AG 사</label>
                                     <div class="bar-info">
-                                        <span>미래에셋 캐피탈</span>
+                                        <span>${contractVO.userName }</span>
                                     </div>
                                 </div>
                                 <div class="bar">
                                     <label>기타사항</label>
                                     <div class="bar-info">
-                                        <span>미래에셋 캐피탈</span>
+                                        <span>${contractVO.ledgerOther }</span>
                                     </div>
                                 </div>
                             </div>
@@ -194,11 +150,11 @@
                                                     <h7>총fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractNomalTotalFeePercent }" pattern=".00" />">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractNomalTotalFeeSum }" pattern="#,###" />">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -209,11 +165,26 @@
                                                     <h7>AG fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractNomalAgFeePercent }" pattern=".00" />">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractNomalAgFeeSum }" pattern="#,###" />">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>DP fee</h7>
+                                                    <p class="info-result">
+                                                        <span>
+                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractNomalDpFeePercent }" pattern="0.00" />">
+                                                            <strong>%</strong>
+                                                        </span>
+                                                        <span>
+                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractNomalDpFeeSum }" pattern="#,###" />">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -223,29 +194,10 @@
                                                 <div>
                                                     <h7>AG fee</h7>
                                                     <p class="info-result">
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>%</strong>
-                                                        </span>
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>원</strong>
-                                                        </span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="info-row">
-                                                <div>
-                                                    <h7>AG fee</h7>
-                                                    <p class="info-result">
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>%</strong>
-                                                        </span>
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>원</strong>
-                                                        </span>
+                                                        <select>
+                                                            <option>AG fee</option>
+                                                            <option>AG fee</option>
+                                                        </select>
                                                     </p>
                                                 </div>
                                             </div>
@@ -268,13 +220,31 @@
                                             <div class="info-row">
                                                 <div>
                                                     <h7>총fee</h7>
-                                                    <p class="info-result">
+                                                    <p class="info-result single-input">
                                                         <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>%</strong>
+                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractAddTotalFeeSum }" pattern="#,###" />">
+                                                            <strong>원</strong>
                                                         </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>AG fee</h7>
+                                                    <p class="info-result single-input">
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractAddAgFeeSum }" pattern="#,###" />">
+                                                            <strong>원</strong>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="info-row">
+                                                <div>
+                                                    <h7>AG fee</h7>
+                                                    <p class="info-result single-input">
+                                                        <span>
+                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractAddDpFeeSum }" pattern="#,###" />">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -284,44 +254,10 @@
                                                 <div>
                                                     <h7>AG fee</h7>
                                                     <p class="info-result">
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>%</strong>
-                                                        </span>
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>원</strong>
-                                                        </span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="info-row">
-                                                <div>
-                                                    <h7>AG fee</h7>
-                                                    <p class="info-result">
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>%</strong>
-                                                        </span>
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>원</strong>
-                                                        </span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="info-row">
-                                                <div>
-                                                    <h7>AG fee</h7>
-                                                    <p class="info-result">
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>%</strong>
-                                                        </span>
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>원</strong>
-                                                        </span>
+                                                        <select>
+                                                            <option>AG fee</option>
+                                                            <option>AG fee</option>
+                                                        </select>
                                                     </p>
                                                 </div>
                                             </div>
@@ -389,14 +325,10 @@
                                                 <div>
                                                     <h7>AG fee</h7>
                                                     <p class="info-result">
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>%</strong>
-                                                        </span>
-                                                        <span>
-                                                            <input type="text" placeholder="0">
-                                                            <strong>원</strong>
-                                                        </span>
+                                                        <select>
+                                                            <option>AG fee</option>
+                                                            <option>AG fee</option>
+                                                        </select>
                                                     </p>
                                                 </div>
                                             </div>
@@ -412,7 +344,6 @@
         </div>
     </div>
     <!--script-->
-    <scrtip src=" ../Assets/front/js/jquery-3.3.1.min.js"></scrtip>
+    <script src='/static/assets/js/common/jquery-3.3.1.min.js'></script>
 </body>
-
 </html>

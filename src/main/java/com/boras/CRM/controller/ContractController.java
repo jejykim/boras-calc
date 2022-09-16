@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.boras.CRM.services.CodeService;
@@ -132,6 +133,27 @@ public class ContractController {
 		model.addAttribute("yearList", yearList);
 		model.addAttribute("thisYear", thisYear);
 		model.addAttribute("thisMonth", thisMonth);
+		
+		return result;
+	}
+	
+	/*
+	 * main page
+	 */
+	@GetMapping(value = "/contract/info/{contractSeq}")
+	public String contractInfo(Model model, HttpServletRequest req, HttpServletResponse resp, @PathVariable("contractSeq") int contractSeq) {
+		String result = "contract/contract-info";
+		
+		ContractVO contractVO = new ContractVO();
+		contractVO.setContractSeq(contractSeq);
+		try {
+			contractVO = contractService.selectContractInfo(contractVO);
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectLedgerYear ]");
+			logger.error(e.getMessage());
+		}
+		
+		model.addAttribute("contractVO", contractVO);
 		
 		return result;
 	}

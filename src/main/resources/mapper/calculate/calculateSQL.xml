@@ -62,6 +62,28 @@
   		WHERE contract_create_year = #{calculateYear} 
   			AND contract_create_month = #{calculateMonth}
   			AND contract_user_id = #{calculateUserId}
+  			<if test="ledgerFinancialCompanyCd != 0">
+				AND l.ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
+				<if test="ledgerFinancialBranchCd != 0">
+					AND l.ledger_financial_branch_cd = #{ledgerFinancialBranchCd}
+				</if>
+			</if>
+			<if test="ledgerFinancialProductCd != 0">
+				AND l.ledger_financial_product_cd = #{ledgerFinancialProductCd}
+			</if>
+			<if test="ledgerDealerBrandCd != 0">
+				AND l.ledger_dealer_brand_cd = #{ledgerDealerBrandCd}
+				<if test="ledgerDealerCompanyCd != 0">
+					AND l.ledger_dealer_company_cd = #{ledgerDealerCompanyCd}
+				</if>
+			</if>
+			<if test="searchText != null and searchText != ''">
+				AND (l.ledger_car_name like CONCAT('%',#{searchText},'%')
+					OR l.ledger_car_number like CONCAT('%',#{searchText},'%')
+					OR l.ledger_other like CONCAT('%',#{searchText},'%')
+					OR l.ledger_customer_name like CONCAT('%',#{searchText},'%')
+					)
+			</if>
   		ORDER BY c.contract_create_date desc
 		LIMIT #{pagePerRows} offset #{page}
   	</select>
@@ -75,6 +97,28 @@
   		WHERE contract_create_year = #{calculateYear} 
   			AND contract_create_month = #{calculateMonth}
   			AND contract_user_id = #{calculateUserId}
+  			<if test="ledgerFinancialCompanyCd != 0">
+				AND l.ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
+				<if test="ledgerFinancialBranchCd != 0">
+					AND l.ledger_financial_branch_cd = #{ledgerFinancialBranchCd}
+				</if>
+			</if>
+			<if test="ledgerFinancialProductCd != 0">
+				AND l.ledger_financial_product_cd = #{ledgerFinancialProductCd}
+			</if>
+			<if test="ledgerDealerBrandCd != 0">
+				AND l.ledger_dealer_brand_cd = #{ledgerDealerBrandCd}
+				<if test="ledgerDealerCompanyCd != 0">
+					AND l.ledger_dealer_company_cd = #{ledgerDealerCompanyCd}
+				</if>
+			</if>
+			<if test="searchText != null and searchText != ''">
+				AND (l.ledger_car_name like CONCAT('%',#{searchText},'%')
+					OR l.ledger_car_number like CONCAT('%',#{searchText},'%')
+					OR l.ledger_other like CONCAT('%',#{searchText},'%')
+					OR l.ledger_customer_name like CONCAT('%',#{searchText},'%')
+					)
+			</if>
   	</select>
   	
   	<!-- 정산 된 계출상세 조회 -->
@@ -96,6 +140,53 @@
   		WHERE calculate_year = #{calculateYear} 
   			AND calculate_month = #{calculateMonth}
   			AND calculate_user_id = #{calculateUserId}
+  	</select>
+  	
+  	<!-- 정산 조회(합표출용) -검색 필터가 있을때 -->
+  	<select id="selectCalculateForAgAndFilter" parameterType="calculateVO" resultType="calculateVO">
+  		select 
+			contract_user_id
+			,sum(contract_nomal_total_fee_sum) as calculate_ag_fee_sum <!-- -ag -->
+			,sum(contract_ag_sliding_sum) as calculate_sliding_sum <!-- -프로모션2 -->
+			,sum(contract_add_ag_fee_sum) as calculate_add_fee_sum <!-- -프로모션1 -->
+			,(sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)) /1.1 as calculate_supply_sum <!-- - 공급가 -->
+			,(sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum))
+			 - ((sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)) /1.1)as calculate_surtax_sum <!-- - 부가세 --> 
+			,(sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum))/1.1*0.967 as calculate_personal_ag_sum <!-- - 개인 -->
+			,sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum) as calculate_business_sum  <!-- - 사업자 --> 
+			,sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)  as calculate_total_sum <!-- - 총합계 -->
+			,sum(contract_ag_sliding_sum) + sum(contract_add_ag_fee_sum) as calculate_promotion
+		from contract con 
+		join calculate cal
+		on con.contract_calculate_seq=cal.calculate_seq
+		join ledger l
+		on con.contract_ledger_seq=l.ledger_seq
+		where calculate_year = #{calculateYear} 
+  			AND calculate_month = #{calculateMonth}
+  			AND calculate_user_id = #{calculateUserId}
+			<if test="ledgerFinancialCompanyCd != 0">
+				AND l.ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
+				<if test="ledgerFinancialBranchCd != 0">
+					AND l.ledger_financial_branch_cd = #{ledgerFinancialBranchCd}
+				</if>
+			</if>
+			<if test="ledgerFinancialProductCd != 0">
+				AND l.ledger_financial_product_cd = #{ledgerFinancialProductCd}
+			</if>
+			<if test="ledgerDealerBrandCd != 0">
+				AND l.ledger_dealer_brand_cd = #{ledgerDealerBrandCd}
+				<if test="ledgerDealerCompanyCd != 0">
+					AND l.ledger_dealer_company_cd = #{ledgerDealerCompanyCd}
+				</if>
+			</if>
+			<if test="searchText != null and searchText != ''">
+				AND (l.ledger_car_name like CONCAT('%',#{searchText},'%')
+					OR l.ledger_car_number like CONCAT('%',#{searchText},'%')
+					OR l.ledger_other like CONCAT('%',#{searchText},'%')
+					OR l.ledger_customer_name like CONCAT('%',#{searchText},'%')
+					)
+			</if>
+		group by con.contract_user_id
   	</select>
   	
   	

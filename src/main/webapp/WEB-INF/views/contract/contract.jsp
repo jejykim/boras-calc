@@ -156,7 +156,7 @@
                                                         <td>${list.userName }</td>
                                                         <td>${list.ledgerCarName }</td>
                                                         <td>${list.ledgerCustomerName }</td>
-                                                        <td><button class="btn-bu">상세</button></td>
+                                                        <td><button class="btn-bu" onclick="location.href='/contract/info/'+${list.contractSeq}">상세</button></td>
                                                     </tr>
                                                 </c:forEach>
                                                 <c:if test="${listCount eq 0 }">

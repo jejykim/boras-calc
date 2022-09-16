@@ -47,6 +47,13 @@ public interface CalculateMapper {
 	 */
 	public CalculateVO selectCalculateInfo(int contractSeq);
 	
+	/**
+	 * 정산 합 조회
+	 * @param CalculateVO
+	 * @return
+	 */
+	public CalculateVO selectCalculateForAgAndFilter(CalculateVO calculateVO);
+	
 	
 	
 }

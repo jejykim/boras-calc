@@ -39,4 +39,9 @@ public class CalculateService implements CalculateMapper {
 	public CalculateVO selectCalculateInfo(int contractSeq) {
 		return calculateMapper.selectCalculateInfo(contractSeq);
 	}
+	
+	@Override
+	public CalculateVO selectCalculateForAgAndFilter(CalculateVO calculateVO) {
+		return calculateMapper.selectCalculateForAgAndFilter(calculateVO);
+	}
 }

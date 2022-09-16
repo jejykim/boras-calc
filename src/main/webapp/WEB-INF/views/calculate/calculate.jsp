@@ -21,6 +21,11 @@
 	
 	<script type="text/javascript">
 		var firstRowSeq = <c:choose><c:when test="${not empty list }">${list[0].contractSeq }</c:when><c:otherwise>0</c:otherwise></c:choose>;
+		
+		var financialCompany = ${calculateVO0.ledgerFinancialCompanyCd};
+		var financialBranch = ${calculateVO0.ledgerFinancialBranchCd};
+		var dealerBrand = ${calculateVO0.ledgerDealerBrandCd};
+		var dealerCompany = ${calculateVO0.ledgerDealerCompanyCd};
 	</script>
 	
 	<script src='/static/assets/js/calculate/calculate.js'></script>
@@ -56,31 +61,31 @@
                                     <div class="bar">
                                         <label>금융사</label>
                                         <div class="bar-info">
-                                            <select>
-                                                <option>금융사</option>
-                                                <option>금융사</option>
-                                                <option>금융사</option>
-                                            </select>
+	                                        <select name="financialCompany" id="selFinancialCompanyCode">
+		                                         <option value="0">전체</option>
+		                                         <c:forEach var="list" items="${financialCompanyCodelist }" varStatus="status">
+		                                             <option value="${list.codeId }" <c:if test="${list.codeId eq calculateVO0.ledgerFinancialCompanyCd }">selected="selected"</c:if>>${list.codeName }</option>
+		                                         </c:forEach>
+	                                        </select>
                                         </div>
                                     </div>
                                     <div class="bar">
                                         <label>금융지점</label>
                                         <div class="bar-info">
-                                            <select>
-                                                <option>금융지점</option>
-                                                <option>금융지점</option>
-                                                <option>금융지점</option>
-                                            </select>
+	                                        <select id="selFinancialBranchCode">
+		                                         <option value="0">전체</option>
+	                                        </select>
                                         </div>
                                     </div>
                                     <div class="bar">
                                         <label>금융상품</label>
                                         <div class="bar-info">
-                                            <select>
-                                                <option>금융상품</option>
-                                                <option>금융상품</option>
-                                                <option>금융상품</option>
-                                            </select>
+	                                        <select id="selFinancialProductCode">
+		                                         <option value="0">전체</option>
+		                                         <c:forEach var="list" items="${financialProductCodelist }" varStatus="status">
+		                                             <option value="${list.codeId }" <c:if test="${list.codeId eq calculateVO0.ledgerFinancialProductCd }">selected="selected"</c:if>>${list.codeName }</option>
+		                                         </c:forEach>
+	                                        </select>
                                         </div>
                                     </div>
                                 </div>
@@ -88,22 +93,21 @@
                                     <div class="bar">
                                         <label>딜러사</label>
                                         <div class="bar-info sel-2">
-                                            <select>
-                                                <option>금융상품</option>
-                                                <option>금융상품</option>
-                                                <option>금융상품</option>
-                                            </select>
-                                            <select>
-                                                <option>금융상품</option>
-                                                <option>금융상품</option>
-                                                <option>금융상품</option>
-                                            </select>
+                                       		<select name="dealerBrand" id="selDealerBrandCode">
+		                                         <option value="0">전체</option>
+		                                         <c:forEach var="list" items="${dealerBrandCodeList }" varStatus="status">
+		                                             <option value="${list.codeId }" <c:if test="${list.codeId eq calculateVO0.ledgerDealerBrandCd }">selected="selected"</c:if>>${list.codeName }</option>
+		                                         </c:forEach>
+                                        	</select>
+                                            <select id="selDealerBrandCode2">
+		                                         <option value="0">전체</option>
+	                                        </select>
                                         </div>
                                     </div>
                                     <div class="bar input-2">
                                         <label>검색</label>
                                         <div class="bar-info ">
-                                            <input type="text" placeholder="검색어를 입력하세요">
+                                            <input id="inputSearchText" type="text" placeholder="검색어를 입력하세요" value="${calculateVO0.searchText }">
                                         </div>
                                     </div>
                                 </div>
@@ -111,6 +115,16 @@
                             <div class="search-btn">
                                 <button class="btn-main" id="btnSearch">검색</button>
                                 <button class="btn-gr" id="btnReset">초기화</button>
+                                
+                                <form class="search-form" id="searchForm" name="searchForm" action="/ag/calc/list" method="get">
+	                                <input type="hidden" name="ledgerFinancialCompanyCd" id="ledgerFinancialCompanyCd" value="${calculateVO.ledgerFinancialCompanyCd }">
+	                                <input type="hidden" name="ledgerFinancialBranchCd" id="ledgerFinancialBranchCd" value="${calculateVO.ledgerFinancialBranchCd }">
+	                                <input type="hidden" name="ledgerFinancialProductCd" id="ledgerFinancialProductCd" value="${calculateVO.ledgerFinancialProductCd }">
+	                                <input type="hidden" name="ledgerDealerBrandCd" id="ledgerDealerBrandCd" value="${calculateVO.ledgerDealerBrandCd }">
+	                                <input type="hidden" name="ledgerDealerCompanyCd" id="ledgerDealerCompanyCd" value="${calculateVO.ledgerDealerCompanyCd }">
+									<input type="hidden" name="searchText" id="searchText" value="${calculateVO.searchText }">
+									<input type='hidden' id="now_page" name="nowPage" value="${calculateVO0.nowPage }">
+								</form>
                             </div>
                         </div>
 
@@ -170,7 +184,6 @@
                                                     <th>취득원가</th>
                                                     <th>인도일</th>
                                                     <th>수수료합</th>
-                                                    <th>상세</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -180,11 +193,10 @@
                                                         <td>${list.ledgerFinancialCompanyCdName }</td>
                                                         <td>${list.ledgerFinancialProductCdName }</td>
                                                         <td>${list.ledgerCustomerName }</td>
-                                                        <td>${list.ledgerCarPrice }</td>
-                                                        <td>${list.ledgerAcquisitionCost }</td>
+                                                        <td><fmt:formatNumber value="${list.ledgerCarPrice }" pattern="#,###"/></td>
+                                                        <td><fmt:formatNumber value="${list.ledgerAcquisitionCost }" pattern="#,###"/></td>
                                                         <td>${list.ledgerDeliveryDate }</td>
-                                                        <td>${list.calculateFeeSum }</td>
-                                                        <td><button class="btn-bu">상세</button></td>
+                                                        <td><fmt:formatNumber value="${list.calculateFeeSum }" pattern="#,###"/></td>
                                                     </tr>
                                                 </c:forEach>
                                                 <c:if test="${listCount eq 0 }">
@@ -197,7 +209,7 @@
                                         <c:if test="${listCount ne 0}">
 	                                    <div class="page_wrap">
 	                                        <div class="page_nation">
-	                                            <a class="arrow prev" style="cursor: pointer;" onclick="UserList.Paging(${pagingVO.startPage })"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+	                                            <a class="arrow prev" style="cursor: pointer;" onclick="Calculate.Paging(${pagingVO.startPage })"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
 	                                            <c:forEach var="list" varStatus="status" begin="${pagingVO.firstPage }" end="${pagingVO.lastPage }">
 	                                            	<c:choose>
                                                         <c:when test="${pagingVO.nowPage eq list }">
@@ -223,14 +235,14 @@
                                                     <div class="comm-row">
                                                         <p class="percent"><i class="i-percent"></i></p>
                                                         <div>
-                                                            <h7 id="txtCmFeePercent">2.5</h7>
+                                                            <h7 id="txtCmFeePercent"></h7>
                                                             <p class="row-guide">CM수수료&#40;%&#41;</p>
                                                         </div>
                                                     </div>
                                                     <div class="comm-row">
                                                         <p class="krw"><i class="i-krw"></i></p>
                                                         <div>
-                                                            <h7 id="txtCmFeeWon">100.000.000</h7>
+                                                            <h7 id="txtCmFeeWon"></h7>
                                                             <p class="row-guide">CM수수료&#40;원&#41;</p>
                                                         </div>
                                                     </div>
@@ -239,14 +251,14 @@
                                                     <div class="comm-row">
                                                         <p class="percent"><i class="i-percent"></i></p>
                                                         <div>
-                                                            <h7 id="txtAGFeePercent">2.5</h7>
+                                                            <h7 id="txtAGFeePercent"></h7>
                                                             <p class="row-guide">AG수수료&#40;%&#41;</p>
                                                         </div>
                                                     </div>
                                                     <div class="comm-row">
                                                         <p class="krw"><i class="i-krw"></i></p>
                                                         <div>
-                                                            <h7 id="txtAGFeeWon">100.000.000</h7>
+                                                            <h7 id="txtAGFeeWon"></h7>
                                                             <p class="row-guide">AG수수료&#40;원&#41;</p>
                                                         </div>
                                                     </div>
@@ -255,14 +267,14 @@
                                                     <div class="comm-row">
                                                         <p class="krw"><i class="i-krw"></i></p>
                                                         <div>
-                                                            <h7 id="txtPromotionFee1Won">2.5</h7>
+                                                            <h7 id="txtPromotionFee1Won"></h7>
                                                             <p class="row-guide">프로모션수수료1&#40;원&#41;</p>
                                                         </div>
                                                     </div>
                                                     <div class="comm-row">
                                                         <p class="krw"><i class="i-krw"></i></p>
                                                         <div>
-                                                            <h7 id="txtPromotionFee2Won">100.000.000</h7>
+                                                            <h7 id="txtPromotionFee2Won"></h7>
                                                             <p class="row-guide">프로모션수수료1&#40;원&#41;</p>
                                                         </div>
                                                     </div>
@@ -277,23 +289,23 @@
                                                 <div class="table-info">
                                                     <div class="info-row">
                                                         <h7><span class="badge-normal"></span>기타사항</h7>
-                                                        <p id="pLedgerOther">기타사항이 입력되는공간입니다.</p>
+                                                        <p id="pLedgerOther"></p>
                                                     </div>
                                                     <div class="info-row">
                                                         <h7><span class="badge-normal"></span>금융지점</h7>
-                                                        <p id="pLedgerFinancialBranchCdName">금융지점을 입력하는 공간입니다.</p>
+                                                        <p id="pLedgerFinancialBranchCdName"></p>
                                                     </div>
                                                     <div class="info-row">
                                                         <h7><span class="badge-normal"></span>딜러사</h7>
-                                                        <p id="pLedgerDealerCompanyCdName">딜러사사아아아아아</p>
+                                                        <p id="pLedgerDealerCompanyCdName"></p>
                                                     </div>
                                                     <div class="info-row">
                                                         <h7><span class="badge-normal"></span>차량명</h7>
-                                                        <p id="pLedgerCarName">차량며어어어어어어ㅇ</p>
+                                                        <p id="pLedgerCarName"></p>
                                                     </div>
                                                     <div class="info-row">
                                                         <h7><span class="badge-normal"></span>차량번호</h7>
-                                                        <p id="pLedgerCarNumber"><span>12하3456</span></p>
+                                                        <p id="pLedgerCarNumber"><span></span></p>
                                                     </div>
                                                 </div>
                                             </div>
