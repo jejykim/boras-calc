@@ -6,24 +6,22 @@
   	<insert id="insertInquiryByTo" parameterType="inquiryVO">
 		INSERT INTO inquiry(
 			inquiry_ledger_seq,
-			inquiry_type,
 			inquiry_content,
 			inquiry_from_user_id,
 			inquiry_create_date
 		)
 		VALUES(
 			#{inquiryLedgerSeq},
-			#{inquiryType},
 			#{inquiryContent},
 			#{inquiryFromUserId},
 			now()
 		) 
   	</insert>
+  	
   	<!-- 문의 답변 -->
   	<insert id="insertInquiryByFrom" parameterType="inquiryVO">
-		INSERT INTO code(
+		INSERT INTO inquiry(
 			inquiry_ledger_seq,
-			inquiry_type,
 			inquiry_content,
 			inquiry_from_user_id,
 			inquiry_to_user_id,
@@ -31,7 +29,6 @@
 		)
 		VALUES(
 			#{inquiryLedgerSeq},
-			#{inquiryType},
 			#{inquiryContent},
 			#{inquiryFromUserId},
 			#{inquiryToUserId},
@@ -41,42 +38,96 @@
   	
 	<!-- 원장번호기준 문의 목록 조회 -->
 	<select id="selectInquiryListForLedger" resultType="inquiryVO" parameterType="inquiryVO">
-		SELECT 
-			inquiry_seq,
-			inquiry_ledger_seq,
-			inquiry_type,
-			inquiry_content,
-			inquiry_from_user_id,
-			inquiry_to_user_id,
-			inquiry_create_date
+		SELECT *
 		FROM inquiry
 		WHERE inquiry_ledger_seq=#{inquiryLedgerSeq}
   	</select>
   	
+  	<!-- AG용 문의 목록 조회 -->
+	<select id="selectInquiryListForAg" resultType="inquiryVO" parameterType="inquiryVO">
+		SELECT *
+		FROM
+			(SELECT i.inquiry_ledger_seq
+				, (SELECT inquiry_create_date FROM inquiry WHERE inquiry_ledger_seq = i.inquiry_ledger_seq LIMIT 1) as inquiry_create_date
+				, (SELECT inquiry_create_date FROM inquiry WHERE inquiry_ledger_seq = i.inquiry_ledger_seq ORDER BY inquiry_create_date DESC LIMIT 1) as inquiry_last_date
+				, l.ledger_financial_company_cd
+				, (SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) as ledger_financial_company_cd_name
+				, l.ledger_financial_branch_cd
+				, (SELECT code_name FROM code WHERE code_id = l.ledger_financial_branch_cd) as ledger_financial_branch_cd_name
+				, l.ledger_financial_product_cd
+				, (SELECT code_name FROM code WHERE code_id = l.ledger_financial_product_cd) as ledger_financial_product_cd_name
+				, l.ledger_customer_name
+				, l.ledger_car_price
+			 	, l.ledger_acquisition_cost
+			FROM inquiry i
+			JOIN ledger l
+			ON i.inquiry_ledger_seq = l.ledger_seq
+			WHERE (i.inquiry_from_user_id = #{inquiryFromUserId} or i.inquiry_to_user_id = #{inquiryFromUserId})
+			<if test="searchText != null and searchText != ''">
+				AND (l.ledger_car_name like CONCAT('%',#{searchText},'%')
+					OR l.ledger_customer_name like CONCAT('%',#{searchText},'%')
+					OR i.inquiry_content like CONCAT('%',#{searchText},'%')
+					)
+			</if>
+			GROUP BY i.inquiry_ledger_seq
+				, l.ledger_financial_company_cd
+				, l.ledger_financial_branch_cd
+				, l.ledger_financial_product_cd
+				, l.ledger_customer_name
+				, l.ledger_car_price
+			 	, l.ledger_acquisition_cost
+			) data
+		ORDER BY data.inquiry_last_date desc
+		LIMIT #{pagePerRows} offset #{page}
+  	</select>
+  	
+  	<!-- AG용 문의 목록 count 조회 -->
+	<select id="selectInquiryListForAgCount" resultType="int" parameterType="inquiryVO">
+		SELECT COUNT(*)
+		FROM (
+			SELECT i.inquiry_ledger_seq
+					, (SELECT inquiry_create_date FROM inquiry WHERE inquiry_ledger_seq = i.inquiry_ledger_seq LIMIT 1) as inquiry_create_date
+					, (SELECT inquiry_create_date FROM inquiry WHERE inquiry_ledger_seq = i.inquiry_ledger_seq ORDER BY inquiry_create_date DESC LIMIT 1) as inquiry_last_date
+					, l.ledger_financial_company_cd
+					, (SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) as ledger_financial_company_cd_name
+					, l.ledger_financial_branch_cd
+					, (SELECT code_name FROM code WHERE code_id = l.ledger_financial_branch_cd) as ledger_financial_branch_cd_name
+					, l.ledger_financial_product_cd
+					, (SELECT code_name FROM code WHERE code_id = l.ledger_financial_product_cd) as ledger_financial_product_cd_name
+					, l.ledger_customer_name
+					, l.ledger_car_price
+			 		, l.ledger_acquisition_cost
+			FROM inquiry i
+			JOIN ledger l
+			ON i.inquiry_ledger_seq = l.ledger_seq
+			WHERE (i.inquiry_from_user_id = #{inquiryFromUserId} or i.inquiry_to_user_id = #{inquiryFromUserId})
+			<if test="searchText != null and searchText != ''">
+				AND (l.ledger_car_name like CONCAT('%',#{searchText},'%')
+					OR l.ledger_customer_name like CONCAT('%',#{searchText},'%')
+					OR i.inquiry_content like CONCAT('%',#{searchText},'%')
+					)
+			</if>
+			GROUP BY i.inquiry_ledger_seq
+				, l.ledger_financial_company_cd
+				, l.ledger_financial_branch_cd
+				, l.ledger_financial_product_cd
+				, l.ledger_customer_name
+				, l.ledger_car_price
+			 	, l.ledger_acquisition_cost
+			) data
+  	</select>
+  	
   	<!-- 사용자기준 문의 목록 조회 -->
 	<select id="selectInquiryListForUser" resultType="inquiryVO" parameterType="inquiryVO">
-		SELECT 
-			inquiry_seq,
-			inquiry_ledger_seq,
-			inquiry_type,
-			inquiry_content,
-			inquiry_from_user_id,
-			inquiry_to_user_id,
-			inquiry_create_date
+		SELECT *
 		FROM inquiry
-		WHERE inquiry_from_user_id=#{inquiryFromUserId}
+		WHERE inquiry_from_user_id = #{inquiryFromUserId}
+		AND inquiry_ledger_seq = #{inquiryLedgerSeq}
   	</select>
   	
   	<!-- 문의 상세 -->
 	<select id="selectInquiryInfo" resultType="inquiryVO" parameterType="inquiryVO">
-		SELECT 
-			inquiry_seq,
-			inquiry_ledger_seq,
-			inquiry_type,
-			inquiry_content,
-			inquiry_from_user_id,
-			inquiry_to_user_id,
-			inquiry_create_date
+		SELECT *
 		FROM inquiry
 		WHERE inquiry_seq=#{inquirySeq}
   	</select>
@@ -93,5 +144,11 @@
 		DELETE FROM inquiry
 		WHERE inquiry_seq = #{inquirySeq}
   	</delete>
+  	
+  	<!-- 초기 문의 내역 세팅용 -->
+	<select id="selectAllInquiryList" resultType="inquiryVO">
+		SELECT *
+		FROM inquiry
+  	</select>
   	
 </mapper>

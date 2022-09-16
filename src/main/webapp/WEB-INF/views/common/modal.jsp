@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!--modal / 딜러사선택-->
+<!--modal / 비밀번호 변경-->
 <div class="modal hide" id="changePwModal">
     <div class="modal-contents sm">
         <div class="modal-head">
@@ -42,3 +42,33 @@
     </div>
 </div>
 <!--end::modal-->
+
+<!--modal / 문의-->
+<div class="contact-modal" id="inquiryModal" style="display: none;">
+    <div class="modal-contents">
+        <div class="modal-head">
+            <h4>문의하기</h4>
+            <i class="fa fa-times" aria-hidden="true" id="iCloseInquiryModal"></i>
+        </div>
+        <div class="modal-body">
+            <div class="contact-chat">
+                <div class="answer">
+                    <div class="nav">
+                        <p class="date">2022.09.15-15:44</p>
+                        <div class="text">안녕하세요. 문의하기입니다. 도움이 필요한내용을 남겨주시면 빠른시일내에 답변을 드리겠습니다.</div>
+                    </div>
+                </div>
+                <div class="asking">
+                    <div class="nav">
+                        <p class="date">2022.09.15-15:44</p>
+                        <div class="text">안녕하세요. 문의하기입니다. 도움이 필요한내용을 남겨주시면 빠른시일내에 답변을 드리겠습니다.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <textarea cols="30" rows="10" placeholder="내용입력"></textarea>
+                <button>작성</button>
+            </div>
+        </div>
+    </div>
+</div>

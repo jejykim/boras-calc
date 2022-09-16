@@ -42,6 +42,7 @@ public class BlockHelper {
 			, "/v1/api/ledger/financial/"
 			, "/v1/api/contract/info/"
 			, "/v1/api/contract/formula/list"
+			, "/v1/api/common/inquiry/list"
 			};
 	
 	/**

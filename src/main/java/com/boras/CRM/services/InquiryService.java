@@ -49,6 +49,20 @@ public class InquiryService implements InquiryMapper {
 	public int deleteInquiry(InquiryVO inquiryVO) {
 		return inquiryMapper.deleteInquiry(inquiryVO);
 	}
-	
+
+	@Override
+	public List<InquiryVO> selectInquiryListForAg(InquiryVO inquiryVO) {
+		return inquiryMapper.selectInquiryListForAg(inquiryVO);
+	}
+
+	@Override
+	public int selectInquiryListForAgCount(InquiryVO inquiryVO) {
+		return inquiryMapper.selectInquiryListForAgCount(inquiryVO);
+	}
+
+	@Override
+	public List<InquiryVO> selectAllInquiryList() {
+		return inquiryMapper.selectAllInquiryList();
+	}
 	
 }

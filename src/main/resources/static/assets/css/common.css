@@ -68,7 +68,7 @@ a {
 }
 
 i {
-    font-style: normal
+    font-style: normal;
 }
 
 dl,
@@ -76,7 +76,7 @@ li,
 menu,
 ol,
 ul {
-    list-style: none
+    list-style: none;
 }
 
 table {
@@ -347,6 +347,125 @@ textarea {
 
 textarea:focus {
     outline: none;
+}
+
+.contact-modal.hide {
+    display: none;
+}
+
+.contact-modal {
+    width: 380px;
+    height: 745px;
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 98;
+}
+
+.contact-modal .modal-contents {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 0px 20px 0px rgb(76 87 125 / 30%);
+    background-color: #F5F5F5;
+    position: relative;
+    border: 1px solid #DEE0E5;
+}
+
+.contact-modal .modal-head {
+    background-color: #5C61F4;
+    display: flex;
+    justify-content: space-between;
+}
+
+.contact-modal .modal-head h4 {
+    color: #fff;
+}
+
+.contact-modal .modal-head i {
+    /*    position: absolute;
+    right: 24px;
+    top: 22px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 20px;*/
+    color: #fff;
+}
+
+.contact-chat {
+    width: 100%;
+    padding: 24px;
+    overflow-y: scroll;
+    height: 600px;
+}
+
+.contact-chat .nav {
+    margin-bottom: 20px;
+}
+
+.contact-chat .date {
+    font-size: 13px;
+    padding-left: 10px;
+    margin-bottom: 6px;
+}
+
+.contact-chat .text {
+    max-width: 80%;
+    background-color: #fff;
+    border-radius: 20px 20px 20px 0px;
+    padding: 10px;
+    border: 1px solid #EFEFEF;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.contact-modal .modal-body {
+    padding: 0;
+    border-bottom: 0;
+    position: relative;
+}
+
+.asking .nav {
+    width: 100%;
+    text-align: right;
+}
+
+.contact-chat .asking .text {
+    background-color: #5C8FF4;
+    font-weight: 300;
+    color: #fff;
+    text-align: left;
+    border-radius: 20px 20px 0px 20px;
+}
+
+.asking .nav .date {
+    width: 100%;
+    text-align: right;
+}
+
+.asking .nav .text {
+    display: inline-block
+}
+
+.chat-input {
+    height: 80px;
+    position: relative;
+}
+
+.chat-input textarea {
+    width: 100%;
+    height: 100%;
+    padding-right: 100px;
+}
+
+.chat-input button {
+    background-color: #dedede;
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
 }
 
 /*--------------------------------------------------------------------------------------
@@ -1518,8 +1637,14 @@ table tr.on {
     border-right: 0;
 }
 
+
+.talble-info .info-body .info-row .info-result.single-input span {
+    width: 100%;
+    border-right: 0;
+}
+
 /*--------------------------------------------------------------------------------------
-정산ㄴ
+정산
 ----------------------------------------------------------------------------------------*/
 .calculate {
     flex-direction: row;

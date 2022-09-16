@@ -38,6 +38,20 @@ public interface InquiryMapper {
 	public List<InquiryVO> selectInquiryListForUser(InquiryVO inquiryVO);
 	
 	/**
+	 * AG용 문의 목록 조회
+	 * @param 
+	 * @return List<InquiryVO>
+	 */
+	public List<InquiryVO> selectInquiryListForAg(InquiryVO inquiryVO);
+	
+	/**
+	 * AG용 문의 목록 count 조회
+	 * @param 
+	 * @return int
+	 */
+	public int selectInquiryListForAgCount(InquiryVO inquiryVO);
+	
+	/**
 	 * 문의 상세
 	 * @param 
 	 * @return List<InquiryVO>
@@ -58,4 +72,10 @@ public interface InquiryMapper {
 	 */
 	public int deleteInquiry(InquiryVO inquiryVO);
 
+	/**
+	 * 초기 문의 내역 세팅용
+	 * @param 
+	 * @return List<InquiryVO>
+	 */
+	public List<InquiryVO> selectAllInquiryList();
 }

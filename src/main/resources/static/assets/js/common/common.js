@@ -60,6 +60,8 @@ Common.PageLoad = function () {
 ========================================================================*/
 Common.Init = function () {
     try {
+		Common.reloadNewInquiry();
+		var reloadInquiryList = setInterval(Common.reloadNewInquiry, 1000 * 30);
     }
     catch (e) { console.log(e.message); }
 }
@@ -264,6 +266,39 @@ Common.ChangePw = function () {
 				}else {
 					console.log(json.resultMsg);
 					alert(json.msg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 신규 문의 목록 조회
+작  성  자  : 김진열
+2022.09.05 - 최초생성
+========================================================================*/
+Common.reloadNewInquiry = function () {
+    try {
+		$.ajax({
+			type : "get",
+			url : "/v1/api/common/inquiry/list",
+			success : function(json){
+				if(json.resultCode == "00000") {
+					var list = json.list;
+					
+					if(list.length > 0) {
+						$(".badge-alarm").html(list.length);
+						$(".badge-alarm").show();
+					}else {
+						$(".badge-alarm").hide();
+					}
+				}else {
+					console.log(json.resultMsg);
 				}
 			},
 			error: function(request,status,error,data){

@@ -1,5 +1,6 @@
 package com.boras.CRM.controller.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.boras.CRM.services.InquiryService;
+import com.boras.CRM.util.PermissionHelper;
 import com.boras.CRM.util.ResultCode;
 import com.boras.CRM.util.ResultCode.ResultNum;
 import com.boras.CRM.vo.InquiryVO;
@@ -91,15 +93,25 @@ public class InquiryApiController {
 	/**
 	 * 원장 기준 문의 조회
 	 */
-	@GetMapping(value = "/select/ledger")
-	public Map<String, Object> selectParentCodeList(HttpServletRequest req, HttpServletResponse resp, @RequestBody InquiryVO inquiryVO) {
-		
+	@PostMapping(value = "/select/ledger")
+	public Map<String, Object> selectParentCodeList(HttpServletRequest req, HttpServletResponse resp, InquiryVO inquiryVO) {
 	    Map<String, Object> rvt = new HashMap<>();
 	    
 	    try {
 	    	List<InquiryVO> list = inquiryService.selectInquiryListForLedger(inquiryVO);
+	    	
 		    if(list.size()>0) {
-		    	rvt.put("list", list);
+		    	List<InquiryVO> tempList = new ArrayList<>();
+		    	
+		    	for(InquiryVO vo : list) {
+		    		if(vo.getInquiryFromUserId().equals(PermissionHelper.getSessionUserId(req))) {
+		    			vo.setIsMine("Y");
+		    		}
+		    		
+		    		tempList.add(vo);
+		    	}
+		    	
+		    	rvt.put("list", tempList);
 		    	
 		    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
     			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
