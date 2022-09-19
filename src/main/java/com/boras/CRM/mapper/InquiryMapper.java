@@ -31,6 +31,13 @@ public interface InquiryMapper {
 	public List<InquiryVO> selectInquiryListForLedger(InquiryVO inquiryVO);
 	
 	/**
+	 * 원장번호기준 문의 계정 조회
+	 * @param 
+	 * @return List<InquiryVO>
+	 */
+	public List<InquiryVO> selectInquiryUserList(InquiryVO inquiryVO);
+	
+	/**
 	 * 사용자기준 문의 목록 조회
 	 * @param 
 	 * @return List<InquiryVO>
@@ -50,6 +57,20 @@ public interface InquiryMapper {
 	 * @return int
 	 */
 	public int selectInquiryListForAgCount(InquiryVO inquiryVO);
+	
+	/**
+	 * 관리자용 문의 목록 조회
+	 * @param 
+	 * @return List<InquiryVO>
+	 */
+	public List<InquiryVO> selectInquiryListForAdmin(InquiryVO inquiryVO);
+	
+	/**
+	 * 관리자용 문의 목록 count 조회
+	 * @param 
+	 * @return int
+	 */
+	public int selectInquiryListForAdminCount(InquiryVO inquiryVO);
 	
 	/**
 	 * 문의 상세

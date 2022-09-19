@@ -20,7 +20,7 @@
 	
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	<script src='/static/assets/js/common/common.js'></script>
-	<script src='/static/assets/js/inquiry/InquiryList.js'></script>
+	<script src='/static/assets/js/inquiry-admin/InquiryList.js'></script>
 </head>
 <body>
     <div class="wrap">
@@ -48,7 +48,7 @@
                                 <div class="tab">
                                     <ul>
                                         <li id="liAll" <c:if test="${inquiryVO.inquiryTeb eq 'all' }">class="on"</c:if>>전체</li>
-                                        <li id="liNotRead" <c:if test="${inquiryVO.inquiryTeb eq 'notRead' }">class="on"</c:if>>미확인 답변</li>
+                                        <li id="liNotRead" <c:if test="${inquiryVO.inquiryTeb eq 'notRead' }">class="on"</c:if>>미확인 문의</li>
                                     </ul>
                                 </div>
                                 <div class="header-sub">

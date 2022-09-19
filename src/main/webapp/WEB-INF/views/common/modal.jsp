@@ -1,3 +1,4 @@
+<%@page import="com.boras.CRM.util.PermissionHelper"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -43,6 +44,45 @@
 </div>
 <!--end::modal-->
 
+<%if(PermissionHelper.isAdmin(request)) { %>
+<!--modal / 문의-->
+<div class="contact-modal" id="inquiryModal" style="display: none;">
+    <div class="modal-contents">
+        <div class="modal-head">
+            <h4>문의하기 | <span id="spanSelectedAgName">AG 홍길동</span></h4>
+            <div>
+                <i class="fa fa-times" aria-hidden="true" id="iCloseInquiryModal"></i>
+                <i class="fa fa-ellipsis-v" aria-hidden="true" id="iInquiryAgList"></i>
+            </div>
+            <ul class="contact-name" id="ulInquiryAgList" style="display: none;">
+                <li><span class="name">AG홍길동</span></li>
+                <li><span class="name">AG홍길동</span><span class="badge-alarm">3</span></li>
+            </ul>
+        </div>
+        <div class="modal-body">
+            <div class="contact-chat">
+                <div class="answer">
+                    <div class="nav">
+                        <p class="date">2022.09.15-15:44</p>
+                        <div class="text">안녕하세요. 문의하기입니다. 도움이 필요한내용을 남겨주시면 빠른시일내에 답변을 드리겠습니다.</div>
+                    </div>
+                </div>
+                <div class="asking">
+                    <div class="nav">
+                        <p class="date">2022.09.15-15:44</p>
+                        <div class="text">안녕하세요. 문의하기입니다. 도움이 필요한내용을 남겨주시면 빠른시일내에 답변을 드리겠습니다.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <textarea cols="30" rows="10" placeholder="내용입력" id="textInquiryContent"></textarea>
+                <button id="btnInsertInquiry">작성</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end::modal-->
+<%}else { %>
 <!--modal / 문의-->
 <div class="contact-modal" id="inquiryModal" style="display: none;">
     <div class="modal-contents">
@@ -66,9 +106,11 @@
                 </div>
             </div>
             <div class="chat-input">
-                <textarea cols="30" rows="10" placeholder="내용입력"></textarea>
-                <button>작성</button>
+                <textarea cols="30" rows="10" placeholder="내용입력" id="textInquiryContent"></textarea>
+                <button id="btnInsertInquiry">작성</button>
             </div>
         </div>
     </div>
 </div>
+<!--end::modal-->
+<%} %>

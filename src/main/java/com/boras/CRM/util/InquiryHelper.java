@@ -17,7 +17,7 @@ public class InquiryHelper {
 	private static JSONObject inquiryList = new JSONObject();
 	
 	/**
-	 * 초기 문의 목록 세팅`
+	 * 초기 문의 목록 세팅
 	 * @param inquiryService
 	 */
 	public static void setInitInquiryList(InquiryService inquiryService) {
@@ -83,6 +83,14 @@ public class InquiryHelper {
 			}
 			
 			logger.info("[init inquiry] " + inquiryList.toJSONString());
+			
+			/*
+			//테스트용
+			inquiryList = new JSONObject();
+			JSONObject testJobj = new JSONObject();
+			testJobj.put("698", 1);
+			inquiryList.put("test", testJobj);
+			*/
 		}
 	}
 	
@@ -94,11 +102,6 @@ public class InquiryHelper {
 	 */
 	public static List<InquiryVO> reloadNewList(InquiryService inquiryService, String id) {
 		List<InquiryVO> list = new ArrayList<>();
-		
-		inquiryList = new JSONObject();
-		JSONObject testJobj = new JSONObject();
-		testJobj.put("698", 1);
-		inquiryList.put("test", testJobj);
 		
 		// 전체 문의 내역 조회
 		List<InquiryVO> inquiryTempList = new ArrayList<>();
@@ -117,6 +120,7 @@ public class InquiryHelper {
 						
 						int bfInquirySeq = Integer.parseInt(tempJobj.get(vo.getInquiryLedgerSeq() + "").toString());
 						if(bfInquirySeq < vo.getInquirySeq()) {
+							vo.setIsRead("N");
 							list.add(vo);
 						}
 					}
@@ -153,7 +157,16 @@ public class InquiryHelper {
 	 * @param ledgerSeq
 	 * @param lastInquirySeq
 	 */
-	public void readInquiry(String id, int ledgerSeq, int lastInquirySeq) {
+	public static void readInquiry(String id, int ledgerSeq, int lastInquirySeq) {
+		JSONObject tempJobj = new JSONObject();
+		if(inquiryList.containsKey(id)) {
+			tempJobj = (JSONObject) inquiryList.get(id);
+			tempJobj.put(ledgerSeq + "", lastInquirySeq);
+		}else {
+			tempJobj.put(ledgerSeq + "", lastInquirySeq);
+		}
 		
+		inquiryList.put(id, tempJobj);
+		logger.info("[set inquiry] " + inquiryList.toJSONString());
 	}
 }

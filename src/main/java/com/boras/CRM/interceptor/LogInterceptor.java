@@ -37,7 +37,7 @@ public class LogInterceptor implements HandlerInterceptor {
         		logger.warn("[ URL : " + uri + " , IP : " + ip + " ] There is No Permission");
         		flag = false;
         	}else {
-        		if(!uri.contains("checkId") && !uri.contains("common/modal") && !uri.contains("toast")) {
+        		if(!uri.contains("checkId") && !uri.contains("common/modal") && !uri.contains("toast") && !uri.contains("/v1/api/common/inquiry/list") && !uri.contains("/v1/api/inquiry/select/ledger")) {
         			logger.info("[ URL : " + uri + " , IP : " + ip + " ]");
         		}
         	}

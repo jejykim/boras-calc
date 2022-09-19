@@ -30,6 +30,7 @@ var InquiryList = {};
 //InquiryList Variable
 var setIntervalInquiryList = null;
 InquiryList.selectLedgerSeq = 0;
+InquiryList.selectInquiryUser = "";
 var tempListlength = null;
 
 //InquiryList
@@ -118,6 +119,7 @@ InquiryList.SetEvent = function () {
 				$("tr").css("background-color", "");
 				$(".contact-chat").children().remove();
 				InquiryList.selectLedgerSeq = 0;
+				InquiryList.selectInquiryUser = "";
 				clearInterval(setIntervalInquiryList);
 			}
 		});
@@ -127,6 +129,11 @@ InquiryList.SetEvent = function () {
 			if($("#textInquiryContent").val() != "") {
 				InquiryList.insertInquiry(InquiryList.selectLedgerSeq);
 			}
+		});
+		
+		// AG 목록 드롭다운
+		$("#iInquiryAgList").click(function() {
+			$("#ulInquiryAgList").toggle();
 		});
     }
     catch (e) { console.log(e.message); }
@@ -150,7 +157,7 @@ InquiryList.Paging = function (page) {
 }
 
 /*=======================================================================
-내      용  : 문의 상세
+내      용  : 문의 상세1 (사용자 확인)
 작  성  자  : 김진열
 2022.09.15 - 최초생성
 ========================================================================*/
@@ -158,6 +165,7 @@ InquiryList.getInquiryInfo = function (ledgerSeq, trThis) {
     try {
 		if(!$("#inquiryModal").is(":visible")) {
 			InquiryList.selectLedgerSeq = 0;
+			InquiryList.selectInquiryUser = "";
 		}
 	
 		if(InquiryList.selectLedgerSeq == ledgerSeq) {
@@ -169,40 +177,25 @@ InquiryList.getInquiryInfo = function (ledgerSeq, trThis) {
 			var data = { inquiryLedgerSeq : ledgerSeq };
 			$.ajax({
 				type : "post",
-				url : "/v1/api/inquiry/select/ledger",
+				url : "/v1/api/inquiry/select/ledger/users",
 				data : data,
 				success : function(json){
 					if(json.resultCode == "00000") {
-						var list = json.list;
-						var lastInquirySeq = 0;
+						var userlist = json.list;
+						var userId = "";
+						var userName = "";
 						
-						$(".contact-chat").children().remove();
+						$(".contact-name").children().remove();
 						
-						for(var vo of list) {
-							var div = "";
-							if(vo.isMine == "Y") {
-								div = '<div class="asking"><div class="nav"><p class="date">'+vo.inquiryCreateDate.substring(0, 19)+'</p><div class="text">'+vo.inquiryContent+'</div></div>';
-							}else {
-								div = '<div class="answer"><div class="nav"><p class="date">'+vo.inquiryCreateDate.substring(0, 19)+'</p><div class="text">'+vo.inquiryContent+'</div></div>';
-							}
+						for(var vo of userlist) {
+							userId = vo.inquiryFromUserId;
+							userName = vo.inquiryFromUserName
 							
-							$(".contact-chat").append(div);
-							lastInquirySeq = vo.inquirySeq;
+							var li = '<li onclick="InquiryList.changeAgForInquiry('+ledgerSeq+' ,\''+userId+'\',\''+userName+'\')"><span class="name">'+vo.inquiryFromUserName+'</span></li>';
+							$(".contact-name").append(li);
 						}
 						
-						$("#inquiryModal").slideToggle();
-						$(".contact-chat").scrollTop($(".contact-chat")[0].scrollHeight);
-						
-						if($("#inquiryModal").is(":visible")) {
-							$(trThis).css("background-color", "#EBECF1");
-							InquiryList.selectLedgerSeq = ledgerSeq;
-						}
-						
-						tempListlength = list.length;
-						
-						InquiryList.readInquiry(trThis, lastInquirySeq);
-						
-						setIntervalInquiryList = setInterval(InquiryList.intervalInquiryList, 1000) ;
+						InquiryList.getInquiryInfo2(ledgerSeq, trThis, userId, userName);
 					}else {
 						console.log(json.resultMsg);
 					}
@@ -212,8 +205,69 @@ InquiryList.getInquiryInfo = function (ledgerSeq, trThis) {
 					return false;
 				}
 			});
+			
 		}
 		
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 문의 상세2
+작  성  자  : 김진열
+2022.09.15 - 최초생성
+========================================================================*/
+InquiryList.getInquiryInfo2 = function (ledgerSeq, trThis, userId, userName) {
+    try {
+		var data = { inquiryLedgerSeq : ledgerSeq, inquiryFromUserId : userId };
+						
+		$.ajax({
+			type : "post",
+			url : "/v1/api/inquiry/select/ledger",
+			data : data,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					var list = json.list;
+					var lastInquirySeq = 0;
+					
+					$(".contact-chat").children().remove();
+					
+					for(var vo of list) {
+						var div = "";
+						if(vo.isMine == "Y") {
+							div = '<div class="asking"><div class="nav"><p class="date">'+vo.inquiryCreateDate.substring(0, 19)+'</p><div class="text">'+vo.inquiryContent+'</div></div>';
+						}else {
+							div = '<div class="answer"><div class="nav"><p class="date">'+vo.inquiryCreateDate.substring(0, 19)+'</p><div class="text">'+vo.inquiryContent+'</div></div>';
+						}
+						
+						$(".contact-chat").append(div);
+						lastInquirySeq = vo.inquirySeq;
+					}
+					
+					$("#inquiryModal").slideToggle();
+					$(".contact-chat").scrollTop($(".contact-chat")[0].scrollHeight);
+					
+					if($("#inquiryModal").is(":visible")) {
+						$(trThis).css("background-color", "#EBECF1");
+						InquiryList.selectLedgerSeq = ledgerSeq;
+						InquiryList.selectInquiryUser = userId;
+						$("#spanSelectedAgName").html(userName);
+					}
+					
+					InquiryList.readInquiry(trThis, lastInquirySeq);
+					
+					tempListlength = list.length;
+					
+					setIntervalInquiryList = setInterval(InquiryList.intervalInquiryList, 1000) ;
+				}else {
+					console.log(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
     }
     catch (e) { console.log(e.message); }
 }
@@ -228,11 +282,12 @@ InquiryList.insertInquiry = function (ledgerSeq) {
 		var data = { 
 			inquiryLedgerSeq : ledgerSeq
 			, inquiryContent : $("#textInquiryContent").val()
-			};
+			, inquiryToUserId : InquiryList.selectInquiryUser
+		};
 			
 		$.ajax({
 			type : "post",
-			url : "/v1/api/inquiry/insert/to",
+			url : "/v1/api/inquiry/insert/from",
 			data : data,
 			success : function(json){
 				if(json.resultCode == "00000") {
@@ -263,7 +318,7 @@ InquiryList.insertInquiry = function (ledgerSeq) {
 ========================================================================*/
 InquiryList.intervalInquiryList = function () {
     try {
-		var data = { inquiryLedgerSeq : InquiryList.selectLedgerSeq };
+		var data = { inquiryLedgerSeq : InquiryList.selectLedgerSeq, inquiryFromUserId : InquiryList.selectInquiryUser };
 		$.ajax({
 			type : "post",
 			url : "/v1/api/inquiry/select/ledger",
@@ -289,6 +344,66 @@ InquiryList.intervalInquiryList = function () {
 						tempListlength = list.length;
 						$(".contact-chat").scrollTop($(".contact-chat")[0].scrollHeight);
 					}
+				}else {
+					console.log(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : AG 변경 문의 내역 조회
+작  성  자  : 김진열
+2022.09.15 - 최초생성
+========================================================================*/
+InquiryList.changeAgForInquiry = function (ledgerSeq, userId, userName) {
+    try {
+		clearInterval(setIntervalInquiryList);
+		
+		var data = { inquiryLedgerSeq : ledgerSeq, inquiryFromUserId : userId };
+						
+		$.ajax({
+			type : "post",
+			url : "/v1/api/inquiry/select/ledger",
+			data : data,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					var list = json.list;
+					var lastInquirySeq = 0;
+					
+					$(".contact-chat").children().remove();
+					
+					for(var vo of list) {
+						var div = "";
+						if(vo.isMine == "Y") {
+							div = '<div class="asking"><div class="nav"><p class="date">'+vo.inquiryCreateDate.substring(0, 19)+'</p><div class="text">'+vo.inquiryContent+'</div></div>';
+						}else {
+							div = '<div class="answer"><div class="nav"><p class="date">'+vo.inquiryCreateDate.substring(0, 19)+'</p><div class="text">'+vo.inquiryContent+'</div></div>';
+						}
+						
+						$(".contact-chat").append(div);
+						lastInquirySeq = vo.inquirySeq;
+					}
+					
+					$(".contact-chat").scrollTop($(".contact-chat")[0].scrollHeight);
+					
+					if($("#inquiryModal").is(":visible")) {
+						InquiryList.selectLedgerSeq = ledgerSeq;
+						InquiryList.selectInquiryUser = userId;
+						$("#spanSelectedAgName").html(userName);
+					}
+					
+					$("#ulInquiryAgList").hide();
+					
+					tempListlength = list.length;
+					
+					setIntervalInquiryList = setInterval(InquiryList.intervalInquiryList, 1000) ;
 				}else {
 					console.log(json.resultMsg);
 				}

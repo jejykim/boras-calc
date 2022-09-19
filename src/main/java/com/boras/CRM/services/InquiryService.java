@@ -64,5 +64,20 @@ public class InquiryService implements InquiryMapper {
 	public List<InquiryVO> selectAllInquiryList() {
 		return inquiryMapper.selectAllInquiryList();
 	}
+
+	@Override
+	public List<InquiryVO> selectInquiryListForAdmin(InquiryVO inquiryVO) {
+		return inquiryMapper.selectInquiryListForAdmin(inquiryVO);
+	}
+
+	@Override
+	public int selectInquiryListForAdminCount(InquiryVO inquiryVO) {
+		return inquiryMapper.selectInquiryListForAdminCount(inquiryVO);
+	}
+
+	@Override
+	public List<InquiryVO> selectInquiryUserList(InquiryVO inquiryVO) {
+		return inquiryMapper.selectInquiryUserList(inquiryVO);
+	}
 	
 }

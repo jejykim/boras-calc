@@ -85,9 +85,9 @@ public class InquiryController {
 				}
 				break;
 			case "notRead":
-				
+				list = InquiryHelper.reloadNewList(inquiryService, PermissionHelper.getSessionUserId(req));
+				listCount = list.size();
 				break;
-	
 			default:
 				break;
 		}
@@ -107,106 +107,58 @@ public class InquiryController {
 	 * 관리자 문의 내역 페이지
 	 */
 	@GetMapping(value = "/admin/inquiry/list")
-	public String adminInquiryList(Model model, HttpServletRequest req, HttpServletResponse resp, UserVO userVO) {
-		String result = "user/user-list";
+	public String adminInquiryList(Model model, HttpServletRequest req, HttpServletResponse resp, InquiryVO inquiryVO) {
+		String result = "inquiry-admin/inquiry-list";
 		
-		if(userVO.getNowPage() != 1) {
-			userVO.setPage((userVO.getNowPage()-1)*userVO.getPagePerRows());
+		if(inquiryVO.getNowPage() != 1) {
+			inquiryVO.setPage((inquiryVO.getNowPage()-1)*inquiryVO.getPagePerRows());
 		}
     	
-		List<UserVO> list = new ArrayList<>();
+		List<InquiryVO> list = new ArrayList<>();
 		int listCount = 0;
 		
-		try {
-			list = userService.selectUserList(userVO);
-			
-			for(UserVO vo : list) {
-				if(WebSessionListener.userList.containsKey(vo.getUserId())) {
-					vo.setSessionLive("Y");
-				}else {
-					vo.setSessionLive("N");
+		inquiryVO.setInquiryFromUserId(PermissionHelper.getSessionUserId(req));
+		
+		switch (inquiryVO.getInquiryTeb()) {
+			case "all":
+				try {
+					List<InquiryVO> tempList = inquiryService.selectInquiryListForAdmin(inquiryVO);
+					
+					for(InquiryVO vo : tempList) {
+						boolean isRead = InquiryHelper.isNotReadInquiry(inquiryService, PermissionHelper.getSessionUserId(req), vo.getInquiryLedgerSeq());
+						
+						vo.setIsRead(isRead ? "N" : "Y");
+						
+						list.add(vo);
+					}
+				} catch (Exception e) {
+					logger.error("[ URL : " + req.getRequestURI() + " , ERROR : selectInquiryListForAdmin ]");
+					logger.error(e.getMessage());
 				}
-			}
-		} catch (Exception e) {
-			logger.error("[ URL : " + req.getRequestURI() + " , ERROR : selectUserList ]");
-			logger.error(e.getMessage());
-		}
-		
-		try {
-			listCount = userService.selectUserListCount(userVO);
-		}catch (Exception e) {
-			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectUserListCount ]");
-			logger.error(e.getMessage());
-		}
-		
-		List<CodeVO> permissionCodelist = new ArrayList<>();
-		List<CodeVO> businessCodelist = new ArrayList<>();
-		List<CodeVO> codeCompanyCodelist = new ArrayList<>();
-		CodeVO codeVO = new CodeVO();
-		codeVO.setCodeParentId(1000);
-		
-		try {
-			permissionCodelist = codeService.selectCodeList(codeVO);
-		}catch (Exception e) {
-			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
-			logger.error(e.getMessage());
-		}
-		
-		codeVO.setCodeParentId(5000);
-		
-		try {
-			businessCodelist = codeService.selectCodeList(codeVO);
-		}catch (Exception e) {
-			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
-			logger.error(e.getMessage());
-		}
-		
-		codeVO.setCodeParentId(2000);
-		
-		try {
-			codeCompanyCodelist = codeService.selectCodeList(codeVO);
-		}catch (Exception e) {
-			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
-			logger.error(e.getMessage());
-		}
-		
-		List<Map<String, Object>> accountCountList = new ArrayList<>();
-		
-		try {
-			accountCountList = userService.selectUserAgNewAdminCount();
-		}catch (Exception e) {
-			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectUserAgNewAdminCount ]");
-			logger.error(e.getMessage());
-		}
-		
-		int agCount = 0;
-		int adminCount = 0;
-		int newCount = 0;
-		
-		for(Map<String, Object> map : accountCountList) {
-			if(map.get("name").toString().equals("admin")) {
-				adminCount = Integer.parseInt(map.get("count").toString());
-			}else if(map.get("name").toString().equals("ag")) {
-				agCount = Integer.parseInt(map.get("count").toString());
-			}else if(map.get("name").toString().equals("new")) {
-				newCount = Integer.parseInt(map.get("count").toString());
-			}
+				
+				try {
+					listCount = inquiryService.selectInquiryListForAdminCount(inquiryVO);
+				}catch (Exception e) {
+					logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectInquiryListForAdminCount ]");
+					logger.error(e.getMessage());
+				}
+				break;
+			case "notRead":
+				list = InquiryHelper.reloadNewList(inquiryService, PermissionHelper.getSessionUserId(req));
+				listCount = list.size();
+				break;
+			default:
+				break;
 		}
 		
 		PagingControl pc = new PagingControl();
-		PagingVO pagingVO = pc.paging(listCount, userVO.getNowPage(), userVO.getPagePerRows());
+		PagingVO pagingVO = pc.paging(listCount, inquiryVO.getNowPage(), inquiryVO.getPagePerRows());
 		
 		model.addAttribute("list", list);
 		model.addAttribute("listCount", listCount);
 		model.addAttribute("pagingVO", pagingVO);
-		model.addAttribute("userVO", userVO);
-		model.addAttribute("permissionCodelist", permissionCodelist);
-		model.addAttribute("businessCodelist", businessCodelist);
-		model.addAttribute("codeCompanyCodelist", codeCompanyCodelist);
-		model.addAttribute("agCount", agCount);
-		model.addAttribute("adminCount", adminCount);
-		model.addAttribute("newCount", newCount);
-    	
+		model.addAttribute("inquiryVO", inquiryVO);
+		
 		return result;
 	}
 	

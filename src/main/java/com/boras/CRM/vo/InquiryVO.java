@@ -3,7 +3,7 @@ package com.boras.CRM.vo;
 public class InquiryVO extends PagingVO {
 
 	// 문의seq
-	private int inquirySeq;
+	private int inquirySeq = 0;
 	
 	// 원장seq
 	private int inquiryLedgerSeq;
@@ -16,6 +16,9 @@ public class InquiryVO extends PagingVO {
 	
 	// 보낸사람
 	private String inquiryFromUserId;
+	
+	// 보낸사람명
+	private String inquiryFromUserName;
 		
 	// 작성내용
 	private String inquiryContent;
@@ -64,7 +67,7 @@ public class InquiryVO extends PagingVO {
 	
 	// 본인 문의 내역 여부
 	private String isMine = "N";
-
+	
 	public int getInquirySeq() {
 		return inquirySeq;
 	}
@@ -231,6 +234,14 @@ public class InquiryVO extends PagingVO {
 
 	public void setIsMine(String isMine) {
 		this.isMine = isMine;
+	}
+
+	public String getInquiryFromUserName() {
+		return inquiryFromUserName;
+	}
+
+	public void setInquiryFromUserName(String inquiryFromUserName) {
+		this.inquiryFromUserName = inquiryFromUserName;
 	}
 	
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.boras.CRM.services.InquiryService;
+import com.boras.CRM.util.InquiryHelper;
 import com.boras.CRM.util.PermissionHelper;
 import com.boras.CRM.util.ResultCode;
 import com.boras.CRM.util.ResultCode.ResultNum;
@@ -39,9 +40,10 @@ public class InquiryApiController {
 	 * 문의 등록
 	 */
 	@PostMapping(value = "/insert/to")
-	public Map<String, Object> insertInquiryByTo(HttpServletRequest req, HttpServletResponse resp, @RequestBody InquiryVO inquiryVO) {
-		
+	public Map<String, Object> insertInquiryByTo(HttpServletRequest req, HttpServletResponse resp, InquiryVO inquiryVO) {
 	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    inquiryVO.setInquiryFromUserId(PermissionHelper.getSessionUserId(req));
 	    
 	    try {
 		    int cnt = inquiryService.insertInquiryByTo(inquiryVO);
@@ -66,9 +68,10 @@ public class InquiryApiController {
 	 * 문의 답변
 	 */
 	@PostMapping(value = "/insert/from")
-	public Map<String, Object> insertInquiryByFrom(HttpServletRequest req, HttpServletResponse resp, @RequestBody InquiryVO inquiryVO) {
-		
+	public Map<String, Object> insertInquiryByFrom(HttpServletRequest req, HttpServletResponse resp, InquiryVO inquiryVO) {
 	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    inquiryVO.setInquiryFromUserId(PermissionHelper.getSessionUserId(req));
 	    
 	    try {
 		    int cnt = inquiryService.insertInquiryByFrom(inquiryVO);
@@ -89,37 +92,54 @@ public class InquiryApiController {
 		return rvt;
 	}
 	
-	
 	/**
 	 * 원장 기준 문의 조회
 	 */
 	@PostMapping(value = "/select/ledger")
-	public Map<String, Object> selectParentCodeList(HttpServletRequest req, HttpServletResponse resp, InquiryVO inquiryVO) {
+	public Map<String, Object> selectInquiryListByLedger(HttpServletRequest req, HttpServletResponse resp, InquiryVO inquiryVO) {
 	    Map<String, Object> rvt = new HashMap<>();
+	    if(!PermissionHelper.isAdmin(req)) {
+	    	inquiryVO.setInquiryFromUserId(PermissionHelper.getSessionUserId(req));
+	    }
 	    
 	    try {
 	    	List<InquiryVO> list = inquiryService.selectInquiryListForLedger(inquiryVO);
+	    	List<InquiryVO> tempList = new ArrayList<>();
 	    	
-		    if(list.size()>0) {
-		    	List<InquiryVO> tempList = new ArrayList<>();
-		    	
-		    	for(InquiryVO vo : list) {
-		    		if(vo.getInquiryFromUserId().equals(PermissionHelper.getSessionUserId(req))) {
-		    			vo.setIsMine("Y");
-		    		}
-		    		
-		    		tempList.add(vo);
-		    	}
-		    	
-		    	rvt.put("list", tempList);
-		    	
-		    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
-    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
-		    }else {
-		    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
-    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
-		    }
-		    	
+	    	for(InquiryVO vo : list) {
+	    		if(vo.getInquiryFromUserId().equals(PermissionHelper.getSessionUserId(req))) {
+	    			vo.setIsMine("Y");
+	    		}
+	    		
+	    		tempList.add(vo);
+	    	}
+	    	
+	    	rvt.put("list", tempList);
+	    	
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+	    }catch (Exception e) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
+			logger.error(e.getMessage());
+		}
+	   
+		return rvt;
+	}
+	
+	/**
+	 * 원장 기준 문의 조회
+	 */
+	@PostMapping(value = "/select/ledger/users")
+	public Map<String, Object> selectInquiryLedgerUserList(HttpServletRequest req, HttpServletResponse resp, InquiryVO inquiryVO) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    try {
+	    	List<InquiryVO> list = inquiryService.selectInquiryUserList(inquiryVO);
+	    	
+	    	rvt.put("list", list);
+	    	
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
 	    }catch (Exception e) {
 	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
 			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
@@ -133,21 +153,15 @@ public class InquiryApiController {
 	 * 사용자 기준 몬의 조회
 	 */
 	@PostMapping(value = "/select/user")
-	public Map<String, Object> selectCodeList(HttpServletRequest req, HttpServletResponse resp, @RequestBody InquiryVO inquiryVO) {
+	public Map<String, Object> selectInquiryListByUser(HttpServletRequest req, HttpServletResponse resp, @RequestBody InquiryVO inquiryVO) {
 		
 	    Map<String, Object> rvt = new HashMap<>();
 	    
 	    try {
 	    	List<InquiryVO> list = inquiryService.selectInquiryListForUser(inquiryVO);
-		    if(list.size()>0) {
-		    	rvt.put("list", list);
-		    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
-    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
-		    }else {
-		    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
-    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
-		    }
-		    	
+	    	rvt.put("list", list);
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
 	    }catch (Exception e) {
 	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
 			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
@@ -249,4 +263,29 @@ public class InquiryApiController {
 		return rvt;
 	}
 	
+	/**
+	 * 문의 읽음
+	 */
+	@PostMapping(value = "/read")
+	public Map<String, Object> readInquiry(HttpServletRequest req, HttpServletResponse resp, InquiryVO inquiryVO) {
+		
+	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    try {
+	    	if(inquiryVO.getInquirySeq() > 0) {
+	    		InquiryHelper.readInquiry(PermissionHelper.getSessionUserId(req), inquiryVO.getInquiryLedgerSeq(), inquiryVO.getInquirySeq());
+	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+	    	}else {
+	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
+	    		rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
+	    	}
+	    }catch (Exception e) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
+			logger.error(e.getMessage());
+		}
+	   
+		return rvt;
+	}
 }

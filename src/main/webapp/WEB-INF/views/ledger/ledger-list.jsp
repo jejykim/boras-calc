@@ -188,7 +188,7 @@
 	                                                    <p><span class="font-blue">차량가 </span><span><fmt:formatNumber value="${list.ledgerCarPrice }" pattern="#,###"/></span></p>
 	                                                    <p><span class="font-red">취득원가 </span><span><fmt:formatNumber value="${list.ledgerAcquisitionCost }" pattern="#,###"/></span></p>
 	                                                </td>
-	                                                <td><button class="btn-pencil" onclick="LedgerList.inquiryModal(${list.ledgerSeq })"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+	                                                <td><button class="btn-pencil" onclick="LedgerList.inquiryModal(${list.ledgerSeq }, this)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
 	                                            </tr>
                                             </c:forEach>
                                             <c:if test="${empty list }">

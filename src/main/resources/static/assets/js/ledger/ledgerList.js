@@ -32,6 +32,7 @@ LedgerList.files = [];
 LedgerList.selectLedgerSeq = 0;
 var multiRequest = "";
 var checkExcelFlag = false;
+var tempListlength = null;
 
 //LedgerList
 var Properties = {};
@@ -231,6 +232,24 @@ LedgerList.SetEvent = function () {
 				
 				$("#selDealerBrand").val("");
 				$("#selDealerCompany").val("");
+			}
+		});
+		
+		// 문의 모달 닫기
+		$("#iCloseInquiryModal").click(function() {
+			if($("#inquiryModal").is(":visible")) {
+				$("#inquiryModal").slideUp();
+				$("tr").css("background-color", "");
+				$(".contact-chat").children().remove();
+				LedgerList.selectLedgerSeq = 0;
+				clearInterval(setIntervalInquiryList);
+			}
+		});
+		
+		// 문의 하기
+		$("#btnInsertInquiry").click(function() {
+			if($("#textInquiryContent").val() != "") {
+				LedgerList.insertInquiry(LedgerList.selectLedgerSeq);
 			}
 		});
     }
@@ -672,24 +691,101 @@ LedgerList.addDealer = function () {
 }
 
 /*=======================================================================
-내      용  : 문의 모달
+내      용  : 문의 상세
 작  성  자  : 김진열
-2022.08.29 - 최초생성
+2022.09.15 - 최초생성
 ========================================================================*/
-LedgerList.inquiryModal = function (ledgerSeq) {
+LedgerList.inquiryModal = function (ledgerSeq, trThis) {
     try {
+		if(!$("#inquiryModal").is(":visible")) {
+			LedgerList.selectLedgerSeq = 0;
+		}
+	
+		if(LedgerList.selectLedgerSeq == ledgerSeq) {
+			$("#inquiryModal").slideUp();
+			//$(trThis).css("background-color", "");
+			$(".contact-chat").children().remove();
+			clearInterval(setIntervalInquiryList);
+		}else {
+			var data = { inquiryLedgerSeq : ledgerSeq };
+			$.ajax({
+				type : "post",
+				url : "/v1/api/inquiry/select/ledger",
+				data : data,
+				success : function(json){
+					if(json.resultCode == "00000") {
+						var list = json.list;
+						var lastInquirySeq = 0;
+						
+						$(".contact-chat").children().remove();
+						
+						for(var vo of list) {
+							var div = "";
+							if(vo.isMine == "Y") {
+								div = '<div class="asking"><div class="nav"><p class="date">'+vo.inquiryCreateDate.substring(0, 19)+'</p><div class="text">'+vo.inquiryContent+'</div></div>';
+							}else {
+								div = '<div class="answer"><div class="nav"><p class="date">'+vo.inquiryCreateDate.substring(0, 19)+'</p><div class="text">'+vo.inquiryContent+'</div></div>';
+							}
+							
+							$(".contact-chat").append(div);
+							lastInquirySeq = vo.inquirySeq;
+						}
+						
+						$("#inquiryModal").slideToggle();
+						$(".contact-chat").scrollTop($(".contact-chat")[0].scrollHeight);
+						
+						if($("#inquiryModal").is(":visible")) {
+							//$(trThis).css("background-color", "#EBECF1");
+							LedgerList.selectLedgerSeq = ledgerSeq;
+						}
+						
+						tempListlength = list.length;
+						
+						LedgerList.readInquiry(lastInquirySeq);
+						
+						setIntervalInquiryList = setInterval(LedgerList.intervalInquiryList, 1000) ;
+					}else {
+						console.log(json.resultMsg);
+					}
+				},
+				error: function(request,status,error,data){
+					alert("잘못된 접근 경로입니다.");
+					return false;
+				}
+			});
+		}
 		
-		/*
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 문의 하기
+작  성  자  : 김진열
+2022.09.15 - 최초생성
+========================================================================*/
+LedgerList.insertInquiry = function (ledgerSeq) {
+    try {
+		var data = { 
+			inquiryLedgerSeq : ledgerSeq
+			, inquiryContent : $("#textInquiryContent").val()
+			};
+			
 		$.ajax({
 			type : "post",
-			url : "/v1/api/ledger/dealer/update",
+			url : "/v1/api/inquiry/insert/to",
 			data : data,
 			success : function(json){
 				if(json.resultCode == "00000") {
-					alert("딜러사가 저장되었습니다.");
-					location.reload();
+					let today = new Date();
+					var date = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDay() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+					var div = '<div class="asking"><div class="nav"><p class="date">'+date+'</p><div class="text">'+$("#textInquiryContent").val()+'</div></div>';
+					
+					$(".contact-chat").append(div);
+					$("#textInquiryContent").val("");
+					$(".contact-chat").scrollTop($(".contact-chat")[0].scrollHeight);
 				}else {
-					alert(json.resultMsg);
+					console.log(json.resultMsg);
 				}
 			},
 			error: function(request,status,error,data){
@@ -697,7 +793,81 @@ LedgerList.inquiryModal = function (ledgerSeq) {
 				return false;
 			}
 		});
-		*/
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 실시간 문의 내용 조회
+작  성  자  : 김진열
+2022.09.15 - 최초생성
+========================================================================*/
+LedgerList.intervalInquiryList = function () {
+    try {
+		var data = { inquiryLedgerSeq : LedgerList.selectLedgerSeq };
+		$.ajax({
+			type : "post",
+			url : "/v1/api/inquiry/select/ledger",
+			data : data,
+			success : function(json){
+				if(json.resultCode == "00000") {
+					var list = json.list;
+					
+					$(".contact-chat").children().remove();
+					
+					for(var vo of list) {
+						var div = "";
+						if(vo.isMine == "Y") {
+							div = '<div class="asking"><div class="nav"><p class="date">'+vo.inquiryCreateDate.substring(0, 19)+'</p><div class="text">'+vo.inquiryContent+'</div></div>';
+						}else {
+							div = '<div class="answer"><div class="nav"><p class="date">'+vo.inquiryCreateDate.substring(0, 19)+'</p><div class="text">'+vo.inquiryContent+'</div></div>';
+						}
+						
+						$(".contact-chat").append(div);
+					}
+					
+					if(tempListlength != list.length) {
+						tempListlength = list.length;
+						$(".contact-chat").scrollTop($(".contact-chat")[0].scrollHeight);
+					}
+				}else {
+					console.log(json.resultMsg);
+				}
+			},
+			error: function(request,status,error,data){
+				alert("잘못된 접근 경로입니다.");
+				return false;
+			}
+		});
+    }
+    catch (e) { console.log(e.message); }
+}
+
+/*=======================================================================
+내      용  : 문의 읽음 표시
+작  성  자  : 김진열
+2022.09.15 - 최초생성
+========================================================================*/
+LedgerList.readInquiry = function (lastInquirySeq) {
+    try {
+		if(lastInquirySeq != 0) {
+			var data = { 
+				inquiryLedgerSeq : LedgerList.selectLedgerSeq
+				, inquirySeq : lastInquirySeq
+				};
+			$.ajax({
+				type : "post",
+				url : "/v1/api/inquiry/read",
+				data : data,
+				success : function(json){
+					console.log(json);
+				},
+				error: function(request,status,error,data){
+					alert("잘못된 접근 경로입니다.");
+					return false;
+				}
+			});
+		}
     }
     catch (e) { console.log(e.message); }
 }

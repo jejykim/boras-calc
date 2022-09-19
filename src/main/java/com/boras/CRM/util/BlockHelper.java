@@ -43,6 +43,8 @@ public class BlockHelper {
 			, "/v1/api/contract/info/"
 			, "/v1/api/contract/formula/list"
 			, "/v1/api/common/inquiry/list"
+			, "/v1/api/inquiry/select/ledger"
+			, "/v1/api/inquiry/insert/to"
 			};
 	
 	/**

@@ -389,7 +389,7 @@
 	                                                		</c:otherwise>
 	                                                	</c:choose>
 	                                                </td>
-	                                                <td onclick="event.cancelBubble=true"><button class="btn-pencil" onclick="LedgerList.inquiryModal(${list.ledgerSeq })"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+	                                                <td onclick="event.cancelBubble=true"><button class="btn-pencil" onclick="LedgerList.inquiryModal(${list.ledgerSeq }, this)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
 	                                            </tr>
                                             </c:forEach>
                                             <c:if test="${listCount eq 0 }">
