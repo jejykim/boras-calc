@@ -189,7 +189,7 @@ ContractInfo.updateContractInfo = function() {
 		console.log(data)
 		$.ajax({
 			type: "post",
-			url: "/v1/api/Contract/update/" + contractInfoSeq,
+			url: "/v1/api/contract/update/" + contractInfoSeq,
 			data: data,
 			success: function(json) {
 				if (json.resultCode == "00000") {
