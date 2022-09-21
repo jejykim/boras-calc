@@ -44,12 +44,12 @@ public class CalculateDashboardHelper {
 		}
 		
 		for(Map<String, Object> map : contractList) {
-			long totalFee = Long.parseLong(map.get("totalFee").toString());
-			long agPersonalFee = Long.parseLong(map.get("agPersonalFee").toString());
-			long agCompanyFee = Long.parseLong(map.get("agCompanyFee").toString());
-			long dpFee = Long.parseLong(map.get("dpFee").toString());
+			long totalFee = Long.parseLong(map.get("total_fee") == null ? "0" : map.get("total_fee").toString());
+			long agPersonalFee = Long.parseLong(map.get("ag_personal_fee") == null ? "0" : map.get("ag_personal_fee").toString());
+			long agCompanyFee = Long.parseLong(map.get("ag_company_fee") == null ? "0" : map.get("ag_company_fee").toString());
+			long dpFee = Long.parseLong(map.get("dp_fee") == null ? "0" : map.get("dp_fee").toString());
 			
-			int financialCompanyCd = Integer.parseInt(map.get("dpFee").toString());
+			int financialCompanyCd = Integer.parseInt(map.get("ledger_financial_company_cd").toString());
 			
 			if(totalFee == agPersonalFee + agCompanyFee + dpFee) {
 				CalculateFinanicalCompanyVO calculateFinanicalCompanyVO = new CalculateFinanicalCompanyVO();

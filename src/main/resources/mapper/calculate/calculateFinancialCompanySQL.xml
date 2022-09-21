@@ -103,7 +103,54 @@
 		AND c.contract_create_month = #{contractCreateMonth}
 		AND a.approval_state = '승인'
 		AND a.approval_yn = 'Y'
+		<if test="userBusinessTypeCd gt 0">
+			AND u.user_business_type_cd = #{userBusinessTypeCd}
+		</if>
+		<if test="ledgerFinancialCompanyCd gt 0">
+			AND l.ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
+		</if>
 		GROUP BY l.ledger_financial_company_cd
+  	</select>
+  	
+  	<!-- 금융사별 계출 ag별 목록 조회 -->
+  	<select id="calculateFinancialCompanyForUser" resultType="map" parameterType="contractVO">
+  		SELECT
+  			u.user_id
+			, u.user_name
+			, u.user_business_type_cd
+			, (SELECT code_name FROM code WHERE code_id = u.user_business_type_cd) as user_business_type_cd_name
+			, count(*) as ledger_count
+			, array_to_string(array_agg(l.ledger_seq),',') as ledger_seq_list
+			, (SUM(c.contract_nomal_total_fee_sum) + SUM(c.contract_add_total_fee_sum) + SUM(c.contract_total_sliding_sum)) AS total_fee
+			, (SUM(CASE WHEN u.user_business_type_cd = 5100 THEN c.contract_nomal_ag_fee_sum ELSE null END)
+				   + SUM(CASE WHEN u.user_business_type_cd = 5100 THEN c.contract_add_ag_fee_sum ELSE null END)
+				   + SUM(CASE WHEN u.user_business_type_cd = 5100 THEN c.contract_ag_sliding_sum ELSE null END)
+				) AS ag_personal_fee
+			, (SUM(CASE WHEN u.user_business_type_cd = 5200 THEN c.contract_nomal_ag_fee_sum ELSE null END)
+				   + SUM(CASE WHEN u.user_business_type_cd = 5200 THEN c.contract_add_ag_fee_sum ELSE null END)
+				   + SUM(CASE WHEN u.user_business_type_cd = 5200 THEN c.contract_ag_sliding_sum ELSE null END)
+				) AS ag_company_fee
+			, (SUM(c.contract_nomal_dp_fee_sum) + SUM(c.contract_add_dp_fee_sum) + SUM(c.contract_dp_sliding_sum)) AS dp_fee
+			, l.ledger_financial_company_cd
+			, (SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) AS ledger_financial_company_cd_name
+		FROM contract c
+		JOIN ledger l
+		ON c.contract_ledger_seq = l.ledger_seq
+		JOIN approval a
+		ON c.contract_ledger_seq = a.approval_ledger_seq
+		JOIN users u
+		ON a.approval_user_id = u.user_id
+		WHERE c.contract_create_year = #{contractCreateYear}
+		AND c.contract_create_month = #{contractCreateMonth}
+		AND a.approval_state = '승인'
+		AND a.approval_yn = 'Y'
+		<if test="userBusinessTypeCd gt 0">
+			AND u.user_business_type_cd = #{userBusinessTypeCd}
+		</if>
+		<if test="ledgerFinancialCompanyCd gt 0">
+			AND l.ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
+		</if>
+		GROUP BY l.ledger_financial_company_cd, u.user_id, u.user_name
   	</select>
   	
 </mapper>

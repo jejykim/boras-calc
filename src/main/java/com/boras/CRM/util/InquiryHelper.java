@@ -1,7 +1,9 @@
 package com.boras.CRM.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -118,14 +120,38 @@ public class InquiryHelper {
 					if(vo.getInquiryToUserId().equals(id)) {
 						JSONObject tempJobj = (JSONObject) inquiryList.get(id);
 						
-						int bfInquirySeq = Integer.parseInt(tempJobj.get(vo.getInquiryLedgerSeq() + "").toString());
-						if(bfInquirySeq < vo.getInquirySeq()) {
+						if(tempJobj.containsKey(vo.getInquiryLedgerSeq() + "")) {
+							int bfInquirySeq = Integer.parseInt(tempJobj.get(vo.getInquiryLedgerSeq() + "").toString());
+							if(bfInquirySeq < vo.getInquirySeq()) {
+								vo.setIsRead("N");
+								list.add(vo);
+							}
+						}else {
 							vo.setIsRead("N");
 							list.add(vo);
 						}
 					}
-				}
+				}	
 			}
+		}
+		
+		JSONObject tJobj = new JSONObject();
+		List<InquiryVO> removelist = new ArrayList<>();
+		
+		for(InquiryVO vo : list) {
+			if(tJobj.containsKey(vo.getInquiryLedgerSeq() + "")) {
+				if(Integer.parseInt(tJobj.get(vo.getInquiryLedgerSeq() + "").toString()) < vo.getInquirySeq()) {
+					tJobj.put(vo.getInquiryLedgerSeq() + "", vo.getInquirySeq());
+				}else {
+					removelist.add(vo);
+				}
+			}else {
+				tJobj.put(vo.getInquiryLedgerSeq() + "", vo.getInquirySeq());
+			}
+		}
+		
+		for(InquiryVO vo : removelist) {
+			list.remove(vo);
 		}
 		
 		return list;

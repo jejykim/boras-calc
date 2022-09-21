@@ -247,6 +247,7 @@
 		FROM inquiry i
 		JOIN ledger l
 		ON i.inquiry_ledger_seq = l.ledger_seq
+		ORDER BY i.inquiry_seq DESC
   	</select>
   	
 </mapper>

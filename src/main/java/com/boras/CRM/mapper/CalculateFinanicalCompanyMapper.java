@@ -56,4 +56,11 @@ public interface CalculateFinanicalCompanyMapper {
 	 */
 	public List<Map<String, Object>> calculateFinancialCompany(ContractVO contractVO);
 	
+	/**
+	 * 금융사별 계출 ag별 목록 조회
+	 * @param 
+	 * @return List<Map<String, Object>>
+	 */
+	public List<Map<String, Object>> calculateFinancialCompanyForUser(ContractVO contractVO);
+	
 }

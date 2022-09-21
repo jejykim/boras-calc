@@ -74,6 +74,8 @@ public class ContractVO extends PagingVO {
 	private String userName;
 	//id
 	private String userId;
+	// 사업타입
+	private int userBusinessTypeCd;
 	
 	public int getContractLedgerSeq() {
 		return contractLedgerSeq;
@@ -401,6 +403,11 @@ public class ContractVO extends PagingVO {
 	public void setLedgerOther(String ledgerOther) {
 		this.ledgerOther = ledgerOther;
 	}
-	
+	public int getUserBusinessTypeCd() {
+		return userBusinessTypeCd;
+	}
+	public void setUserBusinessTypeCd(int userBusinessTypeCd) {
+		this.userBusinessTypeCd = userBusinessTypeCd;
+	}
 	
 }

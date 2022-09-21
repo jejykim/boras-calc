@@ -174,6 +174,8 @@ InquiryList.getInquiryInfo = function (ledgerSeq, trThis) {
 			$(".contact-chat").children().remove();
 			clearInterval(setIntervalInquiryList);
 		}else {
+			$("tr").css("background-color", "");
+			
 			var data = { inquiryLedgerSeq : ledgerSeq };
 			$.ajax({
 				type : "post",
@@ -244,14 +246,16 @@ InquiryList.getInquiryInfo2 = function (ledgerSeq, trThis, userId, userName) {
 						lastInquirySeq = vo.inquirySeq;
 					}
 					
-					$("#inquiryModal").slideToggle();
 					$(".contact-chat").scrollTop($(".contact-chat")[0].scrollHeight);
 					
-					if($("#inquiryModal").is(":visible")) {
-						$(trThis).css("background-color", "#EBECF1");
-						InquiryList.selectLedgerSeq = ledgerSeq;
-						InquiryList.selectInquiryUser = userId;
-						$("#spanSelectedAgName").html(userName);
+					$(trThis).css("background-color", "#EBECF1");
+					InquiryList.selectLedgerSeq = ledgerSeq;
+					InquiryList.selectInquiryUser = userId;
+					$("#spanSelectedAgName").html(userName);
+					
+					if(!$("#inquiryModal").is(":visible")) {
+						$("#inquiryModal").slideToggle();
+						$(".contact-chat").scrollTop($(".contact-chat")[0].scrollHeight);
 					}
 					
 					InquiryList.readInquiry(trThis, lastInquirySeq);

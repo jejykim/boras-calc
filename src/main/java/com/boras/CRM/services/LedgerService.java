@@ -92,4 +92,9 @@ public class LedgerService implements LedgerMapper {
 		return ledgerMapper.deleteLedger(ledgerVO);
 	}
 
+	@Override
+	public List<LedgerVO> selectLedgerDetailList(int[] ledgerSeq) {
+		return ledgerMapper.selectLedgerDetailList(ledgerSeq);
+	}
+
 }
