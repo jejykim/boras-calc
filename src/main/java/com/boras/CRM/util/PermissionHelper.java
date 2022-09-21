@@ -35,6 +35,10 @@ public class PermissionHelper {
 			, "/v1/api/approval/request"
 			, "/v1/api/code/select"
 			, "/v1/api/ledger/dealer/update"
+			, "/v1/api/user/update"
+			, "/v1/api/inquiry/select/ledger"
+			, "/v1/api/inquiry/insert/to"
+			, "/v1/api/inquiry/read"
 			};
 	private static final String[] AG_LEVEL_2_PERMISSON_URL_LIST = {
 			"/ag/ledger/list"
@@ -43,9 +47,22 @@ public class PermissionHelper {
 			, "/v1/api/approval/request"
 			, "/v1/api/code/select"
 			, "/v1/api/ledger/dealer/update"
+			, "/v1/api/user/update"
+			, "/v1/api/inquiry/select/ledger"
+			, "/v1/api/inquiry/insert/to"
+			, "/v1/api/inquiry/read"
 			};
 	private static final String[] AG_LEVEL_1_PERMISSON_URL_LIST = {
-			"/ag/calc/list"
+			"/ag/ledger/list"
+			, "/ag/calc/list"
+			, "/v1/api/ledger/financial/"
+			, "/v1/api/approval/request"
+			, "/v1/api/code/select"
+			, "/v1/api/ledger/dealer/update"
+			, "/v1/api/user/update"
+			, "/v1/api/inquiry/select/ledger"
+			, "/v1/api/inquiry/insert/to"
+			, "/v1/api/inquiry/read"
 			};
 	
 	private static final String[] ADMIN_NORMAL_PERMISSON_URL_LIST = { "/" };
