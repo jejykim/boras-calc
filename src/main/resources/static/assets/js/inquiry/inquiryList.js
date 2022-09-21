@@ -166,6 +166,8 @@ InquiryList.getInquiryInfo = function (ledgerSeq, trThis) {
 			$(".contact-chat").children().remove();
 			clearInterval(setIntervalInquiryList);
 		}else {
+			$("tr").css("background-color", "");
+			
 			var data = { inquiryLedgerSeq : ledgerSeq };
 			$.ajax({
 				type : "post",
@@ -190,12 +192,14 @@ InquiryList.getInquiryInfo = function (ledgerSeq, trThis) {
 							lastInquirySeq = vo.inquirySeq;
 						}
 						
-						$("#inquiryModal").slideToggle();
 						$(".contact-chat").scrollTop($(".contact-chat")[0].scrollHeight);
 						
-						if($("#inquiryModal").is(":visible")) {
-							$(trThis).css("background-color", "#EBECF1");
-							InquiryList.selectLedgerSeq = ledgerSeq;
+						$(trThis).css("background-color", "#EBECF1");
+						InquiryList.selectLedgerSeq = ledgerSeq;
+						
+						if(!$("#inquiryModal").is(":visible")) {
+							$("#inquiryModal").slideToggle();
+							$(".contact-chat").scrollTop($(".contact-chat")[0].scrollHeight);
 						}
 						
 						tempListlength = list.length;

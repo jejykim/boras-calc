@@ -48,4 +48,9 @@ public class CalculateFinanicalCompanyService implements CalculateFinanicalCompa
 		return calculateFinanicalCompanyMapper.isExistCalculate(calculateFinanicalCompanyVO);
 	}
 
+	@Override
+	public List<Map<String, Object>> calculateFinancialCompanyForUser(ContractVO contractVO) {
+		return calculateFinanicalCompanyMapper.calculateFinancialCompanyForUser(contractVO);
+	}
+
 }

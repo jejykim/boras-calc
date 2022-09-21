@@ -690,4 +690,23 @@
   		FROM ledger
   		WHERE ledger_seq = #{ledgerSeq}
   	</delete>
+  	
+  	<!-- 복수 원장 상세 조회 (리스트) -->
+	<select id="selectLedgerDetailList" resultType="ledgerVO" parameterType="java.util.ArrayList">
+		SELECT l.*
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) as ledgerFinancialCompanyCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_branch_cd) as ledgerFinancialBranchCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_product_cd) as ledgerFinancialProductCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_brand_cd) as ledgerDealerBrandCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_dealer_company_cd) as ledgerDealerCompanyCdName
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_type_cd) as ledgerTypeCdName
+		FROM ledger l
+		WHERE 1=1
+		<if test="array != null and array != ''">
+			AND l.ledger_seq in
+			<foreach collection="array" item="value" index="idx" separator="," open="(" close=")">
+				#{value}
+			</foreach>
+		</if>
+  	</select>
 </mapper>

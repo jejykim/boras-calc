@@ -4,6 +4,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -108,6 +110,33 @@ public class LedgerApiController {
 	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
 			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
 			rvt.put("ledgerVO", ledgerVO);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			
+			rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
+		}
+		
+		return rvt;
+	}
+	
+	/**
+	 * 원장 상세 조회
+	 */
+	@PostMapping(value = "/ledger/detail")
+	public Map<String, Object> ledgerListDetail(HttpServletRequest req, HttpServletResponse resp, @RequestParam("ledgerSeqList") String ledgerSeqList) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    
+	    String[] strLedgerSeqList = ledgerSeqList.split(",");
+	    int[] iLedgerSeqList = Arrays.stream(strLedgerSeqList).mapToInt(Integer::parseInt).toArray();
+	    
+	    List<LedgerVO> list = new ArrayList<>();
+	    
+	    try {
+			list = ledgerService.selectLedgerDetailList(iLedgerSeqList);
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+			rvt.put("list", list);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			

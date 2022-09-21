@@ -116,4 +116,11 @@ public interface LedgerMapper {
 	 * @return
 	 */
 	public int deleteLedger(LedgerVO ledgerVO);
+	
+	/**
+	 * 복수 원장 상세 조회 (리스트)
+	 * @param ledgerVO
+	 * @return
+	 */
+	public List<LedgerVO> selectLedgerDetailList(int[] ledgerSeq);
 }

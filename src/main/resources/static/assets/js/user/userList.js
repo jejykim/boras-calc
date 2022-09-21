@@ -467,7 +467,7 @@ UserList.updateUser = function () {
 			, "userPermissionCd" : $("#selInfoPermissionCode").val()
 			, "userCodeCompanyCd" : $("#selInfoCodeCompany").val()
 			};
-	console.log(data);
+			
 		$.ajax({
 			type : "post",
 			url : "/v1/api/user/update",

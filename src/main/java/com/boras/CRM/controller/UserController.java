@@ -199,4 +199,37 @@ public class UserController {
 		return result;
 	}
 	
+	/*
+	 * 마이페이지
+	 */
+	@GetMapping(value = "/mypage")
+	public String mypage(Model model, HttpServletRequest req, HttpServletResponse resp, UserVO userVO) {
+		String result = "mypage/mypage";
+		
+		userVO.setUserId(PermissionHelper.getSessionUserId(req));
+		
+		try {
+			userVO = userService.selectUserInfo(userVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectUserInfo ]");
+			logger.error(e.getMessage());
+		}
+		
+		List<CodeVO> businessCodelist = new ArrayList<>();
+		CodeVO codeVO = new CodeVO();
+		codeVO.setCodeParentId(5000);
+		
+		try {
+			businessCodelist = codeService.selectCodeList(codeVO);
+		}catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error(e.getMessage());
+		}
+		
+		model.addAttribute("userVO", userVO);
+		model.addAttribute("businessCodelist", businessCodelist);
+		
+		return result;
+	}
+	
 }
