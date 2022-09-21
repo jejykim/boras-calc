@@ -55,7 +55,7 @@
                         <% } %>
                         <li title="AG" <%=uri.contains("/calculate/calculate") ? "class='on'" : "" %>><a href="/ag/calc/list"><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록</span></a></li>
                         <% if(PermissionHelper.isAdmin(request)) { %>
-                        <li title="관리자" <%=uri.contains("/calculate/calculate") ? "class='on'" : "" %>><a href="/ag/calc/list"><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록(관리자)</span></a></li>
+                        <li title="관리자" <%=uri.contains("/calculate/calculate-admin") ? "class='on'" : "" %>><a href="/admin/calc/list"><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록(관리자)</span></a></li>
                         <% } %>
                     </ul>
                 </div>

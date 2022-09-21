@@ -229,6 +229,7 @@
                                                     <h7>fee VAT여부</h7>
                                                     <p class="info-result">
                                                         <select id="selContractAgFeeSurtaxSupport">
+                                                        	<option disabled selected="selected">선택</option>
                                                             <option value="N">미지원</option>
                                                             <option value="Y">지원</option>
                                                         </select>
@@ -284,6 +285,7 @@
                                                     <h7>추가 VAT여부</h7>
                                                     <p class="info-result">
                                                         <select id="selContractSlidingSurtaxSupport">
+                                                        	<option disabled selected="selected">선택</option>
                                                             <option value="N">미지원</option>
                                                             <option value="Y">지원</option>
                                                         </select>
@@ -351,6 +353,7 @@
                                                     <h7>슬라이딩 VAT여부</h7>
                                                     <p class="info-result">
                                                         <select id="selContractAddFeeSurtaxSupport">
+                                                        	<option disabled selected="selected">선택</option>
                                                             <option value="N">미지원</option>
                                                             <option value="Y">지원</option>
                                                         </select>

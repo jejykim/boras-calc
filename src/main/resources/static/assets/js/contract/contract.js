@@ -263,6 +263,10 @@ Contract.selectContractInfo = function(contracatSeq, trThis) {
 					var nomalTotalFeeSum = Common.Comma(contract.contractNomalTotalFeeSum);
 					var nomalAgFeeSum = Common.Comma(contract.contractNomalAgFeeSum);
 					var nomalDpFeeSum = Common.Comma(contract.contractNomalDpFeeSum);
+					
+					var addTotalFeeSum = Common.Comma(contract.contractAddTotalFeeSum);
+					var addAgFeeSum = Common.Comma(contract.contractAddAgFeeSum);
+					var addDpFeeSum = Common.Comma(contract.contractAddDpFeeSum);
 
 					var slidingTotalFeePercent = Common.Comma(contract.contractTotalSlidingPercent);
 					var slidingAgFeePercent = Common.Comma(contract.contractAgSlidingPercent);
@@ -280,9 +284,9 @@ Contract.selectContractInfo = function(contracatSeq, trThis) {
 					$('#txtContractNomalAgFeeSum').val(nomalAgFeeSum);
 					$('#txtContractNomalDpFeeSum').val(nomalDpFeeSum);
 
-					$('#txtContractAddTotalFeeSum').val(contract.contractAddTotalFeeSum);
-					$('#txtContractAddAgFeeSum').val(contract.contractAddAgFeeSum);
-					$('#txtContractAddDpFeeSum').val(contract.contractAddDpFeeSum);
+					$('#txtContractAddTotalFeeSum').val(addTotalFeeSum);
+					$('#txtContractAddAgFeeSum').val(addAgFeeSum);
+					$('#txtContractAddDpFeeSum').val(addDpFeeSum);
 
 					$('#txtContractTotalSlidingPercent').val(slidingTotalFeePercent);
 					$('#txtContractAgSlidingPercent').val(slidingAgFeePercent);
@@ -291,12 +295,17 @@ Contract.selectContractInfo = function(contracatSeq, trThis) {
 					$('#txtContractTotalSlidingSum').val(slidingTotalFeeSum);
 					$('#txtContractAgSlidingSum').val(slidingAgFeeSum);
 					$('#txtContractDpSlidingSum').val(slidingDpFeeSum);
-
-					$('#selContractAgFeeSurtaxSupport').val(contract.contractAgFeeSurtaxSupportYn);
-
-					$('#selContractSlidingSurtaxSupport').val(contract.contractSlidingSurtaxSupportYn);
-
-					$('#selContractAddFeeSurtaxSupport').val(contract.contractAddFeeSurtaxSupportYn);
+					
+					if(contract.contractAgFeeSurtaxSupportYn!=null){
+						$('#selContractAgFeeSurtaxSupport').val(contract.contractAgFeeSurtaxSupportYn);	
+					}
+					if(contract.contractSlidingSurtaxSupportYn!=null){
+						$('#selContractSlidingSurtaxSupport').val(contract.contractSlidingSurtaxSupportYn);	
+					}
+					if(contract.contractAddFeeSurtaxSupportYn!=null){
+						$('#selContractAddFeeSurtaxSupport').val(contract.contractAddFeeSurtaxSupportYn);	
+					}
+					
 				} else {
 					alert(json.resultMsg);
 				}
@@ -343,7 +352,6 @@ Contract.updateContract = function() {
 
 			, "contractAddFeeSurtaxSupportYn": $("#selContractAddFeeSurtaxSupport").val()
 		}
-		console.log(data)
 		$.ajax({
 			type: "post",
 			url: "/v1/api/contract/update/" + Contract.ContractSeq,
@@ -420,9 +428,6 @@ Contract.ContractCalculation = function(type, type2) {
 
 		for (var i = 0; i < Contract.FormulatList.length; i++) {
 			var formula = Contract.FormulatList[i];
-			//console.log("formula.formulaType: "+formula.formulaType + "type: "+ type)
-			//console.log("formula.formulaFinancialCompanyCd: "+formula.formulaFinancialProductCd + "Contract.ledgerFinancialProductCd: "+ Contract.ledgerFinancialProductCd)
-			//console.log("formula.formulaFinancialCompanyCd: "+formula.formulaFinancialCompanyCd + "Contract.ledgerFinancialCompanyCd: "+ Contract.ledgerFinancialCompanyCd)
 
 			if (formula.formulaType == type) {
 				if (formula.formulaFinancialProductCd == Contract.ledgerFinancialProductCd
@@ -466,8 +471,6 @@ Contract.ContractCalculation = function(type, type2) {
 					price3 = formula.formula3;
 					Contract.SwitchCalculation(type, price1, price2, price3, type2);
 				} else if (formula.formulaFinancialCompanyCd == 0) {
-					console.log(formula.formula2)
-					console.log("예외일경우,,,")
 					if (formula.formula1 == "ledgerAcquisitionCost") {
 						price1 = Contract.ledgerAcquisitionCost;
 					} else if (formula.formula1 == "ledgerCarPrice") {
@@ -508,13 +511,7 @@ Contract.ContractCalculation = function(type, type2) {
 					Contract.SwitchCalculation(type, price1, price2, price3, type2);
 				}
 
-			} else {
-				//alert("관리자에게 문의하세요.");
-				console.log("formula.formulaType:" + formula.formulaType)
-				console.log("type:" + type)
-				console.log("formula.formulaFinancialProductCd:" + formula.formulaFinancialProductCd)
-				console.log("Contract.ledgerFinancialProductCd:" + Contract.ledgerFinancialProductCd)
-			}
+			} 
 		}
 
 	}
@@ -529,11 +526,6 @@ Contract.ContractCalculation = function(type, type2) {
 ========================================================================*/
 Contract.SwitchCalculation = function(type, price1, price2, price3, type2) {
 	try {
-		console.log("type:" + type)
-		console.log("price1:" + price1)
-		console.log("price2:" + type)
-		console.log("price3:" + price3)
-		console.log("type2:" + type2)
 		var NTotalFee = { "percent": Common.RemoveComma($('#txtContractNomalTotalFeePercent').val()), "sum": Common.RemoveComma($('#txtContractNomalTotalFeeSum').val()) };
 		var STotalFee = { "percent": Common.RemoveComma($('#txtContractTotalSlidingPercent').val()), "sum": Common.RemoveComma($('#txtContractTotalSlidingSum').val()) };
 		switch (type) {
@@ -622,16 +614,16 @@ Contract.Calculation = function(formula1, formula2, formula3, type2) {
 	try {
 		if (type2 == 'NTotalS' || type2 == 'NAGS' || type2 == 'NDPS' || type2 == 'STotalS' || type2 == 'SAGS' || type2 == 'SDPS') {
 			if (formula3 != null) {
-				var sum = Common.RemoveComma(formula2.sum) * 1.1;
-				var percent = (100 * sum / formula1 * 1.1).toFixed(4);
+				var sum = Common.RemoveComma(formula2.sum);
+				var percent = (100 * sum / formula1).toFixed(4);
 			} else {
 				var sum = Common.RemoveComma(formula2.sum);
 				var percent = (100 * sum / formula1).toFixed(4);
 			}
 		} else if (type2 == 'NTotalP' || type2 == 'NAGP' || type2 == 'NDPP' || type2 == 'STotalP' || type2 == 'SAGP' || type2 == 'SDPP') {
 			if (formula3 != null) {
-				var sum = ((formula2.percent / 100) * formula1 * 1.1).toFixed(4);
-				var percent = formula2.percent * 1.1;
+				var sum = ((formula2.percent / 100) * formula1).toFixed(4);
+				var percent = formula2.percent;
 			} else {
 				var sum = ((formula2.percent / 100) * formula1).toFixed(4);
 				var percent = formula2.percent;

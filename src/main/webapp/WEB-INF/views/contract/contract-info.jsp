@@ -20,13 +20,14 @@
 	<script src='/static/assets/js/common/common.js'></script>
 	
 	<script type="text/javascript">
-		var firstRowSeq = <c:choose><c:when test="${not empty list }">${list[0].contractSeq }</c:when><c:otherwise>0</c:otherwise></c:choose>;
+		var contractInfoSeq = ${contractVO.contractSeq };
+		var ledgerCarPrice = ${contractVO.ledgerCarPrice };
+		var ledgerAcquisitionCost = ${contractVO.ledgerAcquisitionCost };
+		var ledgerFinancialProductCd = ${contractVO.ledgerFinancialProductCd };
+		var ledgerFinancialCompanyCd = ${contractVO.ledgerFinancialCompanyCd };
 	</script>
 	
-	<script src='/static/assets/js/contract/contract.js'></script>
-	<script>
-		console.log(${contractVO})
-	</script>
+	<script src='/static/assets/js/contract/contractInfo.js'></script>
 </head>
 <body>
     <div class="wrap">
@@ -47,7 +48,7 @@
                         </div>
                         <div class="header-sub">
                             <div class="btn">
-                                <button class="btn-main btn-sm">저장</button>
+                                <button class="btn-main btn-sm" id="btnUpdate">저장</button>
                             </div>
                         </div>
                     </div>
@@ -107,17 +108,13 @@
                                 <div class="bar">
                                     <label>차량가</label>
                                     <div class="bar-info">
-                                        <span>
-                                            <fmt:formatNumber value="${contractVO.ledgerCarPrice }" pattern="#,###" />
-                                        </span>
+                                        <span><fmt:formatNumber value="${contractVO.ledgerCarPrice }" pattern="#,###"/></span>
                                     </div>
                                 </div>
                                 <div class="bar">
                                     <label>취득원가</label>
                                     <div class="bar-info">
-                                        <span>
-                                            <fmt:formatNumber value="${contractVO.ledgerAcquisitionCost }" pattern="#,###" />
-                                        </span>
+                                        <span><fmt:formatNumber value="${contractVO.ledgerAcquisitionCost }" pattern="#,###"/></span>
                                     </div>
                                 </div>
                             </div>
@@ -150,11 +147,13 @@
                                                     <h7>총fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractNomalTotalFeePercent }" pattern=".00" />">
+                                                            <input id="txtContractInfoNomalTotalFeePercent" 
+                                                            type="text" placeholder="0" value="<fmt:formatNumber value="${contractVO.contractNomalTotalFeePercent }" pattern=".00"/>">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractNomalTotalFeeSum }" pattern="#,###" />">
+                                                            <input id="txtContractInfoNomalTotalFeeSum" 
+                                                            type="text" placeholder="0" value="<fmt:formatNumber value="${contractVO.contractNomalTotalFeeSum }" pattern="#,###"/>">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -165,11 +164,13 @@
                                                     <h7>AG fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractNomalAgFeePercent }" pattern=".00" />">
+                                                            <input id="txtContractInfoNomalAgFeePercent" 
+                                                             type="text" placeholder="0" value="<fmt:formatNumber value="${contractVO.contractNomalAgFeePercent }" pattern=".00"/>">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractNomalAgFeeSum }" pattern="#,###" />">
+                                                            <input id="txtContractInfoNomalAgFeeSum" 
+                                                             type="text" placeholder="0" value="<fmt:formatNumber value="${contractVO.contractNomalAgFeeSum }" pattern="#,###"/>">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -180,11 +181,13 @@
                                                     <h7>DP fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractNomalDpFeePercent }" pattern="0.00" />">
+                                                            <input id="txtContractInfoNomalDpFeePercent" 
+                                                             type="text" placeholder="0" value="<fmt:formatNumber value="${contractVO.contractNomalDpFeePercent }" pattern="0.00"/>">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractNomalDpFeeSum }" pattern="#,###" />">
+                                                            <input id="txtContractInfoNomalDpFeeSum" 
+                                                             type="text" placeholder="0" value="<fmt:formatNumber value="${contractVO.contractNomalDpFeeSum }" pattern="#,###"/>">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -192,13 +195,14 @@
                                             </div>
                                             <div class="info-row">
                                                 <div>
-                                                    <h7>AG fee</h7>
+                                                    <h7>fee VAT여부</h7>
                                                     <p class="info-result">
-                                                        <select>
-                                                            <option>AG fee</option>
-                                                            <option>AG fee</option>
-                                                        </select>
-                                                    </p>
+														 <select>
+														 	<option disabled selected="selected">선택</option>
+															<option value="N" <c:if test="${contractVO.contractAgFeeSurtaxSupportYn eq 'N' }">selected="selected"</c:if>>미지원</option>
+                                                            <option value="Y" <c:if test="${contractVO.contractAgFeeSurtaxSupportYn eq 'Y' }">selected="selected"</c:if>>지원</option>
+														</select>
+													</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -221,8 +225,9 @@
                                                 <div>
                                                     <h7>총fee</h7>
                                                     <p class="info-result single-input">
-                                                        <span>
-                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractAddTotalFeeSum }" pattern="#,###" />">
+                                                       <span>
+                                                            <input id="txtContractInfoAddTotalFeeSum" 
+                                                             type="text" placeholder="0" value="<fmt:formatNumber value="${contractVO.contractAddTotalFeeSum }" pattern="#,###"/>">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -232,8 +237,9 @@
                                                 <div>
                                                     <h7>AG fee</h7>
                                                     <p class="info-result single-input">
-                                                        <span>
-                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractAddAgFeeSum }" pattern="#,###" />">
+                                                       <span>
+                                                            <input id="txtContractInfoAddAgFeeSum" 
+                                                             type="text" placeholder="0" value="<fmt:formatNumber value="${contractVO.contractAddAgFeeSum }" pattern="#,###"/>">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -241,10 +247,11 @@
                                             </div>
                                             <div class="info-row">
                                                 <div>
-                                                    <h7>AG fee</h7>
+                                                    <h7>DP fee</h7>
                                                     <p class="info-result single-input">
-                                                        <span>
-                                                            <input type="text" placeholder="0" value="<fmt:formatNumber value=" ${contractVO.contractAddDpFeeSum }" pattern="#,###" />">
+                                                       <span>
+                                                            <input id="txtContractInfoAddDpFeeSum" 
+                                                             type="text" placeholder="0" value="<fmt:formatNumber value="${contractVO.contractAddDpFeeSum }" pattern="#,###"/>">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -252,13 +259,14 @@
                                             </div>
                                             <div class="info-row">
                                                 <div>
-                                                    <h7>AG fee</h7>
+                                                    <h7>추가 VAT여부</h7>
                                                     <p class="info-result">
-                                                        <select>
-                                                            <option>AG fee</option>
-                                                            <option>AG fee</option>
-                                                        </select>
-                                                    </p>
+														 <select>
+														 	<option disabled selected="selected">선택</option>
+															<option value="N" <c:if test="${contractVO.contractAddFeeSurtaxSupportYn eq 'N' }">selected="selected"</c:if>>미지원</option>
+                                                            <option value="Y" <c:if test="${contractVO.contractAddFeeSurtaxSupportYn eq 'Y' }">selected="selected"</c:if>>지원</option>
+														</select>
+													</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -281,11 +289,13 @@
                                                     <h7>총fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractInfoTotalSlidingPercent" 
+                                                             type="text" placeholder="0" value="<fmt:formatNumber value="${contractVO.contractTotalSlidingPercent }" pattern="0.00"/>">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractInfoTotalSlidingSum" 
+                                                             type="text" placeholder="0" value="<fmt:formatNumber value="${contractVO.contractTotalSlidingSum }" pattern="#,###"/>">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -296,11 +306,13 @@
                                                     <h7>AG fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractInfoAgSlidingPercent" 
+                                                             type="text" placeholder="0" value="<fmt:formatNumber value="${contractVO.contractAgSlidingPercent }" pattern="0.00"/>">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractInfoAgSlidingSum" 
+                                                             type="text" placeholder="0" value="<fmt:formatNumber value="${contractVO.contractAgSlidingSum }" pattern="#,###"/>">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -308,14 +320,16 @@
                                             </div>
                                             <div class="info-row">
                                                 <div>
-                                                    <h7>AG fee</h7>
+                                                    <h7>DP fee</h7>
                                                     <p class="info-result">
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractInfoDpSlidingPercent" 
+                                                             type="text" placeholder="0" value="<fmt:formatNumber value="${contractVO.contractDpSlidingPercent }" pattern="0.00"/>">
                                                             <strong>%</strong>
                                                         </span>
                                                         <span>
-                                                            <input type="text" placeholder="0">
+                                                            <input id="txtContractInfoDpSlidingSum" 
+                                                             type="text" placeholder="0" value="<fmt:formatNumber value="${contractVO.contractDpSlidingSum }" pattern="#,###"/>">
                                                             <strong>원</strong>
                                                         </span>
                                                     </p>
@@ -323,13 +337,14 @@
                                             </div>
                                             <div class="info-row">
                                                 <div>
-                                                    <h7>AG fee</h7>
+                                                    <h7>슬라이딩 VAT여부</h7>
                                                     <p class="info-result">
-                                                        <select>
-                                                            <option>AG fee</option>
-                                                            <option>AG fee</option>
-                                                        </select>
-                                                    </p>
+														 <select>
+														 	<option disabled selected="selected">선택</option>
+															<option value="N" <c:if test="${contractVO.contractSlidingSurtaxSupportYn eq 'N' }">selected="selected"</c:if>>미지원</option>
+                                                            <option value="Y" <c:if test="${contractVO.contractSlidingSurtaxSupportYn eq 'Y' }">selected="selected"</c:if>>지원</option>
+														</select>
+													</p>
                                                 </div>
                                             </div>
                                         </div>
