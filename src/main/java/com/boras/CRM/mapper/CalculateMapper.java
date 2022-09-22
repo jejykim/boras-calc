@@ -54,6 +54,24 @@ public interface CalculateMapper {
 	 */
 	public CalculateVO selectCalculateForAgAndFilter(CalculateVO calculateVO);
 	
+	/**
+	 * 관리자용 정산목록
+	 * @param CalculateVO
+	 * @return
+	 */
+	public List<CalculateVO> selectCalculateListByAdmin(CalculateVO calculateVO);
 	
+	/**
+	 * 정산 합 조회- 관리자용
+	 * @param CalculateVO
+	 * @return
+	 */
+	public CalculateVO selectCalculateSumByAdmin(CalculateVO calculateVO);
 	
+	/**
+	 * 관리자용 정산상세
+	 * @param CalculateVO
+	 * @return
+	 */
+	public List<CalculateVO> selectCalculateInfoByAdmin(CalculateVO calculateVO);
 }

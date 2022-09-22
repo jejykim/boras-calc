@@ -98,6 +98,24 @@ public class CalculateVO extends PagingVO {
 	private int contractCreateYear;
 	private int contractCreateMonth;
 	private String contractUserId;
+	
+	/* 사용자 */
+	// 아이디
+	private String userId;
+	// 사용자명
+	private String userName;
+	// 사업자 구분 코드
+	private int userBusinessTypeCd;
+	// 사업자 구분 코드명
+	private String userBusinessTypeCdName;
+	
+	/*관리자 화면 표출용*/
+	private BigDecimal calculateAgFeeTotalWithdraw;
+	private BigDecimal calculatePersonalTotalPaySum;
+	private BigDecimal calculatePersonalTotalPaySupply;
+	private BigDecimal calculateBusinessIncomePay;
+	private BigDecimal calculateBusinessIncomePayReport;
+		
 	public String getCalculateUserId() {
 		return calculateUserId;
 	}
@@ -178,7 +196,7 @@ public class CalculateVO extends PagingVO {
 	}
 	public BigDecimal getCalculateFeeSum() {
 		return calculateFeeSum;
-	}
+	}	
 	public void setCalculateFeeSum(BigDecimal calculateFeeSum) {
 		this.calculateFeeSum = calculateFeeSum;
 	}
@@ -469,6 +487,60 @@ public class CalculateVO extends PagingVO {
 	}
 	public void setContractUserId(String contractUserId) {
 		this.contractUserId = contractUserId;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public int getUserBusinessTypeCd() {
+		return userBusinessTypeCd;
+	}
+	public void setUserBusinessTypeCd(int userBusinessTypeCd) {
+		this.userBusinessTypeCd = userBusinessTypeCd;
+	}
+	public String getUserBusinessTypeCdName() {
+		return userBusinessTypeCdName;
+	}
+	public void setUserBusinessTypeCdName(String userBusinessTypeCdName) {
+		this.userBusinessTypeCdName = userBusinessTypeCdName;
+	}
+	public BigDecimal getCalculateAgFeeTotalWithdraw() {
+		return calculateAgFeeTotalWithdraw;
+	}
+	public void setCalculateAgFeeTotalWithdraw(BigDecimal calculateAgFeeTotalWithdraw) {
+		this.calculateAgFeeTotalWithdraw = calculateAgFeeTotalWithdraw;
+	}
+	public BigDecimal getCalculatePersonalTotalPaySum() {
+		return calculatePersonalTotalPaySum;
+	}
+	public void setCalculatePersonalTotalPaySum(BigDecimal calculatePersonalTotalPaySum) {
+		this.calculatePersonalTotalPaySum = calculatePersonalTotalPaySum;
+	}
+	public BigDecimal getCalculatePersonalTotalPaySupply() {
+		return calculatePersonalTotalPaySupply;
+	}
+	public void setCalculatePersonalTotalPaySupply(BigDecimal calculatePersonalTotalPaySupply) {
+		this.calculatePersonalTotalPaySupply = calculatePersonalTotalPaySupply;
+	}
+	public BigDecimal getCalculateBusinessIncomePay() {
+		return calculateBusinessIncomePay;
+	}
+	public void setCalculateBusinessIncomePay(BigDecimal calculateBusinessIncomePay) {
+		this.calculateBusinessIncomePay = calculateBusinessIncomePay;
+	}
+	public BigDecimal getCalculateBusinessIncomePayReport() {
+		return calculateBusinessIncomePayReport;
+	}
+	public void setCalculateBusinessIncomePayReport(BigDecimal calculateBusinessIncomePayReport) {
+		this.calculateBusinessIncomePayReport = calculateBusinessIncomePayReport;
 	}
 	@Override
 	public String toString() {

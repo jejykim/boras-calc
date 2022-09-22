@@ -3,6 +3,7 @@ package com.boras.CRM.controller;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,13 +14,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.boras.CRM.services.CalculateService;
 import com.boras.CRM.services.CodeService;
+import com.boras.CRM.services.ContractService;
 import com.boras.CRM.util.PagingControl;
 import com.boras.CRM.util.PermissionHelper;
 import com.boras.CRM.vo.CalculateVO;
 import com.boras.CRM.vo.CodeVO;
+import com.boras.CRM.vo.ContractVO;
 import com.boras.CRM.vo.PagingVO;
 
 @Controller
@@ -29,6 +33,9 @@ public class CalculateController {
 	
 	@Autowired
 	private CalculateService calculateService;
+	
+	@Autowired
+	private ContractService contractService;
 	
 	@Autowired
 	private CodeService codeService;
@@ -152,98 +159,84 @@ public class CalculateController {
 			calculateVO.setPage((calculateVO.getNowPage()-1)*calculateVO.getPagePerRows());
 		}
 		calculateVO.setCalculateUserId(PermissionHelper.getSessionUserId(req));
-
 		// 현재 년, 월
 		Calendar cal = Calendar.getInstance();
 		int thisYear = cal.get(Calendar.YEAR);
 		int thisMonth = cal.get(Calendar.MONTH) + 1;
 		
-		calculateVO.setCalculateYear(thisYear);
-		calculateVO.setCalculateMonth(thisMonth);
-		CalculateVO CalAgVO = new CalculateVO(); 
+		if(calculateVO.getCalculateYear()==0) {
+			calculateVO.setCalculateYear(thisYear);
+		}
+		if(calculateVO.getCalculateMonth()==0) {
+			calculateVO.setCalculateMonth(thisMonth);
+		}
+		// 등록 년
+		List<Map<String, Object>> yearList = new ArrayList<>();
 		
-		if(calculateVO.getSearchText()==null && calculateVO.getLedgerFinancialCompanyCd()==0 && calculateVO.getLedgerFinancialBranchCd()==0
-				&& calculateVO.getLedgerFinancialProductCd()==0 && calculateVO.getLedgerDealerBrandCd()==0 && calculateVO.getLedgerDealerCompanyCd()==0) {
-			try {
-				CalAgVO = calculateService.selectCalculateForAg(calculateVO);
-			} catch (Exception e) {
-				logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCalculateForAg ]");
-				logger.error(e.getMessage());
-			}
-		}else {
-			try {
-				System.out.println(calculateVO.toString());
-				CalAgVO = calculateService.selectCalculateForAgAndFilter(calculateVO);
-			} catch (Exception e) {
-				logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCalculateForAgAndFilter ]");
-				logger.error(e.getMessage());
-			}
+		try {
+			yearList = contractService.selectContractYear();
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectLedgerYear ]");
+			logger.error(e.getMessage());
+		}
+		
+		CalculateVO calAdminVO = new CalculateVO();
+		
+		try {
+			calAdminVO = calculateService.selectCalculateSumByAdmin(calculateVO);
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCalculateForAg ]");
+			logger.error(e.getMessage());
 		}
 		
 		List<CalculateVO> list = new ArrayList<>();
-		int listCount = 0;
 		
 		try {
-			list = calculateService.selectCalculateList(calculateVO);
+			list = calculateService.selectCalculateListByAdmin(calculateVO);
 		} catch (Exception e) {
 			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCalculateList ]");
 			logger.error(e.getMessage());
 		}
 		
-		try {
-			listCount = calculateService.selectCalculateListCount(calculateVO);
-		}catch (Exception e) {
-			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCalculateListCount ]");
-			logger.error(e.getMessage());
-		}
-		
-		List<CodeVO> financialCompanyCodelist = new ArrayList<>();
-		List<CodeVO> financialProductCodelist = new ArrayList<>();
-		List<CodeVO> dealerBrandCodeList = new ArrayList<>();
-		CodeVO codeVO = new CodeVO();
-		
-		// 금융사
-		codeVO.setCodeParentId(3000);
-		try {
-			financialCompanyCodelist = codeService.selectCodeList(codeVO);
-		}catch (Exception e) {
-			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
-			logger.error(e.getMessage());
-		}
-		
-		
-		// 금융상품
-		codeVO.setCodeParentId(3100);
-		try {
-			financialProductCodelist = codeService.selectCodeList(codeVO);
-		}catch (Exception e) {
-			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
-			logger.error(e.getMessage());
-		}
-		
-		// 딜러사 브랜드
-		codeVO.setCodeParentId(4000);
-		try {
-			dealerBrandCodeList = codeService.selectCodeList(codeVO);
-		}catch (Exception e) {
-			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
-			logger.error(e.getMessage());
-		}
-		
 		PagingControl pc = new PagingControl();
-		PagingVO pagingVO = pc.paging(listCount, calculateVO.getNowPage(), calculateVO.getPagePerRows());
+		PagingVO pagingVO = pc.paging(list.size(), calculateVO.getNowPage(), calculateVO.getPagePerRows());
 		
 		
-		model.addAttribute("calculateVO", CalAgVO);
-		model.addAttribute("calculateVO0", calculateVO);
+		model.addAttribute("calculateVO", calculateVO);
+		model.addAttribute("calAdminVO", calAdminVO);
 		model.addAttribute("list", list);
-		model.addAttribute("listCount", listCount);
+		model.addAttribute("listCount", list.size());
 		
-		model.addAttribute("financialCompanyCodelist", financialCompanyCodelist);
-		model.addAttribute("financialProductCodelist", financialProductCodelist);
-		model.addAttribute("dealerBrandCodeList", dealerBrandCodeList);
+		model.addAttribute("yearList", yearList);
+		model.addAttribute("thisYear", thisYear);
+		model.addAttribute("thisMonth", thisMonth);
 		
 		model.addAttribute("pagingVO", pagingVO);
+		
+		return result;
+	}
+	
+	/*
+	 * 정산상세-관리자용
+	 */
+	@GetMapping(value = "/calculate/info/{calculateSeq}")
+	public String selectCalculateInfo(Model model, HttpServletRequest req, HttpServletResponse resp, @PathVariable("calculateSeq") int calculateSeq) {
+		String result = "calculate/calculate-info";
+		
+		CalculateVO calculateVO = new CalculateVO();
+		calculateVO.setCalculateSeq(calculateSeq);
+		
+		List<CalculateVO> list = new ArrayList<>();
+		
+		try {
+			list = calculateService.selectCalculateInfoByAdmin(calculateVO);
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCalculateInfo ]");
+			logger.error(e.getMessage());
+		}
+		
+		model.addAttribute("calculateVO", calculateVO);
+		model.addAttribute("list", list);
 		
 		return result;
 	}

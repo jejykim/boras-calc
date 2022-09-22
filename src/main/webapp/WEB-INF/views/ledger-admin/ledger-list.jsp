@@ -52,7 +52,7 @@
                             <span>
                                 <select id="selYear">
                                 	<c:forEach var="yearList" items="${yearlist }" varStatus="status">
-                                    	<option value="${yearList }" <c:if test="${monthList eq ledgerVO.ledgerCreateYear}">selected="selected"</c:if>>${yearList } 년</option>
+                                    	<option value="${yearList }" <c:if test="${yearlist eq ledgerVO.ledgerCreateYear}">selected="selected"</c:if>>${yearList } 년</option>
                                 	</c:forEach>
                                 	<c:if test="${empty yearlist }">
                                 		<option value="${thisYear }">${thisYear } 년</option>

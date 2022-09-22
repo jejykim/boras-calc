@@ -73,7 +73,7 @@ public class ContractController {
 		try {
 			yearList = contractService.selectContractYear();
 		} catch (Exception e) {
-			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectLedgerYear ]");
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectContractYear ]");
 			logger.error(e.getMessage());
 		}
 		
@@ -149,7 +149,7 @@ public class ContractController {
 		try {
 			contractVO = contractService.selectContractInfo(contractVO);
 		} catch (Exception e) {
-			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectLedgerYear ]");
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectContractInfo ]");
 			logger.error(e.getMessage());
 		}
 		

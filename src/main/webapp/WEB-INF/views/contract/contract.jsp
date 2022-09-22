@@ -43,7 +43,7 @@
                         <div class="header-title">
                             <h3>계출</h3>
                             <span>
-                                <select id="selYear">
+                                <select id="selYear" disabled="disabled" style="appearance: none;">
                                 	<c:forEach var="yearList" items="${yearlist }" varStatus="status">
                                     	<option value="${yearList }">${yearList } 년</option>
                                 	</c:forEach>
@@ -51,7 +51,7 @@
                                 		<option value="${thisYear }">${thisYear } 년</option>
                                 	</c:if>
                                 </select>
-                                <select id="selMonth">
+                                <select id="selMonth" disabled="disabled" style="appearance: none;">
                                 	<c:forEach var="monthList" begin="1" end="12" step="1" varStatus="status">
                                     	<option value="${monthList }" <c:if test="${monthList eq contractVO.contractCreateMonth}">selected="selected"</c:if>>${monthList } 월</option>
                                 	</c:forEach>

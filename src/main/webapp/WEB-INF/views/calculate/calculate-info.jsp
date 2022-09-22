@@ -60,43 +60,49 @@
                     </div>
                     <div class="main-body">
                         <div class="board-info">
-                            <div class="board-nav">
-                                <div class="board-info-haed">
-                                    <h5><span>디피</span>-<span>신철수</span></h5>
-                                    <span class="badge-text-business">사업자</span>
-                                    <span class="badge-text-person" style="display: none;">개인</span>
+                            <div class="board-info-haed">
+                                <h5 class="list-info">
+                                    <ul>
+                                        <li>디피</li>
+                                        <li>신철수</li>
+                                    </ul>
+                                </h5>
+                                <span class="badge-text-business">사업자</span>
+                                <span class="badge-text-person">개인</span>
+                            </div>
+                            <div class="board-info-nav">
+                                <div class="total">
+                                    <i class="ico-coin"></i>
+                                    <span class="num"><strong>71,000,000</strong></span>
+                                    <span class="text">AG fee 총 차액</span>
                                 </div>
-                                <div class="board-info-result th">
-                                    <div>
-                                        <span><i class="ico-b-krw"></i><strong>71,000,000</strong></span>
-                                        <span class="tag badge-p">AG fee 총 차액</span>
-                                    </div>
-                                    <div>
-                                        <span><i class="ico-b-krw"></i><strong>71,000,000</strong></span>
-                                        <span class="tag badge-b">원장 fee 총 입금</span>
-                                    </div>
-                                    <div>
-                                        <span><i class="ico-b-krw"></i><strong>71,000,000</strong></span>
-                                        <span class="tag badge-o">AG fee 총(+) 출금</span>
-                                    </div>
+                                <div>
+                                    <i class="ico-deposit"></i>
+                                    <span class="num"><strong>71,000,000</strong></span>
+                                    <span class="text">원장 fee 총 입금</span>
+                                </div>
+                                <div>
+                                    <i class="ico-withdrawal"></i>
+                                    <span class="num"><strong>71,000,000</strong></span>
+                                    <span class="text">AG fee 총&#40;+&#41; 출금</span>
                                 </div>
                             </div>
-                            <div class="board-nav price-box">
+                            <div class="board-info-nav2">
                                 <div>
-                                    <span class="title"><i class="i-badge"></i>개인총 지급 합계</span>
-                                    <span><i class="ico-b-krw"></i><strong>71,000,000</strong></span>
+                                    <h8>개인 총 지급합계</h8>
+                                    <span><i class="ico-b-krw"></i><strong>100,000,000</strong></span>
                                 </div>
                                 <div>
-                                    <span class="title"><i class="i-badge"></i>개인총 지급 공급</span>
-                                    <span><i class="ico-b-krw"></i><strong>71,000,000</strong></span>
+                                    <h8>개인 총 지급공급</h8>
+                                    <span><i class="ico-b-krw"></i><strong>100,000,000</strong></span>
                                 </div>
                                 <div>
-                                    <span class="title"><i class="i-badge"></i>사업소득 신고액</span>
-                                    <span><i class="ico-b-krw"></i><strong>71,000,000</strong></span>
+                                    <h8>사업소득 신고액</h8>
+                                    <span><i class="ico-b-krw"></i><strong>100,000,000</strong></span>
                                 </div>
                                 <div>
-                                    <span class="title"><i class="i-badge"></i>사업소득 지급액</span>
-                                    <span><i class="ico-b-krw"></i><strong>71,000,000</strong></span>
+                                    <h8>사업 소득 지급액</h8>
+                                    <span><i class="ico-b-krw"></i><strong>100,000,000</strong></span>
                                 </div>
                             </div>
                         </div>
@@ -112,13 +118,13 @@
                                 </div>
                             </div>
                             <div class="portlet-body">
-                                <div class="table fix-table">
+                                <div class="table">
                                     <table class="n-hover">
                                         <colgroup>
                                         </colgroup>
                                         <thead>
                                             <tr>
-                                                <th>총합계</th>
+                                                <th>총 합계</th>
                                                 <th>계산서 발급</th>
                                                 <th>개인지급</th>
                                                 <th>개인지급 공급가</th>

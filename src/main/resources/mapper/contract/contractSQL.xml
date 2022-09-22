@@ -187,15 +187,15 @@
   	<select id="selectContractListForCalculate" parameterType="contractVO" resultType="contractVO">
   		SELECT
   			contract_user_id
-  			,sum(contract_nomal_total_fee_sum) as calculate_ag_fee_sum <!-- ag -->
+  			,sum(contract_nomal_ag_fee_sum) as calculate_ag_fee_sum <!-- ag -->
 			,sum(contract_ag_sliding_sum) as calculate_sliding_sum <!-- 프로모션2 -->
 			,sum(contract_add_ag_fee_sum) as calculate_add_fee_sum <!-- 프로모션1 -->
-			,(sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)) /1.1 as calculate_supply_sum <!-- 공급가 -->
-			,(sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum))
-			 - ((sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)) /1.1)as calculate_surtax_sum <!-- 부가세 -->
-			,sum(contract_nomal_total_fee_sum) as calculate_personal_ag_sum <!-- 개인 -->
-			,sum(contract_nomal_total_fee_sum) as calculate_business_sum  <!-- 사업자 -->
-			,sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)  as calculate_total_sum <!-- 총합계 --> 
+			,(sum(contract_nomal_ag_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)) /1.1 as calculate_supply_sum <!-- 공급가 -->
+			,(sum(contract_nomal_ag_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum))
+			 - ((sum(contract_nomal_ag_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)) /1.1)as calculate_surtax_sum <!-- 부가세 -->
+			,sum(contract_nomal_ag_fee_sum) as calculate_personal_ag_sum <!-- 개인 -->
+			,sum(contract_nomal_ag_fee_sum) as calculate_business_sum  <!-- 사업자 -->
+			,sum(contract_nomal_ag_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)  as calculate_total_sum <!-- 총합계 --> 
   		FROM contract 
   		WHERE contract_create_year = #{contractCreateYear} 
   			AND contract_create_month = #{contractCreateMonth}
@@ -223,15 +223,15 @@
 			contract_user_id
 			,extract('YEAR' from now()::timestamp)
 			,extract('MONTH' from now()::timestamp)
-			,sum(contract_nomal_total_fee_sum) as calculate_ag_fee_sum <!-- ag -->
+			,sum(contract_nomal_ag_fee_sum) as calculate_ag_fee_sum <!-- ag -->
 			,sum(contract_ag_sliding_sum) as calculate_sliding_sum <!-- 프로모션2 -->
 			,sum(contract_add_ag_fee_sum) as calculate_add_fee_sum <!-- 프로모션1 -->
-			,(sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)) /1.1 as calculate_supply_sum <!-- 공급가 -->
-			,(sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum))
-			 - ((sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)) /1.1)as calculate_surtax_sum <!-- 부가세 -->
-			,(sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum))/1.1*0.967 as calculate_personal_ag_sum <!-- 개인 -->
-			,sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum) as calculate_business_sum  <!-- 사업자 -->
-			,sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)  as calculate_total_sum <!-- 총합계 -->
+			,(sum(contract_nomal_ag_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)) /1.1 as calculate_supply_sum <!-- 공급가 -->
+			,(sum(contract_nomal_ag_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum))
+			 - ((sum(contract_nomal_ag_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)) /1.1)as calculate_surtax_sum <!-- 부가세 -->
+			,(sum(contract_nomal_ag_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum))/1.1*0.967 as calculate_personal_ag_sum <!-- 개인 -->
+			,sum(contract_nomal_ag_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum) as calculate_business_sum  <!-- 사업자 -->
+			,sum(contract_nomal_ag_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)  as calculate_total_sum <!-- 총합계 -->
 			,now()
 			,concat(contract_user_id,extract('YEAR' from now()::timestamp),extract('MONTH' from now()::timestamp))
 		FROM contract 
@@ -241,15 +241,15 @@
 			group by contract_user_id
 		ON CONFLICT (calculate_unique_key) 
 		DO UPDATE 
-		SET calculate_ag_fee_sum = (select sum(contract_nomal_total_fee_sum) from contract WHERE contract_create_year = #{contractCreateYear} AND contract_create_month = #{contractCreateMonth} AND excluded.calculate_user_id=contract_user_id)
+		SET calculate_ag_fee_sum = (select sum(contract_nomal_ag_fee_sum) from contract WHERE contract_create_year = #{contractCreateYear} AND contract_create_month = #{contractCreateMonth} AND excluded.calculate_user_id=contract_user_id)
   			,calculate_sliding_sum = (select sum(contract_ag_sliding_sum) from contract WHERE contract_create_year = #{contractCreateYear} AND contract_create_month = #{contractCreateMonth} AND excluded.calculate_user_id=contract_user_id)
   			,calculate_add_fee_sum = (select sum(contract_add_ag_fee_sum) from contract WHERE contract_create_year = #{contractCreateYear} AND contract_create_month = #{contractCreateMonth} AND excluded.calculate_user_id=contract_user_id)
-  			,calculate_supply_sum = (select (sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)) /1.1 from contract WHERE contract_create_year = #{contractCreateYear} AND contract_create_month = #{contractCreateMonth} AND excluded.calculate_user_id=contract_user_id)
-  			,calculate_surtax_sum = (select (sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum))
-			 - ((sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)) /1.1) from contract WHERE contract_create_year = #{contractCreateYear} AND contract_create_month = #{contractCreateMonth} AND excluded.calculate_user_id=contract_user_id)
-			,calculate_personal_ag_sum = (select (sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum))/1.1*0.967 from contract WHERE contract_create_year = #{contractCreateYear} AND contract_create_month = #{contractCreateMonth} AND excluded.calculate_user_id=contract_user_id)
-			,calculate_business_sum = (select sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum) from contract WHERE contract_create_year = #{contractCreateYear} AND contract_create_month = #{contractCreateMonth} AND excluded.calculate_user_id=contract_user_id)
-			,calculate_total_sum = (select sum(contract_nomal_total_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum) from contract WHERE contract_create_year = #{contractCreateYear} AND contract_create_month = #{contractCreateMonth} AND excluded.calculate_user_id=contract_user_id)
+  			,calculate_supply_sum = (select (sum(contract_nomal_ag_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)) /1.1 from contract WHERE contract_create_year = #{contractCreateYear} AND contract_create_month = #{contractCreateMonth} AND excluded.calculate_user_id=contract_user_id)
+  			,calculate_surtax_sum = (select (sum(contract_nomal_ag_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum))
+			 - ((sum(contract_nomal_ag_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum)) /1.1) from contract WHERE contract_create_year = #{contractCreateYear} AND contract_create_month = #{contractCreateMonth} AND excluded.calculate_user_id=contract_user_id)
+			,calculate_personal_ag_sum = (select (sum(contract_nomal_ag_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum))/1.1*0.967 from contract WHERE contract_create_year = #{contractCreateYear} AND contract_create_month = #{contractCreateMonth} AND excluded.calculate_user_id=contract_user_id)
+			,calculate_business_sum = (select sum(contract_nomal_ag_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum) from contract WHERE contract_create_year = #{contractCreateYear} AND contract_create_month = #{contractCreateMonth} AND excluded.calculate_user_id=contract_user_id)
+			,calculate_total_sum = (select sum(contract_nomal_ag_fee_sum)+sum(contract_ag_sliding_sum)+sum(contract_add_ag_fee_sum) from contract WHERE contract_create_year = #{contractCreateYear} AND contract_create_month = #{contractCreateMonth} AND excluded.calculate_user_id=contract_user_id)
 			,calculate_create_date=now()
 		
   	</insert>
