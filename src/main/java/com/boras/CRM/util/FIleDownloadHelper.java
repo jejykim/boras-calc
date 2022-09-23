@@ -25,6 +25,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.servlet.view.AbstractView;
 
+import com.boras.CRM.vo.CalculateVO;
+
 public class FIleDownloadHelper extends AbstractView {
 
 	@Override
@@ -83,8 +85,7 @@ public class FIleDownloadHelper extends AbstractView {
 	
 	// excelDownForFinancialSupport(financialSupportList, "재정지원사업 선정현황_"+title, orgehService, resp, req);
 	// 샘플 엑셀 다운로드
-	/*
-	protected void excelDownForFinancialSupport(List<FinancialSupportVO> list, String title, OrgehService orgehService, HttpServletResponse response, HttpServletRequest request)  {
+	protected void excelDownForAgCalculate(List<CalculateVO> list,CalculateVO calAgVO, String title, HttpServletResponse response, HttpServletRequest request)  {
 		// 워크북 생성
 		Workbook wb = new XSSFWorkbook();
 	    Sheet sheet = wb.createSheet(title);
@@ -120,65 +121,208 @@ public class FIleDownloadHelper extends AbstractView {
 	    row = sheet.createRow(0);
 	    cell = row.createCell(cntCell);
 	    cell.setCellStyle(headStyle);
-	    cell.setCellValue("연도");
+	    cell.setCellValue("기타사항");
 	    cntCell++;
 	    cell = row.createCell(cntCell);
 	    cell.setCellStyle(headStyle);
-	    cell.setCellValue("사업명");
+	    cell.setCellValue("금융사");
 	    cntCell++;
 	    cell = row.createCell(cntCell);
 	    cell.setCellStyle(headStyle);
-	    cell.setCellValue("사업기간");
+	    cell.setCellValue("금융지점");
 	    cntCell++;
 	    cell = row.createCell(cntCell);
 	    cell.setCellStyle(headStyle);
-	    cell.setCellValue("주관기간");
+	    cell.setCellValue("금융상품");
 	    cntCell++;
 	    cell = row.createCell(cntCell);
 	    cell.setCellStyle(headStyle);
-	    cell.setCellValue("주관부서");
+	    cell.setCellValue("인도일");
 	    cntCell++;
 	    cell = row.createCell(cntCell);
 	    cell.setCellStyle(headStyle);
-	    cell.setCellValue("사업금액(천원)");
+	    cell.setCellValue("고객명");
 	    cntCell++;
-	    
+	    cell = row.createCell(cntCell);
+	    cell.setCellStyle(headStyle);
+	    cell.setCellValue("차량명");
+	    cntCell++;
+	    cell = row.createCell(cntCell);
+	    cell.setCellStyle(headStyle);
+	    cell.setCellValue("차량번호");
+	    cntCell++;
+	    cell = row.createCell(cntCell);
+	    cell.setCellStyle(headStyle);
+	    cell.setCellValue("차량가");
+	    cntCell++;
+	    cell = row.createCell(cntCell);
+	    cell.setCellStyle(headStyle);
+	    cell.setCellValue("취득원가");
+	    cntCell++;
+	    cell = row.createCell(cntCell);
+	    cell.setCellStyle(headStyle);
+	    cell.setCellValue("cm 수수료-%");
+	    cntCell++;
+	    cell = row.createCell(cntCell);
+	    cell.setCellStyle(headStyle);
+	    cell.setCellValue("cm 수수료-금액");
+	    cntCell++;
+	    cell = row.createCell(cntCell);
+	    cell.setCellStyle(headStyle);
+	    cell.setCellValue("ag 수수료-%");
+	    cntCell++;
+	    cell = row.createCell(cntCell);
+	    cell.setCellStyle(headStyle);
+	    cell.setCellValue("ag 수수료-금액");
+	    cntCell++;
+	    cell = row.createCell(cntCell);
+	    cell.setCellStyle(headStyle);
+	    cell.setCellValue("프로모션 수수료");
+	    cntCell++;
 	    cntCell = 0;
 	    
 	    // 바디 생성
 	    int cntRow = 1;
 	    
-	    for(FinancialSupportVO vo : list) {
+	    for(CalculateVO vo : list) {
 	    	row = sheet.createRow(cntRow);
 	    	cell = row.createCell(cntCell);
 		    cell.setCellStyle(bodyStyle);
-		    cell.setCellValue(vo.getSearchYear());
+		    cell.setCellValue(vo.getLedgerOther());
 		    cntCell++;
 		    cell = row.createCell(cntCell);
 		    cell.setCellStyle(bodyStyle);
-		    cell.setCellValue(vo.getTitle());
+		    cell.setCellValue(vo.getLedgerFinancialCompanyCdName());
 		    cntCell++;
 		    cell = row.createCell(cntCell);
 		    cell.setCellStyle(bodyStyle);
-		    cell.setCellValue(vo.getStartDate() + " ~ " +vo.getEndDate());
+		    cell.setCellValue(vo.getLedgerFinancialBranchCdName());
 		    cntCell++;
 		    cell = row.createCell(cntCell);
 		    cell.setCellStyle(bodyStyle);
-		    cell.setCellValue(vo.getInstitutionName());
+		    cell.setCellValue(vo.getLedgerFinancialProductCdName());
 		    cntCell++;
 		    cell = row.createCell(cntCell);
 		    cell.setCellStyle(bodyStyle);
-		    cell.setCellValue(new DeptHepler().getKpiDeptName(orgehService, vo.getDepartment()));
+		    cell.setCellValue(vo.getLedgerDeliveryDate());
 		    cntCell++;
 		    cell = row.createCell(cntCell);
 		    cell.setCellStyle(bodyStyle);
-		    cell.setCellValue(vo.getPrice());
+		    cell.setCellValue(vo.getLedgerCustomerName());
 		    cntCell++;
+		    cell = row.createCell(cntCell);
+		    cell.setCellStyle(bodyStyle);
+		    cell.setCellValue(vo.getLedgerCarName());
+		    cntCell++;
+		    cell = row.createCell(cntCell);
+		    cell.setCellStyle(bodyStyle);
+		    cell.setCellValue(vo.getLedgerCarNumber());
+		    cntCell++;
+		    cell = row.createCell(cntCell);
+		    cell.setCellStyle(bodyStyle);
+		    if(vo.getLedgerCarPrice()==null) {
+		    	cell.setCellValue(0);
+		    }else {
+		    	cell.setCellValue(vo.getLedgerCarPrice().doubleValue());
+		    }
+		    cntCell++;
+		    cell = row.createCell(cntCell);
+		    cell.setCellStyle(bodyStyle);
+		    if(vo.getLedgerAcquisitionCost()==null) {
+		    	cell.setCellValue(0);
+		    }else {
+		    	cell.setCellValue(vo.getLedgerAcquisitionCost().doubleValue());
+		    }
+		    cntCell++;
+		    cell = row.createCell(cntCell);
+		    cell.setCellStyle(bodyStyle);
+		    cell.setCellValue(vo.getContractNomalAgFeePercent());
+		    cntCell++;
+		    cell = row.createCell(cntCell);
+		    cell.setCellStyle(bodyStyle);
+		    if(vo.getContractNomalAgFeeSum()==null) {
+		    	cell.setCellValue(0);
+		    }else {
+		    	cell.setCellValue(vo.getContractNomalAgFeeSum().doubleValue());
+		    }
+		    cntCell++;
+		    cell = row.createCell(cntCell);
+		    cell.setCellStyle(bodyStyle);
+		    cell.setCellValue(vo.getContractNomalAgFeePercent());
+		    cntCell++;
+		    cell = row.createCell(cntCell);
+		    cell.setCellStyle(bodyStyle);
+		    if(vo.getContractNomalAgFeeSum()==null) {
+		    	cell.setCellValue(0);
+		    }else {
+		    	cell.setCellValue(vo.getContractNomalAgFeeSum().doubleValue());
+		    }
+		    cntCell++;
+		    cell = row.createCell(cntCell);
+		    cell.setCellStyle(bodyStyle);
 		    
+		    if(vo.getContractAgSlidingSum()!=null && vo.getContractAddAgFeeSum()!=null ) {
+		    	cell.setCellValue(vo.getContractAgSlidingSum().doubleValue()+vo.getContractAddAgFeeSum().doubleValue());
+		    }else {
+		    	if(vo.getContractAgSlidingSum()==null) {
+		    		if(vo.getContractAddAgFeeSum()==null) {
+		    			cell.setCellValue(0);
+		    		}else {
+		    			cell.setCellValue(vo.getContractAddAgFeeSum().doubleValue());
+		    		}
+		    	}else {
+		    		 if(vo.getContractAddAgFeeSum()==null) {
+			    		cell.setCellValue(0);
+		    		 }else {
+		    			 cell.setCellValue(vo.getContractAgSlidingSum().doubleValue());
+		    		 }
+		    	}
+		    }
+		    cntCell++;
 		    cntRow++;
 		    
 		    cntCell = 0;
 	    }
+	    
+	    
+	    // 헤더 생성
+	    int cntCell2 = 0;
+	    row = sheet.createRow(list.size()+3);
+	    cell = row.createCell(cntCell2);
+	    cell.setCellStyle(headStyle);
+	    cell.setCellValue("공급가액");
+	    cntCell2++;
+	    cell = row.createCell(cntCell2);
+	    cell.setCellStyle(headStyle);
+	    cell.setCellValue("부가세액");
+	    cntCell2++;
+	    cell = row.createCell(cntCell2);
+	    cell.setCellStyle(headStyle);
+	    cell.setCellValue("합계금액");
+	    cntCell2++;
+	    cell = row.createCell(cntCell2);
+	    cell.setCellStyle(headStyle);
+	    cell.setCellValue("개인AG");
+	    cntCell2++;
+	    
+	    
+	    // 바디 생성
+	    int cntRow2 = list.size()+4;
+	    int cntCell3 = 0;
+	    
+	    row = sheet.createRow(cntRow2);
+	    cell = row.createCell(cntCell3);
+	    cell.setCellValue(calAgVO.getCalculateSupplySum().doubleValue());
+	    cntCell3++;
+	    cell = row.createCell(cntCell3);
+	    cell.setCellValue(calAgVO.getCalculateSurtaxSum().doubleValue());
+	    cntCell3++;
+	    cell = row.createCell(cntCell3);
+	    cell.setCellValue(calAgVO.getCalculateTotalSum().doubleValue());
+	    cntCell3++;
+	    cell = row.createCell(cntCell3);
+	    cell.setCellValue(calAgVO.getCalculatePersonalAgSum().doubleValue());
+	    cntCell3++;
     	
 		String userAgent = request.getHeader("User-Agent");
 		String fileName = title + ".xlsx";
@@ -219,5 +363,4 @@ public class FIleDownloadHelper extends AbstractView {
 			logger.error(e.getMessage());
 		}
 	}
-	*/
 }

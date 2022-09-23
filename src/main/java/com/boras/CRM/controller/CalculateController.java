@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.boras.CRM.services.CalculateService;
 import com.boras.CRM.services.CodeService;
 import com.boras.CRM.services.ContractService;
+import com.boras.CRM.util.FIleDownloadHelper;
 import com.boras.CRM.util.PagingControl;
 import com.boras.CRM.util.PermissionHelper;
 import com.boras.CRM.vo.CalculateVO;
@@ -27,7 +28,7 @@ import com.boras.CRM.vo.ContractVO;
 import com.boras.CRM.vo.PagingVO;
 
 @Controller
-public class CalculateController {
+public class CalculateController extends FIleDownloadHelper{
 
 	private static final Logger logger = LoggerFactory.getLogger(CalculateController.class);
 	
@@ -153,7 +154,7 @@ public class CalculateController {
 	 */
 	@GetMapping(value = "admin/calc/list")
 	public String adminCalculateList(Model model, HttpServletRequest req, HttpServletResponse resp, CalculateVO calculateVO) {
-		String result = "calculate/calculate-admin";
+		String result = "calculate-admin/calculate-admin";
 		
 		if(calculateVO.getNowPage() != 1) {
 			calculateVO.setPage((calculateVO.getNowPage()-1)*calculateVO.getPagePerRows());
@@ -221,7 +222,7 @@ public class CalculateController {
 	 */
 	@GetMapping(value = "/calculate/info/{calculateSeq}")
 	public String selectCalculateInfo(Model model, HttpServletRequest req, HttpServletResponse resp, @PathVariable("calculateSeq") int calculateSeq, CalculateVO calculateVO) {
-		String result = "calculate/calculate-info";
+		String result = "calculate-admin/calculate-info";
 		
 		calculateVO.setCalculateSeq(calculateSeq);
 		
@@ -264,5 +265,45 @@ public class CalculateController {
 		model.addAttribute("financialList", financialList);
 		
 		return result;
+	}
+	
+	/*
+	 * 정산상세-관리자용
+	 */
+	@GetMapping(value = "/calculate/info/excel/download/{calculateUserId}")
+	public void excelDownload(Model model, HttpServletRequest req, HttpServletResponse resp, @PathVariable("calculateUserId") String calculateUserId) {
+		
+		CalculateVO calculateVO = new CalculateVO();
+		calculateVO.setCalculateUserId(calculateUserId);
+		
+		// 현재 년, 월
+		Calendar cal = Calendar.getInstance();
+		int thisYear = cal.get(Calendar.YEAR);
+		int thisMonth = cal.get(Calendar.MONTH) + 1;
+		
+		calculateVO.setCalculateYear(thisYear);
+		calculateVO.setCalculateMonth(thisMonth);
+		
+		calculateVO.setPagePerRows(9999);
+		calculateVO.setPage(1);
+		
+		List<CalculateVO> list = new ArrayList<>();
+		try {
+			list = calculateService.selectCalculateList(calculateVO);
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCalculateList ]");
+			logger.error(e.getMessage());
+		}
+		
+		CalculateVO calAgVO = new CalculateVO();
+		try {
+			calAgVO = calculateService.selectCalculateForAg(calculateVO);
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCalculateList ]");
+			logger.error(e.getMessage());
+		}
+		
+		excelDownForAgCalculate(list, calAgVO, "AG정산", resp, req);
+		
 	}
 }

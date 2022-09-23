@@ -56,6 +56,11 @@
   		,ledger_acquisition_cost
   		,ledger_delivery_date
 		,(c.contract_add_ag_fee_sum+c.contract_ag_sliding_sum+c.contract_nomal_ag_fee_sum) as calculateFeeSum
+		,c.contract_nomal_ag_fee_percent
+		,c.contract_nomal_ag_fee_sum
+		,c.contract_add_ag_fee_sum
+		,c.contract_ag_sliding_percent
+		,c.contract_ag_sliding_sum
 		FROM contract c
   		LEFT JOIN ledger l
   		ON c.contract_ledger_seq=l.ledger_seq

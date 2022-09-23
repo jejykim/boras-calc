@@ -50,7 +50,7 @@
                         </div>
                         <div class="header-sub">
                             <div class="btn">
-                                <button class="btn-su">엑셀다운로드</button>
+                                <button class="btn-su" onclick="location.href='/calculate/info/excel/download/${calculateVO.calculateUserId }'">엑셀다운로드</button>
                             </div>
                         </div>
                     </div>
