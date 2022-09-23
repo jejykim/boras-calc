@@ -294,8 +294,10 @@ Common.reloadNewInquiry = function () {
 					if(list.length > 0) {
 						$(".badge-alarm").html(list.length);
 						$(".badge-alarm").show();
+						$(".alarm").attr("onclick", "location.href='/tts/inquiry/list?inquiryTeb=notRead'");
 					}else {
 						$(".badge-alarm").hide();
+						$(".alarm").attr("onclick", "location.href='/tts/inquiry/list'");
 					}
 				}else {
 					console.log(json.resultMsg);

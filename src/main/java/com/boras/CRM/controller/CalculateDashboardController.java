@@ -43,7 +43,7 @@ public class CalculateDashboardController {
 	 */
 	@GetMapping(value = "/calc/dashboard")
 	public String calcDashboard(Model model, HttpServletRequest req, HttpServletResponse resp, CalculateFinanicalCompanyVO calculateFinanicalCompanyVO) {
-		String result = "calculate/dashboard";
+		String result = "calculate-admin/dashboard";
 		
 		// 현재 년, 월
 		Calendar cal = Calendar.getInstance();
@@ -96,7 +96,7 @@ public class CalculateDashboardController {
 			, @PathVariable("financialCompanyCd") int financialCompanyCd
 			, @PathVariable("year") int year
 			, @PathVariable("month") int month) {
-		String result = "calculate/dashboard-info";
+		String result = "calculate-admin/dashboard-info";
 		
 		contractVO.setLedgerFinancialCompanyCd(financialCompanyCd);
 		contractVO.setContractCreateYear(year);

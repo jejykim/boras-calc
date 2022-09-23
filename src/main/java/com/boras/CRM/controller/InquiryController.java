@@ -45,6 +45,24 @@ public class InquiryController {
 	private CodeService codeService;
 	
 	/*
+	 * 문의 내역 브릿지
+	 */
+	@GetMapping(value = "/tts/inquiry/list")
+	public String ttsInquiryList(Model model, HttpServletRequest req, HttpServletResponse resp, InquiryVO inquiryVO, RedirectAttributes ra) {
+		String result = "redirect:/ag/inquiry/list";
+		
+		if(PermissionHelper.isAdmin(req)) {
+			result = "redirect:/admin/inquiry/list";
+		}else {
+			result = "redirect:/ag/inquiry/list";
+		}
+		
+		ra.addAttribute("inquiryTeb", inquiryVO.getInquiryTeb());
+		
+		return result;
+	}
+	
+	/*
 	 * AG 문의 내역 페이지
 	 */
 	@GetMapping(value = "/ag/inquiry/list")

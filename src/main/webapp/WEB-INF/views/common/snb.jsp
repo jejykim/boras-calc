@@ -51,11 +51,11 @@
                 <div class="submenu">
                     <ul>
                     	<% if(PermissionHelper.isAdmin(request)) { %>
-                        <li <%=uri.contains("/calculate/dashboard") ? "class='on'" : "" %>><a href="/calc/dashboard"><i class="fa fa-television" aria-hidden="true"></i><span>정산 대시보드</span></a></li>
+                        <li <%=uri.contains("/calculate-admin/dashboard") ? "class='on'" : "" %>><a href="/calc/dashboard"><i class="fa fa-television" aria-hidden="true"></i><span>정산 대시보드</span></a></li>
                         <% } %>
                         <li title="AG" <%=uri.contains("/calculate/calculate") ? "class='on'" : "" %>><a href="/ag/calc/list"><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록</span></a></li>
                         <% if(PermissionHelper.isAdmin(request)) { %>
-                        <li title="관리자" <%=uri.contains("/calculate/calculate-admin") ? "class='on'" : "" %>><a href="/admin/calc/list"><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록<span class="badge-manager">관리자</span></span></a></li>
+                        <li title="관리자" <%=uri.contains("/calculate-admin/calculate") ? "class='on'" : "" %>><a href="/admin/calc/list"><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록<span class="badge-manager">관리자</span></span></a></li>
                         <% } %>
                     </ul>
                 </div>
