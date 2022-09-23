@@ -42,121 +42,129 @@
                 <div class="wrapper">
                     <div class="main-header">
                         <div class="header-title">
-                            <h3>정산 상세 - 관리자용</h3>
+                            <h3>정산목록 - 관리자용</h3>
                             <span>
-                                <select>
-                                    <option>2022 년</option>
+                                <select id="selYear">
+                                	<c:forEach var="yearList" items="${yearlist }" varStatus="status">
+                                    	<option value="${yearList }" <c:if test="${yearlist eq calculateVO.calculateYear}">selected="selected"</c:if>>${yearList } 년</option>
+                                	</c:forEach>
+                                	<c:if test="${empty yearlist }">
+                                		<option value="${thisYear }">${thisYear } 년</option>
+                                	</c:if>
                                 </select>
-                                <select>
-                                    <option>08 월</option>
+                                <select id="selMonth">
+                                	<c:forEach var="monthList" begin="1" end="12" step="1" varStatus="status">
+                                    	<option value="${monthList }" <c:if test="${monthList eq calculateVO.calculateMonth }">selected="selected"</c:if>>${monthList } 월</option>
+                                	</c:forEach>
                                 </select>
                             </span>
                         </div>
-                        <div class="header-sub">
+                        <div class="header-sub" style="display:none">
                             <div class="btn">
                                 <button class="btn-su">엑셀다운로드</button>
                             </div>
                         </div>
                     </div>
                     <div class="main-body">
-                        <div class="board-info">
-                            <div class="board-nav">
-                                <div class="board-info-haed">
-                                    <h5><span>디피</span>-<span>신철수</span></h5>
-                                    <span class="badge-text-business">사업자</span>
-                                    <span class="badge-text-person" style="display: none;">개인</span>
-                                </div>
-                                <div class="board-info-result th">
-                                    <div>
-                                        <span><i class="ico-b-krw"></i><strong>71,000,000</strong></span>
-                                        <span class="tag badge-p">AG fee 총 차액</span>
-                                    </div>
-                                    <div>
-                                        <span><i class="ico-b-krw"></i><strong>71,000,000</strong></span>
-                                        <span class="tag badge-b">원장 fee 총 입금</span>
-                                    </div>
-                                    <div>
-                                        <span><i class="ico-b-krw"></i><strong>71,000,000</strong></span>
-                                        <span class="tag badge-o">AG fee 총(+) 출금</span>
-                                    </div>
-                                </div>
+                        <div class="row f-box list">
+                            <div class="portlet">
+                                <h5><i class="ico-f1"></i><span>AG fee 총 차액</span></h5>
+                                <span class="price"><fmt:formatNumber value="${calAdminVO.calculateAgFeeTotalDifference}" pattern="#,###"/></span>
                             </div>
-                            <div class="board-nav price-box">
-                                <div>
-                                    <span class="title"><i class="i-badge"></i>개인총 지급 합계</span>
-                                    <span><i class="ico-b-krw"></i><strong>71,000,000</strong></span>
-                                </div>
-                                <div>
-                                    <span class="title"><i class="i-badge"></i>개인총 지급 공급</span>
-                                    <span><i class="ico-b-krw"></i><strong>71,000,000</strong></span>
-                                </div>
-                                <div>
-                                    <span class="title"><i class="i-badge"></i>사업소득 신고액</span>
-                                    <span><i class="ico-b-krw"></i><strong>71,000,000</strong></span>
-                                </div>
-                                <div>
-                                    <span class="title"><i class="i-badge"></i>사업소득 지급액</span>
-                                    <span><i class="ico-b-krw"></i><strong>71,000,000</strong></span>
-                                </div>
+                            <div class="portlet">
+                                <h5><i class="ico-f2"></i><span>원장 fee 총 입금</span></h5>
+                                <span class="price"><fmt:formatNumber value="${calAdminVO.calculateAgFeeTotalDeposit}" pattern="#,###"/></span>
+                            </div>
+                            <div class="portlet">
+                                <h5><i class="ico-f3"></i><span>AG fee 총&#40;+&#41; 출금</span></h5>
+                                <span class="price"><fmt:formatNumber value="${calAdminVO.calculateAgFeeTotalWithdraw}" pattern="#,###"/></span>
                             </div>
                         </div>
                         <div class="row w-bg main-content">
                             <div class="portlet-header">
                                 <div class="tab">
                                     <ul>
-                                        <li class="on">산은</li>
-                                        <li>DGB</li>
-                                        <li>미래</li>
-                                        <li>하나강남</li>
+                                        <li class="<c:if test='${calculateVO.userBusinessTypeCd eq 0 }'>on</c:if>" id="0">전체</li>
+                                        <li class="<c:if test='${calculateVO.userBusinessTypeCd eq 5200 }'>on</c:if>" id="5200">사업자</li>
+                                        <li class="<c:if test='${calculateVO.userBusinessTypeCd eq 5100 }'>on</c:if>" id="5100">개인</li>
                                     </ul>
                                 </div>
+                                <form id="tabForm" name="tabForm" action="" method="get">
+                                    <input type="hidden" name="userBusinessTypeCd" id="userBusinessTypeCd" value="${calculateVO.userBusinessTypeCd }">
+                                    <input type="hidden" name="calculateYear" id="calculateYear" value="${calculateVO.calculateYear }">
+									<input type="hidden" name="calculateMonth" id="calculateMonth" value="${calculateVO.calculateMonth }">
+                                </form>
                             </div>
                             <div class="portlet-body">
-                                <div class="table fix-table">
-                                    <table class="n-hover">
+                                <div class="table">
+                                    <table>
                                         <colgroup>
+                                            <col width="10%" />
+                                            <col width="15%" />
+                                            <col width="12.5%" />
+                                            <col width="12.5%" />
+                                            <col width="12.5%" />
+                                            <col width="12.5%" />
+                                            <col width="12.5%" />
+                                            <col width="12.5%" />
                                         </colgroup>
                                         <thead>
                                             <tr>
-                                                <th>총합계</th>
-                                                <th>계산서 발급</th>
-                                                <th>개인지급</th>
-                                                <th>개인지급 공급가</th>
-                                                <th>개인지급 부가세</th>
-                                                <th>3.3공제</th>
-                                                <th>사업소득</th>
+                                                <th>구분</th>
+                                                <th>이름</th>
+                                                <th>AG fee 총 차액</th>
+                                                <th>AG fee 총&#40;+&#41; 출금</th>
+                                                <th>개인 총 지급합계</th>
+                                                <th>개인 총 지급공급</th>
+                                                <th>사업소득 신고액</th>
+                                                <th>사업소득 지급액</th>
                                             </tr>
                                         </thead>
-                                        <tdoby>
-                                            <tr>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                            </tr>
-                                        </tdoby>
+                                        <tbody>
+                                             <c:forEach var="list" items="${list }" varStatus="status">
+                                                    <tr class="<c:if test='${status.count eq 1 }'>on</c:if>" onclick="location.href='/calculate/info/'+${list.calculateSeq}">
+                                                        <td>${list.userBusinessTypeCdName }</td>
+                                                        <td>${list.userName }</td>
+                                                        <td> 총차액</td>
+                                                        <c:choose>
+                                                        	<c:when test='${list.userBusinessTypeCd eq 5100 }'>
+                                                        		<td> <fmt:formatNumber value="${list.calculateBusinessIncomePay }" pattern="#,###"/></td>
+                                                        	</c:when>
+                                                        	<c:otherwise>
+                                                        		<td> <fmt:formatNumber value="${list.calculatePersonalTotalPaySum }" pattern="#,###"/></td>
+                                                        	</c:otherwise>
+                                                        </c:choose>
+                                                        <td> <fmt:formatNumber value="${list.calculatePersonalTotalPaySum }" pattern="#,###"/></td>
+                                                        <td> <fmt:formatNumber value="${list.calculatePersonalTotalPaySupply }" pattern="#,###"/></td>
+                                                        <td> <fmt:formatNumber value="${list.calculateBusinessIncomePayReport }" pattern="#,###"/></td>
+                                                        <td> <fmt:formatNumber value="${list.calculateBusinessIncomePay }" pattern="#,###"/></td>
+                                                    </tr>
+                                                </c:forEach>
+                                                <c:if test="${listCount eq 0 }">
+                                                    <tr>
+                                                        <td colspan="12">조회된 데이터가 없습니다</td>
+                                                    </tr>
+                                                </c:if>
+                                        </tbody>
                                     </table>
+                                     <c:if test="${listCount ne 0}">
+	                                    <div class="page_wrap">
+	                                        <div class="page_nation">
+	                                            <a class="arrow prev" style="cursor: pointer;" onclick="Calculate.Paging(${pagingVO.startPage })"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+	                                            <c:forEach var="list" varStatus="status" begin="${pagingVO.firstPage }" end="${pagingVO.lastPage }">
+	                                            	<c:choose>
+                                                        <c:when test="${pagingVO.nowPage eq list }">
+                                                            <a class="active">${list }</a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <a onclick="Calculate.Paging(${list })" style="cursor: pointer;">${list }</a>
+                                                        </c:otherwise>
+                                                    </c:choose>
+	                                            </c:forEach>
+	                                            <a class="arrow next" style="cursor: pointer;" onclick="Calculate.Paging(${pagingVO.endPage })"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+	                                        </div>
+	                                    </div>
+                                    </c:if>
                                 </div>
                             </div>
                         </div>

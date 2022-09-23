@@ -69,9 +69,30 @@ public interface CalculateMapper {
 	public CalculateVO selectCalculateSumByAdmin(CalculateVO calculateVO);
 	
 	/**
-	 * 관리자용 정산상세
+	 * 관리자용 정산상세 목록
 	 * @param CalculateVO
 	 * @return
 	 */
-	public List<CalculateVO> selectCalculateInfoByAdmin(CalculateVO calculateVO);
+	public List<CalculateVO> selectCalculateInfoListByAdmin(CalculateVO calculateVO);
+	
+	/**
+	 * 관리자용 정산상세 유저 정보용
+	 * @param CalculateVO
+	 * @return
+	 */
+	public CalculateVO selectCalculateUserInfoByAdmin(CalculateVO calculateVO);
+	
+	/**
+	 * 관리자용 정산상세 합표출용
+	 * @param CalculateVO
+	 * @return
+	 */
+	public CalculateVO selectCalculateSumInfoByAdmin(CalculateVO calculateVO);
+	
+	/**
+	 * 관리자용 정산상세 캐피탈조회용
+	 * @param CalculateVO
+	 * @return
+	 */
+	public List<CalculateVO> selectCalculateInfoForFinancialList(CalculateVO calculateVO);
 }

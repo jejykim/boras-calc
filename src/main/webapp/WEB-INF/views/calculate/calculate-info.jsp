@@ -18,13 +18,8 @@
 	
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	<script src='/static/assets/js/common/common.js'></script>
-	<!-- 
-	<script type="text/javascript">
-		console.log(${list})
-		console.log(${calculateVO})
-	</script> -->
 	
-	<script src='/static/assets/js/calculate/calculate-admin.js'></script>
+	<script src='/static/assets/js/calculate/calculate-info.js'></script>
 	
 </head>
 <body>
@@ -43,16 +38,8 @@
                     <div class="main-header">
                         <div class="header-title">
                             <h3>정산 상세 - 관리자용</h3>
-                            <span>
-                                <select>
-                                    <option>2022 년</option>
-                                </select>
-                                <select>
-                                    <option>08 월</option>
-                                </select>
-                            </span>
                         </div>
-                        <div class="header-sub">
+                        <div class="header-sub" style="display:none">
                             <div class="btn">
                                 <button class="btn-su">엑셀다운로드</button>
                             </div>
@@ -60,49 +47,61 @@
                     </div>
                     <div class="main-body">
                         <div class="board-info">
-                            <div class="board-info-haed">
-                                <h5 class="list-info">
-                                    <ul>
-                                        <li>디피</li>
-                                        <li>신철수</li>
-                                    </ul>
-                                </h5>
-                                <span class="badge-text-business">사업자</span>
-                                <span class="badge-text-person">개인</span>
+                            <div class="board-nav">
+                                <div class="board-info-haed">
+                                    <h5>
+                                   	<c:if test="${not empty calculateUserInfo.userAgCompany}">
+                                   		<span>${calculateUserInfo.userAgCompany } -</span>
+                                   	</c:if>
+                                    <span>${calculateUserInfo.userName }</span></h5>
+                                    <c:if test="${calculateUserInfo.userBusinessTypeCd eq 5200}">
+                                    	<span class="badge-text-business">사업자</span>
+                                    </c:if>
+                                     <c:if test="${calculateUserInfo.userBusinessTypeCd eq 5100}">
+                                    	<span class="badge-text-person">개인</span>	
+                                    </c:if>
+                                </div>
+                                <div class="board-info-result th">
+                                    <div>
+                                        <span><i class="ico-b-krw"></i><strong><fmt:formatNumber value="${calculateSumInfo.calculateAgFeeTotalDifference}" pattern="#,###"/></strong></span>
+                                        <span class="tag badge-p">AG fee 총 차액</span>
+                                    </div>
+                                    <div>
+                                        <span><i class="ico-b-krw"></i><strong><fmt:formatNumber value="${calculateSumInfo.calculatePersonalTotalPaySum}" pattern="#,###"/></strong></span>
+                                        <span class="tag badge-b">원장 fee 총 입금</span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                        	<i class="ico-b-krw"></i>
+                                        	<strong>
+                                        		<c:if test="${calculateUserInfo.userBusinessTypeCd eq 5200}">
+                                        			<fmt:formatNumber value="${calculateSumInfo.calculatePersonalTotalPaySum}" pattern="#,###"/>	
+                                        		</c:if>
+                                        		<c:if test="${calculateUserInfo.userBusinessTypeCd eq 5100}">
+                                        			<fmt:formatNumber value="${calculateSumInfo.calculateBusinessIncomePay}" pattern="#,###"/>	
+                                        		</c:if>
+                                       		</strong>
+                                       	</span>
+                                        <span class="tag badge-o">AG fee 총(+) 출금</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="board-info-nav">
-                                <div class="total">
-                                    <i class="ico-coin"></i>
-                                    <span class="num"><strong>71,000,000</strong></span>
-                                    <span class="text">AG fee 총 차액</span>
+                            <div class="board-nav price-box">
+                                <div>
+                                    <span class="title"><i class="i-badge"></i>개인총 지급 합계</span>
+                                    <span><i class="ico-b-krw"></i><strong><fmt:formatNumber value="${calculateSumInfo.calculatePersonalTotalPaySum}" pattern="#,###"/></strong></span>
                                 </div>
                                 <div>
-                                    <i class="ico-deposit"></i>
-                                    <span class="num"><strong>71,000,000</strong></span>
-                                    <span class="text">원장 fee 총 입금</span>
+                                    <span class="title"><i class="i-badge"></i>개인총 지급 공급</span>
+                                    <span><i class="ico-b-krw"></i><strong><fmt:formatNumber value="${calculateSumInfo.calculatePersonalTotalPaySupply}" pattern="#,###"/></strong></span>
                                 </div>
                                 <div>
-                                    <i class="ico-withdrawal"></i>
-                                    <span class="num"><strong>71,000,000</strong></span>
-                                    <span class="text">AG fee 총&#40;+&#41; 출금</span>
-                                </div>
-                            </div>
-                            <div class="board-info-nav2">
-                                <div>
-                                    <h8>개인 총 지급합계</h8>
-                                    <span><i class="ico-b-krw"></i><strong>100,000,000</strong></span>
+                                    <span class="title"><i class="i-badge"></i>사업소득 신고액</span>
+                                    <span><i class="ico-b-krw"></i><strong><fmt:formatNumber value="${calculateSumInfo.calculateBusinessIncomePayReport}" pattern="#,###"/></strong></span>
                                 </div>
                                 <div>
-                                    <h8>개인 총 지급공급</h8>
-                                    <span><i class="ico-b-krw"></i><strong>100,000,000</strong></span>
-                                </div>
-                                <div>
-                                    <h8>사업소득 신고액</h8>
-                                    <span><i class="ico-b-krw"></i><strong>100,000,000</strong></span>
-                                </div>
-                                <div>
-                                    <h8>사업 소득 지급액</h8>
-                                    <span><i class="ico-b-krw"></i><strong>100,000,000</strong></span>
+                                    <span class="title"><i class="i-badge"></i>사업소득 지급액</span>
+                                    <span><i class="ico-b-krw"></i><strong><fmt:formatNumber value="${calculateSumInfo.calculateBusinessIncomePay}" pattern="#,###"/></strong></span>
                                 </div>
                             </div>
                         </div>
@@ -110,21 +109,24 @@
                             <div class="portlet-header">
                                 <div class="tab">
                                     <ul>
-                                        <li class="on">산은</li>
-                                        <li>DGB</li>
-                                        <li>미래</li>
-                                        <li>하나강남</li>
+                                        <c:forEach var="financialList" items="${financialList }">
+                                        	<li class="<c:if test='${calculateVO.ledgerFinancialCompanyCd eq 0 }'>on</c:if>" value="0">전체</li>
+                                        	<li class="<c:if test='${calculateVO.ledgerFinancialCompanyCd eq financialList.ledgerFinancialCompanyCd }'>on</c:if>" value="${financialList.ledgerFinancialCompanyCd}">${financialList.ledgerFinancialCompanyCdName }</li>	
+                                        </c:forEach>
                                     </ul>
                                 </div>
+                                <form id="tabForm" name="tabForm" action="" method="get">
+                                    <input type="hidden" name="ledgerFinancialCompanyCd" id="ledgerFinancialCompanyCd" value="${calculateVO.ledgerFinancialCompanyCd }">
+                                </form>
                             </div>
                             <div class="portlet-body">
-                                <div class="table">
+                                <div class="table fix-table">
                                     <table class="n-hover">
                                         <colgroup>
                                         </colgroup>
                                         <thead>
                                             <tr>
-                                                <th>총 합계</th>
+                                            	<th>금융사</th>
                                                 <th>계산서 발급</th>
                                                 <th>개인지급</th>
                                                 <th>개인지급 공급가</th>
@@ -133,35 +135,24 @@
                                                 <th>사업소득</th>
                                             </tr>
                                         </thead>
-                                        <tdoby>
-                                            <tr>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                                <td>100,000,000</td>
-                                            </tr>
-                                        </tdoby>
+                                        <tbody>
+                                            <c:forEach var="list" items="${list }" varStatus="status">
+                                                    <tr>
+                                                    	<td>${list.ledgerFinancialCompanyCdName }</td>
+                                                        <td><fmt:formatNumber value="${list.calculateBusinessTotalPaySum}" pattern="#,###"/></td>
+                                                        <td><fmt:formatNumber value="${list.calculatePersonalTotalPaySum}" pattern="#,###"/></td>
+                                                        <td><fmt:formatNumber value="${list.calculatePersonalTotalPaySupply}" pattern="#,###"/></td>
+                                                        <td><fmt:formatNumber value="${list.calculatePersonalTotalPaySurtax}" pattern="#,###"/></td>
+                                                        <td><fmt:formatNumber value="${list.calculateThreeDotThreeDeduction}" pattern="#,###"/></td>
+                                                        <td><fmt:formatNumber value="${list.calculateBusinessIncomePay}" pattern="#,###"/></td>
+                                                    </tr>
+                                                </c:forEach>
+                                                <c:if test="${listCount eq 0 }">
+                                                    <tr>
+                                                        <td colspan="12">조회된 데이터가 없습니다</td>
+                                                    </tr>
+                                                </c:if>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>

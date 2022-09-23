@@ -56,7 +56,22 @@ public class CalculateService implements CalculateMapper {
 	}
 	
 	@Override
-	public List<CalculateVO> selectCalculateInfoByAdmin(CalculateVO calculateVO) {
-		return calculateMapper.selectCalculateInfoByAdmin(calculateVO);
+	public List<CalculateVO> selectCalculateInfoListByAdmin(CalculateVO calculateVO) {
+		return calculateMapper.selectCalculateInfoListByAdmin(calculateVO);
+	}
+	
+	@Override
+	public CalculateVO selectCalculateUserInfoByAdmin(CalculateVO calculateVO) {
+		return calculateMapper.selectCalculateUserInfoByAdmin(calculateVO);
+	}
+	
+	@Override
+	public CalculateVO selectCalculateSumInfoByAdmin(CalculateVO calculateVO) {
+		return calculateMapper.selectCalculateSumInfoByAdmin(calculateVO);
+	}
+	
+	@Override
+	public List<CalculateVO> selectCalculateInfoForFinancialList(CalculateVO calculateVO) {
+		return calculateMapper.selectCalculateInfoForFinancialList(calculateVO);
 	}
 }

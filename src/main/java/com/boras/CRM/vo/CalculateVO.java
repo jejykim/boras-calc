@@ -108,11 +108,18 @@ public class CalculateVO extends PagingVO {
 	private int userBusinessTypeCd;
 	// 사업자 구분 코드명
 	private String userBusinessTypeCdName;
+	private String userAgCompany;
 	
 	/*관리자 화면 표출용*/
+	private BigDecimal calculateAgFeeTotalDeposit;
 	private BigDecimal calculateAgFeeTotalWithdraw;
+	private BigDecimal calculateAgFeeTotalDifference;
+	private BigDecimal calculateBusinessTotalPaySum;
 	private BigDecimal calculatePersonalTotalPaySum;
+	private BigDecimal calculateTotalPaySum;
 	private BigDecimal calculatePersonalTotalPaySupply;
+	private BigDecimal calculatePersonalTotalPaySurtax;
+	private BigDecimal calculateThreeDotThreeDeduction;
 	private BigDecimal calculateBusinessIncomePay;
 	private BigDecimal calculateBusinessIncomePayReport;
 		
@@ -518,6 +525,12 @@ public class CalculateVO extends PagingVO {
 	public void setCalculateAgFeeTotalWithdraw(BigDecimal calculateAgFeeTotalWithdraw) {
 		this.calculateAgFeeTotalWithdraw = calculateAgFeeTotalWithdraw;
 	}
+	public BigDecimal getCalculateBusinessTotalPaySum() {
+		return calculateBusinessTotalPaySum;
+	}
+	public void setCalculateBusinessTotalPaySum(BigDecimal calculateBusinessTotalPaySum) {
+		this.calculateBusinessTotalPaySum = calculateBusinessTotalPaySum;
+	}
 	public BigDecimal getCalculatePersonalTotalPaySum() {
 		return calculatePersonalTotalPaySum;
 	}
@@ -530,6 +543,18 @@ public class CalculateVO extends PagingVO {
 	public void setCalculatePersonalTotalPaySupply(BigDecimal calculatePersonalTotalPaySupply) {
 		this.calculatePersonalTotalPaySupply = calculatePersonalTotalPaySupply;
 	}
+	public BigDecimal getCalculatePersonalTotalPaySurtax() {
+		return calculatePersonalTotalPaySurtax;
+	}
+	public void setCalculatePersonalTotalPaySurtax(BigDecimal calculatePersonalTotalPaySurtax) {
+		this.calculatePersonalTotalPaySurtax = calculatePersonalTotalPaySurtax;
+	}
+	public BigDecimal getCalculateThreeDotThreeDeduction() {
+		return calculateThreeDotThreeDeduction;
+	}
+	public void setCalculateThreeDotThreeDeduction(BigDecimal calculateThreeDotThreeDeduction) {
+		this.calculateThreeDotThreeDeduction = calculateThreeDotThreeDeduction;
+	}
 	public BigDecimal getCalculateBusinessIncomePay() {
 		return calculateBusinessIncomePay;
 	}
@@ -541,6 +566,18 @@ public class CalculateVO extends PagingVO {
 	}
 	public void setCalculateBusinessIncomePayReport(BigDecimal calculateBusinessIncomePayReport) {
 		this.calculateBusinessIncomePayReport = calculateBusinessIncomePayReport;
+	}
+	public BigDecimal getCalculateAgFeeTotalDeposit() {
+		return calculateAgFeeTotalDeposit;
+	}
+	public void setCalculateAgFeeTotalDeposit(BigDecimal calculateAgFeeTotalDeposit) {
+		this.calculateAgFeeTotalDeposit = calculateAgFeeTotalDeposit;
+	}
+	public BigDecimal getCalculateAgFeeTotalDifference() {
+		return calculateAgFeeTotalDifference;
+	}
+	public void setCalculateAgFeeTotalDifference(BigDecimal calculateAgFeeTotalDifference) {
+		this.calculateAgFeeTotalDifference = calculateAgFeeTotalDifference;
 	}
 	@Override
 	public String toString() {
@@ -585,6 +622,18 @@ public class CalculateVO extends PagingVO {
 	}
 	public void setSearchText(String searchText) {
 		this.searchText = searchText;
+	}
+	public BigDecimal getCalculateTotalPaySum() {
+		return calculateTotalPaySum;
+	}
+	public void setCalculateTotalPaySum(BigDecimal calculateTotalPaySum) {
+		this.calculateTotalPaySum = calculateTotalPaySum;
+	}
+	public String getUserAgCompany() {
+		return userAgCompany;
+	}
+	public void setUserAgCompany(String userAgCompany) {
+		this.userAgCompany = userAgCompany;
 	}
 	
 }

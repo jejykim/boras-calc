@@ -3,7 +3,7 @@ Content  : FormLoad
 ========================================================================*/
 $(document).ready(function() {
 	try {
-		CalculateAdmin.PageLoad();
+		CalculateInfo.PageLoad();
 	}
 	catch (e) { console.log(e.message); }
 
@@ -20,26 +20,26 @@ function FormBeforeUnLoad() {
 }
 
 /*=======================================================================
-CalculateAdmin Class 명세 시작 (상수(변수)>>속성>>메서드)
+CalculateInfo Class 명세 시작 (상수(변수)>>속성>>메서드)
 ========================================================================*/
-//CalculateAdmin Class
-var CalculateAdmin = {};
+//CalculateInfo Class
+var CalculateInfo = {};
 
-//CalculateAdmin Const
+//CalculateInfo Const
 
-//CalculateAdmin Variable
+//CalculateInfo Variable
 var multiRequest = "";
 var checkExcelFlag = false;
 
-//CalculateAdmin
+//CalculateInfo
 var Properties = {};
-CalculateAdmin.Properties = Properties;
+CalculateInfo.Properties = Properties;
 
-//CalculateAdmin Method
-CalculateAdmin.PageLoad = function() { };  //메인 페이지 로드 공통 함수
-CalculateAdmin.SetEvent = function() { };  //메인 페이지 이벤트 바인딩
+//CalculateInfo Method
+CalculateInfo.PageLoad = function() { };  //메인 페이지 로드 공통 함수
+CalculateInfo.SetEvent = function() { };  //메인 페이지 이벤트 바인딩
 /*=======================================================================
-CalculateAdmin Class 명세 끝
+CalculateInfo Class 명세 끝
 ========================================================================*/
 
 /*=======================================================================
@@ -47,10 +47,10 @@ CalculateAdmin Class 명세 끝
 작  성  자  : 김은빈
 2022.08.26 - 최초생성
 ========================================================================*/
-CalculateAdmin.PageLoad = function() {
+CalculateInfo.PageLoad = function() {
 	try {
-		CalculateAdmin.Init();
-		CalculateAdmin.SetEvent();
+		CalculateInfo.Init();
+		CalculateInfo.SetEvent();
 	}
 	catch (e) { console.log(e.message); }
 }
@@ -60,7 +60,7 @@ CalculateAdmin.PageLoad = function() {
 작  성  자  : 김은빈
 2022.08.26 - 최초생성
 ========================================================================*/
-CalculateAdmin.Init = function() {
+CalculateInfo.Init = function() {
 	try {
 	}
 	catch (e) { console.log(e.message); }
@@ -71,18 +71,11 @@ CalculateAdmin.Init = function() {
 작  성  자  : 김은빈
 2022.08.26 - 최초생성
 ========================================================================*/
-CalculateAdmin.SetEvent = function() {
+CalculateInfo.SetEvent = function() {
 	try {
 
-		$(".tab li").click(function(){
-			$("#userBusinessTypeCd").val($(this).attr('id'));
-			document.tabForm.submit();
-			
-		});
-		
-		$("#selYear, #selMonth").change(function(){
-			$("#calculateYear").val($("#selYear").val());
-			$("#calculateMonth").val($("#selMonth").val());
+		$("ul li").click(function(){
+			$("#ledgerFinancialCompanyCd").val($(this).val());
 			document.tabForm.submit();
 		});
 		
@@ -90,20 +83,3 @@ CalculateAdmin.SetEvent = function() {
 	catch (e) { console.log(e.message); }
 }
 
-
-/*=======================================================================
-내      용  : 페이징
-작  성  자  : 김진열
-2022.08.18 - 최초생성
-========================================================================*/
-CalculateAdmin.Paging = function (page) {
-    try {
-		if (page > 0) {
-			$("#now_page").val(page);
-			document.searchForm.submit();
-		} else {
-			alert("잘못된 경로 입니다");
-		}	
-    }
-    catch (e) { console.log(e.message); }
-}

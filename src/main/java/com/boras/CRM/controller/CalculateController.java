@@ -220,16 +220,38 @@ public class CalculateController {
 	 * 정산상세-관리자용
 	 */
 	@GetMapping(value = "/calculate/info/{calculateSeq}")
-	public String selectCalculateInfo(Model model, HttpServletRequest req, HttpServletResponse resp, @PathVariable("calculateSeq") int calculateSeq) {
+	public String selectCalculateInfo(Model model, HttpServletRequest req, HttpServletResponse resp, @PathVariable("calculateSeq") int calculateSeq, CalculateVO calculateVO) {
 		String result = "calculate/calculate-info";
 		
-		CalculateVO calculateVO = new CalculateVO();
 		calculateVO.setCalculateSeq(calculateSeq);
 		
 		List<CalculateVO> list = new ArrayList<>();
+		try {
+			list = calculateService.selectCalculateInfoListByAdmin(calculateVO);
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCalculateInfo ]");
+			logger.error(e.getMessage());
+		}
+		
+		CalculateVO calculateUserInfo = new CalculateVO();
+		CalculateVO calculateSumInfo = new CalculateVO();
+		try {
+			calculateUserInfo = calculateService.selectCalculateUserInfoByAdmin(calculateVO);
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCalculateInfo ]");
+			logger.error(e.getMessage());
+		}
 		
 		try {
-			list = calculateService.selectCalculateInfoByAdmin(calculateVO);
+			calculateSumInfo = calculateService.selectCalculateSumInfoByAdmin(calculateVO);
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCalculateInfo ]");
+			logger.error(e.getMessage());
+		}
+		
+		List<CalculateVO> financialList = new ArrayList<>();
+		try {
+			financialList = calculateService.selectCalculateInfoForFinancialList(calculateVO);
 		} catch (Exception e) {
 			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCalculateInfo ]");
 			logger.error(e.getMessage());
@@ -237,6 +259,9 @@ public class CalculateController {
 		
 		model.addAttribute("calculateVO", calculateVO);
 		model.addAttribute("list", list);
+		model.addAttribute("calculateUserInfo", calculateUserInfo);
+		model.addAttribute("calculateSumInfo", calculateSumInfo);
+		model.addAttribute("financialList", financialList);
 		
 		return result;
 	}

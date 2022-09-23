@@ -189,10 +189,11 @@
 		group by con.contract_user_id
   	</select>
   	
-  	<!-- 정산 된 계출목록 조회 관리자용 -->
+  	<!-- 정산 된 목록 조회 관리자용 -->
   	<select id="selectCalculateListByAdmin" parameterType="calculateVO" resultType="calculateVO">
-  		select 
-			user_business_type_cd
+  		select
+  			calculate_seq 
+			,user_business_type_cd
 			,(SELECT code_name FROM code WHERE code_id = u.user_business_type_cd) as user_business_type_cd_name
 			,user_name
 			,calculate_ag_fee_sum
@@ -220,15 +221,13 @@
   	</select>
   	
   	
-  	<!-- 정산 된 계출합 조회 관리자용 -->
+  	<!-- 정산합 조회 관리자용 -->
   	<select id="selectCalculateSumByAdmin" parameterType="calculateVO" resultType="calculateVO">
   		select 
-			<!-- calculate_user_id, -->
-			sum(calculate_ag_fee_sum)+sum(calculate_sliding_sum)+sum(calculate_add_fee_sum) as calculateAgFeeTotalWithdraw
-		from calculate cal 
-		join users u
-		on cal.calculate_user_id=u.user_id
-		<!-- group by rollup(calculate_user_id); -->
+			sum(calculateAgFeeTotalDeposit) as calculateAgFeeTotalDeposit
+			, sum(calculateAgFeeTotalWithdraw) as calculateAgFeeTotalWithdraw
+			, sum(calculateAgFeeTotalDeposit)-sum(calculateAgFeeTotalWithdraw) as calculateAgFeeTotalDifference
+		from "ViewCalculateSumByAdmin"
 		where calculate_year = #{calculateYear} 
   			AND calculate_month = #{calculateMonth}
   			<if test="userBusinessTypeCd != null and userBusinessTypeCd != '' and userBusinessTypeCd!=0">
@@ -236,5 +235,84 @@
   			</if>
   	</select>
   	
+  	<!-- 관리자용 정산상세 유저 정보용-->
+  	<select id="selectCalculateUserInfoByAdmin" parameterType="calculateVO" resultType="calculateVO">
+  		select u.user_id
+  			,u.user_name
+  			,u.user_business_type_cd
+  			,(SELECT code_name FROM code WHERE code_id = u.user_business_type_cd) as user_business_type_cd_name
+  			,u.user_ag_company
+		from calculate c
+		join users u
+		on c.calculate_user_id=u.user_id
+		where calculate_seq=#{calculateSeq}
+  	</select>
+  	
+  	<!-- 관리자용 정산상세 합표출용-->
+  	<select id="selectCalculateSumInfoByAdmin" parameterType="calculateVO" resultType="calculateVO">
+  		select distinct
+  			calculate_ag_fee_sum+calculate_sliding_sum+calculate_add_fee_sum as calculatePersonalTotalPaySum
+			,(calculate_ag_fee_sum+calculate_sliding_sum+calculate_add_fee_sum)/1.1 as calculatePersonalTotalPaySupply
+			,(calculate_ag_fee_sum+calculate_sliding_sum+calculate_add_fee_sum)/1.1*0.967 as calculateBusinessIncomePay
+			,(calculate_ag_fee_sum+calculate_sliding_sum+calculate_add_fee_sum)/1.1-(calculate_ag_fee_sum+calculate_sliding_sum+calculate_add_fee_sum)/1.1*0.967 as calculateBusinessIncomePayReport
+			,case when (select user_business_type_cd from users u where u.user_id=c.calculate_user_id)=5100 
+					then (calculate_ag_fee_sum+calculate_sliding_sum+calculate_add_fee_sum)-((calculate_ag_fee_sum+calculate_sliding_sum+calculate_add_fee_sum)/1.1*0.967)
+				when (select user_business_type_cd from users u where u.user_id=c.calculate_user_id)=5200 
+					then (calculate_ag_fee_sum+calculate_sliding_sum+calculate_add_fee_sum)-(calculate_ag_fee_sum+calculate_sliding_sum+calculate_add_fee_sum) end as calculateAgFeeTotalDifference
+		from calculate c
+			left join contract con
+			on c.calculate_seq=con.contract_calculate_seq
+			left join ledger l
+			on con.contract_ledger_seq=l.ledger_seq
+		where calculate_seq=#{calculateSeq}
+			<if test="ledgerFinancialCompanyCd != null and ledgerFinancialCompanyCd != '' and ledgerFinancialCompanyCd!=0">
+ 				AND ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
+  			</if>
+  	</select>
+  	
+  	<!-- 관리자용 정산상세 목록-->
+  	<select id="selectCalculateInfoListByAdmin" parameterType="calculateVO" resultType="calculateVO">
+  		select l.ledger_financial_company_cd
+		,(SELECT code_name FROM code WHERE code_id = l.ledger_financial_company_cd) as ledger_financial_company_cd_name
+  		,case when (select user_business_type_cd from users where user_id=c.contract_user_id)=5100 then contract_nomal_ag_fee_sum + contract_add_ag_fee_sum + contract_ag_sliding_sum
+		else 0 end as calculatePersonalTotalPaySum 
+  		,case when (select user_business_type_cd from users where user_id=c.contract_user_id)=5200 then contract_nomal_ag_fee_sum + contract_add_ag_fee_sum + contract_ag_sliding_sum
+		else 0 end as calculateBusinessTotalPaySum 
+  		,(contract_nomal_ag_fee_sum + contract_add_ag_fee_sum + contract_ag_sliding_sum)/1.1 as calculatePersonalTotalPaySupply
+  		,(contract_nomal_ag_fee_sum + contract_add_ag_fee_sum + contract_ag_sliding_sum) 
+  			- ((contract_nomal_ag_fee_sum + contract_add_ag_fee_sum + contract_ag_sliding_sum)/1.1) as calculatePersonalTotalPaySurtax
+  		,(contract_nomal_ag_fee_sum + contract_add_ag_fee_sum + contract_ag_sliding_sum)/1.1*0.033 as calculateThreeDotThreeDeduction
+  		,((contract_nomal_ag_fee_sum + contract_add_ag_fee_sum + contract_ag_sliding_sum)/1.1) 
+  			-((contract_nomal_ag_fee_sum + contract_add_ag_fee_sum + contract_ag_sliding_sum)/1.1*0.033) as calculateBusinessIncomePay
+		from contract c join ledger l
+		on c.contract_ledger_seq=ledger_seq
+		where contract_calculate_seq=#{calculateSeq}
+			<if test="ledgerFinancialCompanyCd != null and ledgerFinancialCompanyCd != '' and ledgerFinancialCompanyCd!=0">
+ 				AND ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
+  			</if>
+  	</select>
+  	
+  	<!-- 관리자용 정산상세 합표출용 안씀-->
+  	<select id="selectCalculateInfoSumByAdmin" parameterType="calculateVO" resultType="calculateVO">
+  		select sum(calculatePersonalTotalPaySum) as calculatePersonalTotalPaySum
+  			,sum(calculateBusinessTotalPaySum) as calculateBusinessTotalPaySum
+			,sum(calculatePersonalTotalPaySum)+sum(calculateBusinessTotalPaySum) as calculateTotalPaySum
+			,sum(calculatePersonalTotalPaySupply) as calculatePersonalTotalPaySupply
+			,sum(calculatePersonalTotalPaySurtax) as calculatePersonalTotalPaySurtax
+			,sum(calculateThreeDotThreeDeduction) as calculateThreeDotThreeDeduction
+			,sum(calculateBusinessIncomePay) as calculateBusinessIncomePay 사업소득지급액
+			,sum(calculateBusinessIncomePay) as calculateBusinessIncomePayReport 사업소득신고액
+		from "ViewCalculateInfoListByAdmin"
+		where contract_calculate_seq=#{calculateSeq}
+  	</select>
 		
+	<!-- 관리자용 정산상세 캐피탈조회용-->
+  	<select id="selectCalculateInfoForFinancialList" parameterType="calculateVO" resultType="calculateVO">
+  		select distinct ledger_financial_company_cd
+		,(select code_name from code where code_id=l.ledger_financial_company_cd) as ledger_financial_company_cd_name
+		from contract c
+		join ledger l
+		on c.contract_ledger_seq=l.ledger_seq
+		where contract_calculate_seq=#{calculateSeq}
+  	</select>	
 </mapper>
