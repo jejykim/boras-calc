@@ -53,4 +53,9 @@ public class CalculateFinanicalCompanyService implements CalculateFinanicalCompa
 		return calculateFinanicalCompanyMapper.calculateFinancialCompanyForUser(contractVO);
 	}
 
+	@Override
+	public Map<String, Object> calculateFinancialCompanyAgCount(ContractVO contractVO) {
+		return calculateFinanicalCompanyMapper.calculateFinancialCompanyAgCount(contractVO);
+	}
+
 }

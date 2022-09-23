@@ -113,9 +113,9 @@
                             <div class="portlet-header">
                                 <div class="tab">
                                     <ul>
-                                    	<li id="liAll" <c:if test="${empty contractVO.userBusinessTypeCd or contractVO.userBusinessTypeCd eq 0 }">class="on"</c:if>>전체</li>
-                                        <li id="liCompany" <c:if test="${contractVO.userBusinessTypeCd eq 5200 }">class="on"</c:if>>사업자</li>
-                                        <li id="liPersonal" <c:if test="${contractVO.userBusinessTypeCd eq 5100 }">class="on"</c:if>>개인</li>
+                                    	<li id="liAll" <c:if test="${empty contractVO.userBusinessTypeCd or contractVO.userBusinessTypeCd eq 0 }">class="on"</c:if>>전체 <span class="badge-tab">${agCount.total }</span></li>
+                                        <li id="liCompany" <c:if test="${contractVO.userBusinessTypeCd eq 5200 }">class="on"</c:if>>사업자 <span class="badge-tab">${agCount.company }</span></li>
+                                        <li id="liPersonal" <c:if test="${contractVO.userBusinessTypeCd eq 5100 }">class="on"</c:if>>개인 <span class="badge-tab">${agCount.personal }</span></li>
                                     </ul>
                                 </div>
                             </div>

@@ -927,6 +927,7 @@ aside li h4 {
 
 aside li .submenu ul li {
     cursor: pointer;
+    position: relative;
 }
 
 aside li .submenu ul li a {
@@ -947,6 +948,11 @@ aside li a i {
     margin-right: 4px;
 }
 
+.mainmenu.on {
+    background-color: #1B2245;
+    color: #fff;
+    font-weight: 400;
+}
 
 aside li .on {
     background-color: #1B2245;
@@ -958,6 +964,19 @@ aside li .on i {
     color: #fff;
 }
 
+.badge-manager {
+    display: inline-block;
+    background-color: #fff;
+    color: #1B2245;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 3px;
+    border-radius: 3px;
+    position: absolute;
+    right: 12px;
+    top: 8px;
+
+}
 
 /*--------------------------------------------------------------------------------------
 main
@@ -1090,6 +1109,24 @@ main .wrapper {
 }
 
 /*tab*/
+.badge-tab {
+    display: inline-block;
+    background-color: #a5a7ab;
+    padding: 0 8px;
+    height: 20px;
+    line-height: 18px;
+    border-radius: 100px;
+    text-align: center;
+    margin-left: 6px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 11px;
+}
+
+li.on .badge-tab {
+    background-color: #5C61F4;
+}
+
 .portlet-header {
     width: 100%;
     border-bottom: 1px solid #ECEEF2;
@@ -1110,6 +1147,7 @@ main .wrapper {
     padding: 20px 24px;
     font-size: 14px;
     cursor: pointer;
+    position: relative;
 }
 
 .portlet-header ul li.on {

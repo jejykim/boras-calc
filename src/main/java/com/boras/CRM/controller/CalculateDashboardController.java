@@ -2,6 +2,7 @@ package com.boras.CRM.controller;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -143,10 +144,20 @@ public class CalculateDashboardController {
 		}
 		
 		for(Map<String, Object> map : contractList) {
-			long totalFee = Long.parseLong(map.get("total_fee") == null ? "0" : map.get("total_fee").toString());
-			long agPersonalFee = Long.parseLong(map.get("ag_personal_fee") == null ? "0" : map.get("ag_personal_fee").toString());
-			long agCompanyFee = Long.parseLong(map.get("ag_company_fee") == null ? "0" : map.get("ag_company_fee").toString());
-			long dpFee = Long.parseLong(map.get("dp_fee") == null ? "0" : map.get("dp_fee").toString());
+			double dTotalFee = Double.parseDouble(map.get("total_fee") == null ? "0" : map.get("total_fee").toString());
+			double dAgPersonalFee = Double.parseDouble(map.get("ag_personal_fee") == null ? "0" : map.get("ag_personal_fee").toString());
+			double dAgCompanyFee = Double.parseDouble(map.get("ag_company_fee") == null ? "0" : map.get("ag_company_fee").toString());
+			double dDpFee = Double.parseDouble(map.get("dp_fee") == null ? "0" : map.get("dp_fee").toString());
+					
+			long totalFee = (long) dTotalFee;
+			long agPersonalFee = (long) dAgPersonalFee;
+			long agCompanyFee = (long) dAgCompanyFee;
+			long dpFee = (long) dDpFee;
+			
+			//long totalFee = Long.parseLong(map.get("total_fee") == null ? "0" : map.get("total_fee").toString());
+			//long agPersonalFee = Long.parseLong(map.get("ag_personal_fee") == null ? "0" : map.get("ag_personal_fee").toString());
+			//long agCompanyFee = Long.parseLong(map.get("ag_company_fee") == null ? "0" : map.get("ag_company_fee").toString());
+			//long dpFee = Long.parseLong(map.get("dp_fee") == null ? "0" : map.get("dp_fee").toString());
 			
 			if(totalFee == agPersonalFee + agCompanyFee + dpFee) {
 				calculateFinanicalCompanyVO.setCalculateFinanicalCompanyBillSum(agCompanyFee);
@@ -209,11 +220,22 @@ public class CalculateDashboardController {
 			map.put("agPersonalFee", agPersonalFee);
 		}
 		
+		// 금융사별 계출 ag 사업자 구분 count
+		Map<String, Object> agCount = new HashMap<>(); 
+		
+		try {
+			agCount = calculateFinanicalCompanyService.calculateFinancialCompanyAgCount(contractVO);
+		} catch (Exception e) {
+			logger.error("[ERROR : calculateFinancialCompanyAgCount ]");
+			logger.error(e.getMessage());
+		}
+		
 		model.addAttribute("yearList", yearList);
 		model.addAttribute("financialCompanyCodeVO", financialCompanyCodeVO);
 		model.addAttribute("calculateFinanicalCompanyVO", calculateFinanicalCompanyVO);
 		model.addAttribute("contractVO", contractVO);
 		model.addAttribute("list", list);
+		model.addAttribute("agCount", agCount);
 		
 		return result;
 	}

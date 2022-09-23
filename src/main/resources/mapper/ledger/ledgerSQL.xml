@@ -710,4 +710,23 @@
 			</foreach>
 		</if>
   	</select>
+  	
+  	<!-- 목록 전체 count 조회 (화면 탭) -->
+	<select id="selectLedgerEachCount" resultType="map" parameterType="ledgerVO">
+		SELECT 
+			SUM(CASE WHEN a.approval_state = '요청' THEN 1 ELSE 0 END) AS request
+			, SUM(CASE WHEN a.approval_state = '승인' THEN 1 ELSE 0 END) AS complete
+			, SUM(CASE WHEN (a.approval_state is null or a.approval_state not in ('승인', '요청', '거부')) THEN 1 ELSE 0 END) AS left
+			, count(DISTINCT l.ledger_seq) AS total 
+		FROM ledger l
+		left JOIN approval a
+		ON l.ledger_seq = a.approval_ledger_seq
+		WHERE 1=1
+		<if test="ledgerCreateYear != null">
+			AND ledger_create_year = #{ledgerCreateYear}
+		</if>
+		<if test="ledgerCreateMonth != null">
+			AND ledger_create_month = #{ledgerCreateMonth}
+		</if>
+  	</select>
 </mapper>

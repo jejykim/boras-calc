@@ -61,7 +61,13 @@ public class LoginController {
 		String result = "login/login";
 		
 		if(PermissionHelper.checkUserSession(req)) {
-			result = "redirect:/dashboard";
+			if(PermissionHelper.isAdmin(req)) {
+				result = "redirect:/dashboard";
+			}else if(PermissionHelper.isLevel1AG(req)) {
+				result = "redirect:/ag/calc/list";
+			}else {
+				result = "redirect:/ag/ledger/list";
+			}
 		}
     	
 		return result;

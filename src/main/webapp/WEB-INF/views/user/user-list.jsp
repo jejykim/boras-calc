@@ -52,12 +52,21 @@
                             <div class="portlet-header">
                                 <div class="tab">
                                     <ul>
-                                        <li id="liAg" <c:if test="${empty userVO.agOrAdmin or userVO.agOrAdmin eq 'ag' }">class="on"</c:if>>AG (${agCount })</li>
-                                        <li id="liNewAg" <c:if test="${userVO.agOrAdmin eq 'new' }">class="on"</c:if>>신규 AG (${newCount })</li>
-                                        <li id="liAdmin" <c:if test="${userVO.agOrAdmin eq 'admin' }">class="on"</c:if>>관리자 (${adminCount })</li>
+                                        <li id="liAg" <c:if test="${empty userVO.agOrAdmin or userVO.agOrAdmin eq 'ag' }">class="on"</c:if>>AG <span class="badge-tab">${agCount }</span></li>
+                                        <li id="liNewAg" <c:if test="${userVO.agOrAdmin eq 'new' }">class="on"</c:if>>신규 AG <span class="badge-tab">${newCount }</span></li>
+                                        <li id="liAdmin" <c:if test="${userVO.agOrAdmin eq 'admin' }">class="on"</c:if>>관리자 <span class="badge-tab">${adminCount }</span></li>
                                     </ul>
                                 </div>
                                 <div class="header-sub">
+                                	<div class="form-control">
+                                        <select class="col-2" id="selPagePerRows" style="width: 100px;">
+	                                   		<option value="10" <c:if test="${userVO.pagePerRows eq 10 }">selected="selected"</c:if>>10 줄</option>
+	                                   		<option value="20" <c:if test="${userVO.pagePerRows eq 20 }">selected="selected"</c:if>>20 줄</option>
+	                                   		<option value="50" <c:if test="${userVO.pagePerRows eq 50 }">selected="selected"</c:if>>50 줄</option>
+	                                   		<option value="100" <c:if test="${userVO.pagePerRows eq 100 }">selected="selected"</c:if>>100 줄</option>
+	                                   	</select>
+                                	</div>
+                                	&nbsp;
                                     <div class="search">
                                         <input id="inputSearchText" type="text" placeholder="검색" value="${userVO.searchText }">
                                         <button id="btnSearch"><i class="fa fa-search" aria-hidden="true"></i></button>
@@ -66,6 +75,7 @@
 											<input type="hidden" name="searchText" id="searchText" value="${userVO.searchText }">
 											<input type="hidden" name="agOrAdmin" id="agOrAdmin" value="${userVO.agOrAdmin }">
 											<input type='hidden' id="now_page" name="nowPage" value="${userVO.nowPage }">
+											<input type='hidden' id="pagePerRows" name="pagePerRows" value="${userVO.pagePerRows }">
 										</form>
                                     </div>
                                 </div>

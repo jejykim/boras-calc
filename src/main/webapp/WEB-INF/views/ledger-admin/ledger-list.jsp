@@ -183,10 +183,10 @@
                             <div class="portlet-header">
                                 <div class="tab">
                                     <ul>
-                                        <li id="liAll" <c:if test="${empty ledgerVO.stateType or ledgerVO.stateType eq 'all' }">class="on"</c:if>>전체</li>
-                                        <li id="liRequest" <c:if test="${ledgerVO.stateType eq 'request' }">class="on"</c:if>>승인요청</li>
-                                        <li id="liComplete" <c:if test="${ledgerVO.stateType eq 'complete' }">class="on"</c:if>>승인완료</li>
-                                        <li id="liLeft" <c:if test="${ledgerVO.stateType eq 'left' }">class="on"</c:if>>잉여원장</li>
+                                        <li id="liAll" <c:if test="${empty ledgerVO.stateType or ledgerVO.stateType eq 'all' }">class="on"</c:if>>전체 <span class="badge-tab">${statusCount.total }</span></li>
+                                        <li id="liRequest" <c:if test="${ledgerVO.stateType eq 'request' }">class="on"</c:if>>승인요청 <span class="badge-tab">${statusCount.request }</span></li>
+                                        <li id="liComplete" <c:if test="${ledgerVO.stateType eq 'complete' }">class="on"</c:if>>승인완료 <span class="badge-tab">${statusCount.complete }</span></li>
+                                        <li id="liLeft" <c:if test="${ledgerVO.stateType eq 'left' }">class="on"</c:if>>잉여원장 <span class="badge-tab">${statusCount.left }</span></li>
                                     </ul>
                                 </div>
                                 <div class="header-sub">

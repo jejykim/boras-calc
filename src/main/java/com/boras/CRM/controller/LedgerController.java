@@ -332,7 +332,17 @@ public class LedgerController {
 		try {
 			agList = userService.selectUserListAg(userVO);
 		} catch (Exception e) {
-			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectCodeList ]");
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectUserListAg ]");
+			logger.error(e.getMessage());
+		}
+		
+		// 목록 전체 count 조회 (화면 탭)
+		Map<String, Object> statusCount = new HashMap<>();
+		
+		try {
+			statusCount = ledgerService.selectLedgerEachCount(ledgerVO);
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectLedgerEachCount ]");
 			logger.error(e.getMessage());
 		}
 		
@@ -354,6 +364,7 @@ public class LedgerController {
 		model.addAttribute("financialProductCodelist", financialProductCodelist);
 		model.addAttribute("dealerBrandCodeList", dealerBrandCodeList);
 		model.addAttribute("agList", agList);
+		model.addAttribute("statusCount", statusCount);
 		
 		model.addAttribute("sumCostList", sumCostList);
     	

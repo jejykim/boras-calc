@@ -123,4 +123,11 @@ public interface LedgerMapper {
 	 * @return
 	 */
 	public List<LedgerVO> selectLedgerDetailList(int[] ledgerSeq);
+	
+	/**
+	 * 목록 전체 count 조회 (화면 탭)
+	 * @param 
+	 * @return Map<String, Object>
+	 */
+	public Map<String, Object> selectLedgerEachCount(LedgerVO ledgerVO);
 }

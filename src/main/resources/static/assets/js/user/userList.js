@@ -80,17 +80,17 @@ UserList.SetEvent = function () {
 		$("#liAg").click(function() {
 			$("#searchText").val("");
 			$("#agOrAdmin").val("ag");
-			document.searchForm.submit();
+			UserList.Paging(1);
 		});
 		$("#liNewAg").click(function() {
 			$("#searchText").val("");
 			$("#agOrAdmin").val("new");
-			document.searchForm.submit();
+			UserList.Paging(1);
 		});
 		$("#liAdmin").click(function() {
 			$("#searchText").val("");
 			$("#agOrAdmin").val("admin");
-			document.searchForm.submit();
+			UserList.Paging(1);
 		});
 	
 		// 검색
@@ -154,6 +154,13 @@ UserList.SetEvent = function () {
 		// 계정 수정
 		$("#btnUpdateUserOk").click(function() {
 			UserList.updateUser();
+		});
+		
+		// pagePerRows 변경
+		$("#selPagePerRows").change(function() {
+			var pagePerRows = $("#selPagePerRows").val();
+			$("#pagePerRows").val(pagePerRows);
+			UserList.Paging(1);
 		});
     }
     catch (e) { console.log(e.message); }

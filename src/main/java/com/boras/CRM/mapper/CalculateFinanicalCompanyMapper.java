@@ -63,4 +63,11 @@ public interface CalculateFinanicalCompanyMapper {
 	 */
 	public List<Map<String, Object>> calculateFinancialCompanyForUser(ContractVO contractVO);
 	
+	/**
+	 * 금융사별 계출 ag 사업자 구분 count
+	 * @param 
+	 * @return Map<String, Object>
+	 */
+	public Map<String, Object> calculateFinancialCompanyAgCount(ContractVO contractVO);
+	
 }

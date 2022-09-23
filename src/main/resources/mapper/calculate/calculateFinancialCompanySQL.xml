@@ -153,4 +153,25 @@
 		GROUP BY l.ledger_financial_company_cd, u.user_id, u.user_name
   	</select>
   	
+  	<!-- 금융사별 계출 ag 사업자 구분 count -->
+  	<select id="calculateFinancialCompanyAgCount" resultType="map" parameterType="contractVO">
+  		SELECT
+			count(DISTINCT CASE WHEN u.user_business_type_cd = 5200 THEN u.user_id ELSE null END) AS company
+			, count(DISTINCT CASE WHEN u.user_business_type_cd = 5100 THEN u.user_id ELSE null END) AS personal
+			, count(DISTINCT u.user_id) AS total
+		FROM contract c
+		JOIN ledger l
+		ON c.contract_ledger_seq = l.ledger_seq
+		JOIN approval a
+		ON c.contract_ledger_seq = a.approval_ledger_seq
+		JOIN users u
+		ON a.approval_user_id = u.user_id
+		WHERE c.contract_create_year = #{contractCreateYear}
+		AND c.contract_create_month = #{contractCreateMonth}
+		AND a.approval_state = '승인'
+		AND a.approval_yn = 'Y'
+		<if test="ledgerFinancialCompanyCd gt 0">
+			AND l.ledger_financial_company_cd = #{ledgerFinancialCompanyCd}
+		</if>
+  	</select>
 </mapper>

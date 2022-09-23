@@ -30,7 +30,7 @@
                     <ul>
                         <li title="AG" <%=uri.contains("/ledger/ledger") ? "class='on'" : "" %>><a href="/ag/ledger/list"><i class="fa fa-file-text-o" aria-hidden="true"></i><span>금융사 원장 목록</span></a></li>
                     	<% if(PermissionHelper.isAdmin(request)) { %>
-                        <li title="관리자" <%=uri.contains("/ledger-admin/ledger") ? "class='on'" : "" %>><a href="/admin/ledger/list"><i class="fa fa-file-text-o" aria-hidden="true"></i><span>금융사 원장 목록(관리자)</span></a></li>
+                        <li title="관리자" <%=uri.contains("/ledger-admin/ledger") ? "class='on'" : "" %>><a href="/admin/ledger/list"><i class="fa fa-file-text-o" aria-hidden="true"></i><span>금융사 원장 목록<span class="badge-manager">관리자</span></span></a></li>
                         <% } %>
                     </ul>
                 </div>
@@ -55,7 +55,7 @@
                         <% } %>
                         <li title="AG" <%=uri.contains("/calculate/calculate") ? "class='on'" : "" %>><a href="/ag/calc/list"><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록</span></a></li>
                         <% if(PermissionHelper.isAdmin(request)) { %>
-                        <li title="관리자" <%=uri.contains("/calculate/calculate-admin") ? "class='on'" : "" %>><a href="/admin/calc/list"><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록(관리자)</span></a></li>
+                        <li title="관리자" <%=uri.contains("/calculate/calculate-admin") ? "class='on'" : "" %>><a href="/admin/calc/list"><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록<span class="badge-manager">관리자</span></span></a></li>
                         <% } %>
                     </ul>
                 </div>

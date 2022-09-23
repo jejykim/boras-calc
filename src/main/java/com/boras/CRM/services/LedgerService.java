@@ -97,4 +97,9 @@ public class LedgerService implements LedgerMapper {
 		return ledgerMapper.selectLedgerDetailList(ledgerSeq);
 	}
 
+	@Override
+	public Map<String, Object> selectLedgerEachCount(LedgerVO ledgerVO) {
+		return ledgerMapper.selectLedgerEachCount(ledgerVO);
+	}
+
 }
