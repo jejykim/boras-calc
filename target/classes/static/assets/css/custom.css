@@ -1,5 +1,18 @@
 @charset "UTF-8";
 
+.custom-modal-input-5 {
+	display: flex;
+}
+
+.custom-modal-input-5 > div:first-of-type {
+	margin-left: 0;
+}
+
+.custom-modal-input-5 > div {
+	margin-left: 1.3%;
+    width: 19%;
+}
+
 .custom-modal-input-4 {
 	display: flex;
 }
@@ -10,7 +23,7 @@
 
 .custom-modal-input-4 > div {
 	margin-left: 1.3%;
-    width: 24%
+    width: 24%;
 }
 
 .custom-modal-input-3 {
@@ -23,7 +36,20 @@
 
 .custom-modal-input-3 > div {
 	margin-left: 2%;
-    width: 32%
+    width: 32%;
+}
+
+.custom-modal-input-2 {
+	display: flex;
+}
+
+.custom-modal-input-2 > div:first-of-type {
+	margin-left: 0;
+}
+
+.custom-modal-input-2 > div {
+	margin-left: 2%;
+    width: 49%;
 }
 
 .form-control.col-wrap select {

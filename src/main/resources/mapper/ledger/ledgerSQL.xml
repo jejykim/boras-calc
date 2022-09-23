@@ -652,6 +652,7 @@
 		WHERE approval_user_id = #{approvalUserId}
 		AND extract(year from approval_request_date) = extract(year from now())
 		AND extract(month from approval_request_date) = extract(month from now())
+		AND approval_state not in ('거부')
   	</select>
   	
   	<!-- 원장 승인 여부 확인 (삭제 확인 용) -->

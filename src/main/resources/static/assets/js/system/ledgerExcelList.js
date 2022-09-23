@@ -226,6 +226,8 @@ LedgerExcelList.addExcelSetting = function () {
 			, "ledgerSlidingSum" : $("#textSlidingSum").val()
 			, "ledgerSlidingSupplyPrice" : $("#textSlidingSupplyPrice").val()
 			, "ledgerSlidingSurtax" : $("#textSlidingSurtax").val()
+			, "ledgerAddPromotion" : $("#textPromotionFee").val()
+			, "ledgerPromotionMemo" : $("#textPromotionName").val()
 		};
 		
 		formData.append("ledgerExcelVO", new Blob([JSON.stringify(data)], {type: "application/json"}));
@@ -289,6 +291,8 @@ LedgerExcelList.modifyExcelSetting = function () {
 			, "ledgerSlidingSum" : $("#textSlidingSum2").val()
 			, "ledgerSlidingSupplyPrice" : $("#textSlidingSupplyPrice2").val()
 			, "ledgerSlidingSurtax" : $("#textSlidingSurtax2").val()
+			, "ledgerAddPromotion" : $("#textPromotionFee2").val()
+			, "ledgerPromotionMemo" : $("#textPromotionName2").val()
 			, "ledgerExcelSeq" : LedgerExcelList.ledgerExcelSeq
 		};
 		
@@ -492,6 +496,8 @@ LedgerExcelList.getledgerExcelInfo = function (ledgerExcelSeq) {
 					$("#textSlidingSum2").val(vo.ledgerSlidingSum);
 					$("#textSlidingSupplyPrice2").val(vo.ledgerSlidingSupplyPrice);
 					$("#textSlidingSurtax2").val(vo.ledgerSlidingSurtax);
+					$("#textPromotionFee2").val(vo.ledgerAddPromotion);
+					$("#textPromotionName2").val(vo.ledgerPromotionMemo);
 					$("#aExcelFile").attr("href", vo.ledgerExcelFilePath);
 					$("#aExcelFile").html(vo.ledgerExcelFileName);
 					

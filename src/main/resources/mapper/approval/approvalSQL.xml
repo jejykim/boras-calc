@@ -60,6 +60,7 @@
   	<select id="cntApprovalLedgerSeq" parameterType="approvalVO" resultType="int">
   		SELECT COUNT(*) FROM approval
   		WHERE approval_ledger_seq=#{approvalLedgerSeq}
+  		AND approval_state in ('요청')
   	</select>
   	
   	<!-- 중복승인처리 - 승인외건 거부 처리 -->

@@ -162,7 +162,7 @@
         
         <!--modal / 원장 엑셀 추가-->
         <div class="modal hide" id="modalAddExcel">
-            <div class="modal-contents" style="width: 580px;">
+            <div class="modal-contents" style="width: 800px;">
                 <div class="modal-head">
                     <h4>원장 Excel 추가</h4>
                 </div>
@@ -170,7 +170,7 @@
 		            <div class="modal-form custom-modal-input-3">
 		            	<div>
                             <div class="from-title">
-                                <h6>금융사</h6>
+                                <h6><span style="color: red;">* </span>금융사</h6>
                             </div>
                             <select id="selFinancialCompanyCode">
                             	<c:forEach var="list" items="${financialCompanyCodelist }" varStatus="status">
@@ -180,7 +180,7 @@
                         </div>
 		            	<div>
                             <div class="from-title">
-                                <h6>금융지점</h6>
+                                <h6><span style="color: red;">* </span>금융지점</h6>
                             </div>
                             <select id="selFinancialBranchCode">
 		                        <c:forEach var="list" items="${financialBranchCodelist }" varStatus="status">
@@ -192,7 +192,7 @@
                         </div>
                         <div>
                             <div class="from-title">
-                                <h6>금융상품</h6>
+                                <h6><span style="color: red;">* </span>금융상품</h6>
                             </div>
                             <select id="selFinancialProduct">
                             	<c:forEach var="list" items="${financialProductCodelist }" varStatus="status">
@@ -204,7 +204,7 @@
                     <div class="modal-form input-sh">
 		            	<div>
                             <div class="from-title">
-                                <h6>자동화 사용여부</h6>
+                                <h6><span style="color: red;">* </span>자동화 사용여부</h6>
                             </div>
                             <div>
 	                            <div class="from-title">
@@ -212,13 +212,13 @@
 									    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;">
 									      <input id="arY" class="radio-button" type="radio" name="auto-radio" checked="checked" value="Y"/>
 									      <div class="radio-tile">
-									        <label for="arY" class="radio-tile-label">사용</label>
+									        <label for="arY" class="radio-tile-label">자동</label>
 									      </div>
 									    </div>
 									    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;">
 									      <input id="arN" class="radio-button" type="radio" name="auto-radio" value="N"/>
 									      <div class="radio-tile">
-									        <label for="arN" class="radio-tile-label">미사용</label>
+									        <label for="arN" class="radio-tile-label">수동</label>
 									      </div>
 									    </div>
 									  </div>
@@ -227,7 +227,7 @@
                         </div>
                         <div>
                             <div class="from-title">
-                                <h6>통합 엑셀 사용여부</h6>
+                                <h6><span style="color: red;">* </span>통합 엑셀 사용여부</h6>
                             </div>
                             <div>
 	                            <div class="from-title">
@@ -235,13 +235,13 @@
 									    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;">
 									      <input id="crY" class="radio-button" type="radio" name="common-radio" checked="checked" value="Y"/>
 									      <div class="radio-tile">
-									        <label for="crY" class="radio-tile-label">사용</label>
+									        <label for="crY" class="radio-tile-label">통합</label>
 									      </div>
 									    </div>
 									    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;">
 									      <input id="crN" class="radio-button" type="radio" name="common-radio" value="N"/>
 									      <div class="radio-tile">
-									        <label for="crN" class="radio-tile-label">미사용</label>
+									        <label for="crN" class="radio-tile-label">개별</label>
 									      </div>
 									    </div>
 									  </div>
@@ -249,24 +249,30 @@
 	                        </div>
                         </div>
                     </div>
-                    <div class="modal-form custom-modal-input-4">
+                    <div class="modal-form custom-modal-input-5">
 		            	<div>
                             <div class="from-title">
-                                <h6>엑셀 헤더 열 위치</h6>
+                                <h6><span style="color: red;">* </span>엑셀 헤더 열 위치</h6>
                             </div>
                             <input type="text" placeholder="예) A3" id="textExcelHeader">
                         </div>
                         <div>
                             <div class="from-title">
-                                <h6>엑셀 시트 명</h6>
+                                <h6><span style="color: red;">* </span>엑셀 시트 명</h6>
                             </div>
                             <input type="text" placeholder="예) sheet1" id="textExcelSheet">
                         </div>
                         <div>
                             <div class="from-title">
-                                <h6>차량가 위치</h6>
+                                <h6><span style="color: red;">* </span>고객명 위치</h6>
                             </div>
-                            <input type="text" placeholder="예) B2" id="textCarPrice">
+                            <input type="text" placeholder="예) B2" id="textCustomerName">
+                        </div>
+                       	<div>
+                            <div class="from-title">
+                                <h6>인도일 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textDeliveryDate">
                         </div>
                         <div>
                             <div class="from-title">
@@ -275,18 +281,12 @@
                             <input type="text" placeholder="예) B2" id="textAcquisitionCost">
                         </div>
                     </div>
-                    <div class="modal-form custom-modal-input-4">
-		            	<div>
+                    <div class="modal-form custom-modal-input-5">
+                         <div>
                             <div class="from-title">
-                                <h6>인도일 위치</h6>
+                                <h6>차량가 위치</h6>
                             </div>
-                            <input type="text" placeholder="예) B2" id="textDeliveryDate">
-                        </div>
-                        <div>
-                            <div class="from-title">
-                                <h6>고객명 위치</h6>
-                            </div>
-                            <input type="text" placeholder="예) B2" id="textCustomerName">
+                            <input type="text" placeholder="예) B2" id="textCarPrice">
                         </div>
 		            	<div>
                             <div class="from-title">
@@ -299,6 +299,18 @@
                                 <h6>차량번호 위치</h6>
                             </div>
                             <input type="text" placeholder="예) B2" id="textCarNumber">
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>프로모션 합계 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textPromotionFee">
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>프로모션명 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textPromotionName">
                         </div>
                     </div>
                     <div class="modal-form custom-modal-input-4">
@@ -356,7 +368,7 @@
                     <div class="modal-form">
                     	<div>
                     		<div class="from-title">
-                                <h6>Excel 파일</h6>
+                                <h6><span style="color: red;">* </span>Excel 파일</h6>
                             </div>
 	                    	<div class="dropzone" id="my-dropzone">
 							</div>
@@ -375,7 +387,7 @@
         
         <!--modal / 원장 엑셀 상세-->
         <div class="modal hide" id="modalInfoExcel">
-            <div class="modal-contents" style="width: 580px;">
+            <div class="modal-contents" style="width: 800px;">
                 <div class="modal-head">
                     <h4>원장 Excel 수정</h4>
                 </div>
@@ -383,21 +395,21 @@
 		            <div class="modal-form custom-modal-input-3">
 		            	<div>
                             <div class="from-title">
-                                <h6>금융사</h6>
+                                <h6><span style="color: red;">* </span>금융사</h6>
                             </div>
                             <input type="text" disabled="disabled" id="textFinancialCompanyCode2">
                             <input type="hidden" id="textFinancialCompanyCd">
                         </div>
 		            	<div>
                             <div class="from-title">
-                                <h6>금융지점</h6>
+                                <h6><span style="color: red;">* </span>금융지점</h6>
                             </div>
                             <input type="text" disabled="disabled" id="textFinancialBranchCode2">
                             <input type="hidden" id="textFinancialBranchCd">
                         </div>
                         <div>
                             <div class="from-title">
-                                <h6>금융상품</h6>
+                                <h6><span style="color: red;">* </span>금융상품</h6>
                             </div>
                             <input type="text" disabled="disabled" id="textFinancialProduct2">
                             <input type="hidden" id="textFinancialProductcd">
@@ -406,7 +418,7 @@
                     <div class="modal-form input-sh">
 		            	<div>
                             <div class="from-title">
-                                <h6>자동화 사용여부</h6>
+                                <h6><span style="color: red;">* </span>자동화 사용여부</h6>
                             </div>
                             <div>
 	                            <div class="from-title">
@@ -414,13 +426,13 @@
 									    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;">
 									      <input id="arY2" class="radio-button" type="radio" name="auto-radio2" checked="checked" value="Y"/>
 									      <div class="radio-tile">
-									        <label for="arY2" class="radio-tile-label">사용</label>
+									        <label for="arY2" class="radio-tile-label">자동</label>
 									      </div>
 									    </div>
 									    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;">
 									      <input id="arN2" class="radio-button" type="radio" name="auto-radio2" value="N"/>
 									      <div class="radio-tile">
-									        <label for="arN2" class="radio-tile-label">미사용</label>
+									        <label for="arN2" class="radio-tile-label">수동</label>
 									      </div>
 									    </div>
 									  </div>
@@ -429,7 +441,7 @@
                         </div>
                         <div>
                             <div class="from-title">
-                                <h6>통합 엑셀 사용여부</h6>
+                                <h6><span style="color: red;">* </span>통합 엑셀 사용여부</h6>
                             </div>
                             <div>
 	                            <div class="from-title">
@@ -437,13 +449,13 @@
 									    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;">
 									      <input id="crY2" class="radio-button" type="radio" name="common-radio2" checked="checked" value="Y"/>
 									      <div class="radio-tile">
-									        <label for="crY2" class="radio-tile-label">사용</label>
+									        <label for="crY2" class="radio-tile-label">통합</label>
 									      </div>
 									    </div>
 									    <div class="input-container" style="width: 30%; height: 10px; margin-top: 0;">
 									      <input id="crN2" class="radio-button" type="radio" name="common-radio2" value="N"/>
 									      <div class="radio-tile">
-									        <label for="crN2" class="radio-tile-label">미사용</label>
+									        <label for="crN2" class="radio-tile-label">개별</label>
 									      </div>
 									    </div>
 									  </div>
@@ -451,24 +463,30 @@
 	                        </div>
                         </div>
                     </div>
-                    <div class="modal-form custom-modal-input-4">
+                    <div class="modal-form custom-modal-input-5">
 		            	<div>
                             <div class="from-title">
-                                <h6>엑셀 헤더 열 위치</h6>
+                                <h6><span style="color: red;">* </span>엑셀 헤더 열 위치</h6>
                             </div>
                             <input type="text" placeholder="예) A3" id="textExcelHeader2">
                         </div>
                         <div>
                             <div class="from-title">
-                                <h6>엑셀 시트 명</h6>
+                                <h6><span style="color: red;">* </span>엑셀 시트 명</h6>
                             </div>
                             <input type="text" placeholder="예) sheet1" id="textExcelSheet2">
                         </div>
                         <div>
                             <div class="from-title">
-                                <h6>차량가 위치</h6>
+                                <h6><span style="color: red;">* </span>고객명 위치</h6>
                             </div>
-                            <input type="text" placeholder="예) B2" id="textCarPrice2">
+                            <input type="text" placeholder="예) B2" id="textCustomerName2">
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>인도일 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textDeliveryDate2">
                         </div>
                         <div>
                             <div class="from-title">
@@ -477,18 +495,12 @@
                             <input type="text" placeholder="예) B2" id="textAcquisitionCost2">
                         </div>
                     </div>
-                    <div class="modal-form custom-modal-input-4">
+                    <div class="modal-form custom-modal-input-5">
 		            	<div>
                             <div class="from-title">
-                                <h6>인도일 위치</h6>
+                                <h6>차량가 위치</h6>
                             </div>
-                            <input type="text" placeholder="예) B2" id="textDeliveryDate2">
-                        </div>
-                        <div>
-                            <div class="from-title">
-                                <h6>고객명 위치</h6>
-                            </div>
-                            <input type="text" placeholder="예) B2" id="textCustomerName2">
+                            <input type="text" placeholder="예) B2" id="textCarPrice2">
                         </div>
 		            	<div>
                             <div class="from-title">
@@ -501,6 +513,18 @@
                                 <h6>차량번호 위치</h6>
                             </div>
                             <input type="text" placeholder="예) B2" id="textCarNumber2">
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>프로모션 합계 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textPromotionFee2">
+                        </div>
+                        <div>
+                            <div class="from-title">
+                                <h6>프로모션명 위치</h6>
+                            </div>
+                            <input type="text" placeholder="예) B2" id="textPromotionName2">
                         </div>
                     </div>
                     <div class="modal-form custom-modal-input-4">
@@ -558,7 +582,7 @@
                     <div class="modal-form">
                     	<div>
                     		<div class="from-title">
-                                <h6>Excel 파일</h6>
+                                <h6><span style="color: red;">* </span>Excel 파일</h6>
                             </div>
 	                    	<div class="dropzone" id="my-dropzone2">
 							</div>

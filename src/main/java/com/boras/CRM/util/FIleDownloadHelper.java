@@ -83,6 +83,7 @@ public class FIleDownloadHelper extends AbstractView {
 	
 	// excelDownForFinancialSupport(financialSupportList, "재정지원사업 선정현황_"+title, orgehService, resp, req);
 	// 샘플 엑셀 다운로드
+	/*
 	protected void excelDownForFinancialSupport(List<FinancialSupportVO> list, String title, OrgehService orgehService, HttpServletResponse response, HttpServletRequest request)  {
 		// 워크북 생성
 		Workbook wb = new XSSFWorkbook();
@@ -218,4 +219,5 @@ public class FIleDownloadHelper extends AbstractView {
 			logger.error(e.getMessage());
 		}
 	}
+	*/
 }

@@ -295,8 +295,18 @@ public class LedgerApiController {
 	    
 	    ledgerVO.setLedgerUpdateUserId(PermissionHelper.getSessionUserId(req));
 	    
+	    LedgerVO tempLedgerVO = new LedgerVO();
+	    
 	    try {
-	    	ledgerService.updateLedger(ledgerVO);
+	    	tempLedgerVO = ledgerService.selectLedgerDetail(ledgerVO);
+	    }catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+	    
+	    tempLedgerVO.setLedgerOther(ledgerVO.getLedgerOther());
+	    
+	    try {
+	    	ledgerService.updateLedger(tempLedgerVO);
 	    	
 	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
 			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
@@ -318,8 +328,19 @@ public class LedgerApiController {
 	    
 	    ledgerVO.setLedgerUpdateUserId(PermissionHelper.getSessionUserId(req));
 	    
+	    LedgerVO tempLedgerVO = new LedgerVO();
+	    
 	    try {
-	    	ledgerService.updateLedger(ledgerVO);
+	    	tempLedgerVO = ledgerService.selectLedgerDetail(ledgerVO);
+	    }catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+	    
+	    tempLedgerVO.setLedgerDealerBrandCd(ledgerVO.getLedgerDealerBrandCd());
+	    tempLedgerVO.setLedgerDealerCompanyCd(ledgerVO.getLedgerDealerCompanyCd());
+	    
+	    try {
+	    	ledgerService.updateLedger(tempLedgerVO);
 	    	
 	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
 			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
@@ -657,21 +678,20 @@ public class LedgerApiController {
 								XSSFCell cell = row.getCell(ref.getCol());
 								ledgerVO.setLedgerTotalFeePercent(cell != null ? Integer.parseInt(getCellValue(cell)) : 0);
 							}else {
-								BigDecimal percent = BigDecimal.ZERO;
+								Double percent = 0d;
 								switch (nForm1) {
 								case "ledgerAcquisitionCost":
-									percent = ledgerVO.getLedgerTotalFeeSum().divide(ledgerVO.getLedgerAcquisitionCost());
+									percent = ledgerVO.getLedgerTotalFeeSum().doubleValue() / ledgerVO.getLedgerAcquisitionCost().doubleValue();
 									break;
 								case "ledgerCarPrice":
-									percent = ledgerVO.getLedgerTotalFeeSum().divide(ledgerVO.getLedgerCarPrice());
+									percent = ledgerVO.getLedgerTotalFeeSum().doubleValue() / ledgerVO.getLedgerCarPrice().doubleValue();
 									break;
 								default:
-									percent = ledgerVO.getLedgerTotalFeeSum().divide(ledgerVO.getLedgerAcquisitionCost());
+									percent = ledgerVO.getLedgerTotalFeeSum().doubleValue() / ledgerVO.getLedgerAcquisitionCost().doubleValue();
 									break;
 								}
-								Double doublePercent = percent.doubleValue();
-								if(doublePercent > 0) {
-									ledgerVO.setLedgerTotalFeePercent(doublePercent * 100d);
+								if(percent > 0) {
+									ledgerVO.setLedgerTotalFeePercent(percent * 100d);
 									//ledgerVO.setLedgerTotalFeePercent(percent);
 								}else {
 									ledgerVO.setLedgerTotalFeePercent(0);
@@ -734,13 +754,13 @@ public class LedgerApiController {
 								Double percent = 0d;
 								switch (sForm1) {
 									case "ledgerAcquisitionCost":
-										percent = ledgerVO.getLedgerSlidingSum().doubleValue() / ledgerVO.getLedgerAcquisitionCost().doubleValue();
+										percent = ledgerVO.getLedgerSlidingSum() != null ? ledgerVO.getLedgerSlidingSum().doubleValue() : 0d / ledgerVO.getLedgerAcquisitionCost().doubleValue();
 										break;
 									case "ledgerCarPrice":
-										percent = ledgerVO.getLedgerSlidingSum().doubleValue() / ledgerVO.getLedgerCarPrice().doubleValue();
+										percent = ledgerVO.getLedgerSlidingSum() != null ? ledgerVO.getLedgerSlidingSum().doubleValue() : 0d / ledgerVO.getLedgerCarPrice().doubleValue();
 										break;
 									default:
-										percent = ledgerVO.getLedgerSlidingSum().doubleValue() / ledgerVO.getLedgerAcquisitionCost().doubleValue();
+										percent = ledgerVO.getLedgerSlidingSum() != null ? ledgerVO.getLedgerSlidingSum().doubleValue() : 0d / ledgerVO.getLedgerAcquisitionCost().doubleValue();
 										break;
 								}
 								
@@ -762,13 +782,15 @@ public class LedgerApiController {
 								BigDecimal bigD = new BigDecimal(getCellValue(cell));
 								ledgerVO.setLedgerSlidingSupplyPrice(cell != null ? bigD : BigDecimal.ZERO);
 							}else {
-								if(ledgerVO.getLedgerSlidingSum().doubleValue() > 0) {
-									sSupplyPrice = (int) (ledgerVO.getLedgerSlidingSum().doubleValue() / 1.1);
-									sSurtax = (int) (ledgerVO.getLedgerSlidingSum().doubleValue() - sSupplyPrice);
-									BigDecimal bigSSupplyPrice = new BigDecimal(sSupplyPrice);
-									ledgerVO.setLedgerSlidingSupplyPrice(bigSSupplyPrice);
-								}else {
-									ledgerVO.setLedgerSlidingSupplyPrice(BigDecimal.ZERO);
+								if(ledgerVO.getLedgerSlidingSum() != null) {
+									if(ledgerVO.getLedgerSlidingSum().doubleValue() > 0) {
+										sSupplyPrice = (int) (ledgerVO.getLedgerSlidingSum() != null ? ledgerVO.getLedgerSlidingSum().doubleValue() : 0d / 1.1);
+										sSurtax = (int) (ledgerVO.getLedgerSlidingSum() != null ? ledgerVO.getLedgerSlidingSum().doubleValue() : 0d - sSupplyPrice);
+										BigDecimal bigSSupplyPrice = new BigDecimal(sSupplyPrice);
+										ledgerVO.setLedgerSlidingSupplyPrice(bigSSupplyPrice);
+									}else {
+										ledgerVO.setLedgerSlidingSupplyPrice(BigDecimal.ZERO);
+									}
 								}
 							}
 							
@@ -792,6 +814,13 @@ public class LedgerApiController {
 								ref = new CellReference(ledgerExcelVO.getLedgerAddPromotion());
 								XSSFCell cell = row.getCell(ref.getCol());
 								ledgerVO.setLedgerAddPromotion(cell != null ? Integer.parseInt(getCellValue(cell)) : null);
+							}
+							
+							// 추가프로모션 명
+							if(ledgerExcelVO.getLedgerPromotionMemo() != null) {
+								ref = new CellReference(ledgerExcelVO.getLedgerPromotionMemo());
+								XSSFCell cell = row.getCell(ref.getCol());
+								ledgerVO.setLedgerPromotionMemo(cell != null ? getCellValue(cell) : "");
 							}
 							
 							// 원장 등록
@@ -957,6 +986,8 @@ public class LedgerApiController {
 		rvt.setLedgerSlidingSum("K3");
 		rvt.setLedgerSlidingSupplyPrice("M3");
 		rvt.setLedgerSlidingSurtax("N3");
+		rvt.setLedgerAddPromotion("O3");
+		rvt.setLedgerPromotionMemo("P3");
 		
 		return rvt;
 	}
