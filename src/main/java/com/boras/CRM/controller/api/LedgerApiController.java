@@ -629,7 +629,7 @@ public class LedgerApiController {
 								ref = new CellReference(ledgerExcelVO.getLedgerCarPrice());
 								XSSFCell cell = row.getCell(ref.getCol());
 								
-								BigDecimal bigD = new BigDecimal(getCellValue(cell));
+								BigDecimal bigD = new BigDecimal(getCellValue(cell).isEmpty() ? "0" : getCellValue(cell));
 								
 								ledgerVO.setLedgerCarPrice(cell != null ? bigD : null);
 							}
@@ -638,7 +638,7 @@ public class LedgerApiController {
 							if(ledgerExcelVO.getLedgerAcquisitionCost() != null) {
 								ref = new CellReference(ledgerExcelVO.getLedgerAcquisitionCost());
 								XSSFCell cell = row.getCell(ref.getCol());
-								BigDecimal bigD = new BigDecimal(getCellValue(cell));
+								BigDecimal bigD = new BigDecimal(getCellValue(cell).isEmpty() ? "0" : getCellValue(cell));
 								ledgerVO.setLedgerAcquisitionCost(cell != null ? bigD : null);
 							}
 							
@@ -663,7 +663,7 @@ public class LedgerApiController {
 								ref = new CellReference(ledgerExcelVO.getLedgerTotalFeeSum());
 								XSSFCell cell = row.getCell(ref.getCol());
 								
-								BigDecimal bigD = new BigDecimal(getCellValue(cell));
+								BigDecimal bigD = new BigDecimal(getCellValue(cell).isEmpty() ? "0" : getCellValue(cell));
 								BigDecimal totalFeeSum = cell != null ? bigD : BigDecimal.ZERO;
 								BigDecimal num = new BigDecimal(1.1);
 								if(!nForm3.isEmpty()) {
@@ -676,7 +676,7 @@ public class LedgerApiController {
 							if(ledgerExcelVO.getLedgerTotalFeePercent() != null) {
 								ref = new CellReference(ledgerExcelVO.getLedgerTotalFeePercent());
 								XSSFCell cell = row.getCell(ref.getCol());
-								ledgerVO.setLedgerTotalFeePercent(cell != null ? Integer.parseInt(getCellValue(cell)) : 0);
+								ledgerVO.setLedgerTotalFeePercent(cell != null ? Integer.parseInt(getCellValue(cell).isEmpty() ? "0" : getCellValue(cell)) : 0);
 							}else {
 								Double percent = 0d;
 								switch (nForm1) {
@@ -705,8 +705,8 @@ public class LedgerApiController {
 							if(ledgerExcelVO.getLedgerTotalFeeSupplyPrice() != null) {
 								ref = new CellReference(ledgerExcelVO.getLedgerTotalFeeSupplyPrice());
 								XSSFCell cell = row.getCell(ref.getCol());
-								BigDecimal bigD = new BigDecimal(getCellValue(cell));
-								ledgerVO.setLedgerTotalFeeSupplyPrice(cell != null ? bigD : BigDecimal.ZERO);
+								BigDecimal bigD = new BigDecimal(getCellValue(cell).isEmpty() ? "0" : getCellValue(cell));
+								ledgerVO.setLedgerTotalFeeSupplyPrice(bigD);
 							}else {
 								if(ledgerVO.getLedgerTotalFeeSum().compareTo(BigDecimal.ZERO) > 0) {
 									supplyPrice = (int) (ledgerVO.getLedgerTotalFeeSum().doubleValue() / 1.1);
@@ -726,8 +726,8 @@ public class LedgerApiController {
 								if(ledgerExcelVO.getLedgerTotalFeeSurtax() != null) {
 									ref = new CellReference(ledgerExcelVO.getLedgerTotalFeeSurtax());
 									XSSFCell cell = row.getCell(ref.getCol());
-									BigDecimal bigD = new BigDecimal(getCellValue(cell));
-									ledgerVO.setLedgerTotalFeeSurtax(cell != null ? bigD : BigDecimal.ZERO);
+									BigDecimal bigD = new BigDecimal(getCellValue(cell).isEmpty() ? "0" : getCellValue(cell));
+									ledgerVO.setLedgerTotalFeeSurtax(bigD);
 								}else {
 									ledgerVO.setLedgerTotalFeeSurtax(BigDecimal.ZERO);
 								}
@@ -737,7 +737,7 @@ public class LedgerApiController {
 							if(ledgerExcelVO.getLedgerSlidingSum() != null) {
 								ref = new CellReference(ledgerExcelVO.getLedgerSlidingSum());
 								XSSFCell cell = row.getCell(ref.getCol());
-								int sFeeSum = cell != null ? Integer.parseInt(getCellValue(cell)) : 0;
+								int sFeeSum = cell != null ? Integer.parseInt(getCellValue(cell).isEmpty() ? "0" : getCellValue(cell)) : 0;
 								if(!sForm3.isEmpty()) {
 									sFeeSum = (int) (sFeeSum * 1.1);
 								}
@@ -749,7 +749,7 @@ public class LedgerApiController {
 							if(ledgerExcelVO.getLedgerSlidingPercent() != null) {
 								ref = new CellReference(ledgerExcelVO.getLedgerSlidingPercent());
 								XSSFCell cell = row.getCell(ref.getCol());
-								ledgerVO.setLedgerSlidingPercent(cell != null ? Integer.parseInt(getCellValue(cell)) : 0);
+								ledgerVO.setLedgerSlidingPercent(cell != null ? Integer.parseInt(getCellValue(cell).isEmpty() ? "0" : getCellValue(cell)) : 0);
 							}else {
 								Double percent = 0d;
 								switch (sForm1) {
@@ -779,8 +779,8 @@ public class LedgerApiController {
 							if(ledgerExcelVO.getLedgerSlidingSupplyPrice() != null) {
 								ref = new CellReference(ledgerExcelVO.getLedgerSlidingSupplyPrice());
 								XSSFCell cell = row.getCell(ref.getCol());
-								BigDecimal bigD = new BigDecimal(getCellValue(cell));
-								ledgerVO.setLedgerSlidingSupplyPrice(cell != null ? bigD : BigDecimal.ZERO);
+								BigDecimal bigD = new BigDecimal(getCellValue(cell).isEmpty() ? "0" : getCellValue(cell));
+								ledgerVO.setLedgerSlidingSupplyPrice(bigD);
 							}else {
 								if(ledgerVO.getLedgerSlidingSum() != null) {
 									if(ledgerVO.getLedgerSlidingSum().doubleValue() > 0) {
@@ -802,8 +802,8 @@ public class LedgerApiController {
 								if(ledgerExcelVO.getLedgerSlidingSurtax() != null) {
 									ref = new CellReference(ledgerExcelVO.getLedgerSlidingSurtax());
 									XSSFCell cell = row.getCell(ref.getCol());
-									BigDecimal bigD = new BigDecimal(getCellValue(cell));
-									ledgerVO.setLedgerSlidingSurtax(cell != null ? bigD : BigDecimal.ZERO);
+									BigDecimal bigD = new BigDecimal(getCellValue(cell).isEmpty() ? "0" : getCellValue(cell));
+									ledgerVO.setLedgerSlidingSurtax(bigD);
 								}else {
 									ledgerVO.setLedgerSlidingSurtax(BigDecimal.ZERO);
 								}
@@ -813,7 +813,7 @@ public class LedgerApiController {
 							if(ledgerExcelVO.getLedgerAddPromotion() != null) {
 								ref = new CellReference(ledgerExcelVO.getLedgerAddPromotion());
 								XSSFCell cell = row.getCell(ref.getCol());
-								ledgerVO.setLedgerAddPromotion(cell != null ? Integer.parseInt(getCellValue(cell)) : null);
+								ledgerVO.setLedgerAddPromotion(cell != null ? Integer.parseInt(getCellValue(cell).isEmpty() ? "0" : getCellValue(cell)) : null);
 							}
 							
 							// 추가프로모션 명
@@ -1014,10 +1014,10 @@ public class LedgerApiController {
 				value = cell.getStringCellValue() + "";
 				break;
 			case XSSFCell.CELL_TYPE_BLANK:
-				value = cell.getBooleanCellValue() + "";
+				value = "";
 				break;
 			case XSSFCell.CELL_TYPE_ERROR:
-				value = cell.getErrorCellValue() + "";
+				value = "";
 				break;
 			default:
 				value = new String();
