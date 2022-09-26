@@ -2416,3 +2416,95 @@ i.ico-b-krw {
     border-radius: 0.5px;
     background-color: #a5a5a5;
 }
+
+/*--------------------------------------------------------------------------------------
+공통코드
+----------------------------------------------------------------------------------------*/
+.code-id {
+    display: inline-block;
+    font-weight: 400;
+    font-size: 14px;
+    color: #5C61F4;
+    width: 100%;
+    padding: 6px 24px;
+    padding-bottom: 0;
+}
+
+.code-id strong {
+    color: #191919;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.badge-id {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 100px;
+    margin-right: 1px;
+    vertical-align: middle;
+    background-color: #5C61F4;
+    margin-top: -2px;
+}
+
+.portlet-body.dashboard.code .portlet-header {
+    padding: 8px 24px;
+}
+
+.portlet-body.dashboard.code .board {
+    width: 32%;
+    position: relative;
+    min-height: 700px;
+}
+
+.portlet-body.dashboard.code .board.w-100 {
+    width: 100%;
+}
+
+.portlet-body.dashboard.code .board:first-of-type .table {
+    margin-top: 35px;
+}
+
+.portlet-body.dashboard.code .box-body {
+    padding: 0;
+}
+
+.code-add th {
+    background-color: #fff;
+    color: #191919;
+    text-align: right;
+    padding: 24px 10px;
+}
+
+.code-add td {
+    border: 0;
+    text-align: left;
+    padding-left: 12px;
+}
+
+.code-add input {
+    width: 80%;
+}
+
+.code-add select {
+    width: 80%;
+    border: 1px solid #DEE0E5;
+}
+
+.box-footer {
+    border-top: 1px solid #ECEEF2;
+    text-align: right;
+    padding: 16px 30px;
+    position: absolute;
+    width: 100%;
+    right: 0;
+    bottom: 0;
+}
+
+.box-footer button {
+    padding: 8px 20px;
+}
+
+.portlet-body.dashboard.code .board:last-of-type .box-body {
+    padding-top: 50px;
+}
