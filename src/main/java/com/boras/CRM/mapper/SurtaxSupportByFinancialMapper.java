@@ -21,7 +21,7 @@ public interface SurtaxSupportByFinancialMapper {
 	 * @param 
 	 * @return SurtaxSupportByFinancialVO
 	 */
-	public SurtaxSupportByFinancialVO selectSurtaxSupportByFinancialInfo();
+	public SurtaxSupportByFinancialVO selectSurtaxSupportByFinancialInfo(SurtaxSupportByFinancialVO surtaxSupportByFinancialVO);
 	
 	/**
 	 * 금융사 별 부가세지원여부 등록

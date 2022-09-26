@@ -22,8 +22,8 @@ public class SurtaxSupportByFinancialService implements SurtaxSupportByFinancial
 	}
 	
 	@Override
-	public SurtaxSupportByFinancialVO selectSurtaxSupportByFinancialInfo() {
-		return surtaxSupportByFinancialMapper.selectSurtaxSupportByFinancialInfo();
+	public SurtaxSupportByFinancialVO selectSurtaxSupportByFinancialInfo(SurtaxSupportByFinancialVO surtaxSupportByFinancialVO) {
+		return surtaxSupportByFinancialMapper.selectSurtaxSupportByFinancialInfo(surtaxSupportByFinancialVO);
 	}
 	
 	@Override

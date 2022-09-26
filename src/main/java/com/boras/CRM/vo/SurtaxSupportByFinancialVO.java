@@ -4,8 +4,8 @@ public class SurtaxSupportByFinancialVO {
 	private int surtaxSupportByFinancialSeq;
 	private int surtaxSupportByFinancialCompanyCd;
 	private int surtaxSupportByFinancialProductCd;
-	private int surtaxSupportByFinancialCompanyCdName;
-	private int surtaxSupportByFinancialProductCdName;
+	private String surtaxSupportByFinancialCompanyCdName;
+	private String surtaxSupportByFinancialProductCdName;
 	private String surtaxSupportByFinancialAgFeeSurtaxSupportYn;
 	private String surtaxSupportByFinancialSlidingSurtaxSupportYn;
 	private String surtaxSupportByFinancialAddFeeSurtaxSupportYn;
@@ -75,16 +75,16 @@ public class SurtaxSupportByFinancialVO {
 	public void setSurtaxSupportByFinancialUpdateUserId(String surtaxSupportByFinancialUpdateUserId) {
 		this.surtaxSupportByFinancialUpdateUserId = surtaxSupportByFinancialUpdateUserId;
 	}
-	public int getSurtaxSupportByFinancialCompanyCdName() {
+	public String getSurtaxSupportByFinancialCompanyCdName() {
 		return surtaxSupportByFinancialCompanyCdName;
 	}
-	public void setSurtaxSupportByFinancialCompanyCdName(int surtaxSupportByFinancialCompanyCdName) {
+	public void setSurtaxSupportByFinancialCompanyCdName(String surtaxSupportByFinancialCompanyCdName) {
 		this.surtaxSupportByFinancialCompanyCdName = surtaxSupportByFinancialCompanyCdName;
 	}
-	public int getSurtaxSupportByFinancialProductCdName() {
+	public String getSurtaxSupportByFinancialProductCdName() {
 		return surtaxSupportByFinancialProductCdName;
 	}
-	public void setSurtaxSupportByFinancialProductCdName(int surtaxSupportByFinancialProductCdName) {
+	public void setSurtaxSupportByFinancialProductCdName(String surtaxSupportByFinancialProductCdName) {
 		this.surtaxSupportByFinancialProductCdName = surtaxSupportByFinancialProductCdName;
 	}
 	public String getSurtaxSupportByFinancialUseYn() {
@@ -92,6 +92,39 @@ public class SurtaxSupportByFinancialVO {
 	}
 	public void setSurtaxSupportByFinancialUseYn(String surtaxSupportByFinancialUseYn) {
 		this.surtaxSupportByFinancialUseYn = surtaxSupportByFinancialUseYn;
+	}
+	@Override
+	public String toString() {
+		return "SurtaxSupportByFinancialVO [surtaxSupportByFinancialSeq=" + surtaxSupportByFinancialSeq
+				+ ", surtaxSupportByFinancialCompanyCd=" + surtaxSupportByFinancialCompanyCd
+				+ ", surtaxSupportByFinancialProductCd=" + surtaxSupportByFinancialProductCd
+				+ ", surtaxSupportByFinancialCompanyCdName=" + surtaxSupportByFinancialCompanyCdName
+				+ ", surtaxSupportByFinancialProductCdName=" + surtaxSupportByFinancialProductCdName
+				+ ", surtaxSupportByFinancialAgFeeSurtaxSupportYn=" + surtaxSupportByFinancialAgFeeSurtaxSupportYn
+				+ ", surtaxSupportByFinancialSlidingSurtaxSupportYn=" + surtaxSupportByFinancialSlidingSurtaxSupportYn
+				+ ", surtaxSupportByFinancialAddFeeSurtaxSupportYn=" + surtaxSupportByFinancialAddFeeSurtaxSupportYn
+				+ ", surtaxSupportByFinancialCreateDate=" + surtaxSupportByFinancialCreateDate
+				+ ", surtaxSupportByFinancialCreateUserId=" + surtaxSupportByFinancialCreateUserId
+				+ ", surtaxSupportByFinancialUpdateDate=" + surtaxSupportByFinancialUpdateDate
+				+ ", surtaxSupportByFinancialUpdateUserId=" + surtaxSupportByFinancialUpdateUserId
+				+ ", surtaxSupportByFinancialUseYn=" + surtaxSupportByFinancialUseYn
+				+ ", getSurtaxSupportByFinancialSeq()=" + getSurtaxSupportByFinancialSeq()
+				+ ", getSurtaxSupportByFinancialCompanyCd()=" + getSurtaxSupportByFinancialCompanyCd()
+				+ ", getSurtaxSupportByFinancialProductCd()=" + getSurtaxSupportByFinancialProductCd()
+				+ ", getSurtaxSupportByFinancialAgFeeSurtaxSupportYn()="
+				+ getSurtaxSupportByFinancialAgFeeSurtaxSupportYn()
+				+ ", getSurtaxSupportByFinancialSlidingSurtaxSupportYn()="
+				+ getSurtaxSupportByFinancialSlidingSurtaxSupportYn()
+				+ ", getSurtaxSupportByFinancialAddFeeSurtaxSupportYn()="
+				+ getSurtaxSupportByFinancialAddFeeSurtaxSupportYn() + ", getSurtaxSupportByFinancialCreateDate()="
+				+ getSurtaxSupportByFinancialCreateDate() + ", getSurtaxSupportByFinancialCreateUserId()="
+				+ getSurtaxSupportByFinancialCreateUserId() + ", getSurtaxSupportByFinancialUpdateDate()="
+				+ getSurtaxSupportByFinancialUpdateDate() + ", getSurtaxSupportByFinancialUpdateUserId()="
+				+ getSurtaxSupportByFinancialUpdateUserId() + ", getSurtaxSupportByFinancialCompanyCdName()="
+				+ getSurtaxSupportByFinancialCompanyCdName() + ", getSurtaxSupportByFinancialProductCdName()="
+				+ getSurtaxSupportByFinancialProductCdName() + ", getSurtaxSupportByFinancialUseYn()="
+				+ getSurtaxSupportByFinancialUseYn() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ ", toString()=" + super.toString() + "]";
 	}
 	
 }

@@ -48,6 +48,7 @@ public class SurtaxSupportByFinancialController {
 		List<SurtaxSupportByFinancialVO> list = new ArrayList<>();
 		SurtaxSupportByFinancialVO surtaxSupportByFinancialVO = new SurtaxSupportByFinancialVO();
 		List<CodeVO> financialList = new ArrayList<>();
+		List<CodeVO> financialProductList = new ArrayList<>();
 		
 		try {
 			list = ssService.selectSurtaxSupportByFinancialList();
@@ -56,8 +57,11 @@ public class SurtaxSupportByFinancialController {
 			logger.error(e.getMessage());
 		}
 		
+		
+		surtaxSupportByFinancialVO.setSurtaxSupportByFinancialSeq(list.get(0).getSurtaxSupportByFinancialSeq());
+		System.out.println("ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ : "+list.get(0).getSurtaxSupportByFinancialSeq());
 		try {
-			surtaxSupportByFinancialVO = ssService.selectSurtaxSupportByFinancialInfo();	
+			surtaxSupportByFinancialVO = ssService.selectSurtaxSupportByFinancialInfo(surtaxSupportByFinancialVO);	
 		} catch (Exception e) {
 			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectSurtaxSupportByFinancialInfo ]");
 			logger.error(e.getMessage());
@@ -73,10 +77,22 @@ public class SurtaxSupportByFinancialController {
 			logger.error(e.getMessage());
 		}
 		
+		codeVO.setCodeParentId(3100);
+		
+		try {
+			financialProductList = codeService.selectCodeList(codeVO);
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectSurtaxSupportByFinancialList ]");
+			logger.error(e.getMessage());
+		}
+		
 		
 		model.addAttribute("list",list);
+		model.addAttribute("listCount",list.size());
 		model.addAttribute("surtaxSupportByFinancialVO",surtaxSupportByFinancialVO);
+		model.addAttribute("surtaxSupportByFinancial",surtaxSupportByFinancialVO.toString());
 		model.addAttribute("financialList",financialList);
+		model.addAttribute("financialProductList",financialProductList);
 		
 		return result;
 	}
