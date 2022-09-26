@@ -2474,12 +2474,25 @@ i.ico-b-krw {
     color: #191919;
     text-align: right;
     padding: 24px 10px;
+    width: 28%;
 }
 
 .code-add td {
     border: 0;
     text-align: left;
     padding-left: 12px;
+}
+
+.w-50 .code-add th {
+    width: 30%;
+}
+
+.w-50 .code-add input {
+    width: 60%;
+}
+
+.w-50 .code-add select {
+    width: 60%;
 }
 
 .code-add input {
@@ -2507,4 +2520,8 @@ i.ico-b-krw {
 
 .portlet-body.dashboard.code .board:last-of-type .box-body {
     padding-top: 50px;
+}
+
+.portlet-body.dashboard.code.w-50 .board {
+    width: 49.5%;
 }

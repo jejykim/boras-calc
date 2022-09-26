@@ -4,6 +4,8 @@ public class SurtaxSupportByFinancialVO {
 	private int surtaxSupportByFinancialSeq;
 	private int surtaxSupportByFinancialCompanyCd;
 	private int surtaxSupportByFinancialProductCd;
+	private int surtaxSupportByFinancialCompanyCdName;
+	private int surtaxSupportByFinancialProductCdName;
 	private String surtaxSupportByFinancialAgFeeSurtaxSupportYn;
 	private String surtaxSupportByFinancialSlidingSurtaxSupportYn;
 	private String surtaxSupportByFinancialAddFeeSurtaxSupportYn;
@@ -11,6 +13,7 @@ public class SurtaxSupportByFinancialVO {
 	private String surtaxSupportByFinancialCreateUserId;
 	private String surtaxSupportByFinancialUpdateDate;
 	private String surtaxSupportByFinancialUpdateUserId;
+	private String surtaxSupportByFinancialUseYn;
 	
 	public int getSurtaxSupportByFinancialSeq() {
 		return surtaxSupportByFinancialSeq;
@@ -72,6 +75,23 @@ public class SurtaxSupportByFinancialVO {
 	public void setSurtaxSupportByFinancialUpdateUserId(String surtaxSupportByFinancialUpdateUserId) {
 		this.surtaxSupportByFinancialUpdateUserId = surtaxSupportByFinancialUpdateUserId;
 	}
-	
+	public int getSurtaxSupportByFinancialCompanyCdName() {
+		return surtaxSupportByFinancialCompanyCdName;
+	}
+	public void setSurtaxSupportByFinancialCompanyCdName(int surtaxSupportByFinancialCompanyCdName) {
+		this.surtaxSupportByFinancialCompanyCdName = surtaxSupportByFinancialCompanyCdName;
+	}
+	public int getSurtaxSupportByFinancialProductCdName() {
+		return surtaxSupportByFinancialProductCdName;
+	}
+	public void setSurtaxSupportByFinancialProductCdName(int surtaxSupportByFinancialProductCdName) {
+		this.surtaxSupportByFinancialProductCdName = surtaxSupportByFinancialProductCdName;
+	}
+	public String getSurtaxSupportByFinancialUseYn() {
+		return surtaxSupportByFinancialUseYn;
+	}
+	public void setSurtaxSupportByFinancialUseYn(String surtaxSupportByFinancialUseYn) {
+		this.surtaxSupportByFinancialUseYn = surtaxSupportByFinancialUseYn;
+	}
 	
 }

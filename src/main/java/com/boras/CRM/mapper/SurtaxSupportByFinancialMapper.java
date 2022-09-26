@@ -17,10 +17,24 @@ public interface SurtaxSupportByFinancialMapper {
 	public List<SurtaxSupportByFinancialVO> selectSurtaxSupportByFinancialList();
 	
 	/**
+	 * 금융사 별 부가세지원여부 상세 조회
+	 * @param 
+	 * @return SurtaxSupportByFinancialVO
+	 */
+	public SurtaxSupportByFinancialVO selectSurtaxSupportByFinancialInfo();
+	
+	/**
 	 * 금융사 별 부가세지원여부 등록
 	 * @param 
 	 * @return int
 	 */
 	public int insertSurtaxSupportByFinancial(SurtaxSupportByFinancialVO surtaxSupportByFinancialVO);
+	
+	/**
+	 * 금융사 별 부가세지원여부 수정
+	 * @param 
+	 * @return int
+	 */
+	public int updateSurtaxSupportByFinancial(SurtaxSupportByFinancialVO surtaxSupportByFinancialVO);
 	
 }

@@ -17,9 +17,9 @@ public class CodeController {
 	/*
 	 * 코드 관리 페이지
 	 */
-	@GetMapping(value = "/code/list")
+	@GetMapping(value = "/code")
 	public String codeList(Model model, HttpServletRequest req, HttpServletResponse resp) {
-		String result = "code/code-list";
+		String result = "code/code";
     	
 		return result;
 	}

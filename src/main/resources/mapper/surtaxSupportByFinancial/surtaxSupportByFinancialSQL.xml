@@ -42,4 +42,38 @@
 		FROM surtax_support_by_financial ss
   	</select>
   	
+  	<!-- 금융사별 부가세 지원여부 조회 -->
+	<select id="selectSurtaxSupportByFinancialInfo" resultType="surtaxSupportByFinancialVO" parameterType="surtaxSupportByFinancialVO">
+		SELECT 
+			surtax_support_by_financial_seq
+			,surtax_support_by_financial_company_cd
+			,(SELECT code_name FROM code WHERE code_id = ss.surtax_support_by_financial_company_cd) as surtax_support_by_financial_company_name
+			,surtax_support_by_financial_product_cd
+			,(SELECT code_name FROM code WHERE code_id = ss.surtax_support_by_financial_product_cd) as surtax_support_by_financial_product_name
+			,surtax_support_by_financial_ag_fee_surtax_support_yn
+			,surtax_support_by_financial_sliding_surtax_support_yn
+			,surtax_support_by_financial_add_fee_surtax_support_yn
+			,surtax_support_by_financial_create_date
+			,surtax_support_by_financial_create_user_id
+			,surtax_support_by_financial_update_date
+			,surtax_support_by_financial_update_user_id
+		FROM surtax_support_by_financial ss
+		WHERE surtax_support_by_financial_seq=#{surtaxSupportByFinancialSeq}
+  	</select>
+  	
+  	<!-- 금융사별 부가세 지원여부 수정-->
+  	<update id="updateSurtaxSupportByFinancial" parameterType="surtaxSupportByFinancialVO">
+		UPDATE surtax_support_by_financial
+		SET
+			surtax_support_by_financial_company_cd = #{surtaxSupportByFinancialCompanyCd},
+			surtax_support_by_financial_product_cd = #{surtaxSupportByFinancialProductCd},
+			surtax_support_by_financial_ag_fee_surtax_support_yn = #{surtaxSupportByFinancialAgFeeSurtaxSupportYn},
+			surtax_support_by_financial_sliding_surtax_support_yn = #{surtaxSupportByFinancialSlidingSurtaxSupportYn},
+			surtax_support_by_financial_add_fee_surtax_support_yn = #{surtaxSupportByFinancialAddFeeSurtaxSupportYn},
+			surtax_support_by_financial_update_date = now(),
+			surtax_support_by_financial_update_user_id = #{surtaxSupportByFinancialUpdateUserId}
+		WHERE surtax_support_by_financial_seq=#{surtaxSupportByFinancialSeq}
+			
+  	</update>
+  	
 </mapper>

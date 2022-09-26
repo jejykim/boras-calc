@@ -20,12 +20,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.boras.CRM.services.CodeService;
 import com.boras.CRM.services.SurtaxSupportByFinancialService;
 import com.boras.CRM.session.WebSessionListener;
 import com.boras.CRM.util.PermissionHelper;
+import com.boras.CRM.vo.CodeVO;
 import com.boras.CRM.vo.SurtaxSupportByFinancialVO;
 
-@RestController
+@Controller
 public class SurtaxSupportByFinancialController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SurtaxSupportByFinancialController.class);
@@ -33,7 +35,52 @@ public class SurtaxSupportByFinancialController {
 	@Autowired
 	private SurtaxSupportByFinancialService ssService;
 	
-
+	@Autowired
+	private CodeService codeService;
+	
+	/*
+	 * 금융사별 부가세 지원 여부 세팅
+	 */
+	@GetMapping(value = "/surtax")
+	public String settingSurtaxSupport(Model model, HttpServletRequest req, HttpServletResponse resp) {
+		String result = "surtax/surtax";
+		
+		List<SurtaxSupportByFinancialVO> list = new ArrayList<>();
+		SurtaxSupportByFinancialVO surtaxSupportByFinancialVO = new SurtaxSupportByFinancialVO();
+		List<CodeVO> financialList = new ArrayList<>();
+		
+		try {
+			list = ssService.selectSurtaxSupportByFinancialList();
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectSurtaxSupportByFinancialList ]");
+			logger.error(e.getMessage());
+		}
+		
+		try {
+			surtaxSupportByFinancialVO = ssService.selectSurtaxSupportByFinancialInfo();	
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectSurtaxSupportByFinancialInfo ]");
+			logger.error(e.getMessage());
+		}
+		
+		CodeVO codeVO = new CodeVO();
+		codeVO.setCodeParentId(3000);
+		
+		try {
+			financialList = codeService.selectCodeList(codeVO);
+		} catch (Exception e) {
+			logger.error("[ URL : " + req.getRequestURI() + ", ERROR : selectSurtaxSupportByFinancialList ]");
+			logger.error(e.getMessage());
+		}
+		
+		
+		model.addAttribute("list",list);
+		model.addAttribute("surtaxSupportByFinancialVO",surtaxSupportByFinancialVO);
+		model.addAttribute("financialList",financialList);
+		
+		return result;
+	}
+	
 	/*
 	 * 금융사별 부가세 지원 여부 등록
 	 */

@@ -1,92 +1,36 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" isErrorPage="true" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!doctype html>
 <html lang="ko">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CRM</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-    <script src="https://use.fontawesome.com/6ab134b18c.js"></script>
-    <link rel="stylesheet" href="../Assets/front/css/common.css">
-    <link rel="stylesheet" href="../Assets/front/css/style.css">
-
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>CRM</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+	<script src="https://use.fontawesome.com/6ab134b18c.js"></script>
+	<link rel="stylesheet" href="/static/assets/css/common.css">
+	<link rel="stylesheet" href="/static/assets/css/style.css">
+	
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	<script src='/static/assets/js/common/common.js'></script>
+	
 </head>
-
 <body>
     <div class="wrap">
-        <header>
-            <div class="user">
-                <span>홍길동</span>
-            </div>
-        </header>
-        <aside>
-            <div class="menu">
-                <div class="logo">
-                    <a>
-                        <img src="../Assets/front/images/common/logo.png" alt="logo">
-                    </a>
-                    <i class="i-menu"></i>
-                </div>
-                <ul>
-                    <li class="mainmenu"><a><i class="fa fa-home" aria-hidden="true"></i>Dashboard</a></li>
-                    <li class="mainmenu">
-                        <h4>사용자</h4>
-                        <div class="submenu">
-                            <ul>
-                                <li><a><i class="fa fa-user-o" aria-hidden="true"></i><span>사용자 목록</span></a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="mainmenu">
-                        <h4>원장</h4>
-                        <div class="submenu">
-                            <ul>
-                                <li><a><i class="fa fa-file-text-o" aria-hidden="true"></i><span>금융사 원장 목록</span></a></li>
-                                <li><a><i class="fa fa-file-text-o" aria-hidden="true"></i><span>금융사 원장 목록</span></a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="mainmenu">
-                        <h4>계출</h4>
-                        <div class="submenu">
-                            <ul>
-                                <li><a><i class="fa fa-list-ul" aria-hidden="true"></i><span>계출 목록</span></a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="mainmenu">
-                        <h4>정산</h4>
-                        <div class="submenu">
-                            <ul>
-                                <li><a><i class="fa fa-television" aria-hidden="true"></i><span>정산 대시보드</span></a></li>
-                                <li><a><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록</span></a></li>
-                                <li><a><i class="fa fa-list-alt" aria-hidden="true"></i><span>정산 목록</span></a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="mainmenu">
-                        <h4>통계</h4>
-                        <div class="submenu">
-                            <ul>
-                                <li><a><i class="fa fa-bar-chart" aria-hidden="true"></i><span>통계</span></a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="mainmenu">
-                        <h4>시스템</h4>
-                        <div class="submenu">
-                            <ul>
-                                <li><a><i class="fa fa-file-excel-o" aria-hidden="true"></i><span>원장 Excel 설정</span></a></li>
-                                <li class="on"><a><i class="fa fa-file-code-o" aria-hidden="true"></i><span>공통코드</span></a></li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </aside>
-        <div class="contents">
+        <!-- gnb -->
+        <jsp:include page="../common/gnb.jsp" />
+        <!-- //gnb -->
+
+        <!-- snb -->
+        <jsp:include page="../common/snb.jsp" />
+        <!-- //snb -->
+
+       <div class="contents">
             <main>
                 <div class="wrapper">
                     <div class="main-header">
@@ -242,7 +186,6 @@
         </div>
     </div>
     <!--script-->
-    <scrtip src=" ../Assets/front/js/jquery-3.3.1.min.js"></scrtip>
+    <script src='/static/assets/js/common/jquery-3.3.1.min.js'></script>
 </body>
-
 </html>
