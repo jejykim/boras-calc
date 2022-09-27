@@ -37,4 +37,10 @@ public interface SurtaxSupportByFinancialMapper {
 	 */
 	public int updateSurtaxSupportByFinancial(SurtaxSupportByFinancialVO surtaxSupportByFinancialVO);
 	
+	/**
+	 * 금융사 별 부가세지원여부 중복체크
+	 * @param 
+	 * @return int
+	 */
+	public int duplicateCheckForSurtaxSupportInsert(SurtaxSupportByFinancialVO surtaxSupportByFinancialVO);
 }

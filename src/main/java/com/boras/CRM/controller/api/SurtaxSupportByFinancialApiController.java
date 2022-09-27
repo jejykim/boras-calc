@@ -65,11 +65,46 @@ public class SurtaxSupportByFinancialApiController {
 		return rvt;
 	}
 	
+	/*
+	 * 금융사별 부가세 지원 여부 등록
+	 */
+	@PostMapping(value = "/insert")
+	public Map<String, Object> insertSurtaxSupport(HttpServletRequest req, HttpServletResponse resp, SurtaxSupportByFinancialVO surtaxSupportByFinancialVO) {
+	    Map<String, Object> rvt = new HashMap<>();
+	    try {
+	    	
+	    	int check = ssService.duplicateCheckForSurtaxSupportInsert(surtaxSupportByFinancialVO);
+	    	
+	    	if(check>0) {
+	    		rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_00003));
+    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_00003));
+	    	}else {
+		    	int cnt = ssService.insertSurtaxSupportByFinancial(surtaxSupportByFinancialVO);
+			   
+			    if(cnt > 0) {	
+			    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.success));
+	    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.success));
+			    }else {
+			    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.e_10002));
+	    			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.e_10002));
+			    }
+	    	}
+		    	
+	    }catch (Exception e) {
+	    	rvt.put(ResultCode.RESULT_CODE, ResultCode.resultNum(ResultNum.fail));
+			rvt.put(ResultCode.RESULT_MSG, ResultCode.resultMsg(ResultNum.fail));
+			logger.error(e.getMessage());
+		}
+	   
+		return rvt;
+	}
+	
+	
 	/**
-	 * 계출 수정
+	 * 금융사별 부가세 지원 여부 수정
 	 */
 	@PostMapping(value = "/update")
-	public Map<String, Object> updateContract(HttpServletRequest req, HttpServletResponse resp, SurtaxSupportByFinancialVO surtaxSupportByFinancialVO) {
+	public Map<String, Object> upadteSurtaxSupport(HttpServletRequest req, HttpServletResponse resp, SurtaxSupportByFinancialVO surtaxSupportByFinancialVO) {
 	    Map<String, Object> rvt = new HashMap<>();
 	    try {
 	    	

@@ -59,7 +59,6 @@ public class SurtaxSupportByFinancialController {
 		
 		
 		surtaxSupportByFinancialVO.setSurtaxSupportByFinancialSeq(list.get(0).getSurtaxSupportByFinancialSeq());
-		System.out.println("ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ : "+list.get(0).getSurtaxSupportByFinancialSeq());
 		try {
 			surtaxSupportByFinancialVO = ssService.selectSurtaxSupportByFinancialInfo(surtaxSupportByFinancialVO);	
 		} catch (Exception e) {
@@ -95,48 +94,6 @@ public class SurtaxSupportByFinancialController {
 		model.addAttribute("financialProductList",financialProductList);
 		
 		return result;
-	}
-	
-	/*
-	 * 금융사별 부가세 지원 여부 등록
-	 */
-	@PostMapping(value = "/surtaxsupport")
-	public String insertSurtaxSupport(Model model, HttpServletRequest req, HttpServletResponse resp, @ModelAttribute("surtaxSupportByFinancialVO")SurtaxSupportByFinancialVO surtaxSupportByFinancialVO) {
-		String result = "";
-		
-		try {
-			int cnt = ssService.insertSurtaxSupportByFinancial(surtaxSupportByFinancialVO);
-			if(cnt>0) {
-				result = "surtaxsupport/insert";
-			}else {
-				result = "cnt0이하";
-			}
-			logger.info("cnt: " +cnt);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
-    	
-		return result;
-	}
-	
-	/*
-	 * 금융사별 부가세 지원 여부 조회
-	 */
-	@GetMapping(value = "/surtaxsupport/list")
-	public Map<String, Object> listSurtaxSupport(Model model, HttpServletRequest req, HttpServletResponse resp) {
-		Map<String, Object> rvt = new HashMap<>();
-		
-		List<SurtaxSupportByFinancialVO> list = new ArrayList<>();
-		
-		try {
-			list = ssService.selectSurtaxSupportByFinancialList();
-			
-			rvt.put("list", list);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
-    	
-		return rvt;
 	}
 	
 }

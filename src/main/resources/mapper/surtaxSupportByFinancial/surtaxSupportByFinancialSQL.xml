@@ -79,7 +79,15 @@
 			surtax_support_by_financial_update_user_id = #{surtaxSupportByFinancialUpdateUserId},
 			surtax_support_by_financial_use_yn = #{surtaxSupportByFinancialUseYn}
 		WHERE surtax_support_by_financial_seq = #{surtaxSupportByFinancialSeq}
-			
   	</update>
+  	
+  	<!-- 금융사별 부가세 지원여부 중복체크 -->
+	<select id="duplicateCheckForSurtaxSupportInsert" resultType="int" parameterType="surtaxSupportByFinancialVO">
+		SELECT 
+			count(*)
+		FROM surtax_support_by_financial 
+		WHERE surtax_support_by_financial_company_cd=#{surtaxSupportByFinancialCompanyCd}
+			AND surtax_support_by_financial_product_cd=#{surtaxSupportByFinancialProductCd}
+  	</select>
   	
 </mapper>

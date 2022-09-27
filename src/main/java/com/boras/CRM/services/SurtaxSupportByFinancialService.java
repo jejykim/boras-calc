@@ -35,5 +35,9 @@ public class SurtaxSupportByFinancialService implements SurtaxSupportByFinancial
 	public int updateSurtaxSupportByFinancial(SurtaxSupportByFinancialVO surtaxSupportByFinancialVO) {
 		return surtaxSupportByFinancialMapper.updateSurtaxSupportByFinancial(surtaxSupportByFinancialVO);
 	}
-
+	
+	@Override
+	public int duplicateCheckForSurtaxSupportInsert(SurtaxSupportByFinancialVO surtaxSupportByFinancialVO) {
+		return surtaxSupportByFinancialMapper.duplicateCheckForSurtaxSupportInsert(surtaxSupportByFinancialVO);
+	}
 }

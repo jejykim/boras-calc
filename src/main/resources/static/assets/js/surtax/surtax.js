@@ -72,7 +72,7 @@ Surtax.Init = function() {
 Surtax.SetEvent = function() {
 	try {
 
-		// 추가
+		// 추가화면으로 변경
 		$("#btnAdd").click(function() {
 			$(".changeHead").html("부가세 지원여부 추가");
 			$('input:radio').prop('checked',false);
@@ -84,8 +84,39 @@ Surtax.SetEvent = function() {
 			$("#tdProductSelect select").val(0).prop("selected",true)
 			$("#btnInsert").css("display","");
 			$("#btnUpdate").css("display","none");
-			Surtax.insertSurtax();
 		});
+		
+		// 추가
+		$("#btnInsert").click(function() {
+			//등록전 유효성 검사
+			var flag = false;
+			if($('#tdCompanySelect option:selected').val()==0){
+				alert("금융사를 선택해주세요");
+				flag = false;
+			}else if($('#tdProductSelect option:selected').val()==0){
+				alert("금융상품을 선택해주세요");
+				flag = false;
+			}else if($('input[name=radio]:checked').val()==undefined){
+				alert("AGfee부가세 지원여부를 선택해주세요");
+				flag = false;
+			}else if($('input[name=radio2]:checked').val()==undefined){
+				alert("슬라이딩부가세 지원여부를 선택해주세요");
+				flag = false;
+			}else if($('input[name=radio3]:checked').val()==undefined){
+				alert("추가fee부가세 지원여부를 선택해주세요");
+				flag = false;
+			}else if($('input[name=radio4]:checked').val()==undefined){
+				alert("사용여부를 선택해주세요");
+				flag = false;
+			}else{
+				flag = true;
+			}
+			
+			if(flag){
+				Surtax.insertSurtax();
+			}
+		});
+		
 		
 		// 수정
 		$("#btnUpdate").click(function() {
@@ -178,8 +209,8 @@ Surtax.insertSurtax = function() {
 	try {
 		var data = {
 			
-			"surtaxSupportByFinancialCompanyCd": $('#txtSurtaxSupportByFinancialCompanyCd').val()
-			, "surtaxSupportByFinancialProductCd": $('#txtSurtaxSupportByFinancialProductCd').val()
+			"surtaxSupportByFinancialCompanyCd": $('#tdCompanySelect option:selected').val()
+			, "surtaxSupportByFinancialProductCd": $('#tdProductSelect option:selected').val()
 			, "surtaxSupportByFinancialAgFeeSurtaxSupportYn": $('input[name=radio]:checked').val()
 			, "surtaxSupportByFinancialSlidingSurtaxSupportYn": $('input[name=radio2]:checked').val()
 			, "surtaxSupportByFinancialAddFeeSurtaxSupportYn": $('input[name=radio3]:checked').val()
@@ -193,7 +224,9 @@ Surtax.insertSurtax = function() {
 				if (json.resultCode == "00000") {
 					alert("추가되었습니다.");
 					location.reload();
-				} else {
+				}else if(json.resultCode == "00003"){
+					alert("이미 등록된 부가세 지원여부 설정값 잆니다.")
+				}else {
 					alert(json.resultMsg);
 				}
 			},
